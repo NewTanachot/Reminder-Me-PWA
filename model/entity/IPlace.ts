@@ -1,14 +1,16 @@
+import { Decimal } from "@prisma/client/runtime"
+
 export interface IPlace {
     id : string
     name : string,
-    latitude : number,
-    longitude : number,
+    latitude : Decimal,
+    longitude : Decimal,
     isDisable : boolean,
-    createAt : Date
+    createdAt : Date
 };
 
 export interface IPlaceCreate {
     name : string,
-    latitude : number,
-    longitude : number
+    latitude : Decimal,
+    longitude : Decimal
 };

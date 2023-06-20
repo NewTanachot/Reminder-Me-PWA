@@ -23,6 +23,6 @@ model Place {
     name String
     latitude Decimal
     longitude Decimal
-    idDisable Boolean @default(false)
+    isDisable Boolean @default(false)
     createdAt DateTime @default(now())
 }
