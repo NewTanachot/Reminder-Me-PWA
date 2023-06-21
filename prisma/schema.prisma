@@ -14,15 +14,18 @@ datasource db {
 
 model User {
     id String @id @default(cuid())
-    name String
-    password String
+    name String @unique
+    password String 
+    places Place[]
 }
 
 model Place {
     id String @id @default(cuid())
-    name String
+    name String @unique
     latitude Decimal
     longitude Decimal
     isDisable Boolean @default(false)
     createdAt DateTime @default(now())
+    user User @relation(fields: [userId], references: [id])
+    userId String
 }
