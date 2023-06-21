@@ -20,7 +20,7 @@ export async function GET(request: Request) : Promise<NextResponse> {
 
     // check if not exist
     if (!place) {
-        return NextResponse.json(<ErrorModel>{ isSuccess: false, message: "[Get Place]: Place not found." }, { status: 400 });
+        return NextResponse.json(<ErrorModel> { isSuccess: false, message: "[Get Place]: Place not found." }, { status: 400 });
     }
 
     return NextResponse.json(place, { status: 200 });

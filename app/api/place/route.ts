@@ -11,6 +11,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     const userIdParam = new URL(request.url).searchParams.get("userId");
     let place: Place | Place[] | null;
 
+    // check param is exist or not 
     if (userIdParam && userIdParam != "" && userIdParam != " ") 
     {
         // find place from database
@@ -30,12 +31,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         });
     }
 
-    // check if place is null
-    if (!place) {
-        return NextResponse.json(<ErrorModel>{ isSuccess: false, message: "[Get Place]: Place not found." }, { status: 400 });
-    }
-
-    return NextResponse.json(place, { status: 200 });
+    return NextResponse.json(place == null ? <Place>{} : place, { status: 200 });
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -54,7 +50,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
     catch (error)
     {
-        return NextResponse.json(<ErrorModel>{ 
+        return NextResponse.json(<ErrorModel> { 
             isSuccess: false, 
             message: "[POST Place]: Create place fail. Maybe duplicate name ======== " + error 
         }, { status: 400 });
@@ -81,7 +77,7 @@ export async function PUT(request: Request): Promise<NextResponse> {
     }
     catch (error)
     {
-        return NextResponse.json(<ErrorModel>{ 
+        return NextResponse.json(<ErrorModel> { 
             isSuccess: false, 
             message: "[PUT Place]: Update place fail. Maybe duplicate name ======== " + error
         }, { status: 400 });

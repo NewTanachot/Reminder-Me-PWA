@@ -20,7 +20,7 @@ export async function GET(request: Request) : Promise<NextResponse> {
 
     // check if not exist
     if (!user) {
-        return NextResponse.json(<ErrorModel>{ isSuccess: false, message: "[Get User]: User not found." }, { status: 400 });
+        return NextResponse.json(<ErrorModel> { isSuccess: false, message: "[Get User]: User not found." }, { status: 400 });
     }
 
     return NextResponse.json(user, { status: 200 });
