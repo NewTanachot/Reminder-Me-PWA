@@ -7,10 +7,20 @@ const prisma = new PrismaClient()
 
 export async function GET() : Promise<NextResponse> {
 
-    // get user from database
-    const user = await prisma.user.findMany();
+    try 
+    {
+        // get user from database
+        const user = await prisma.user.findMany();
 
-    return NextResponse.json(user, { status: 200 });
+        return NextResponse.json(user, { status: 200 });
+    }
+    catch (error) 
+    {
+        return NextResponse.json(<ErrorModel> { 
+            isSuccess: false, 
+            message: "[GET User]: Get user fail. ======== " + error
+        }, { status: 500 });
+    }
 };
 
 export async function POST(request: Request) : Promise<NextResponse> {

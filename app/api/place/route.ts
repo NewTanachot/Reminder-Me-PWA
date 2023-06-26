@@ -11,27 +11,37 @@ export async function GET(request: Request): Promise<NextResponse> {
     const userIdParam = new URL(request.url).searchParams.get("userId");
     let place: Place | Place[] | null;
 
-    // check param is exist or not 
-    if (userIdParam && userIdParam != "" && userIdParam != " ") 
+    try 
     {
-        // find place from database
-        place = await prisma.place.findFirst({
-            where: {
-                userId: userIdParam
-            }
-        });
-    }
-    else
-    {
-        // find place from database
-        place = await prisma.place.findMany({
-            orderBy: {
-                createdAt: "desc"
-            }
-        });
-    }
+        // check param is exist or not 
+        if (userIdParam && userIdParam != "" && userIdParam != " ") 
+        {
+            // find place from database
+            place = await prisma.place.findFirst({
+                where: {
+                    userId: userIdParam
+                }
+            });
+        }
+        else
+        {
+            // find place from database
+            place = await prisma.place.findMany({
+                orderBy: {
+                    createdAt: "desc"
+                }
+            });
+        }
 
-    return NextResponse.json(place == null ? <Place>{} : place, { status: 200 });
+        return NextResponse.json(place == null ? <Place>{} : place, { status: 200 });
+    }
+    catch (error) 
+    {
+        return NextResponse.json(<ErrorModel> { 
+            isSuccess: false, 
+            message: "[GET Place]: Get place fail. ======== " + error
+        }, { status: 500 });
+    }
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
