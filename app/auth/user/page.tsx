@@ -5,23 +5,42 @@ import { useEffect, useState } from "react";
 
 export default function User() {
 
+    // declare useState
     const [users, setUsers] = useState<User[]>([]);
 
+    // fetch get user function
+    const fetchData = async (): Promise<void> => {
+
+        // fetch get api
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`);
+        const users: User[] = await response.json();
+
+        // set user State
+        console.log(users);
+        setUsers(users);
+    }
+
+    // fetch api at initialize
     useEffect(() => {
-        const fetchData = async () => {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`);
-            const users: User[] = await response.json();
-
-            console.log(users);
-            setUsers(users);
-        }
-
         fetchData();
     }, []);
 
-    const deleteUser = (event : React.MouseEvent<HTMLButtonElement>) => {
-        alert("alert: " + event.currentTarget.value);
+    // delete button handler
+    const deleteUser = async (event : React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+
+        // get id and name
+        const [userId, userName] = event.currentTarget.value.split('_');
+
+        // warning user
+        alert("Warning: " + userName);
+        
+        // fetch delete api
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user/${userId}`, { method: "DELETE" });
+        const deleteUser: User = await response.json();
+
+        // fetch get api
+        console.log(deleteUser);
+        fetchData();
     }
 
     return (
@@ -43,7 +62,7 @@ export default function User() {
                                 <td>{user.name}</td>
                                 <td>{user.password}</td>
                                 <td>
-                                    <button onClick={deleteUser} value={user.id}>Delete</button>
+                                    <button onClick={deleteUser} value={user.id + '_' + user.name}>Delete</button>
                                 </td>
                             </tr>
                         )
