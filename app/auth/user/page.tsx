@@ -1,9 +1,28 @@
+'use client';
+
 import { User } from "@prisma/client";
+import { useEffect, useState } from "react";
 
-export default async function User() {
+export default function User() {
 
-    const response = await fetch(`${process.env.BASEURL_API}user`);
-    const users: User[] = await response.json();
+    const [users, setUsers] = useState<User[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`);
+            const users: User[] = await response.json();
+
+            console.log(users);
+            setUsers(users);
+        }
+
+        fetchData();
+    }, []);
+
+    const deleteUser = (event : React.MouseEvent<HTMLButtonElement>) => {
+        alert("alert: " + event.currentTarget.value);
+    }
 
     return (
         <>
@@ -13,6 +32,7 @@ export default async function User() {
                         <th>UserId</th>
                         <th>UserName</th>
                         <th>Password</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -22,6 +42,9 @@ export default async function User() {
                                 <td>{user.id}</td>
                                 <td>{user.name}</td>
                                 <td>{user.password}</td>
+                                <td>
+                                    <button onClick={deleteUser} value={user.id}>Delete</button>
+                                </td>
                             </tr>
                         )
                     }
