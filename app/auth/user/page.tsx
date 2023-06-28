@@ -16,7 +16,6 @@ export default function User() {
         const users: User[] = await response.json();
 
         // set user State
-        console.log(users);
         setUsers(users);
     }
 
@@ -39,7 +38,6 @@ export default function User() {
         const deleteUser: User = await response.json();
 
         // fetch get api
-        console.log(deleteUser);
         fetchData();
     }
 
@@ -56,6 +54,7 @@ export default function User() {
                 </thead>
                 <tbody>
                     {
+                        // users.length > 0
                         users.map((user, index) => 
                             <tr key={index}>
                                 <td>{user.id}</td>
@@ -66,6 +65,7 @@ export default function User() {
                                 </td>
                             </tr>
                         )
+                        // : <tr><td>not user data...</td></tr>
                     }
                 </tbody>
             </table>

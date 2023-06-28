@@ -26,7 +26,7 @@ export default function Register() {
         const users: User = await response.json();
 
         // warning user
-        alert("Success: create new user" + users.name);
+        alert("Success: create new user: " + users.name);
     
         location.replace("/auth/user");
     }

@@ -1,35 +1,23 @@
 import crypto from 'crypto';
 
-export function encryptString(text: string, secretKey: string) {
-    const cipher = crypto.createCipher('aes-256-cbc', secretKey);
+export function encryptString(text: string, secretKey: string, iv_key?: string) {
+
+    const ivKeyBuffer = iv_key ? Buffer.from(iv_key, 'hex') : crypto.randomBytes(16);
+    const secretKeyBuffer = Buffer.from(secretKey, 'hex');
+    const cipher = crypto.createCipheriv('aes-256-cbc', secretKeyBuffer, ivKeyBuffer);
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
-    return encrypted;
-  }
+
+    return [ encrypted, ivKeyBuffer.toString('hex') ]
+}
   
-  export function decryptString(encryptedText: string, secretKey: string) {
-    const decipher = crypto.createDecipher('aes-256-cbc', secretKey);
+export function decryptString(encryptedText: string, secretKey: string, iv_key: string) {
+
+    const ivKeyBuffer = Buffer.from(iv_key, 'hex');
+    const secretKeyBuffer = Buffer.from(secretKey, 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-cbc', secretKeyBuffer, ivKeyBuffer);
     let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
+
     return decrypted;
-  }
-
-// export function encryptString(text: string, secretKey: string) {
-
-//     // this is ECB mode without an IV, not recommend in real production project
-//     const cipher = crypto.createCipheriv('aes-256-ecb', Buffer.from(secretKey), process.env.NEXT_PUBLIC_IV_KEY ?? "");
-//     let encrypted = cipher.update(text, 'utf8', 'hex');
-//     encrypted += cipher.final('hex');
-  
-//     return encrypted;
-//   }
-  
-// export function decryptString(encryptedText: string, secretKey: string) {
-
-//     // this is ECB mode without an IV, not recommend in real production project
-//     const decipher = crypto.createDecipheriv('aes-256-ecb', Buffer.from(secretKey), process.env.NEXT_PUBLIC_IV_KEY ?? "");
-//     let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-//     decrypted += decipher.final('utf8');
-  
-//     return decrypted;
-// }
+}

@@ -6,12 +6,20 @@ import { encryptString, decryptString } from '@/extension/string_extension';
 // Init Prisma connection
 const prisma = new PrismaClient()
 
+// get secret key from .env
+const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
+
 export async function GET() : Promise<NextResponse> {
 
     try 
     {
         // get user from database
         const user = await prisma.user.findMany();
+
+        // decrypt password string
+        user.map(e => {
+            e.password = decryptString(e.password, secretKey, e.IV_key)
+        });
 
         return NextResponse.json(user, { status: 200 });
     }
@@ -29,11 +37,9 @@ export async function POST(request: Request) : Promise<NextResponse> {
     // get body of request
     const userCreateFromBody: User = await request.json();
 
-    // encrypt password
-    userCreateFromBody.password = encryptString(userCreateFromBody.password, process.env.NEXT_PUBLIC_SECRET_KEY ?? "");
-
-    console.log(userCreateFromBody.name)
-    console.log(userCreateFromBody.password)
+    const [ encryptPassword, IV_Key ] = encryptString(userCreateFromBody.password, secretKey);
+    userCreateFromBody.password = encryptPassword
+    userCreateFromBody.IV_key = IV_Key
 
     // create user to database
     try 
@@ -71,7 +77,9 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     }
 
     // encrypt password
-    userUpdateFromBody.password = encryptString(userUpdateFromBody.password, process.env.NEXT_PUBLIC_SECRET_KEY ?? "");
+    const [ encryptPassword, IV_Key ] = encryptString(userUpdateFromBody.password, secretKey);
+    userUpdateFromBody.password = encryptPassword
+    userUpdateFromBody.IV_key = IV_Key
 
     // update user in database
     try 

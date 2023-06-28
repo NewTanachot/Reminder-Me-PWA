@@ -26,8 +26,5 @@ CREATE TABLE "Place" (
 -- CreateIndex
 CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Place_name_key" ON "Place"("name");
-
 -- AddForeignKey
 ALTER TABLE "Place" ADD CONSTRAINT "Place_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
