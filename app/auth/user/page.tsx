@@ -1,6 +1,6 @@
 'use client';
 
-import { ErrorModel } from "@/model/error_model";
+import { ResponseModel } from "@/model/response_model";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -10,7 +10,7 @@ export default function User() {
     const [users, setUsers] = useState<User[]>([]);
 
     // fetch get user function
-    const fetchData = async (): Promise<void> => {
+    const FetchData = async (): Promise<void> => {
 
         // fetch get api
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`);
@@ -22,7 +22,7 @@ export default function User() {
 
     // fetch api at initialize
     useEffect(() => {
-        fetchData();
+        FetchData();
     }, []);
 
     // delete button handler
@@ -36,12 +36,12 @@ export default function User() {
 
         if (!response.ok) {
 
-            const errorMessage: ErrorModel = await response.json();
-            alert(`Error message: ${errorMessage}`)
+            const errorMessage: ResponseModel = await response.json();
+            alert(`Error message: ${errorMessage.message}`)
         }
 
-        // fetch get api
-        fetchData();
+        // set User state
+        setUsers(users.filter(e => e.name != userName));
     }
 
     return (

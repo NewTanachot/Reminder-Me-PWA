@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import { ErrorModel } from '@/model/error_model';
+import { ErrorModel } from '@/model/response_model';
 import { GetLastVariableFromPath } from '@/extension/api_extension';
 
 // Init Prisma connection

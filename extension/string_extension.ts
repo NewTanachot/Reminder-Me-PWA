@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-export function encryptString(text: string, secretKey: string, iv_key?: string) {
+export const EncryptString = (text: string, secretKey: string, iv_key?: string) => {
 
     const ivKeyBuffer = iv_key ? Buffer.from(iv_key, 'hex') : crypto.randomBytes(16);
     const secretKeyBuffer = Buffer.from(secretKey, 'hex');
@@ -11,7 +11,7 @@ export function encryptString(text: string, secretKey: string, iv_key?: string) 
     return [ encrypted, ivKeyBuffer.toString('hex') ]
 }
   
-export function decryptString(encryptedText: string, secretKey: string, iv_key: string) {
+export const DecryptString = (encryptedText: string, secretKey: string, iv_key: string) => {
 
     const ivKeyBuffer = Buffer.from(iv_key, 'hex');
     const secretKeyBuffer = Buffer.from(secretKey, 'hex');

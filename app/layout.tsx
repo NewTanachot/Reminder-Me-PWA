@@ -6,7 +6,7 @@ import { Athiti } from 'next/font/google' // Itim
 const googleFont = Athiti({
     weight: '600',
     subsets: ['latin'],
-  });
+});
 
 export const metadata: Metadata = {
     title: 'Reminder-Me',
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body className={googleFont.className}>{children}</body>
-    </html>
-  )
+    return (
+        <html lang="en">
+            <body className={googleFont.className}>{children}</body>
+        </html>
+    )
 }

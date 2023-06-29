@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient, User } from '@prisma/client'
-import { ErrorModel } from '@/model/error_model';
-import { encryptString, decryptString } from '@/extension/string_extension';
+import { ResponseModel } from '@/model/response_model';
+import { EncryptString, DecryptString } from '@/extension/string_extension';
 
 // Init Prisma connection
 const prisma = new PrismaClient()
@@ -17,15 +17,15 @@ export async function GET() : Promise<NextResponse> {
         const user = await prisma.user.findMany();
 
         // decrypt password string
-        user.map(e => {
-            e.password = decryptString(e.password, secretKey, e.IV_key)
-        });
+        // user.map(e => {
+        //     e.password = DecryptString(e.password, secretKey, e.IV_key)
+        // });
 
         return NextResponse.json(user, { status: 200 });
     }
     catch (error) 
     {
-        return NextResponse.json(<ErrorModel> { 
+        return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[GET User]: Get user fail. ======== " + error
         }, { status: 500 });
@@ -37,7 +37,7 @@ export async function POST(request: Request) : Promise<NextResponse> {
     // get body of request
     const userCreateFromBody: User = await request.json();
 
-    const [ encryptPassword, IV_Key ] = encryptString(userCreateFromBody.password, secretKey);
+    const [ encryptPassword, IV_Key ] = EncryptString(userCreateFromBody.password, secretKey);
     userCreateFromBody.password = encryptPassword
     userCreateFromBody.IV_key = IV_Key
 
@@ -52,7 +52,7 @@ export async function POST(request: Request) : Promise<NextResponse> {
     }
     catch (error) 
     {
-        return NextResponse.json(<ErrorModel> { 
+        return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[POST User]: Create user fail. Maybe duplicate name ======== " + error
         }, { status: 400 });
@@ -73,11 +73,11 @@ export async function PUT(request: Request) : Promise<NextResponse> {
 
     if (countIfNameExist !== 0)
     {
-        return NextResponse.json(<ErrorModel> { isSuccess: false, message: "[PUT User]: Duplicate userName." }, { status: 400 });
+        return NextResponse.json(<ResponseModel> { isSuccess: false, message: "[PUT User]: Duplicate userName." }, { status: 400 });
     }
 
     // encrypt password
-    const [ encryptPassword, IV_Key ] = encryptString(userUpdateFromBody.password, secretKey);
+    const [ encryptPassword, IV_Key ] = EncryptString(userUpdateFromBody.password, secretKey);
     userUpdateFromBody.password = encryptPassword
     userUpdateFromBody.IV_key = IV_Key
 
@@ -95,7 +95,7 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     }
     catch (error) 
     {
-        return NextResponse.json(<ErrorModel> { 
+        return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[PUT User]: Update user fail. Maybe duplicate name ======== " + error
         }, { status: 400 });

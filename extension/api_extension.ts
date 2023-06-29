@@ -1,3 +1,3 @@
-export function GetLastVariableFromPath(url: string) {
+export const GetLastVariableFromPath = (url: string) => {
     return url.slice(url.lastIndexOf("/") + 1);
 }

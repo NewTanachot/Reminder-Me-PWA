@@ -1,4 +1,4 @@
-import { ErrorModel } from "@/model/error_model";
+import { ErrorModel } from "@/model/response_model";
 import { Place, PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
