@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
-import { ErrorModel } from '@/model/response_model';
+import { ResponseModel } from '@/model/response_model';
 import { GetLastVariableFromPath } from '@/extension/api_extension';
 
 // Init Prisma connection
@@ -20,7 +20,7 @@ export async function GET(request: Request) : Promise<NextResponse> {
 
     // check if not exist
     if (!place) {
-        return NextResponse.json(<ErrorModel> { isSuccess: false, message: "[Get Place]: Place not found." }, { status: 400 });
+        return NextResponse.json(<ResponseModel> { isSuccess: false, message: "[Get Place]: Place not found." }, { status: 400 });
     }
 
     return NextResponse.json(place, { status: 200 });

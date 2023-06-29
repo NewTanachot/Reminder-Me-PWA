@@ -1,4 +1,4 @@
-import { ErrorModel } from "@/model/response_model";
+import { ResponseModel } from "@/model/response_model";
 import { Place, PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 
@@ -37,7 +37,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     }
     catch (error) 
     {
-        return NextResponse.json(<ErrorModel> { 
+        return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[GET Place]: Get place fail. ======== " + error
         }, { status: 500 });
@@ -60,7 +60,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
     catch (error)
     {
-        return NextResponse.json(<ErrorModel> { 
+        return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[POST Place]: Create place fail. Maybe duplicate name ======== " + error 
         }, { status: 400 });
@@ -87,7 +87,7 @@ export async function PUT(request: Request): Promise<NextResponse> {
     }
     catch (error)
     {
-        return NextResponse.json(<ErrorModel> { 
+        return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[PUT Place]: Update place fail. Maybe duplicate name ======== " + error
         }, { status: 400 });
