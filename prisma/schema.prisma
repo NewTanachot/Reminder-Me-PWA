@@ -14,15 +14,21 @@ datasource db {
 
 model User {
     id String @id @default(cuid())
-    name String
+    name String @unique
     password String
+    IV_key String
+    places Place[]
 }
 
 model Place {
     id String @id @default(cuid())
     name String
-    latitude Decimal
-    longitude Decimal
-    idDisable Boolean @default(false)
+    latitude Decimal?
+    longitude Decimal?
+    reminderMessage String?
+    reminderDate String?
+    isDisable Boolean @default(false)
     createdAt DateTime @default(now())
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 }
