@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorModel } from "@/model/error_model";
 import { User } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -30,12 +31,14 @@ export default function User() {
         // get id and name
         const [userId, userName] = event.currentTarget.value.split('_');
 
-        // warning user
-        alert("Warning: " + userName);
-        
         // fetch delete api
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user/${userId}`, { method: "DELETE" });
-        const deleteUser: User = await response.json();
+
+        if (!response.ok) {
+
+            const errorMessage: ErrorModel = await response.json();
+            alert(`Error message: ${errorMessage}`)
+        }
 
         // fetch get api
         fetchData();
@@ -54,7 +57,7 @@ export default function User() {
                 </thead>
                 <tbody>
                     {
-                        // users.length > 0
+                        // users.length > 0 ?
                         users.map((user, index) => 
                             <tr key={index}>
                                 <td>{user.id}</td>

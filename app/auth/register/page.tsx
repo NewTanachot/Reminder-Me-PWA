@@ -1,7 +1,7 @@
 'use client';
 
-import { createUser } from "@/model/entity_extension";
-import { User } from "@prisma/client";
+import { CreateUser } from "@/model/entity_extension";
+import { ErrorModel } from "@/model/error_model";
 import Link from "next/link";
 
 export default function Register() {
@@ -13,21 +13,23 @@ export default function Register() {
         const userNameInput = document.getElementById("usernameInput") as HTMLInputElement;
         const passWordInput = document.getElementById("passwordInput") as HTMLInputElement;
 
-        const addUser: createUser = {
+        const addUser: CreateUser = {
             name: userNameInput.value,
             password: passWordInput.value
         }
-  
+    
         // fetch add user
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`, {
             method: "POST",
             body: JSON.stringify(addUser)
         });
-        const users: User = await response.json();
 
-        // warning user
-        alert("Success: create new user: " + users.name);
-    
+        if (!response.ok) {
+            
+            const errorMessage: ErrorModel = await response.json();
+            alert(`Error message: ${errorMessage}`)
+        }
+
         location.replace("/auth/user");
     }
 
