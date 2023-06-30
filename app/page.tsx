@@ -1,8 +1,12 @@
 'use client';
 
-import Image from 'next/image'
+import { IsStringValid } from '@/extension/string_extension';
+import { PlaceExtensionModel } from '@/model/entity_extension';
+import { ResponseModel } from '@/model/response_model';
+import { Place, User } from '@prisma/client';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 
 const userLocalStorage = process.env.NEXT_PUBLIC_LOCALSTORAGE_USE ?? "";
 
@@ -10,33 +14,205 @@ export default function Home() {
 
     // initialize router
     const router = useRouter();
-    
-    // check user Credentials
-    if (typeof window !== 'undefined') {
-        
-        // Perform localStorage action
-        const UserCredentials = localStorage.getItem(userLocalStorage);
 
-        console.log(UserCredentials);
-        if (!UserCredentials) {
-            router.replace('/auth/login');
+    // show place
+    const [places, setPlaces] = useState<Place[]>([]);
+
+    useEffect(() => {
+
+        // check user Credentials
+        if (typeof window !== 'undefined') {
+
+            // Perform localStorage action
+            const UserCredentials = localStorage.getItem(userLocalStorage);
+
+            console.log(UserCredentials);
+            if (!UserCredentials) {
+                router.replace('/auth/login');
+            }
         }
-      }
+
+        // fetch data from api
+        FetchPlaceData();
+    }, [])
+
+    const FetchPlaceData = async () => {
+
+        // get user from localStorage
+        const UserCredentials = localStorage.getItem(userLocalStorage);
+        
+        if (UserCredentials) {
+
+            const userFromLocalStorage: User = JSON.parse(UserCredentials);
+
+            // fetch get api
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${userFromLocalStorage.id}`);
+
+            if (!response.ok) {
+    
+                const errorMessage: ResponseModel = await response.json();
+                alert(`Error message: ${errorMessage.message}`)
+            }
+            else {
+    
+                // set user State
+                const places: Place[] = await response.json();
+                setPlaces(places);
+            }
+        }
+        else {
+            alert(`Error message: User not found.`)
+        }
+    }
 
     // logout handler
-    const userLogout = () => {
+    const UserLogout = () => {
         alert("You are logout...");
         router.replace('/auth/login');
     }
+
+    // delete place handler
+    const DeletePlace = async (event : MouseEvent<HTMLButtonElement>): Promise<void> => {
+
+        // get placeId
+        const placeId = event.currentTarget.value;
+
+        // fetch delete api
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/${placeId}`, { method: "DELETE" });
+
+        if (!response.ok) {
+
+            const errorMessage: ResponseModel = await response.json();
+            alert(`Error message: ${errorMessage.message}`)
+        }
+
+        // set User state
+        setPlaces(places.filter(e => e.id != placeId));
+    }
+
+    //change place active status handler
+    const ChangePlaceStatus = async (index: number, isDisable: boolean) => {
+        
+        // prepare update place data
+        const updatePlace = places[index];
+        updatePlace.isDisable = !isDisable
+
+        // Find the place object by placeId and update its isDisable property
+        const newPlacesState = places.map((place, i) => {
+            
+            if (i == index) {
+                return updatePlace;
+            }
+
+            return place;
+        });
+
+        // Update the places array with the modified object
+        setPlaces(newPlacesState);
+
+        // update place data
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place`, {
+            method: "PUT",
+            body: JSON.stringify(updatePlace)
+        });
+
+        if (!response.ok) {
+
+            const errorMessage: ResponseModel = await response.json();
+            alert(`Error message: ${errorMessage.message}`)
+        }
+
+    }
+
+    // add place handler
+    const AddNewPlace = async () => {
+
+        // get user from localStorage
+        const UserCredentials = localStorage.getItem(userLocalStorage);
+
+        if (UserCredentials) {
+
+            // get data from input form
+            const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
+            const latitudeInput = document.getElementById("latitudeInput") as HTMLInputElement;
+            const longitudeInput = document.getElementById("longitudeInput") as HTMLInputElement;
+            const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
+            const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
+
+            const userFromLocalStorage: User = JSON.parse(UserCredentials);
+
+            const newPlace: PlaceExtensionModel = {
+                name: placeNameInput.value,
+                latitude: +latitudeInput.value, // cast string to number
+                longitude: +longitudeInput.value, // cast string to number
+                reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
+                reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
+                userId: userFromLocalStorage.id,
+            }
+
+            // fetch creaet place api
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place`, {
+                method: "POST",
+                body: JSON.stringify(newPlace)
+            });
+
+            if (!response.ok) {
     
+                const errorMessage: ResponseModel = await response.json();
+                alert(`Error message: ${errorMessage.message}`)
+            }
+            
+            // set place state
+            FetchPlaceData();
+        }
+        else {
+            alert(`Error message: User not found.`)
+        }
+    }
+
     return (
         <main>
             <div>
                 <Link href="/auth/login">Login</Link>
                 &nbsp; &nbsp; &nbsp;
-                <button onClick={userLogout}>logout</button>
+                <button onClick={UserLogout}>logout</button>
                 &nbsp; &nbsp; &nbsp;
                 <Link href="/auth/register">Register page</Link>
+            </div>
+            <div>
+                <ul>
+                    {
+                        places.length > 0 ?
+                        places.map((place, index) => 
+                            <li key={index}>
+                                {place.name}, {place.latitude?.toString()}, {place.longitude?.toString()}, {place.reminderMessage ?? "-"},
+                                <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                <button onClick={DeletePlace} value={place.id}>delete</button>
+                            </li>
+                        )
+                        : <p>No place data...</p>
+                    }
+                </ul>
+            </div>
+            <br />
+            <br />
+            <div>
+                <div>
+                    <h2>Add New Place</h2>
+                    <p>PlaceName:</p>
+                    <input id="placeNameInput" type="text" required/>
+                    <p>Latitude:</p>
+                    <input id="latitudeInput" type="number" step={.1} required/>
+                    <p>Longitude:</p>
+                    <input id="longitudeInput" type="number" step={.1} required/>
+                    <p>Reminder Message:</p>
+                    <input id="reminderMessageInput" type="text" required/>
+                    <p>Reminder Date:</p>
+                    <input id="reminderDateInput" type="date" required/>
+                </div>
+                <br />
+                <button onClick={AddNewPlace}>add place</button>
             </div>
         </main>
     )

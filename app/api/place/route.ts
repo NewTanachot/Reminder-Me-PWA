@@ -17,9 +17,12 @@ export async function GET(request: Request): Promise<NextResponse> {
         if (userIdParam && userIdParam != "" && userIdParam != " ") 
         {
             // find place from database
-            place = await prisma.place.findFirst({
+            place = await prisma.place.findMany({
                 where: {
                     userId: userIdParam
+                },
+                orderBy: {
+                    createdAt: "desc"
                 }
             });
         }

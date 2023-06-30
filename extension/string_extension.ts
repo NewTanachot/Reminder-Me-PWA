@@ -21,3 +21,15 @@ export const DecryptString = (encryptedText: string, secretKey: string, iv_key: 
 
     return decrypted;
 }
+
+export const IsStringValid = (value: string): boolean => {
+    if (value === null || value === undefined) {
+      return false; // Check for null or undefined
+    }
+  
+    if (value.trim().length === 0) {
+      return false; // Check for empty string or whitespace
+    }
+  
+    return true; // String is valid
+  }
