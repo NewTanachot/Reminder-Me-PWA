@@ -1,5 +1,6 @@
 import './globals.css'
 import appIcon from '@/public/image/favicon.ico';
+import appleAppIcon from '@/public/image/apple-icon.ico';
 import { Metadata } from 'next'
 import { Athiti } from 'next/font/google' // Itim
 
@@ -13,7 +14,12 @@ export const metadata: Metadata = {
     description: 'Reminder-Me place remind and suggest by distance.',
     icons: {
         apple: appIcon.src,
-        icon: appIcon.src
+        icon: appleAppIcon.src
+    },
+    appleWebApp: { 
+        capable: true, 
+        title: "Reminder Me", 
+        statusBarStyle: "black-translucent" 
     }
 }
 
