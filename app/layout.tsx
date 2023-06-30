@@ -13,8 +13,8 @@ export const metadata: Metadata = {
     title: 'Reminder-Me',
     description: 'Reminder-Me place remind and suggest by distance.',
     icons: {
-        apple: appIcon.src,
-        icon: appleAppIcon.src
+        icon: appIcon.src,
+        apple: appleAppIcon.src
     },
     appleWebApp: { 
         capable: true, 
