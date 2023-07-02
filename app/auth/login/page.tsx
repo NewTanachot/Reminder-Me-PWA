@@ -1,6 +1,6 @@
 'use client';
 
-import { UserExtensionModel } from "@/model/entity_extension";
+import { UserExtensionModel } from "@/model/subentity_model";
 import { ResponseModel } from "@/model/response_model";
 import { User } from "@prisma/client";
 import Link from "next/link";

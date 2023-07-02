@@ -1,12 +1,13 @@
 'use client';
 
 import { IsStringValid } from '@/extension/string_extension';
-import { PlaceExtensionModel } from '@/model/entity_extension';
+import { IDisplayPlace, PlaceExtensionModel } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place, User } from '@prisma/client';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
 
 const userLocalStorage = process.env.NEXT_PUBLIC_LOCALSTORAGE_USE ?? "";
 
@@ -15,27 +16,42 @@ export default function Home() {
     // initialize router
     const router = useRouter();
 
-    // show place
     const [places, setPlaces] = useState<Place[]>([]);
+    const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
+    const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
 
+    // check user creadential, fetch get place api, get current location
     useEffect(() => {
 
         // check user Credentials
         if (typeof window !== 'undefined') {
 
             // Perform localStorage action
-            const UserCredentials = localStorage.getItem(userLocalStorage);
+            const userCredentials = localStorage.getItem(userLocalStorage);
 
-            console.log(UserCredentials);
-            if (!UserCredentials) {
+            if (!userCredentials) {
                 router.replace('/auth/login');
             }
+            // user creadential debugger
+            // else {
+            //     const userDebugger: User = JSON.parse(userCredentials ?? "")
+            //     console.log(`Current User: ${userDebugger.name}`); 
+            // }
         }
 
         // fetch data from api
         FetchPlaceData();
+
+        // get current location
+        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, {
+            enableHighAccuracy: true, // use hign accuraacy location
+            timeout: 60000, // 60 sec or 1 min timeout
+            maximumAge: 0, // no location cache
+        });
+
     }, [])
 
+    // fetch place data from api
     const FetchPlaceData = async () => {
 
         // get user from localStorage
@@ -55,14 +71,55 @@ export default function Home() {
             }
             else {
     
-                // set user State
                 const places: Place[] = await response.json();
-                setPlaces(places);
+
+                // find location distance
+                let displayPlace = places.map((e) => {
+
+                    // get location distance for each place
+                    const newTypePlace: IDisplayPlace = {
+                        id: e.id,
+                        name: e.name,
+                        latitude: e.latitude,
+                        longitude: e.longitude,
+                        reminderMessage: e.reminderMessage,
+                        reminderDate: e.reminderDate,
+                        isDisable: e.isDisable,
+                        createdAt: e.createdAt,
+                        userId: e.userId,
+                        locationDistance: GetDistanceBetweenPlace({
+                            latitude_1: currentLocation?.latitude,
+                            longitude_1: currentLocation?.longitude,
+                            latitude_2: e.latitude?.toNumber(),
+                            longitude_2: e.longitude?.toNumber()
+                        })
+                    } 
+
+                    return newTypePlace;
+                })
+
+                // set user State and check OrderBy distance
+                setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
             }
         }
         else {
             alert(`Error message: User not found.`)
         }
+    }
+
+    // success case for watchPosition
+    const IfGetLocationSuccess = (position: GeolocationPosition) => {
+        
+        // GPS location debuger
+        console.log(position.coords)
+
+        // set CurrentLocation state
+        setCurrentLocation(position.coords);
+    }
+
+    // error case for watchPosition
+    const IfGetLocationError = (error : GeolocationPositionError) => {
+        alert(`${error.code}: ${error.message}`)
     }
 
     // logout handler
@@ -194,6 +251,11 @@ export default function Home() {
                         : <p>No place data...</p>
                     }
                 </ul>
+            </div>
+            <br />
+            <br />
+            <div>
+                <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
             </div>
             <br />
             <br />

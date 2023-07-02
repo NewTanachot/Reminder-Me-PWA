@@ -1,3 +1,5 @@
+import { Place } from "@prisma/client";
+
 export type UserExtensionModel = {
     name: string,
     password: string
@@ -10,4 +12,8 @@ export type PlaceExtensionModel = {
     reminderMessage? : string,
     reminderDate?: Date,
     userId: string
+}
+
+export interface IDisplayPlace extends Place {
+    locationDistance: number
 }
