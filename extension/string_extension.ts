@@ -1,3 +1,4 @@
+import { Decimal } from '@prisma/client/runtime';
 import crypto from 'crypto';
 
 export const EncryptString = (text: string, secretKey: string, iv_key?: string) => {
@@ -33,3 +34,9 @@ export const IsStringValid = (value: string): boolean => {
   
     return true; // String is valid
   }
+
+export const DecimalToNumber = (decimal: Decimal | null) => {
+
+    // change to string and cast to number with "+"
+    return decimal ? +(decimal.toString()) : 0;
+}

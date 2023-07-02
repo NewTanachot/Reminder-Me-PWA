@@ -1,13 +1,14 @@
 'use client';
 
-import { IsStringValid } from '@/extension/string_extension';
-import { IDisplayPlace, PlaceExtensionModel } from '@/model/subentity_model';
+import { DecimalToNumber, IsStringValid } from '@/extension/string_extension';
+import { IDisplayPlace, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
-import { Place, User } from '@prisma/client';
+import { Place, Prisma, User } from '@prisma/client';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
+import { Decimal } from '@prisma/client/runtime';
 
 const userLocalStorage = process.env.NEXT_PUBLIC_LOCALSTORAGE_USE ?? "";
 
@@ -16,9 +17,27 @@ export default function Home() {
     // initialize router
     const router = useRouter();
 
-    const [places, setPlaces] = useState<Place[]>([]);
+    const isMounted = useRef<boolean>(false);
+    const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
+
+    // effect for update location Distanct
+    useEffect(() => {
+
+        // check if mount rount
+        if (isMounted.current) {
+
+            console.log(currentLocation)
+            FetchPlaceData();
+        } 
+        else {
+
+            console.log("Mount round!")
+            isMounted.current = true;
+        }
+
+    }, [currentLocation])
 
     // check user creadential, fetch get place api, get current location
     useEffect(() => {
@@ -39,15 +58,10 @@ export default function Home() {
             // }
         }
 
-        // fetch data from api
-        FetchPlaceData();
-
-        // get current location
-        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, {
-            enableHighAccuracy: true, // use hign accuraacy location
-            timeout: 60000, // 60 sec or 1 min timeout
-            maximumAge: 0, // no location cache
-        });
+        // get current location 
+        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
+        // -> after get location it will call fetch place api (or get state of place if any) 
+        // for get place data with calculated distanceLocation.
 
     }, [])
 
@@ -59,67 +73,82 @@ export default function Home() {
         
         if (UserCredentials) {
 
-            const userFromLocalStorage: User = JSON.parse(UserCredentials);
-
-            // fetch get api
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${userFromLocalStorage.id}`);
-
-            if (!response.ok) {
-    
-                const errorMessage: ResponseModel = await response.json();
-                alert(`Error message: ${errorMessage.message}`)
-            }
+            let calculationPlace: Place[];
+            
+            // check if palce exist (more than 0 record)
+            if (places.length > 0) {
+                calculationPlace = places;
+            } 
             else {
+
+                const userFromLocalStorage: User = JSON.parse(UserCredentials);
+
+                // fetch get api
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${userFromLocalStorage.id}`);
     
-                const places: Place[] = await response.json();
+                if (!response.ok) {
+        
+                    const errorMessage: ResponseModel = await response.json();
+                    alert(`Error message: ${errorMessage.message}`)
 
-                // find location distance
-                let displayPlace = places.map((e) => {
-
-                    // get location distance for each place
-                    const newTypePlace: IDisplayPlace = {
-                        id: e.id,
-                        name: e.name,
-                        latitude: e.latitude,
-                        longitude: e.longitude,
-                        reminderMessage: e.reminderMessage,
-                        reminderDate: e.reminderDate,
-                        isDisable: e.isDisable,
-                        createdAt: e.createdAt,
-                        userId: e.userId,
-                        locationDistance: GetDistanceBetweenPlace({
-                            latitude_1: currentLocation?.latitude,
-                            longitude_1: currentLocation?.longitude,
-                            latitude_2: e.latitude?.toNumber(),
-                            longitude_2: e.longitude?.toNumber()
-                        })
-                    } 
-
-                    return newTypePlace;
-                })
-
-                // set user State and check OrderBy distance
-                setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
+                    // set empty array
+                    calculationPlace = [];
+                }
+                else {
+                    console.log("fetch get place api");
+                    calculationPlace = await response.json();
+                }
             }
+
+            // find location distance
+            const displayPlace = calculationPlace.map((e) => {
+
+                // get location distance for each place
+                const newTypePlace: IDisplayPlace = {
+                    id: e.id,
+                    name: e.name,
+                    latitude: e.latitude,
+                    longitude: e.longitude,
+                    reminderMessage: e.reminderMessage,
+                    reminderDate: e.reminderDate,
+                    isDisable: e.isDisable,
+                    createdAt: e.createdAt,
+                    userId: e.userId,
+                    locationDistance: GetDistanceBetweenPlace({
+                        latitude_1: currentLocation?.latitude,
+                        longitude_1: currentLocation?.longitude,
+                        latitude_2: DecimalToNumber(e.latitude),
+                        longitude_2: DecimalToNumber(e.longitude)
+                    })
+                } 
+
+                return newTypePlace;
+            })
+
+            // set user State and check OrderBy distance
+            setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
         }
         else {
             alert(`Error message: User not found.`)
         }
     }
 
-    // success case for watchPosition
+    // success case for Geolocation
     const IfGetLocationSuccess = (position: GeolocationPosition) => {
         
-        // GPS location debuger
-        console.log(position.coords)
-
-        // set CurrentLocation state
         setCurrentLocation(position.coords);
     }
 
-    // error case for watchPosition
+    // error case for Geolocation
     const IfGetLocationError = (error : GeolocationPositionError) => {
         alert(`${error.code}: ${error.message}`)
+    }
+
+    // option srtting for Geolocation
+    const geoLocationOption: PositionOptions = {
+        enableHighAccuracy: true, // use hign accuraacy location
+        timeout: 60000, // 60 sec or 1 min timeout
+        maximumAge: 0, // no location cache
     }
 
     // logout handler
@@ -151,14 +180,14 @@ export default function Home() {
     const ChangePlaceStatus = async (index: number, isDisable: boolean) => {
         
         // prepare update place data
-        const updatePlace = places[index];
-        updatePlace.isDisable = !isDisable
+        const updateDisplayPlace = places[index];
+        updateDisplayPlace.isDisable = !isDisable
 
         // Find the place object by placeId and update its isDisable property
         const newPlacesState = places.map((place, i) => {
             
             if (i == index) {
-                return updatePlace;
+                return updateDisplayPlace;
             }
 
             return place;
@@ -167,7 +196,13 @@ export default function Home() {
         // Update the places array with the modified object
         setPlaces(newPlacesState);
 
-        // update place data
+        // update place display status data with only
+        const updatePlace: UpdatePlace = {
+            id: updateDisplayPlace.id,
+            isDisable: updateDisplayPlace.isDisable
+        }
+
+        // fetch update place api
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place`, {
             method: "PUT",
             body: JSON.stringify(updatePlace)
@@ -242,7 +277,11 @@ export default function Home() {
                         places.length > 0 ?
                         places.map((place, index) => 
                             <li key={index}>
-                                {place.name}, {place.latitude?.toString()}, {place.longitude?.toString()}, {place.reminderMessage ?? "-"},
+                                ({place.locationDistance}) - , 
+                                {place.name}, 
+                                {place.latitude?.toString()}, 
+                                {place.longitude?.toString()}, 
+                                {place.reminderMessage ?? "-"},
                                 <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
                                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                 <button onClick={DeletePlace} value={place.id}>delete</button>

@@ -75,7 +75,6 @@ export async function PUT(request: Request): Promise<NextResponse> {
     // get body of request
     const placeUpdate: Place = await request.json();
 
-
     // update place to database
     try 
     {
@@ -92,7 +91,7 @@ export async function PUT(request: Request): Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[PUT Place]: Update place fail. Maybe duplicate name ======== " + error
+            message: "[PUT Place]: Update place fail. ======== " + error
         }, { status: 400 });
     }
 }
