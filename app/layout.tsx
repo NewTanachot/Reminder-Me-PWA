@@ -1,6 +1,6 @@
 import './globals.css'
 import appIcon from '@/public/image/favicon.ico';
-import appleAppIcon from '@/public/image/appstore.png';
+import appleAppIcon from '@/public/image/Icon-1024.png';
 import { Metadata } from 'next'
 import { Athiti } from 'next/font/google' // Itim
 
