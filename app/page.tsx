@@ -1,26 +1,97 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid } from '@/extension/string_extension';
-import { IDisplayPlace, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
+import { IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place, Prisma, User } from '@prisma/client';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { Decimal } from '@prisma/client/runtime';
 
-const userLocalStorage = process.env.NEXT_PUBLIC_LOCALSTORAGE_USE ?? "";
+// Initialize .ENV variable
+const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
+const indexedDB_DBVersion_HomePage: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
+const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
+const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 
 export default function Home() {
 
     // initialize router
     const router = useRouter();
 
+    // global variable initialize
+    let currentUserId: string = "";
+
+    // react hook initialize
     const isMounted = useRef<boolean>(false);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
+
+    // check user creadential, fetch get place api, get current location
+    useEffect(() => {
+
+        // ============================== เช็คว่า database มีไหมแล้วไปเลยดีกว่า ไม่งั้นเจอบัค ==========================================
+
+        // check user Credentials -> open indexedDB
+        const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion_HomePage);
+
+        // open indexedDB error handler
+        request.onerror = (event: Event) => {
+            alert("Error open indexedDB: " + event);
+        }
+
+        // open with indexedDB Initialize handler
+        request.onupgradeneeded = () => {
+
+            router.replace('/auth/login');
+        }
+
+        // open indexedDB success handler
+        request.onsuccess = () => {
+            
+            // set up indexedDB
+            const dbContext = request.result;
+
+            // check store name is exist
+            if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
+
+                // check if database exist but transaction not exist (need to re login)
+                transaction.onerror = () => {
+                    router.replace('/auth/login');
+                }
+    
+                // if transaction is exist
+                transaction.oncomplete = () => {
+                    const store = transaction.objectStore(indexedDB_UserStore);
+                
+                    // get current user from indexedDB
+                    const response = store.get(indexedDB_UserKey);
+        
+                    // get fail handler
+                    response.onerror = () => {
+                        router.replace('/auth/login');
+                    }
+        
+                    // get success handler
+                    response.onsuccess = () => {
+        
+                        // set global currentUserId
+                        currentUserId = (response.result as IUserIndexedDB).id;
+        
+                        // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
+                        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
+                    }
+                }
+            }
+            else {
+                router.replace('/auth/login');
+            }
+        }
+
+    }, [])
 
     // effect for update location Distanct
     useEffect(() => {
@@ -39,39 +110,11 @@ export default function Home() {
 
     }, [currentLocation])
 
-    // check user creadential, fetch get place api, get current location
-    useEffect(() => {
-
-        // check user Credentials
-        if (typeof window !== 'undefined') {
-
-            // Perform localStorage action
-            const userCredentials = localStorage.getItem(userLocalStorage);
-
-            if (!userCredentials) {
-                router.replace('/auth/login');
-            }
-            // user creadential debugger
-            // else {
-            //     const userDebugger: User = JSON.parse(userCredentials ?? "")
-            //     console.log(`Current User: ${userDebugger.name}`); 
-            // }
-        }
-
-        // get current location 
-        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
-        // -> after get location it will call fetch place api (or get state of place if any) 
-        // for get place data with calculated distanceLocation.
-
-    }, [])
-
     // fetch place data from api
     const FetchPlaceData = async () => {
 
-        // get user from localStorage
-        const UserCredentials = localStorage.getItem(userLocalStorage);
-        
-        if (UserCredentials) {
+        // check current user from global variable   
+        if (IsStringValid(currentUserId)) {
 
             let calculationPlace: Place[];
             
@@ -81,10 +124,8 @@ export default function Home() {
             } 
             else {
 
-                const userFromLocalStorage: User = JSON.parse(UserCredentials);
-
                 // fetch get api
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${userFromLocalStorage.id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId}`);
     
                 if (!response.ok) {
         
@@ -141,6 +182,7 @@ export default function Home() {
 
     // error case for Geolocation
     const IfGetLocationError = (error : GeolocationPositionError) => {
+
         alert(`${error.code}: ${error.message}`)
     }
 
@@ -219,10 +261,8 @@ export default function Home() {
     // add place handler
     const AddNewPlace = async () => {
 
-        // get user from localStorage
-        const UserCredentials = localStorage.getItem(userLocalStorage);
-
-        if (UserCredentials) {
+        // check current user from global variable   
+        if (IsStringValid(currentUserId)) {
 
             // get data from input form
             const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
@@ -231,15 +271,13 @@ export default function Home() {
             const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
             const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
 
-            const userFromLocalStorage: User = JSON.parse(UserCredentials);
-
             const newPlace: PlaceExtensionModel = {
                 name: placeNameInput.value,
                 latitude: +latitudeInput.value, // cast string to number
                 longitude: +longitudeInput.value, // cast string to number
                 reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
                 reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: userFromLocalStorage.id,
+                userId: currentUserId,
             }
 
             // fetch creaet place api
