@@ -8,7 +8,7 @@ import { User } from "@prisma/client";
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
-const indexedDB_DBVersion_LoginPage: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "") + 1;
+const indexedDB_DBVersion_LoginPage: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
 const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 
@@ -54,12 +54,12 @@ export default function Login() {
             }
 
             // open with indexedDB Initialize handler
-            request.onupgradeneeded = () => {
+            // request.onupgradeneeded = () => {
 
-                // create "currentUser" store in indexedDB
-                const dbContext = request.result;
-                dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
-            }
+            //     // create "currentUser" store in indexedDB
+            //     const dbContext = request.result;
+            //     dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+            // }
 
             // open indexedDB success handler
             request.onsuccess = () => {

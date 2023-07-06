@@ -20,11 +20,12 @@ export default function Home() {
     // initialize router
     const router = useRouter();
 
-    // global variable initialize
-    let currentUserId: string = "";
-
     // react hook initialize
+
+    // global variable initialize
+    const currentUserId = useRef<string>("");
     const isMounted = useRef<boolean>(false);
+    const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
@@ -32,39 +33,44 @@ export default function Home() {
     // check user creadential, fetch get place api, get current location
     useEffect(() => {
 
-        // ============================== เช็คว่า database มีไหมแล้วไปเลยดีกว่า ไม่งั้นเจอบัค ==========================================
-
         // check user Credentials -> open indexedDB
         const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion_HomePage);
 
         // open indexedDB error handler
         request.onerror = (event: Event) => {
-            alert("Error open indexedDB: " + event);
+            alert("Can't open indexedDB.");
         }
 
         // open with indexedDB Initialize handler
         request.onupgradeneeded = () => {
+            console.log();
 
+            // create currentUser store
+            const dbContext = request.result;
+            dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+
+            // set variable for skip onsuccess function
+            skipIndexedDbOnSuccess.current = true;
+
+            // Reroute to login page
             router.replace('/auth/login');
         }
 
         // open indexedDB success handler
         request.onsuccess = () => {
-            
-            // set up indexedDB
-            const dbContext = request.result;
 
-            // check store name is exist
-            if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
-                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
-
-                // check if database exist but transaction not exist (need to re login)
-                transaction.onerror = () => {
-                    router.replace('/auth/login');
-                }
+            if (!skipIndexedDbOnSuccess.current)
+            {
+                // set up indexedDB
+                const dbContext = request.result;
     
-                // if transaction is exist
-                transaction.oncomplete = () => {
+                // check store name is exist
+                if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                    
+                    // create transaction of indexedDB
+                    const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
+                
+                    // create store of indexedDB transaction
                     const store = transaction.objectStore(indexedDB_UserStore);
                 
                     // get current user from indexedDB
@@ -79,15 +85,15 @@ export default function Home() {
                     response.onsuccess = () => {
         
                         // set global currentUserId
-                        currentUserId = (response.result as IUserIndexedDB).id;
-        
+                        currentUserId.current = (response.result as User).id;
+
                         // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
                         const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
                     }
                 }
-            }
-            else {
-                router.replace('/auth/login');
+                else {
+                    router.replace('/auth/login');
+                }
             }
         }
 
@@ -113,8 +119,8 @@ export default function Home() {
     // fetch place data from api
     const FetchPlaceData = async () => {
 
-        // check current user from global variable   
-        if (IsStringValid(currentUserId)) {
+        // check current user from global variable
+        if (IsStringValid(currentUserId.current)) {
 
             let calculationPlace: Place[];
             
@@ -125,7 +131,7 @@ export default function Home() {
             else {
 
                 // fetch get api
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId.current}`);
     
                 if (!response.ok) {
         
@@ -262,7 +268,7 @@ export default function Home() {
     const AddNewPlace = async () => {
 
         // check current user from global variable   
-        if (IsStringValid(currentUserId)) {
+        if (IsStringValid(currentUserId.current)) {
 
             // get data from input form
             const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
@@ -277,7 +283,7 @@ export default function Home() {
                 longitude: +longitudeInput.value, // cast string to number
                 reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
                 reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: currentUserId,
+                userId: currentUserId.current,
             }
 
             // fetch creaet place api
