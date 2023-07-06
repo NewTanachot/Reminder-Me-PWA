@@ -119,64 +119,70 @@ export default function Home() {
     // fetch place data from api
     const FetchPlaceData = async () => {
 
-        // check current user from global variable
-        if (IsStringValid(currentUserId.current)) {
+        try {
+            // check current user from global variable
+            if (IsStringValid(currentUserId.current)) {
 
-            let calculationPlace: Place[];
-            
-            // check if palce exist (more than 0 record)
-            if (places.length > 0) {
-                calculationPlace = places;
-            } 
-            else {
-
-                // fetch get api
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId.current}`);
-    
-                if (!response.ok) {
-        
-                    const errorMessage: ResponseModel = await response.json();
-                    alert(`Error message: ${errorMessage.message}`)
-
-                    // set empty array
-                    calculationPlace = [];
-                }
-                else {
-                    console.log("fetch get place api");
-                    calculationPlace = await response.json();
-                }
-            }
-
-            // find location distance
-            const displayPlace = calculationPlace.map((e) => {
-
-                // get location distance for each place
-                const newTypePlace: IDisplayPlace = {
-                    id: e.id,
-                    name: e.name,
-                    latitude: e.latitude,
-                    longitude: e.longitude,
-                    reminderMessage: e.reminderMessage,
-                    reminderDate: e.reminderDate,
-                    isDisable: e.isDisable,
-                    createdAt: e.createdAt,
-                    userId: e.userId,
-                    locationDistance: GetDistanceBetweenPlace({
-                        latitude_1: currentLocation?.latitude,
-                        longitude_1: currentLocation?.longitude,
-                        latitude_2: DecimalToNumber(e.latitude),
-                        longitude_2: DecimalToNumber(e.longitude)
-                    })
+                alert(currentUserId.current)
+                let calculationPlace: Place[];
+                
+                // check if palce exist (more than 0 record)
+                if (places.length > 0) {
+                    calculationPlace = places;
                 } 
+                else {
 
-                return newTypePlace;
-            })
+                    // fetch get api
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId.current}`);
+        
+                    if (!response.ok) {
+            
+                        const errorMessage: ResponseModel = await response.json();
+                        alert(`Error message: ${errorMessage.message}`)
 
-            // set user State and check OrderBy distance
-            setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
+                        // set empty array
+                        calculationPlace = [];
+                    }
+                    else {
+                        console.log("fetch get place api");
+                        calculationPlace = await response.json();
+                    }
+                }
+
+                // find location distance
+                const displayPlace = calculationPlace.map((e) => {
+
+                    // get location distance for each place
+                    const newTypePlace: IDisplayPlace = {
+                        id: e.id,
+                        name: e.name,
+                        latitude: e.latitude,
+                        longitude: e.longitude,
+                        reminderMessage: e.reminderMessage,
+                        reminderDate: e.reminderDate,
+                        isDisable: e.isDisable,
+                        createdAt: e.createdAt,
+                        userId: e.userId,
+                        locationDistance: GetDistanceBetweenPlace({
+                            latitude_1: currentLocation?.latitude,
+                            longitude_1: currentLocation?.longitude,
+                            latitude_2: DecimalToNumber(e.latitude),
+                            longitude_2: DecimalToNumber(e.longitude)
+                        })
+                    } 
+
+                    return newTypePlace;
+                })
+
+                // set user State and check OrderBy distance
+                setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
+            }
+            else {
+                alert(`Error message: User not found.`)
+            }
         }
-        else {
-            alert(`Error message: User not found.`)
+        catch(error) {
+            alert(error)
         }
     }
 
