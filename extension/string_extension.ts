@@ -24,6 +24,7 @@ export const DecryptString = (encryptedText: string, secretKey: string, iv_key: 
 }
 
 export const IsStringValid = (value: string): boolean => {
+    
     if (value === null || value === undefined) {
       return false; // Check for null or undefined
     }

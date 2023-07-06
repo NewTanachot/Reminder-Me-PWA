@@ -2,22 +2,20 @@
 
 import { UserExtensionModel } from "@/model/subentity_model";
 import { ResponseModel } from "@/model/response_model";
-import { User } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { User } from "@prisma/client";
 
-const userLocalStorage = process.env.NEXT_PUBLIC_LOCALSTORAGE_USE ?? "";
+// Initialize .ENV variable
+const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
+const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
+const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
+const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 
 export default function Login() {
 
     // initialize router
     const router = useRouter();
-
-    // reset user Credentials
-    useEffect(() => {
-        localStorage.removeItem(userLocalStorage);
-    }, []);
 
     const userLogin = async () => {
         
@@ -40,18 +38,45 @@ export default function Login() {
             
             // check login error
             const errorMessage: ResponseModel = await response.json();
-            alert(`Error message: ${errorMessage.message}`)
+            alert(`Error message: ${errorMessage.message}`);
         }
         else {
 
-            // set userdata to local storage
-            const userFromLogin: User = await response.json();
-            localStorage.setItem(userLocalStorage, JSON.stringify(userFromLogin));
+            // get currentUser user
+            const currentUser: User = await response.json();
 
-            router.replace("/");
+            // set login user to indexedDB -> open indexedDB
+            const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
+
+            // open indexedDB error handler
+            request.onerror = (event: Event) => {
+                alert("Error open indexedDB: " + event);
+            }
+
+            // open indexedDB success handler
+            request.onsuccess = () => {
+
+                // set up indexedDB
+                const dbContext = request.result;
+
+                // check if store name not exist -> create store name
+                if (!dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                    dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+                }
+
+                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
+                const store = transaction.objectStore(indexedDB_UserStore);
+
+                // store currentUser to indexedDB
+                store.put({ CurrentUser: indexedDB_UserKey, ...currentUser })
+
+                // Reroute to home page
+                router.replace("/");
+
+            }
         }
 
-    };
+    }
 
     return (
         <div>

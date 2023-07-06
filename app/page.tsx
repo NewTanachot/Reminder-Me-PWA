@@ -1,26 +1,103 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid } from '@/extension/string_extension';
-import { IDisplayPlace, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
+import { IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
-import { Place, Prisma, User } from '@prisma/client';
+import { Place } from '@prisma/client';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, MouseEvent, useEffect, useState, useRef } from 'react';
+import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { Decimal } from '@prisma/client/runtime';
 
-const userLocalStorage = process.env.NEXT_PUBLIC_LOCALSTORAGE_USE ?? "";
+// Initialize .ENV variable
+const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
+const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
+const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
+const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 
 export default function Home() {
 
     // initialize router
     const router = useRouter();
 
+    // react hook initialize
+
+    // global variable initialize
+    const currentUserId = useRef<string>("");
     const isMounted = useRef<boolean>(false);
+    const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
+
+    // check user creadential, fetch get place api, get current location
+    useEffect(() => {
+
+        // check user Credentials -> open indexedDB
+        const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
+
+        // open indexedDB error handler
+        request.onerror = (event: Event) => {
+            alert("Can't open indexedDB.");
+        }
+
+        // open with indexedDB Initialize handler
+        request.onupgradeneeded = () => {
+            console.log();
+
+            // create currentUser store
+            const dbContext = request.result;
+            dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+
+            // set variable for skip onsuccess function
+            skipIndexedDbOnSuccess.current = true;
+
+            // Reroute to login page
+            router.replace('/auth/login');
+        }
+
+        // open indexedDB success handler
+        request.onsuccess = () => {
+
+            if (!skipIndexedDbOnSuccess.current)
+            {
+                // set up indexedDB
+                const dbContext = request.result;
+    
+                // check store name is exist
+                if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                    
+                    // create transaction of indexedDB
+                    const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
+                
+                    // create store of indexedDB transaction
+                    const store = transaction.objectStore(indexedDB_UserStore);
+                
+                    // get current user from indexedDB
+                    const response = store.get(indexedDB_UserKey);
+        
+                    // get fail handler
+                    response.onerror = () => {
+                        router.replace('/auth/login');
+                    }
+        
+                    // get success handler
+                    response.onsuccess = () => {
+        
+                        // set global currentUserId
+                        currentUserId.current = (response.result as IUserIndexedDB).id;
+
+                        // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
+                        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
+                    }
+                }
+                else {
+                    router.replace('/auth/login');
+                }
+            }
+        }
+
+    }, [])
 
     // effect for update location Distanct
     useEffect(() => {
@@ -39,39 +116,11 @@ export default function Home() {
 
     }, [currentLocation])
 
-    // check user creadential, fetch get place api, get current location
-    useEffect(() => {
-
-        // check user Credentials
-        if (typeof window !== 'undefined') {
-
-            // Perform localStorage action
-            const userCredentials = localStorage.getItem(userLocalStorage);
-
-            if (!userCredentials) {
-                router.replace('/auth/login');
-            }
-            // user creadential debugger
-            // else {
-            //     const userDebugger: User = JSON.parse(userCredentials ?? "")
-            //     console.log(`Current User: ${userDebugger.name}`); 
-            // }
-        }
-
-        // get current location 
-        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
-        // -> after get location it will call fetch place api (or get state of place if any) 
-        // for get place data with calculated distanceLocation.
-
-    }, [])
-
     // fetch place data from api
     const FetchPlaceData = async () => {
 
-        // get user from localStorage
-        const UserCredentials = localStorage.getItem(userLocalStorage);
-        
-        if (UserCredentials) {
+        // check current user from global variable
+        if (IsStringValid(currentUserId.current)) {
 
             let calculationPlace: Place[];
             
@@ -81,10 +130,8 @@ export default function Home() {
             } 
             else {
 
-                const userFromLocalStorage: User = JSON.parse(UserCredentials);
-
                 // fetch get api
-                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${userFromLocalStorage.id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId.current}`);
     
                 if (!response.ok) {
         
@@ -141,6 +188,7 @@ export default function Home() {
 
     // error case for Geolocation
     const IfGetLocationError = (error : GeolocationPositionError) => {
+
         alert(`${error.code}: ${error.message}`)
     }
 
@@ -219,10 +267,8 @@ export default function Home() {
     // add place handler
     const AddNewPlace = async () => {
 
-        // get user from localStorage
-        const UserCredentials = localStorage.getItem(userLocalStorage);
-
-        if (UserCredentials) {
+        // check current user from global variable   
+        if (IsStringValid(currentUserId.current)) {
 
             // get data from input form
             const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
@@ -231,15 +277,13 @@ export default function Home() {
             const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
             const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
 
-            const userFromLocalStorage: User = JSON.parse(UserCredentials);
-
             const newPlace: PlaceExtensionModel = {
                 name: placeNameInput.value,
                 latitude: +latitudeInput.value, // cast string to number
                 longitude: +longitudeInput.value, // cast string to number
                 reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
                 reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: userFromLocalStorage.id,
+                userId: currentUserId.current,
             }
 
             // fetch creaet place api
@@ -264,57 +308,63 @@ export default function Home() {
 
     return (
         <main>
-            <div>
-                <Link href="/auth/login">Login</Link>
-                &nbsp; &nbsp; &nbsp;
-                <button onClick={UserLogout}>logout</button>
-                &nbsp; &nbsp; &nbsp;
-                <Link href="/auth/register">Register page</Link>
-            </div>
-            <div>
-                <ul>
-                    {
-                        places.length > 0 ?
-                        places.map((place, index) => 
-                            <li key={index}>
-                                ({place.locationDistance}) - , 
-                                {place.name}, 
-                                {place.latitude?.toString()}, 
-                                {place.longitude?.toString()}, 
-                                {place.reminderMessage ?? "-"},
-                                <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
-                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                <button onClick={DeletePlace} value={place.id}>delete</button>
-                            </li>
-                        )
-                        : <p>No place data...</p>
-                    }
-                </ul>
-            </div>
-            <br />
-            <br />
-            <div>
-                <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
-            </div>
-            <br />
-            <br />
-            <div>
-                <div>
-                    <h2>Add New Place</h2>
-                    <p>PlaceName:</p>
-                    <input id="placeNameInput" type="text" required/>
-                    <p>Latitude:</p>
-                    <input id="latitudeInput" type="number" step={.1} required/>
-                    <p>Longitude:</p>
-                    <input id="longitudeInput" type="number" step={.1} required/>
-                    <p>Reminder Message:</p>
-                    <input id="reminderMessageInput" type="text" required/>
-                    <p>Reminder Date:</p>
-                    <input id="reminderDateInput" type="date" required/>
-                </div>
-                <br />
-                <button onClick={AddNewPlace}>add place</button>
-            </div>
+            {
+                !IsStringValid(currentUserId.current) ? 
+                <h1>loading...</h1> : 
+                <>
+                    <div>
+                        <Link href="/auth/login">Login</Link>
+                        &nbsp; &nbsp; &nbsp;
+                        <button onClick={UserLogout}>logout</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <Link href="/auth/register">Register page</Link>
+                    </div>
+                    <div>
+                        <ul>
+                            {
+                                places.length > 0 ?
+                                places.map((place, index) => 
+                                    <li key={index}>
+                                        ({place.locationDistance}) - , 
+                                        {place.name}, 
+                                        {place.latitude?.toString()}, 
+                                        {place.longitude?.toString()}, 
+                                        {place.reminderMessage ?? "-"},
+                                        <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
+                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <button onClick={DeletePlace} value={place.id}>delete</button>
+                                    </li>
+                                )
+                                : <p>No place data...</p>
+                            }
+                        </ul>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        <div>
+                            <h2>Add New Place</h2>
+                            <p>PlaceName:</p>
+                            <input id="placeNameInput" type="text" required/>
+                            <p>Latitude:</p>
+                            <input id="latitudeInput" type="number" step={.1} required/>
+                            <p>Longitude:</p>
+                            <input id="longitudeInput" type="number" step={.1} required/>
+                            <p>Reminder Message:</p>
+                            <input id="reminderMessageInput" type="text" required/>
+                            <p>Reminder Date:</p>
+                            <input id="reminderDateInput" type="date" required/>
+                        </div>
+                        <br />
+                        <button onClick={AddNewPlace}>add place</button>
+                    </div>
+                </>
+            }
         </main>
     )
   }

@@ -1,4 +1,4 @@
-import { Place } from "@prisma/client";
+import { Place, User } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
 
 export type UserExtensionModel = {
@@ -29,4 +29,8 @@ export type UpdatePlace = {
 
 export interface IDisplayPlace extends Place {
     locationDistance: number
+}
+
+export interface IUserIndexedDB extends User {
+    CurrentUser: string
 }
