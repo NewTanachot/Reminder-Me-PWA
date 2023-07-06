@@ -3,15 +3,15 @@
 import { DecimalToNumber, IsStringValid } from '@/extension/string_extension';
 import { IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
-import { Place, Prisma, User } from '@prisma/client';
+import { Place } from '@prisma/client';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, MouseEvent, useEffect, useState, useRef } from 'react';
+import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
-const indexedDB_DBVersion_HomePage: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
+const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
 const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 
@@ -34,7 +34,7 @@ export default function Home() {
     useEffect(() => {
 
         // check user Credentials -> open indexedDB
-        const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion_HomePage);
+        const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
 
         // open indexedDB error handler
         request.onerror = (event: Event) => {
@@ -85,7 +85,7 @@ export default function Home() {
                     response.onsuccess = () => {
         
                         // set global currentUserId
-                        currentUserId.current = (response.result as User).id;
+                        currentUserId.current = (response.result as IUserIndexedDB).id;
 
                         // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
                         const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
@@ -308,57 +308,63 @@ export default function Home() {
 
     return (
         <main>
-            <div>
-                <Link href="/auth/login">Login</Link>
-                &nbsp; &nbsp; &nbsp;
-                <button onClick={UserLogout}>logout</button>
-                &nbsp; &nbsp; &nbsp;
-                <Link href="/auth/register">Register page</Link>
-            </div>
-            <div>
-                <ul>
-                    {
-                        places.length > 0 ?
-                        places.map((place, index) => 
-                            <li key={index}>
-                                ({place.locationDistance}) - , 
-                                {place.name}, 
-                                {place.latitude?.toString()}, 
-                                {place.longitude?.toString()}, 
-                                {place.reminderMessage ?? "-"},
-                                <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
-                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                <button onClick={DeletePlace} value={place.id}>delete</button>
-                            </li>
-                        )
-                        : <p>No place data...</p>
-                    }
-                </ul>
-            </div>
-            <br />
-            <br />
-            <div>
-                <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
-            </div>
-            <br />
-            <br />
-            <div>
-                <div>
-                    <h2>Add New Place</h2>
-                    <p>PlaceName:</p>
-                    <input id="placeNameInput" type="text" required/>
-                    <p>Latitude:</p>
-                    <input id="latitudeInput" type="number" step={.1} required/>
-                    <p>Longitude:</p>
-                    <input id="longitudeInput" type="number" step={.1} required/>
-                    <p>Reminder Message:</p>
-                    <input id="reminderMessageInput" type="text" required/>
-                    <p>Reminder Date:</p>
-                    <input id="reminderDateInput" type="date" required/>
-                </div>
-                <br />
-                <button onClick={AddNewPlace}>add place</button>
-            </div>
+            {
+                !IsStringValid(currentUserId.current) ? 
+                <h1>loading...</h1> : 
+                <>
+                    <div>
+                        <Link href="/auth/login">Login</Link>
+                        &nbsp; &nbsp; &nbsp;
+                        <button onClick={UserLogout}>logout</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <Link href="/auth/register">Register page</Link>
+                    </div>
+                    <div>
+                        <ul>
+                            {
+                                places.length > 0 ?
+                                places.map((place, index) => 
+                                    <li key={index}>
+                                        ({place.locationDistance}) - , 
+                                        {place.name}, 
+                                        {place.latitude?.toString()}, 
+                                        {place.longitude?.toString()}, 
+                                        {place.reminderMessage ?? "-"},
+                                        <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
+                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <button onClick={DeletePlace} value={place.id}>delete</button>
+                                    </li>
+                                )
+                                : <p>No place data...</p>
+                            }
+                        </ul>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
+                    </div>
+                    <br />
+                    <br />
+                    <div>
+                        <div>
+                            <h2>Add New Place</h2>
+                            <p>PlaceName:</p>
+                            <input id="placeNameInput" type="text" required/>
+                            <p>Latitude:</p>
+                            <input id="latitudeInput" type="number" step={.1} required/>
+                            <p>Longitude:</p>
+                            <input id="longitudeInput" type="number" step={.1} required/>
+                            <p>Reminder Message:</p>
+                            <input id="reminderMessageInput" type="text" required/>
+                            <p>Reminder Date:</p>
+                            <input id="reminderDateInput" type="date" required/>
+                        </div>
+                        <br />
+                        <button onClick={AddNewPlace}>add place</button>
+                    </div>
+                </>
+            }
         </main>
     )
   }
