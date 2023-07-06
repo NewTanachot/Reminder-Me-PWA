@@ -123,7 +123,6 @@ export default function Home() {
             // check current user from global variable
             if (IsStringValid(currentUserId.current)) {
 
-                alert(currentUserId.current)
                 let calculationPlace: Place[];
                 
                 // check if palce exist (more than 0 record)
