@@ -1,6 +1,6 @@
 'use client';
 
-import { DecimalToNumber, IsStringValid } from '@/extension/string_extension';
+import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
 import { IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
@@ -335,6 +335,7 @@ export default function Home() {
                                         {place.latitude?.toString()}, 
                                         {place.longitude?.toString()}, 
                                         {place.reminderMessage ?? "-"},
+                                        {StringDateToDisplayDate(place.reminderDate)}
                                         <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
                                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                         <button onClick={DeletePlace} value={place.id}>delete</button>

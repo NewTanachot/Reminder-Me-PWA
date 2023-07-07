@@ -23,7 +23,7 @@ export const DecryptString = (encryptedText: string, secretKey: string, iv_key: 
     return decrypted;
 }
 
-export const IsStringValid = (value: string): boolean => {
+export const IsStringValid = (value: string | null | undefined): boolean => {
     
     if (value === null || value === undefined) {
       return false; // Check for null or undefined
@@ -40,4 +40,15 @@ export const DecimalToNumber = (decimal: Decimal | null) => {
 
     // change to string and cast to number with "+"
     return decimal ? +(decimal.toString()) : 0;
+}
+
+export const StringDateToDisplayDate = (stringDate: string | null) => {
+
+    if (stringDate != null) {
+
+        const [ year, month, day ] = stringDate.split("T")[0].split("-");
+        return `${day}/${month}/${year}`;
+    }
+
+    return "-"
 }

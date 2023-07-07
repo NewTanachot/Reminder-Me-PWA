@@ -11,8 +11,7 @@ export const GetDistanceBetweenPlace = (calModel: CalDistanceModel) => {
     var dLat = Deg2rad(calModel.latitude_2 - calModel.latitude_1);  // deg2rad below
     var dLon = Deg2rad(calModel.longitude_2 - calModel.longitude_1); 
 
-    var a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
         Math.cos(Deg2rad(calModel.latitude_1)) * Math.cos(Deg2rad(calModel.latitude_2)) * 
         Math.sin(dLon/2) * Math.sin(dLon/2);
        
