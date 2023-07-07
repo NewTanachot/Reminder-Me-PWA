@@ -12,6 +12,11 @@ const googleFont = Athiti({
 export const metadata: Metadata = {
     title: 'Reminder-Me',
     description: 'Reminder-Me place remind and suggest by distance.',
+    viewport: { 
+        width: "device-width", 
+        // open this cause viewport bug...
+        // initialScale: 1
+    },
     icons: {
         icon: appIcon.src,
         apple: appleAppIcon.src
