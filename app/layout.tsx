@@ -13,9 +13,8 @@ export const metadata: Metadata = {
     title: 'Reminder-Me',
     description: 'Reminder-Me place remind and suggest by distance.',
     viewport: { 
-        width: "device-width", 
-        // open this cause viewport bug...
-        // initialScale: 1
+        width: "device-width",
+        userScalable: false,
     },
     icons: {
         icon: appIcon.src,
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
     appleWebApp: { 
         capable: true, 
         title: "Reminder Me", 
-        statusBarStyle: "black-translucent" 
+        statusBarStyle: "black-translucent"
     }
 }
 
