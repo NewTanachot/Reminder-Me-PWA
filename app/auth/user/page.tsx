@@ -4,6 +4,9 @@ import { ResponseModel } from "@/model/response_model";
 import { User } from "@prisma/client";
 import { useEffect, useState, MouseEvent } from "react";
 
+// Initialize .ENV variable
+const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
+
 export default function User() {
 
     // declare useState
@@ -13,7 +16,7 @@ export default function User() {
     const FetchData = async (): Promise<void> => {
 
         // fetch get api
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`);
+        const response = await fetch(`${baseUrlApi}/user`);
 
         if (!response.ok) {
 
@@ -43,7 +46,7 @@ export default function User() {
         setUsers(users.filter(e => e.id != userId));
 
         // fetch delete api
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user/${userId}`, { method: "DELETE" });
+        const response = await fetch(`${baseUrlApi}/user/${userId}`, { method: "DELETE" });
 
         if (!response.ok) {
 

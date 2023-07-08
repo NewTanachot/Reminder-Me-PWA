@@ -3,10 +3,9 @@
 import { UserExtensionModel } from "@/model/subentity_model";
 import { ResponseModel } from "@/model/response_model";
 import Link from "next/link";
-import { GetApiUrlByBranchName } from "@/extension/api_extension";
 
 // Initialize .ENV variable
-const baseUrlApi: string = GetApiUrlByBranchName();
+const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Register() {
 
