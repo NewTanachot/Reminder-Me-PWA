@@ -8,12 +8,14 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
+import { GetApiUrlByBranchName } from '@/extension/api_extension';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
 const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
 const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
+const baseUrlApi: string = GetApiUrlByBranchName();
 
 export default function Home() {
 
@@ -21,8 +23,6 @@ export default function Home() {
     const router = useRouter();
 
     // react hook initialize
-
-    // global variable initialize
     const currentUserId = useRef<string>("");
     const isMounted = useRef<boolean>(false);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
@@ -132,7 +132,7 @@ export default function Home() {
                 else {
 
                     // fetch get api
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/?userId=${currentUserId.current}`);
+                    const response = await fetch(`${baseUrlApi}/place/?userId=${currentUserId.current}`);
         
                     if (!response.ok) {
             
@@ -217,7 +217,7 @@ export default function Home() {
         const placeId = event.currentTarget.value;
 
         // fetch delete api
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place/${placeId}`, { method: "DELETE" });
+        const response = await fetch(`${baseUrlApi}/place/${placeId}`, { method: "DELETE" });
 
         if (!response.ok) {
 
@@ -256,7 +256,7 @@ export default function Home() {
         }
 
         // fetch update place api
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place`, {
+        const response = await fetch(`${baseUrlApi}/place`, {
             method: "PUT",
             body: JSON.stringify(updatePlace)
         });
@@ -292,7 +292,7 @@ export default function Home() {
             }
 
             // fetch creaet place api
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/place`, {
+            const response = await fetch(`${process.env.baseUrlApi}/place`, {
                 method: "POST",
                 body: JSON.stringify(newPlace)
             });

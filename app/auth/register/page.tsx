@@ -3,6 +3,10 @@
 import { UserExtensionModel } from "@/model/subentity_model";
 import { ResponseModel } from "@/model/response_model";
 import Link from "next/link";
+import { GetApiUrlByBranchName } from "@/extension/api_extension";
+
+// Initialize .ENV variable
+const baseUrlApi: string = GetApiUrlByBranchName();
 
 export default function Register() {
 
@@ -19,7 +23,7 @@ export default function Register() {
         }
     
         // fetch add user
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user`, {
+        const response = await fetch(`${baseUrlApi}/user`, {
             method: "POST",
             body: JSON.stringify(addUser)
         });
