@@ -8,14 +8,13 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { GetApiUrlByBranchName } from '@/extension/api_extension';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
 const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
 const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
-const baseUrlApi: string = GetApiUrlByBranchName();
+const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Home() {
 
