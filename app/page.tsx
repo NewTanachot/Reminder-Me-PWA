@@ -317,7 +317,7 @@ export default function Home() {
                 <h1>loading...</h1> : 
                 <>
                     <div>
-                        <Link href="/auth/login">Login</Link>
+                        <Link href="/auth/login" replace={true}>Login</Link>
                         &nbsp; &nbsp; &nbsp;
                         <button onClick={UserLogout}>logout</button>
                         &nbsp; &nbsp; &nbsp;
