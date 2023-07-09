@@ -21,11 +21,11 @@ export const metadata: Metadata = {
         icon: appIcon.src,
         apple: appleAppIcon.src
     },
-    appleWebApp: { 
-        capable: true, 
-        title: "Reminder Me", 
-        statusBarStyle: "black-translucent"
-    }
+    // appleWebApp: { 
+    //     capable: true, 
+    //     title: "Reminder Me", 
+    //     statusBarStyle: "black-translucent"
+    // }
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
@@ -33,8 +33,6 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
         <html lang="en">
             <Head>
                 <link rel="manifest" href="/manifest.json" />
-                <link rel="apple-touch-icon" href="/icon.png"></link>
-                <meta name="theme-color" content="#fff" />
             </Head>
             <body className={googleFont.className}>{children}</body>
         </html>
