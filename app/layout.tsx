@@ -20,11 +20,11 @@ export const metadata: Metadata = {
         icon: appIcon.src,
         apple: appleAppIcon.src
     },
-    // appleWebApp: { 
-    //     capable: true, 
-    //     title: "Reminder Me", 
-    //     statusBarStyle: "black-translucent"
-    // }
+    appleWebApp: { 
+        capable: true, 
+        title: "Reminder Me", 
+        statusBarStyle: "black"
+    }
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
