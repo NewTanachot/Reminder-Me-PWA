@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     appleWebApp: { 
         capable: true, 
         title: "Reminder Me", 
-        statusBarStyle: "black"
+        statusBarStyle: "black-translucent"
     }
 }
 
