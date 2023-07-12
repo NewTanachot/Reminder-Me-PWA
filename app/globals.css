@@ -1,7 +1,26 @@
 /* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
+/* 
+#ffc649 YELLOW
+#00d59f GREEN
+#371f9b PURPLE
+#ff9832 ORANGE */
+
+/* * { */
+    /* #424549 */
+    /* background-color: #36393e;
+    color: whitesmoke; */
+
+    /* background-color: whitesmoke;
+} */
+
+
+
+/* ========================================================================= */
+
+/* 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -25,15 +44,3 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
-
-/* 
-#ffc649 YELLOW
-#00d59f GREEN
-#371f9b PURPLE
-#ff9832 ORANGE */
-
-* {
-    /* #424549 */
-    background-color: #36393e;
-    color: whitesmoke;
-}

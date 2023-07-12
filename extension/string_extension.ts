@@ -1,3 +1,4 @@
+import { DayOfWeekEnum } from '@/model/enum_model';
 import { Decimal } from '@prisma/client/runtime';
 import crypto from 'crypto';
 
@@ -47,7 +48,11 @@ export const StringDateToDisplayDate = (stringDate: string | null) => {
     if (stringDate != null) {
 
         const [ year, month, day ] = stringDate.split("T")[0].split("-");
-        return `${day}/${month}/${year}`;
+
+        const date = new Date(stringDate);
+        const dayOfweekName = DayOfWeekEnum[date.getDay()]
+
+        return `${dayOfweekName} ${day}/${month}/${year}`;
     }
 
     return "-"
