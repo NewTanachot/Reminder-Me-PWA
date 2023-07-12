@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
+import PlaceCard from '@/component/placeCard';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -23,7 +24,7 @@ export default function Home() {
 
     // react hook initialize
     const currentUserId = useRef<string>("");
-    const isMounted = useRef<boolean>(false);
+    const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
@@ -102,7 +103,7 @@ export default function Home() {
     useEffect(() => {
 
         // check if mount rount
-        if (isMounted.current) {
+        if (!isMountRound.current) {
 
             console.log(currentLocation)
             FetchPlaceData();
@@ -110,7 +111,7 @@ export default function Home() {
         else {
 
             console.log("Mount round!")
-            isMounted.current = true;
+            isMountRound.current = false;
         }
 
     }, [currentLocation])
@@ -122,55 +123,55 @@ export default function Home() {
             // check current user from global variable
             if (IsStringValid(currentUserId.current)) {
 
-                let calculationPlace: Place[];
+                // initialize list of DisplayPlace
+                let displayPlace: IDisplayPlace[] = [];
                 
                 // check if palce exist (more than 0 record)
                 if (places.length > 0) {
-                    calculationPlace = places;
+                    
+                    console.log("not fetch")
+                    displayPlace = places;
                 } 
                 else {
 
                     // fetch get api
                     const response = await fetch(`${baseUrlApi}/place/?userId=${currentUserId.current}`);
-        
+
                     if (!response.ok) {
             
                         const errorMessage: ResponseModel = await response.json();
                         alert(`Error message: ${errorMessage.message}`)
-
-                        // set empty array
-                        calculationPlace = [];
                     }
                     else {
                         console.log("fetch get place api");
-                        calculationPlace = await response.json();
+                        const calculationPlace: Place[] = await response.json();
+
+                        // find location distance
+                        displayPlace = calculationPlace.map((e) => {
+
+                            // get location distance for each place
+                            const newTypePlace: IDisplayPlace = {
+                                id: e.id,
+                                name: e.name,
+                                latitude: DecimalToNumber(e.latitude),
+                                longitude: DecimalToNumber(e.longitude),
+                                reminderMessage: e.reminderMessage,
+                                reminderDate: StringDateToDisplayDate(e.reminderDate),
+                                isDisable: e.isDisable,
+                                createdAt: e.createdAt,
+                                userId: e.userId,
+                                locationDistance: GetDistanceBetweenPlace({
+                                    latitude_1: currentLocation?.latitude,
+                                    longitude_1: currentLocation?.longitude,
+                                    latitude_2: DecimalToNumber(e.latitude),
+                                    longitude_2: DecimalToNumber(e.longitude)
+                                })
+                            } 
+
+                            return newTypePlace;
+                        })
                     }
                 }
-
-                // find location distance
-                const displayPlace = calculationPlace.map((e) => {
-
-                    // get location distance for each place
-                    const newTypePlace: IDisplayPlace = {
-                        id: e.id,
-                        name: e.name,
-                        latitude: e.latitude,
-                        longitude: e.longitude,
-                        reminderMessage: e.reminderMessage,
-                        reminderDate: e.reminderDate,
-                        isDisable: e.isDisable,
-                        createdAt: e.createdAt,
-                        userId: e.userId,
-                        locationDistance: GetDistanceBetweenPlace({
-                            latitude_1: currentLocation?.latitude,
-                            longitude_1: currentLocation?.longitude,
-                            latitude_2: DecimalToNumber(e.latitude),
-                            longitude_2: DecimalToNumber(e.longitude)
-                        })
-                    } 
-
-                    return newTypePlace;
-                })
 
                 // set user State and check OrderBy distance
                 setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
@@ -228,45 +229,45 @@ export default function Home() {
         setPlaces(places.filter(e => e.id != placeId));
     }
 
-    //change place active status handler
-    const ChangePlaceStatus = async (index: number, isDisable: boolean) => {
+    // //change place active status handler
+    // const ChangePlaceStatus = async (index: number, isDisable: boolean) => {
         
-        // prepare update place data
-        const updateDisplayPlace = places[index];
-        updateDisplayPlace.isDisable = !isDisable
+    //     // prepare update place data
+    //     const updateDisplayPlace = places[index];
+    //     updateDisplayPlace.isDisable = !isDisable
 
-        // Find the place object by placeId and update its isDisable property
-        const newPlacesState = places.map((place, i) => {
+    //     // Find the place object by placeId and update its isDisable property
+    //     const newPlacesState = places.map((place, i) => {
             
-            if (i == index) {
-                return updateDisplayPlace;
-            }
+    //         if (i == index) {
+    //             return updateDisplayPlace;
+    //         }
 
-            return place;
-        });
+    //         return place;
+    //     });
 
-        // Update the places array with the modified object
-        setPlaces(newPlacesState);
+    //     // Update the places array with the modified object
+    //     setPlaces(newPlacesState);
 
-        // update place display status data with only
-        const updatePlace: UpdatePlace = {
-            id: updateDisplayPlace.id,
-            isDisable: updateDisplayPlace.isDisable
-        }
+    //     // update place display status data with only
+    //     const updatePlace: UpdatePlace = {
+    //         id: updateDisplayPlace.id,
+    //         isDisable: updateDisplayPlace.isDisable
+    //     }
 
-        // fetch update place api
-        const response = await fetch(`${baseUrlApi}/place`, {
-            method: "PUT",
-            body: JSON.stringify(updatePlace)
-        });
+    //     // fetch update place api
+    //     const response = await fetch(`${baseUrlApi}/place`, {
+    //         method: "PUT",
+    //         body: JSON.stringify(updatePlace)
+    //     });
 
-        if (!response.ok) {
+    //     if (!response.ok) {
 
-            const errorMessage: ResponseModel = await response.json();
-            alert(`Error message: ${errorMessage.message}`)
-        }
+    //         const errorMessage: ResponseModel = await response.json();
+    //         alert(`Error message: ${errorMessage.message}`)
+    //     }
 
-    }
+    // }
 
     // add place handler
     const AddNewPlace = async () => {
@@ -310,19 +311,42 @@ export default function Home() {
         }
     }
 
+    // change color theme
+    // useEffect(() => {
+    //     var a = document.getElementById("bgColor");
+    //     if (a != null){
+    //         console.log("not null")
+    //         a.style.backgroundColor = "#36393e"
+    //     }
+    // }, [])
+
     return (
-        <main>
-            {
+        <main id='bgColor' style={{ backgroundColor: "whitesmoke", height: '100vh' }} className=''>
+            <div className="container">
+                <div className='py-5 px-3'>
+                    {
+                        places.length > 0 ?
+                        places.map((element, index) => {
+                            return (
+                                <PlaceCard key={index} data={element}></PlaceCard>
+                            );
+                        }) :
+                        <h1 className='text-center'>Loading...</h1> 
+                    }
+                </div>
+            </div>
+
+            {/* {
                 !IsStringValid(currentUserId.current) ? 
                 <h1>loading...</h1> : 
                 <>
-                    {/* <div>
+                    <div>
                         <Link href="/auth/login" replace={true}>Login</Link>
                         &nbsp; &nbsp; &nbsp;
                         <button onClick={UserLogout}>logout</button>
                         &nbsp; &nbsp; &nbsp;
                         <Link href="/auth/register">Register page</Link>
-                    </div> */}
+                    </div>
                     <div>
                         <ul>
                             {
@@ -349,9 +373,9 @@ export default function Home() {
                     <div>
                         <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
                     </div>
-                    {/* <br />
-                    <br /> */}
-                    {/* <div>
+                    <br />
+                    <br />
+                    <div>
                         <div>
                             <h2>Add New Place</h2>
                             <p>PlaceName:</p>
@@ -367,9 +391,9 @@ export default function Home() {
                         </div>
                         <br />
                         <button onClick={AddNewPlace}>add place</button>
-                    </div> */}
+                    </div>
                 </>
-            }
+            } */}
         </main>
     )
   }

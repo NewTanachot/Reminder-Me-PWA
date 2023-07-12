@@ -27,10 +27,23 @@ export type UpdatePlace = {
     userId?: string | undefined
 }
 
-export interface IDisplayPlace extends Place {
+export interface IDisplayPlace {
+    id: string
+    name: string
+    latitude: number
+    longitude: number
+    reminderMessage: string | null
+    reminderDate: string | null
+    isDisable: boolean
+    createdAt: Date
+    userId: string
     locationDistance: number
 }
 
 export interface IUserIndexedDB extends User {
     CurrentUser: string
+}
+
+export interface IPlaceCardProps {
+    data: IDisplayPlace
 }

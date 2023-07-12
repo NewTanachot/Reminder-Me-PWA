@@ -1,4 +1,5 @@
 import './globals.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import appIcon from '@/public/image/web-icon/favicon.ico';
 import appleAppIcon from '@/public/image/apple-icon/appstore_v2.png';
 import { Metadata } from 'next'
@@ -28,12 +29,10 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
-    return (
-        <html lang="en" className='h-screen bg-slate-50'>
-            <body className={googleFont.className}>
-                <div className=''>
 
-                </div>
+    return (
+        <html lang="en">
+            <body className={googleFont.className}>
                 {children}
             </body>
         </html>
