@@ -321,7 +321,7 @@ export default function Home() {
     // }, [])
 
     return (
-        <main id='bgColor' style={{ backgroundColor: "whitesmoke", height: '100vh' }} className=''>
+        <main id='bgColor' className='set-bg-whitesmoke'>
             <div className="container">
                 <div className='py-5 px-3'>
                     {

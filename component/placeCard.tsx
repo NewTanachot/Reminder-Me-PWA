@@ -40,17 +40,17 @@ export default function PlaceCard({ data }: IPlaceCardProps) {
 
     return (
         <div className="card mb-3 shadow-sm rounded-4">
-            <div className="card-header rounded-top-4" style={{ backgroundColor: "#fffaca" }}>
+            <div className="card-header rounded-top-4 bg-sss">
                 <div className="row">
-                    <div className="col-8 text-start text-success" style={{ fontSize: "20px" }}>
-                        { data.name } 
+                    <div className="col text-start text-cornflowerblue" style={{ fontSize: "20px" }}>
+                        { data.name }
                     </div>
-                    <div className="col text-end text-success" style={{ fontSize: "20px" }}>
+                    <div className="col text-end text-nowrap text-cornflowerblue" style={{ fontSize: "20px" }}>
                         { data.locationDistance.toFixed(2) } km
                     </div>
                  </div>
             </div>
-            <div className="card-body rounded-bottom-4 bg-white">
+            <div className="card-body rounded-bottom-4 bg-milk-yellow">
                 <div className="row">
                     <div className="col text-start text-dark">
                         Message: &nbsp;

@@ -18,6 +18,27 @@
 
 
 
+/*  --- [ Color Class ] ---  */
+
+.set-bg-whitesmoke {
+    height: 100vh;
+    background-color: whitesmoke !important;
+}
+
+.text-cornflowerblue {
+    color: #6495ED !important;
+}
+
+.bg-milk-yellow {
+    background-color: #fffaca75 !important;
+}
+
+.bg-sss {
+    background-color: 	rgb(175, 225, 175, 1) !important;
+    /* background-color: rgb(159, 226, 191, 1) !important; */
+    /* background-color: #9FE2BF !important; */
+}
+
 /* ========================================================================= */
 
 /* 
