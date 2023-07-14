@@ -1,7 +1,8 @@
 'use client';
 
 import { ResponseModel } from "@/model/response_model";
-import { IPlaceCardProps, UpdatePlace } from "@/model/subentity_model";
+import { UpdatePlace } from "@/model/subentity_model";
+import { IPlaceCardProps } from "@/model/props_model";
 import { useEffect, useState } from "react";
 
 // Initialize .ENV variable
@@ -58,10 +59,10 @@ export default function PlaceCard({ data, cardIndex }: IPlaceCardProps) {
         <div id={cardId} className="card mb-3 shadow-sm rounded-4">
             <div className="card-header rounded-top-4 bg-milk-green">
                 <div className="row">
-                    <div className="col text-start text-size-20 text-cobalt-blue">
+                    <div className="col text-start text-size-20 text-white">
                         { data.name }
                     </div>
-                    <div className="col text-end text-size-20 text-nowrap text-cobalt-blue">
+                    <div className="col text-end text-size-20 text-nowrap text-white">
                         { data.locationDistance.toFixed(2) } km
                     </div>
                  </div>

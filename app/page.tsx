@@ -28,7 +28,7 @@ export default function Home() {
     const router = useRouter();
 
     // react hook initialize
-    const User = useRef<CurrentUserRef>({ userId: "", userName: "-" });
+    const user = useRef<CurrentUserRef>({ userId: "", userName: "" });
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.list);
@@ -91,8 +91,8 @@ export default function Home() {
                     response.onsuccess = () => {
         
                         // set global current UserId and UserName
-                        User.current.userId = (response.result as IUserIndexedDB).id;
-                        User.current.userName = (response.result as IUserIndexedDB).name;
+                        user.current.userId = (response.result as IUserIndexedDB).id;
+                        user.current.userName = (response.result as IUserIndexedDB).name;
 
                         // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
                         const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
@@ -128,7 +128,7 @@ export default function Home() {
 
         try {
             // check current user from global variable
-            if (IsStringValid(User.current.userId)) {
+            if (IsStringValid(user.current.userId)) {
 
                 // initialize list of DisplayPlace
                 let displayPlace: IDisplayPlace[] = [];
@@ -142,7 +142,7 @@ export default function Home() {
                 else {
 
                     // fetch get api
-                    const response = await fetch(`${baseUrlApi}/place/?userId=${User.current.userId}`);
+                    const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`);
 
                     if (!response.ok) {
             
@@ -240,7 +240,7 @@ export default function Home() {
     const AddNewPlace = async () => {
 
         // check current user from global variable   
-        if (IsStringValid(User.current.userId)) {
+        if (IsStringValid(user.current.userId)) {
 
             // get data from input form
             const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
@@ -255,7 +255,7 @@ export default function Home() {
                 longitude: +longitudeInput.value, // cast string to number
                 reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
                 reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: User.current.userId,
+                userId: user.current.userId,
             }
 
             // fetch creaet place api
@@ -278,6 +278,12 @@ export default function Home() {
         }
     }
 
+    // change Current page method
+    const ChangeCurrentPage = (page: PwaCurrentPage) => {
+        
+        setCurrentPage(page);
+    }
+
     // change color theme
     // useEffect(() => {
     //     var a = document.getElementById("bgColor");
@@ -291,32 +297,27 @@ export default function Home() {
         <main id='bgColor' className='bg-whitesmoke'>
 
             {/* === [ Navbar ] === */}
-            <Navbar></Navbar>
+            <Navbar userName={user.current.userName} currentPage={currentPage} changeCurrentPage={ChangeCurrentPage}></Navbar>
 
-            {
-                (() => {
-                    switch (currentPage) {
-                        case PwaCurrentPage.list:
-                            return <List></List>
-                        case PwaCurrentPage.map:
-                            return <Map></Map>
-                        case PwaCurrentPage.login:
-                            return <Login></Login>
-                        case PwaCurrentPage.register:
-                            return <Register></Register>
-                    }
-                })()
-            }
             <div className="container">
                 <div className='py-5 px-3'>
                     {
-                        places.length > 0 ?
-                        places.map((element, index) => {
-                            return (
-                                <PlaceCard key={index} data={element} cardIndex={index}></PlaceCard>
-                            );
-                        }) :
-                        <h1 className='text-center'>Loading...</h1> 
+                        (() => {
+                            switch (currentPage) {
+
+                                case PwaCurrentPage.list:
+                                    return <List places={places}></List>
+
+                                case PwaCurrentPage.map:
+                                    return <Map></Map>
+
+                                case PwaCurrentPage.login:
+                                    return <Login></Login>
+
+                                case PwaCurrentPage.register:
+                                    return <Register></Register>
+                            }
+                        })()
                     }
                 </div>
             </div>

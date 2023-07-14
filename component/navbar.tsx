@@ -1,12 +1,35 @@
-export default function Navbar() {
+import { PwaCurrentPage } from "@/model/enum_model";
+import { INavbarProps } from "@/model/props_model";
+
+export default function Navbar({ userName, currentPage, changeCurrentPage }: INavbarProps) {
+
     return (
-        <nav className='bg-dark text-white px-2 py-2 pt-5 pt-sm-2'>
+        // bg-milk-green text-white px-2 py-2 pt-5 pt-sm-2
+        <nav className='bg-milk-green text-white px-2 py-2'>
             <div className='row'>
-                <div className='col text-start'>
-                    <h6 className='m-0'>Remider-Me</h6>
+                <div className='col m-0 text-start'>
+                    <button className='m-0 btn text-white'>
+                        <img></img>
+                        Remider Me App
+                    </button>
                 </div>
-                <div className='col text-end'>
-                    <button onClick={() => {  }} className='h6 m-0 btn btn-light'>Hello, {}</button>
+                <div className='col m-0 text-end'>
+                    {
+                        currentPage != PwaCurrentPage.login ?
+                        <button 
+                            onClick={() => changeCurrentPage(PwaCurrentPage.login)} 
+                            className='m-0 btn btn-success rounded-3 text-white'
+                        >
+                            Hello, {userName}
+                        </button>
+                        :
+                        <button 
+                            onClick={() => changeCurrentPage(PwaCurrentPage.register)} 
+                            className='m-0 btn btn-success rounded-3 text-white'
+                        >
+                            "Register"
+                        </button>
+                    }
                 </div>
             </div>
         </nav>
