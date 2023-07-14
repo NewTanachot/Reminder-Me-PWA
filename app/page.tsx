@@ -1,7 +1,7 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
-import { IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
+import { CurrentUserRef, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import PlaceCard from '@/component/placeCard';
+import { Inder } from 'next/font/google';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -23,7 +24,7 @@ export default function Home() {
     const router = useRouter();
 
     // react hook initialize
-    const currentUserId = useRef<string>("");
+    const User = useRef<CurrentUserRef>({ userId: "", userName: "-" });
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
@@ -84,8 +85,9 @@ export default function Home() {
                     // get success handler
                     response.onsuccess = () => {
         
-                        // set global currentUserId
-                        currentUserId.current = (response.result as IUserIndexedDB).id;
+                        // set global current UserId and UserName
+                        User.current.userId = (response.result as IUserIndexedDB).id;
+                        User.current.userName = (response.result as IUserIndexedDB).name;
 
                         // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
                         const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
@@ -121,7 +123,7 @@ export default function Home() {
 
         try {
             // check current user from global variable
-            if (IsStringValid(currentUserId.current)) {
+            if (IsStringValid(User.current.userId)) {
 
                 // initialize list of DisplayPlace
                 let displayPlace: IDisplayPlace[] = [];
@@ -135,7 +137,7 @@ export default function Home() {
                 else {
 
                     // fetch get api
-                    const response = await fetch(`${baseUrlApi}/place/?userId=${currentUserId.current}`);
+                    const response = await fetch(`${baseUrlApi}/place/?userId=${User.current.userId}`);
 
                     if (!response.ok) {
             
@@ -273,7 +275,7 @@ export default function Home() {
     const AddNewPlace = async () => {
 
         // check current user from global variable   
-        if (IsStringValid(currentUserId.current)) {
+        if (IsStringValid(User.current.userId)) {
 
             // get data from input form
             const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
@@ -288,7 +290,7 @@ export default function Home() {
                 longitude: +longitudeInput.value, // cast string to number
                 reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
                 reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: currentUserId.current,
+                userId: User.current.userId,
             }
 
             // fetch creaet place api
@@ -321,14 +323,24 @@ export default function Home() {
     // }, [])
 
     return (
-        <main id='bgColor' className='set-bg-whitesmoke'>
+        <main id='bgColor' className='bg-whitesmoke'>
+            <nav className='bg-dark text-white px-2 py-2 pt-5 pt-sm-2'>
+                    <div className='row'>
+                        <div className='col text-start'>
+                            <h6 className='m-0'>Remider-Me</h6>
+                        </div>
+                        <div className='col text-end'>
+                            <h6 className='m-0'>Hello, {User.current.userName}</h6>
+                        </div>
+                    </div>
+            </nav>
             <div className="container">
                 <div className='py-5 px-3'>
                     {
                         places.length > 0 ?
                         places.map((element, index) => {
                             return (
-                                <PlaceCard key={index} data={element}></PlaceCard>
+                                <PlaceCard key={index} data={element} cardIndex={index}></PlaceCard>
                             );
                         }) :
                         <h1 className='text-center'>Loading...</h1> 
@@ -337,7 +349,7 @@ export default function Home() {
             </div>
 
             {/* {
-                !IsStringValid(currentUserId.current) ? 
+                !IsStringValid(User.current.userId) ? 
                 <h1>loading...</h1> : 
                 <>
                     <div>

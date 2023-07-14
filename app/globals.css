@@ -20,7 +20,11 @@
 
 /*  --- [ Color Class ] ---  */
 
-.set-bg-whitesmoke {
+.filter-card {
+    filter: grayscale(100%) !important;
+}
+
+.bg-whitesmoke {
     height: 100vh;
     background-color: whitesmoke !important;
 }
@@ -29,14 +33,25 @@
     color: #6495ED !important;
 }
 
-.bg-milk-yellow {
-    background-color: #fffaca75 !important;
+.text-cobalt-blue {
+    color: #0047AB !important;
 }
 
-.bg-sss {
-    background-color: 	rgb(175, 225, 175, 1) !important;
-    /* background-color: rgb(159, 226, 191, 1) !important; */
-    /* background-color: #9FE2BF !important; */
+.bg-milk-yellow {
+    background-color: #fffaca50 !important;
+}
+
+.text-milk-yellow {
+    color: #fffaca !important;
+}
+
+.bg-milk-green {
+    /* background-color: 	rgb(175, 225, 175) !important; */
+    background-color: #02bb86 !important;
+}
+
+.text-size-20 {
+    font-size: 20px;
 }
 
 /* ========================================================================= */
