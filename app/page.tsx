@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import PlaceCard from '@/component/placeCard';
-import { Inder } from 'next/font/google';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -324,16 +323,16 @@ export default function Home() {
 
     return (
         <main id='bgColor' className='bg-whitesmoke'>
-            <nav className='bg-dark text-white px-2 py-2 pt-5 pt-sm-2'>
+            {/* <nav className='bg-dark text-white px-2 py-2 pt-5 pt-sm-2'>
                     <div className='row'>
                         <div className='col text-start'>
                             <h6 className='m-0'>Remider-Me</h6>
                         </div>
                         <div className='col text-end'>
-                            <h6 className='m-0'>Hello, {User.current.userName}</h6>
+                            <Link href="/auth/login" className='h6 m-0 btn btn-light'>Hello, {User.current.userName}</Link>
                         </div>
                     </div>
-            </nav>
+            </nav> */}
             <div className="container">
                 <div className='py-5 px-3'>
                     {
