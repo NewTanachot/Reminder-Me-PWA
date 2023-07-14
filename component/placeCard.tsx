@@ -2,25 +2,29 @@
 
 import { ResponseModel } from "@/model/response_model";
 import { IPlaceCardProps, UpdatePlace } from "@/model/subentity_model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function PlaceCard({ data }: IPlaceCardProps) {
+export default function PlaceCard({ data, cardIndex }: IPlaceCardProps) {
   
-    const [ placeStatus, setPlaceStatus ] = useState<boolean>(data.isDisable);
+    // Const variable initialize
+    const cardId = `placeCard_${cardIndex}`;
 
-    //change place active status handler
+    // react hook initialize
+    const [ placeDisplayStatus, setPlaceStatus ] = useState<boolean>(data.isDisable);
+
+    // change place active status handler
     const ChangePlaceStatus = async () => {
         
         // update UI check box by useState
-        setPlaceStatus(!placeStatus);
+        setPlaceStatus(!placeDisplayStatus);
 
         // update place display status data with only
         const updatePlace: UpdatePlace = {
             id: data.id,
-            isDisable: !placeStatus
+            isDisable: !placeDisplayStatus
         }
 
         // fetch update place api
@@ -34,18 +38,30 @@ export default function PlaceCard({ data }: IPlaceCardProps) {
             const errorMessage: ResponseModel = await response.json();
             alert(`Error message: ${errorMessage.message}`)
         }
-
     }
 
+    // check disable filter
+    useEffect(() => {
+
+        const placeCard = document.getElementById(cardId);
+
+        if (placeDisplayStatus) {
+            placeCard?.classList.add("filter-card");
+        }
+        else {
+            placeCard?.classList.remove("filter-card");
+        }
+
+    }, [placeDisplayStatus]);
 
     return (
-        <div className="card mb-3 shadow-sm rounded-4">
-            <div className="card-header rounded-top-4 bg-sss">
+        <div id={cardId} className="card mb-3 shadow-sm rounded-4">
+            <div className="card-header rounded-top-4 bg-milk-green">
                 <div className="row">
-                    <div className="col text-start text-cornflowerblue" style={{ fontSize: "20px" }}>
+                    <div className="col text-start text-size-20 text-cobalt-blue">
                         { data.name }
                     </div>
-                    <div className="col text-end text-nowrap text-cornflowerblue" style={{ fontSize: "20px" }}>
+                    <div className="col text-end text-size-20 text-nowrap text-cobalt-blue">
                         { data.locationDistance.toFixed(2) } km
                     </div>
                  </div>
@@ -71,7 +87,7 @@ export default function PlaceCard({ data }: IPlaceCardProps) {
                             {
                                 <input type="checkbox" 
                                     className="form-check-input" 
-                                    checked={!placeStatus} 
+                                    checked={!placeDisplayStatus} 
                                     onChange={ChangePlaceStatus}
                                 />
                             }
