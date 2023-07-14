@@ -86,7 +86,7 @@ export default function Login() {
                 <p>Usename:</p>
                 <input id="usernameInput" type="text" min={1} max={20} required/>
                 <p>Password:</p>
-                <input id="passwordInput" type="text" min={1} max={20} required/>
+                <input id="passwordInput" type="password" min={1} max={20} required/>
             </div>
             <div>
                 <Link href="/">back</Link>
