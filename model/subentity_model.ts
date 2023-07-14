@@ -48,8 +48,3 @@ export interface IDisplayPlace {
 export interface IUserIndexedDB extends User {
     CurrentUser: string
 }
-
-export interface IPlaceCardProps {
-    cardIndex: number
-    data: IDisplayPlace
-}
