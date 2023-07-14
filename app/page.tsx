@@ -4,12 +4,16 @@ import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/exten
 import { CurrentUserRef, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
-import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import PlaceCard from '@/component/placeCard';
-import { Inder } from 'next/font/google';
+import { PwaCurrentPage } from '@/model/enum_model';
+import List from '@/component/mainpage/list';
+import Navbar from '@/component/navbar';
+import Map from '@/component/mainpage/map';
+import Login from '@/component/mainpage/login';
+import Register from '@/component/mainpage/register';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -27,6 +31,7 @@ export default function Home() {
     const User = useRef<CurrentUserRef>({ userId: "", userName: "-" });
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.list);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
@@ -231,46 +236,6 @@ export default function Home() {
         setPlaces(places.filter(e => e.id != placeId));
     }
 
-    // //change place active status handler
-    // const ChangePlaceStatus = async (index: number, isDisable: boolean) => {
-        
-    //     // prepare update place data
-    //     const updateDisplayPlace = places[index];
-    //     updateDisplayPlace.isDisable = !isDisable
-
-    //     // Find the place object by placeId and update its isDisable property
-    //     const newPlacesState = places.map((place, i) => {
-            
-    //         if (i == index) {
-    //             return updateDisplayPlace;
-    //         }
-
-    //         return place;
-    //     });
-
-    //     // Update the places array with the modified object
-    //     setPlaces(newPlacesState);
-
-    //     // update place display status data with only
-    //     const updatePlace: UpdatePlace = {
-    //         id: updateDisplayPlace.id,
-    //         isDisable: updateDisplayPlace.isDisable
-    //     }
-
-    //     // fetch update place api
-    //     const response = await fetch(`${baseUrlApi}/place`, {
-    //         method: "PUT",
-    //         body: JSON.stringify(updatePlace)
-    //     });
-
-    //     if (!response.ok) {
-
-    //         const errorMessage: ResponseModel = await response.json();
-    //         alert(`Error message: ${errorMessage.message}`)
-    //     }
-
-    // }
-
     // add place handler
     const AddNewPlace = async () => {
 
@@ -324,16 +289,24 @@ export default function Home() {
 
     return (
         <main id='bgColor' className='bg-whitesmoke'>
-            <nav className='bg-dark text-white px-2 py-2 pt-5 pt-sm-2'>
-                    <div className='row'>
-                        <div className='col text-start'>
-                            <h6 className='m-0'>Remider-Me</h6>
-                        </div>
-                        <div className='col text-end'>
-                            <h6 className='m-0'>Hello, {User.current.userName}</h6>
-                        </div>
-                    </div>
-            </nav>
+
+            {/* === [ Navbar ] === */}
+            <Navbar></Navbar>
+
+            {
+                (() => {
+                    switch (currentPage) {
+                        case PwaCurrentPage.list:
+                            return <List></List>
+                        case PwaCurrentPage.map:
+                            return <Map></Map>
+                        case PwaCurrentPage.login:
+                            return <Login></Login>
+                        case PwaCurrentPage.register:
+                            return <Register></Register>
+                    }
+                })()
+            }
             <div className="container">
                 <div className='py-5 px-3'>
                     {

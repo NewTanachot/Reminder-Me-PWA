@@ -4,6 +4,7 @@ import appIcon from '@/public/image/web-icon/favicon.ico';
 import appleAppIcon from '@/public/image/apple-icon/appstore_v2.png';
 import { Metadata } from 'next'
 import { Athiti } from 'next/font/google' // Itim
+import Link from 'next/link';
 
 const googleFont = Athiti({
     weight: '600',
