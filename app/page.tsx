@@ -38,9 +38,7 @@ export default function Home() {
     // check user creadential, fetch get place api, get current location
     useEffect(() => {
 
-        if (currentPage == PwaCurrentPage.list){
-
-                    // check user Credentials -> open indexedDB
+        // check user Credentials -> open indexedDB
         const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
 
         // open indexedDB error handler
@@ -100,17 +98,16 @@ export default function Home() {
                         // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
                         const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
                     }
-                    }
-                    else {
-                        // change to login page
-                        setCurrentPage(PwaCurrentPage.login);
-                        // router.replace('/auth/login');
-                    }
+                }
+                else {
+                    // change to login page
+                    setCurrentPage(PwaCurrentPage.login);
+                    // router.replace('/auth/login');
                 }
             }
         }
 
-    }, [currentPage])
+    }, [])
 
     // effect for update location Distanct
     useEffect(() => {
@@ -139,8 +136,8 @@ export default function Home() {
                 // initialize list of DisplayPlace
                 let displayPlace: IDisplayPlace[] = [];
                 
-                // check if palce exist (more than 0 record)
-                if (places.length > 0) {
+                // check if palce exist (more than 0 record) and check user for clear cache on update user
+                if (places.length > 0 && places.at(0)?.userId == user.current.userId) {
                     
                     console.log("not fetch")
                     displayPlace = places;
@@ -148,6 +145,7 @@ export default function Home() {
                 else {
 
                     // fetch get api
+                    console.log("fetch get place api");
                     const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`);
 
                     if (!response.ok) {
@@ -156,7 +154,6 @@ export default function Home() {
                         alert(`Error message: ${errorMessage.message}`)
                     }
                     else {
-                        console.log("fetch get place api");
                         const calculationPlace: Place[] = await response.json();
 
                         // find location distance
@@ -201,6 +198,7 @@ export default function Home() {
     // success case for Geolocation
     const IfGetLocationSuccess = (position: GeolocationPosition) => {
         
+        console.log('success location')
         setCurrentLocation(position.coords);
     }
 
@@ -304,7 +302,6 @@ export default function Home() {
     return (
         <main id='bgColor' className='bg-whitesmoke'>
 
-            {/* === [ Navbar ] === */}
             <Navbar 
                 userName={user.current.userName} 
                 currentPage={currentPage} 
@@ -327,7 +324,7 @@ export default function Home() {
                                     return <Login 
                                         setCurrentUser={SetCurrentUser} 
                                         changeCurrentPage={ChangeCurrentPage}
-                                        resetPlaceStste={ResetPlaceState}
+                                        fetchPlaceDataList={FetchPlaceData}
                                     ></Login>
 
                                 case PwaCurrentPage.register:

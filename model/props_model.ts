@@ -20,5 +20,5 @@ export interface INavbarProps {
 export interface ILoginProps {
     setCurrentUser: (setUser: CurrentUserRef) => void;
     changeCurrentPage: (page: PwaCurrentPage) => void;
-    resetPlaceStste: () => void;
+    fetchPlaceDataList: () => void;
 }

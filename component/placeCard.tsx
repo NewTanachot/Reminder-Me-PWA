@@ -58,52 +58,106 @@ export default function PlaceCard({ data, cardIndex }: IPlaceCardProps) {
     return (
         <div id={cardId} className="card mb-3 shadow-sm rounded-4">
             <div className="card-header rounded-top-4 bg-milk-green">
-                <div className="row">
-                    <div className="col text-start text-size-20 text-white">
-                        { data.name }
-                    </div>
-                    <div className="col text-end text-size-20 text-nowrap text-white">
-                        { data.locationDistance.toFixed(2) } km
+                <div className="d-flex justify-content-between align-items-center text-white text-size-20">
+                    <div>{data.name}</div>
+                    <div className="text-nowrap">
+                        {data.locationDistance.toFixed(2)} km
                     </div>
                  </div>
             </div>
             <div className="card-body rounded-bottom-4 bg-milk-yellow">
-                <div className="row">
-                    <div className="col text-start text-dark">
+                <div className="d-flex justify-content-between align-items-center">
+                    <div className="text-dark">
                         Message: &nbsp;
                         <span className="text-secondary">
-                            { data.reminderMessage ?? "-" }
+                            {data.reminderMessage ?? "-"}
                         </span>
                     </div>
                  </div>
-                 <div className="row">
-                    <div className="col-9 text-start text-dark">
+                 <div className="d-flex justify-content-between align-items-center">
+                    <div className="text-dark">
                         location: &nbsp;
                         <span className="text-secondary">
-                            { data.latitude.toFixed(4) }, { data.longitude.toFixed(4) }
+                            {data.latitude.toFixed(4)}, {data.longitude.toFixed(4)}
                         </span>
                     </div>
-                    <div className="col d-flex justify-content-end">
-                        <div className="form-check form-switch">
-                            {
-                                <input type="checkbox" 
-                                    className="form-check-input" 
-                                    checked={!placeDisplayStatus} 
-                                    onChange={ChangePlaceStatus}
-                                />
-                            }
-                        </div>
+                    <div className="form-check form-switch">
+                        {
+                            <input type="checkbox" 
+                                className="form-check-input" 
+                                checked={!placeDisplayStatus} 
+                                onChange={ChangePlaceStatus}
+                            />
+                        }
                     </div>
                  </div>
-                 <div className="row">
-                    <div className="col text-start text-dark">
+                 <div className="d-flex justify-content-between align-items-center">
+                    <div className="text-dark">
                         Date: &nbsp;
-                        <span className="text-danger text-opacity-75">
-                            { data.reminderDate ?? "-" }
-                        </span>
+                        {
+                            data.reminderDate ? 
+                            <span className="text-danger text-opacity-75">{data.reminderDate}</span>
+                            :
+                            <span className="text-secondary">-</span>
+                        }
                     </div>
                  </div>
             </div>
         </div>
     )
+
+    // return (
+    //     <div id={cardId} className="card mb-3 shadow-sm rounded-4">
+    //         <div className="card-header rounded-top-4 bg-milk-green">
+    //             <div className="row">
+    //                 <div className="col-8 pe-0 text-start text-size-20 text-white">
+    //                     {data.name}
+    //                 </div>
+    //                 <div className="col ps-0 text-end text-size-20 text-nowrap text-white">
+    //                     {data.locationDistance.toFixed(2)} km
+    //                 </div>
+    //              </div>
+    //         </div>
+    //         <div className="card-body rounded-bottom-4 bg-milk-yellow">
+    //             <div className="row">
+    //                 <div className="col text-start text-dark">
+    //                     Message: &nbsp;
+    //                     <span className="text-secondary">
+    //                         {data.reminderMessage ?? "-"}
+    //                     </span>
+    //                 </div>
+    //              </div>
+    //              <div className="row">
+    //                 <div className="col-9 text-start text-dark">
+    //                     location: &nbsp;
+    //                     <span className="text-secondary">
+    //                         {data.latitude.toFixed(4)}, {data.longitude.toFixed(4)}
+    //                     </span>
+    //                 </div>
+    //                 <div className="col d-flex justify-content-end">
+    //                     <div className="form-check form-switch">
+    //                         {
+    //                             <input type="checkbox" 
+    //                                 className="form-check-input" 
+    //                                 checked={!placeDisplayStatus} 
+    //                                 onChange={ChangePlaceStatus}
+    //                             />
+    //                         }
+    //                     </div>
+    //                 </div>
+    //              </div>
+    //              <div className="row">
+    //                 <div className="col text-start text-dark">
+    //                     Date: &nbsp;
+    //                     {
+    //                         data.reminderDate ? 
+    //                         <span className="text-danger text-opacity-75">{data.reminderDate}</span>
+    //                         :
+    //                         <span className="text-secondary">-</span>
+    //                     }
+    //                 </div>
+    //              </div>
+    //         </div>
+    //     </div>
+    // )
 }

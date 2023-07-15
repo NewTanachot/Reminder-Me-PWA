@@ -55,5 +55,5 @@ export const StringDateToDisplayDate = (stringDate: string | null) => {
         return `${dayOfweekName} ${day}/${month}/${year}`;
     }
 
-    return "-"
+    return ""
 }

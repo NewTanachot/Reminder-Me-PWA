@@ -21,7 +21,7 @@
 }
 
 .bg-whitesmoke {
-    /* height: 100vh; */
+    height: 100vh;
     background-color: whitesmoke !important;
 }
 
@@ -42,7 +42,6 @@
 }
 
 .bg-milk-green {
-    /* background-color: 	rgb(175, 225, 175) !important; */
     background-color: #02bb86 !important;
 }
 
