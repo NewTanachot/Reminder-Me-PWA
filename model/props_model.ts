@@ -1,5 +1,6 @@
+import { Dispatch, SetStateAction } from "react"
 import { PwaCurrentPage } from "./enum_model"
-import { IDisplayPlace } from "./subentity_model"
+import { CurrentUserRef, IDisplayPlace } from "./subentity_model"
 
 export interface IPlaceCardProps {
     cardIndex: number
@@ -14,4 +15,10 @@ export interface INavbarProps {
     userName: string
     currentPage: PwaCurrentPage
     changeCurrentPage: (page: PwaCurrentPage) => void;
+}
+
+export interface ILoginProps {
+    setCurrentUser: (setUser: CurrentUserRef) => void;
+    changeCurrentPage: (page: PwaCurrentPage) => void;
+    resetPlaceStste: () => void;
 }

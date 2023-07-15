@@ -1,13 +1,12 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
-import { CurrentUserRef, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel, UpdatePlace } from '@/model/subentity_model';
+import { CurrentUserRef, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { MouseEvent, useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import PlaceCard from '@/component/placeCard';
 import { PwaCurrentPage } from '@/model/enum_model';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/navbar';
@@ -25,7 +24,7 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 export default function Home() {
 
     // initialize router
-    const router = useRouter();
+    // const router = useRouter();
 
     // react hook initialize
     const user = useRef<CurrentUserRef>({ userId: "", userName: "" });
@@ -39,7 +38,9 @@ export default function Home() {
     // check user creadential, fetch get place api, get current location
     useEffect(() => {
 
-        // check user Credentials -> open indexedDB
+        if (currentPage == PwaCurrentPage.list){
+
+                    // check user Credentials -> open indexedDB
         const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
 
         // open indexedDB error handler
@@ -49,7 +50,6 @@ export default function Home() {
 
         // open with indexedDB Initialize handler
         request.onupgradeneeded = () => {
-            console.log();
 
             // create currentUser store
             const dbContext = request.result;
@@ -58,8 +58,9 @@ export default function Home() {
             // set variable for skip onsuccess function
             skipIndexedDbOnSuccess.current = true;
 
-            // Reroute to login page
-            router.replace('/auth/login');
+            // change to login page
+            setCurrentPage(PwaCurrentPage.login);
+            // router.replace('/auth/login');
         }
 
         // open indexedDB success handler
@@ -84,7 +85,9 @@ export default function Home() {
         
                     // get fail handler
                     response.onerror = () => {
-                        router.replace('/auth/login');
+                        // change to login page
+                        setCurrentPage(PwaCurrentPage.login);
+                        // router.replace('/auth/login');
                     }
         
                     // get success handler
@@ -97,14 +100,17 @@ export default function Home() {
                         // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
                         const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
                     }
-                }
-                else {
-                    router.replace('/auth/login');
+                    }
+                    else {
+                        // change to login page
+                        setCurrentPage(PwaCurrentPage.login);
+                        // router.replace('/auth/login');
+                    }
                 }
             }
         }
 
-    }, [])
+    }, [currentPage])
 
     // effect for update location Distanct
     useEffect(() => {
@@ -211,12 +217,6 @@ export default function Home() {
         maximumAge: 0, // no location cache
     }
 
-    // logout handler
-    const UserLogout = () => {
-        alert("You are logout...");
-        router.replace('/auth/login');
-    }
-
     // delete place handler
     const DeletePlace = async (event : MouseEvent<HTMLButtonElement>): Promise<void> => {
 
@@ -279,9 +279,17 @@ export default function Home() {
     }
 
     // change Current page method
-    const ChangeCurrentPage = (page: PwaCurrentPage) => {
-        
+    const ChangeCurrentPage = (page: PwaCurrentPage) => {     
         setCurrentPage(page);
+    }
+
+    const SetCurrentUser = (setUser: CurrentUserRef) => {
+        user.current.userId = setUser.userId;
+        user.current.userName = setUser.userName;
+    }
+
+    const ResetPlaceState = () => {
+        setPlaces([]);
     }
 
     // change color theme
@@ -297,7 +305,11 @@ export default function Home() {
         <main id='bgColor' className='bg-whitesmoke'>
 
             {/* === [ Navbar ] === */}
-            <Navbar userName={user.current.userName} currentPage={currentPage} changeCurrentPage={ChangeCurrentPage}></Navbar>
+            <Navbar 
+                userName={user.current.userName} 
+                currentPage={currentPage} 
+                changeCurrentPage={ChangeCurrentPage}
+            ></Navbar>
 
             <div className="container">
                 <div className='py-5 px-3'>
@@ -312,7 +324,11 @@ export default function Home() {
                                     return <Map></Map>
 
                                 case PwaCurrentPage.login:
-                                    return <Login></Login>
+                                    return <Login 
+                                        setCurrentUser={SetCurrentUser} 
+                                        changeCurrentPage={ChangeCurrentPage}
+                                        resetPlaceStste={ResetPlaceState}
+                                    ></Login>
 
                                 case PwaCurrentPage.register:
                                     return <Register></Register>
