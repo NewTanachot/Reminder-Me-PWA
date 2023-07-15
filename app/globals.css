@@ -8,9 +8,9 @@
 #371f9b PURPLE
 #ff9832 ORANGE */
 
-html { 
+/* * { 
     background-color: #36393e;
-}
+} */
 
 
 
@@ -21,7 +21,7 @@ html {
 }
 
 .bg-whitesmoke {
-    height: 100vh;
+    /* height: 100vh; */
     background-color: whitesmoke !important;
 }
 

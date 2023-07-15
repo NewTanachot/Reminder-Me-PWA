@@ -1,7 +1,100 @@
-export default function Login() {
+import { PwaCurrentPage } from "@/model/enum_model";
+import { ILoginProps } from "@/model/props_model";
+import { ResponseModel } from "@/model/response_model";
+import { UserExtensionModel } from "@/model/subentity_model";
+import { User } from "@prisma/client";
+
+// Initialize .ENV variable
+const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
+const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
+const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
+const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
+const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
+
+export default function Login({ setCurrentUser, changeCurrentPage, resetPlaceStste }: ILoginProps) {
+
+    const userLogin = async () => {
+        
+        // get data from input form
+        const userNameInput = document.getElementById("usernameInput") as HTMLInputElement;
+        const passWordInput = document.getElementById("passwordInput") as HTMLInputElement;
+
+        const loginUser: UserExtensionModel = {
+            name: userNameInput.value,
+            password: passWordInput.value
+        }
+
+        // fetch add login api
+        const response = await fetch(`${baseUrlApi}/user/login`, {
+            method: "POST",
+            body: JSON.stringify(loginUser)
+        });
+
+        if (!response.ok) {
+            
+            // check login error
+            const errorMessage: ResponseModel = await response.json();
+            alert(`Error message: ${errorMessage.message}`);
+        }
+        else {
+
+            // get currentUser user
+            const currentUser: User = await response.json();
+
+            // set login user to indexedDB -> open indexedDB
+            const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
+
+            // open indexedDB error handler
+            request.onerror = (event: Event) => {
+                alert("Error open indexedDB: " + event);
+            }
+
+            // open indexedDB success handler
+            request.onsuccess = () => {
+
+                // set up indexedDB
+                const dbContext = request.result;
+
+                // check if store name not exist -> create store name
+                if (!dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                    dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+                }
+
+                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
+                const store = transaction.objectStore(indexedDB_UserStore);
+
+                // set new user to useRef in list page
+                setCurrentUser({ userId: currentUser.id, userName: currentUser.name });
+
+                // set place cache for fix display place bug in list page
+                resetPlaceStste();
+
+                // store currentUser to indexedDB
+                store.put({ CurrentUser: indexedDB_UserKey, ...currentUser });
+
+                // Reroute to home page
+                changeCurrentPage(PwaCurrentPage.list);
+                // router.replace("/");
+            }
+        }
+    }
+
     return (
-        <>
-            login page
-        </>
-    )
+        <div>
+            <div>
+                <h2>Login to Reminder-Me app</h2>
+                <p>Usename:</p>
+                <input id="usernameInput" type="text" min={1} max={20} required/>
+                <p>Password:</p>
+                <input id="passwordInput" type="password" min={1} max={20} required/>
+            </div>
+            <div>
+                <button onClick={() => changeCurrentPage(PwaCurrentPage.list)}>back</button>
+                &nbsp; &nbsp; &nbsp;
+                <button onClick={userLogin}>login</button>
+                &nbsp; &nbsp; &nbsp;
+                <button onClick={() => changeCurrentPage(PwaCurrentPage.register)}>register</button>
+            </div>
+        </div>
+    );
 }
