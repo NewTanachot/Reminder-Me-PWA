@@ -74,7 +74,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, fetchPlaceDat
                 fetchPlaceDataList();
 
                 // Reroute to home page
-                changeCurrentPage(PwaCurrentPage.list);
+                changeCurrentPage(PwaCurrentPage.ReminderList);
                 // router.replace("/");
             }
         }
@@ -90,11 +90,11 @@ export default function Login({ setCurrentUser, changeCurrentPage, fetchPlaceDat
                 <input id="passwordInput" type="password" min={1} max={20} required/>
             </div>
             <div>
-                <button onClick={() => changeCurrentPage(PwaCurrentPage.list)}>back</button>
+                <button onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}>back</button>
                 &nbsp; &nbsp; &nbsp;
                 <button onClick={userLogin}>login</button>
                 &nbsp; &nbsp; &nbsp;
-                <button onClick={() => changeCurrentPage(PwaCurrentPage.register)}>register</button>
+                <button onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}>register</button>
             </div>
         </div>
     );

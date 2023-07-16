@@ -12,7 +12,24 @@
     background-color: #36393e;
 } */
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: whitesmoke !important;
+}
 
+/*  --------------------- [ Boostrap 5 Extention ] ---------------------  */
+
+/*  --- [ Shadow Class ] ---  */
+
+.shadow-top {
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, .75);
+}
+
+.shadow-bottom {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, .75);
+}
 
 /*  --- [ Color Class ] ---  */
 
@@ -21,7 +38,6 @@
 }
 
 .bg-whitesmoke {
-    height: 100vh;
     background-color: whitesmoke !important;
 }
 
@@ -42,36 +58,19 @@
 }
 
 .bg-milk-green {
-    background-color: #02bb86 !important;
+    background-color: #74c365 !important;
 }
+
+.bg-viridian-green {
+    background-color: #40826D !important;
+}
+
+.text-viridian-green {
+    color: #40826D !important;
+}
+
+/*  --- [ Text Class ] ---  */
 
 .text-size-20 {
     font-size: 20px;
 }
-
-/* ========================================================================= */
-
-/* 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */

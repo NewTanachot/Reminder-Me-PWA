@@ -7,5 +7,5 @@ export enum DayOfWeekEnum {
 }
 
 export enum PwaCurrentPage {
-    login, register, map, list, 
+    Login, Register, MapView, ReminderList, 
 }

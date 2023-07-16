@@ -13,6 +13,7 @@ import Navbar from '@/component/navbar';
 import Map from '@/component/mainpage/map';
 import Login from '@/component/mainpage/login';
 import Register from '@/component/mainpage/register';
+import Footer from '@/component/footer';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -30,7 +31,7 @@ export default function Home() {
     const user = useRef<CurrentUserRef>({ userId: "", userName: "" });
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
-    const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.list);
+    const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.ReminderList);
     const [places, setPlaces] = useState<IDisplayPlace[]>([]);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
@@ -57,7 +58,7 @@ export default function Home() {
             skipIndexedDbOnSuccess.current = true;
 
             // change to login page
-            setCurrentPage(PwaCurrentPage.login);
+            setCurrentPage(PwaCurrentPage.Login);
             // router.replace('/auth/login');
         }
 
@@ -84,7 +85,7 @@ export default function Home() {
                     // get fail handler
                     response.onerror = () => {
                         // change to login page
-                        setCurrentPage(PwaCurrentPage.login);
+                        setCurrentPage(PwaCurrentPage.Login);
                         // router.replace('/auth/login');
                     }
         
@@ -101,7 +102,7 @@ export default function Home() {
                 }
                 else {
                     // change to login page
-                    setCurrentPage(PwaCurrentPage.login);
+                    setCurrentPage(PwaCurrentPage.Login);
                     // router.replace('/auth/login');
                 }
             }
@@ -300,8 +301,7 @@ export default function Home() {
     // }, [])
 
     return (
-        <main id='bgColor' className='bg-whitesmoke'>
-
+        <main>
             <Navbar 
                 userName={user.current.userName} 
                 currentPage={currentPage} 
@@ -314,28 +314,33 @@ export default function Home() {
                         (() => {
                             switch (currentPage) {
 
-                                case PwaCurrentPage.list:
+                                case PwaCurrentPage.ReminderList:
                                     return <List places={places}></List>
 
-                                case PwaCurrentPage.map:
+                                case PwaCurrentPage.MapView:
                                     return <Map></Map>
 
-                                case PwaCurrentPage.login:
+                                case PwaCurrentPage.Login:
                                     return <Login 
                                         setCurrentUser={SetCurrentUser} 
                                         changeCurrentPage={ChangeCurrentPage}
                                         fetchPlaceDataList={FetchPlaceData}
                                     ></Login>
 
-                                case PwaCurrentPage.register:
+                                case PwaCurrentPage.Register:
                                     return <Register></Register>
                             }
                         })()
                     }
                 </div>
             </div>
+            <br />
+            <Footer></Footer>
+        </main>
+    )
+  }
 
-            {/* {
+              {/* {
                 !IsStringValid(User.current.userId) ? 
                 <h1>loading...</h1> : 
                 <>
@@ -393,6 +398,3 @@ export default function Home() {
                     </div>
                 </>
             } */}
-        </main>
-    )
-  }
