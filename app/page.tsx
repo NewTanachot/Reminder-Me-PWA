@@ -110,28 +110,28 @@ export default function Home() {
 
     }, [])
 
-    // effect for update location Distanct
+    // effect for update location Distanct and elogin handler
     useEffect(() => {
 
         // check if mount rount
-        if (!isMountRound.current) {
+        if (!isMountRound.current && currentPage == PwaCurrentPage.ReminderList) {
 
-            console.log(currentLocation)
+            console.log(currentLocation);
             FetchPlaceData();
         } 
         else {
-
-            console.log("Mount round!")
+            console.log("Mount Round!")
             isMountRound.current = false;
         }
 
-    }, [currentLocation])
+    }, [currentLocation, currentPage])
 
     // fetch place data from api
     const FetchPlaceData = async () => {
 
         try {
             // check current user from global variable
+            console.log(user.current.userId)
             if (IsStringValid(user.current.userId)) {
 
                 // initialize list of DisplayPlace
@@ -287,10 +287,6 @@ export default function Home() {
         user.current.userName = setUser.userName;
     }
 
-    const ResetPlaceState = () => {
-        setPlaces([]);
-    }
-
     // change color theme
     // useEffect(() => {
     //     var a = document.getElementById("bgColor");
@@ -307,15 +303,18 @@ export default function Home() {
                 currentPage={currentPage} 
                 changeCurrentPage={ChangeCurrentPage}
             ></Navbar>
-
-            <div className="container">
+            <br />
+            <div className="container mt-2">
                 <div className='py-5 px-3'>
                     {
                         (() => {
                             switch (currentPage) {
 
                                 case PwaCurrentPage.ReminderList:
-                                    return <List places={places}></List>
+                                    return <List 
+                                        places={places}
+                                        currentUserId={user.current.userId}
+                                    ></List>
 
                                 case PwaCurrentPage.MapView:
                                     return <Map></Map>
@@ -324,7 +323,6 @@ export default function Home() {
                                     return <Login 
                                         setCurrentUser={SetCurrentUser} 
                                         changeCurrentPage={ChangeCurrentPage}
-                                        fetchPlaceDataList={FetchPlaceData}
                                     ></Login>
 
                                 case PwaCurrentPage.Register:
@@ -334,8 +332,8 @@ export default function Home() {
                     }
                 </div>
             </div>
-            <br />
-            <Footer></Footer>
+            <br /><br />
+            <Footer changeCurrentPage={ChangeCurrentPage} currentPage={currentPage}></Footer>
         </main>
     )
   }

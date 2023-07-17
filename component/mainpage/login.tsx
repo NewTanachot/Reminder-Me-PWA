@@ -11,7 +11,7 @@ const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function Login({ setCurrentUser, changeCurrentPage, fetchPlaceDataList }: ILoginProps) {
+export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps) {
 
     const userLogin = async () => {
         
@@ -69,9 +69,6 @@ export default function Login({ setCurrentUser, changeCurrentPage, fetchPlaceDat
 
                 // set new user to useRef in list page
                 setCurrentUser({ userId: currentUser.id, userName: currentUser.name });
-
-                // fetch new data list
-                fetchPlaceDataList();
 
                 // Reroute to home page
                 changeCurrentPage(PwaCurrentPage.ReminderList);
