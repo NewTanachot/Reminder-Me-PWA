@@ -1,4 +1,4 @@
-import { DayOfWeekEnum } from '@/model/enum_model';
+import { DayOfWeekEnum, PwaCurrentPage } from '@/model/enum_model';
 import { Decimal } from '@prisma/client/runtime';
 import crypto from 'crypto';
 
@@ -56,4 +56,18 @@ export const StringDateToDisplayDate = (stringDate: string | null) => {
     }
 
     return ""
+}
+
+export const DisplayCurrentPageName = (currentPage: PwaCurrentPage) => {
+
+    switch (currentPage) {
+        case PwaCurrentPage.ReminderList:
+            return "Reminder List";
+        case PwaCurrentPage.MapView:
+            return "Map View";
+        case PwaCurrentPage.AddList:
+            return "Add New Place";
+        default:
+            return PwaCurrentPage[currentPage];
+    }
 }

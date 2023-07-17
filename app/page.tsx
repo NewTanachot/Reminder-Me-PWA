@@ -14,6 +14,7 @@ import Map from '@/component/mainpage/map';
 import Login from '@/component/mainpage/login';
 import Register from '@/component/mainpage/register';
 import Footer from '@/component/footer';
+import AddList from '@/component/mainpage/addList';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -278,7 +279,7 @@ export default function Home() {
     }
 
     // change Current page method
-    const ChangeCurrentPage = (page: PwaCurrentPage) => {     
+    const ChangeCurrentPage = (page: PwaCurrentPage) => {
         setCurrentPage(page);
     }
 
@@ -318,6 +319,9 @@ export default function Home() {
 
                                 case PwaCurrentPage.MapView:
                                     return <Map></Map>
+
+                                case PwaCurrentPage.AddList:
+                                    return <AddList></AddList>
 
                                 case PwaCurrentPage.Login:
                                     return <Login 
