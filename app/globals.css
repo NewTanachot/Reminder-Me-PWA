@@ -50,15 +50,15 @@ html, body {
 }
 
 .bg-milk-yellow {
-    background-color: #fffaca50 !important;
+    background-color: #FFFACA50 !important;
 }
 
 .text-milk-yellow {
     color: #fffaca !important;
 }
 
-.bg-milk-green {
-    background-color: #967969 !important;
+.bg-milk-orange {
+    background-color: #FFC862 !important;
 }
 
 .bg-viridian-green {
@@ -78,3 +78,22 @@ html, body {
 .text-footer-size {
     font-size: 1.5rem;
 }
+
+.text-delete-card-size {
+    font-size: 1.3rem;
+}
+
+/*  --- [ Spin Rotation Class ] ---  */
+
+.spin-rotate {
+    animation: rotation 1.25s infinite linear;
+  }
+
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }

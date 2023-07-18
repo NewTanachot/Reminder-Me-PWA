@@ -8,33 +8,22 @@ export default function Footer({ changeCurrentPage, currentPage }: IFooterProps)
     let addListIconClass = "bi bi-plus-circle";
     let registerIconClass = "bi bi-compass";
     let loginIconClass = "bi bi-people";
-
-    let listAddBorder = "";
-    let mapAddBorder = "";
-    let addListAddBorder = "";
-    let registerAddBorder = "";
-    let loginAddBorder = "";
     
     switch (currentPage) {
         case PwaCurrentPage.ReminderList:
             listIconClass += "-fill";
-            listAddBorder = "border-top border-2";
             break;
         case PwaCurrentPage.MapView:
             mapIconClass += "-fill";
-            mapAddBorder = "border-top border-2";
             break;
         case PwaCurrentPage.AddList:
             addListIconClass += "-fill";
-            addListAddBorder = "border-top border-2";
             break;
         case PwaCurrentPage.Register:
             registerIconClass += "-fill";
-            registerAddBorder = "border-top border-2";
             break;
         case PwaCurrentPage.Login:
             loginIconClass += "-fill";
-            loginAddBorder = "border-top border-2";
             break;
     }
 
@@ -43,7 +32,7 @@ export default function Footer({ changeCurrentPage, currentPage }: IFooterProps)
             <div className='d-flex justify-content-around align-items-start'>
                 <button 
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0 ${listAddBorder}`}
+                    className={`btn btn-lg text-white border-0 rounded-0`}
                     // disabled={true}
                     onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}
                 >
@@ -51,28 +40,28 @@ export default function Footer({ changeCurrentPage, currentPage }: IFooterProps)
                 </button>
                 <button
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0 ${mapAddBorder}`}
+                    className={`btn btn-lg text-white border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.MapView)}
                 >
                     <i className={`${mapIconClass} text-footer-size`}></i>
                 </button>
                 <button 
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0 ${addListAddBorder}`}
+                    className={`btn btn-lg text-white border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.AddList)}
                 >
                     <i className={`${addListIconClass} text-footer-size`}></i>
                 </button>
                 <button 
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0 ${registerAddBorder}`}
+                    className={`btn btn-lg text-white border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
                 >
                     <i className={`${registerIconClass} text-footer-size`}></i>
                 </button>
                 <button
                     type="button"
-                    className={`btn btn-lg text-white border-0 rounded-0 ${loginAddBorder}`}
+                    className={`btn btn-lg text-white border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
                 >
                     <i className={`${loginIconClass} text-footer-size`}></i>

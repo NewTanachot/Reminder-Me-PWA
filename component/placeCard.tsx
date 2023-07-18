@@ -3,12 +3,12 @@
 import { ResponseModel } from "@/model/response_model";
 import { UpdatePlace } from "@/model/subentity_model";
 import { IPlaceCardProps } from "@/model/props_model";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function PlaceCard({ data, cardIndex }: IPlaceCardProps) {
+export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlaceCardProps) {
   
     // Const variable initialize
     const cardId = `placeCard_${cardIndex}`;
@@ -41,6 +41,22 @@ export default function PlaceCard({ data, cardIndex }: IPlaceCardProps) {
         }
     }
 
+    // delete place handler
+    const DeletePlace = async (placeId: string) => {
+
+        // set User state
+        deletePlaceHandler(placeId);
+
+        // fetch delete api
+        const response = await fetch(`${baseUrlApi}/place/${placeId}`, { method: "DELETE" });
+
+        if (!response.ok) {
+
+            const errorMessage: ResponseModel = await response.json();
+            alert(`Error message: ${errorMessage.message}`)
+        }
+    }
+
     // check disable filter
     useEffect(() => {
 
@@ -56,9 +72,15 @@ export default function PlaceCard({ data, cardIndex }: IPlaceCardProps) {
     }, [placeDisplayStatus]);
 
     return (
-        <div id={cardId} className="card mb-3 shadow-sm rounded-4">
-            <div className="card-header rounded-top-4 bg-milk-green">
-                <div className="d-flex justify-content-between align-items-center text-white text-size-20">
+        <div id={cardId} className="card mb-3 shadow-sm rounded-4 position-relative">
+            <div 
+                className="position-absolute top-0 start-100 translate-middle"
+                onClick={() => DeletePlace(data.id)}
+            >
+                <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
+            </div>
+            <div className="card-header rounded-top-4 bg-milk-orange">
+                <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div>{data.name}</div>
                     <div className="text-nowrap">
                         {data.locationDistance.toFixed(2)} km

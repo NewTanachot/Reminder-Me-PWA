@@ -1,7 +1,8 @@
 import { IListPageProps } from "@/model/props_model";
 import PlaceCard from "../placeCard";
+import loadingImage from '@/public/image/loading.png';
 
-export default function List({ places, currentUserId }: IListPageProps) {
+export default function List({ places, currentUserId, deletePlaceHandler }: IListPageProps) {
     return (
         <>
             {
@@ -9,11 +10,13 @@ export default function List({ places, currentUserId }: IListPageProps) {
 
                 places.map((element, index) => {
                     return (
-                        <PlaceCard key={index} data={element} cardIndex={index}></PlaceCard>
+                        <PlaceCard key={index} data={element} cardIndex={index} deletePlaceHandler={deletePlaceHandler}></PlaceCard>
                     );
                 })
-
-                : <h1 className='text-center'>Loading...</h1> 
+                : 
+                <div className="text-center m-5">
+                    <img className="spin-rotate" src={loadingImage.src} alt="loadingImage" width={60} height={60} />
+                </div>
             }
         </>
     )

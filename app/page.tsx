@@ -217,25 +217,6 @@ export default function Home() {
         maximumAge: 0, // no location cache
     }
 
-    // delete place handler
-    const DeletePlace = async (event : MouseEvent<HTMLButtonElement>): Promise<void> => {
-
-        // get placeId
-        const placeId = event.currentTarget.value;
-
-        // fetch delete api
-        const response = await fetch(`${baseUrlApi}/place/${placeId}`, { method: "DELETE" });
-
-        if (!response.ok) {
-
-            const errorMessage: ResponseModel = await response.json();
-            alert(`Error message: ${errorMessage.message}`)
-        }
-
-        // set User state
-        setPlaces(places.filter(e => e.id != placeId));
-    }
-
     // add place handler
     const AddNewPlace = async () => {
 
@@ -288,6 +269,10 @@ export default function Home() {
         user.current.userName = setUser.userName;
     }
 
+    const DeletePlaceHandler = (placeId: string) => {
+        setPlaces(places.filter(e => e.id != placeId));
+    }
+
     // change color theme
     // useEffect(() => {
     //     var a = document.getElementById("bgColor");
@@ -315,6 +300,7 @@ export default function Home() {
                                     return <List 
                                         places={places}
                                         currentUserId={user.current.userId}
+                                        deletePlaceHandler={DeletePlaceHandler}  
                                     ></List>
 
                                 case PwaCurrentPage.MapView:
