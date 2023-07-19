@@ -33,7 +33,7 @@ export default function Home() {
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.ReminderList);
-    const [places, setPlaces] = useState<IDisplayPlace[]>([]);
+    const [places, setPlaces] = useState<IDisplayPlace[] | undefined>(undefined);
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
 
@@ -138,8 +138,8 @@ export default function Home() {
                 // initialize list of DisplayPlace
                 let displayPlace: IDisplayPlace[] = [];
                 
-                // check if palce exist (more than 0 record) and check user for clear cache on update user
-                if (places.length > 0 && places.at(0)?.userId == user.current.userId) {
+                // check if palce [is not undefined], [more than 0 record] and [check user for clear cache on update user]
+                if (places && places.at(0)?.userId == user.current.userId) {
                     
                     console.log("not fetch")
                     displayPlace = places;
@@ -270,7 +270,7 @@ export default function Home() {
     }
 
     const DeletePlaceHandler = (placeId: string) => {
-        setPlaces(places.filter(e => e.id != placeId));
+        setPlaces(places?.filter(e => e.id != placeId));
     }
 
     // change color theme
@@ -289,8 +289,8 @@ export default function Home() {
                 currentPage={currentPage} 
                 changeCurrentPage={ChangeCurrentPage}
             ></Navbar>
-            <br />
-            <div className="container mt-2">
+            <br /> <br />
+            <div className="container">
                 <div className='py-5 px-3'>
                     {
                         (() => {

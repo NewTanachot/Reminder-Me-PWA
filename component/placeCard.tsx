@@ -42,18 +42,22 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
     }
 
     // delete place handler
-    const DeletePlace = async (placeId: string) => {
+    const DeletePlace = async (placeId: string, placeName: string) => {
 
-        // set User state
-        deletePlaceHandler(placeId);
+        // confirm delete card
+        if (confirm(`Are you sure about deleting your "${placeName}" card?`)) {
 
-        // fetch delete api
-        const response = await fetch(`${baseUrlApi}/place/${placeId}`, { method: "DELETE" });
+            // set User state
+            deletePlaceHandler(placeId);
 
-        if (!response.ok) {
+            // fetch delete api
+            const response = await fetch(`${baseUrlApi}/place/${placeId}`, { method: "DELETE" });
 
-            const errorMessage: ResponseModel = await response.json();
-            alert(`Error message: ${errorMessage.message}`)
+            if (!response.ok) {
+
+                const errorMessage: ResponseModel = await response.json();
+                alert(`Error message: ${errorMessage.message}`)
+            }
         }
     }
 
@@ -75,7 +79,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
         <div id={cardId} className="card mb-3 shadow-sm rounded-4 position-relative">
             <div 
                 className="position-absolute top-0 start-100 translate-middle"
-                onClick={() => DeletePlace(data.id)}
+                onClick={() => DeletePlace(data.id, data.name)}
             >
                 <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
             </div>
@@ -87,7 +91,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
                     </div>
                  </div>
             </div>
-            <div className="card-body rounded-bottom-4 bg-milk-yellow">
+            <div className="card-body rounded-bottom-4 bg-peach-65">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="text-dark">
                         Message: &nbsp;

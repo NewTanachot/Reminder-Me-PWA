@@ -32,7 +32,7 @@ export default function Footer({ changeCurrentPage, currentPage }: IFooterProps)
             <div className='d-flex justify-content-around align-items-start'>
                 <button 
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0`}
+                    className={`btn btn-lg text-peach border-0 rounded-0`}
                     // disabled={true}
                     onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}
                 >
@@ -40,28 +40,28 @@ export default function Footer({ changeCurrentPage, currentPage }: IFooterProps)
                 </button>
                 <button
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0`}
+                    className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.MapView)}
                 >
                     <i className={`${mapIconClass} text-footer-size`}></i>
                 </button>
                 <button 
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0`}
+                    className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.AddList)}
                 >
                     <i className={`${addListIconClass} text-footer-size`}></i>
                 </button>
                 <button 
                     type="button" 
-                    className={`btn btn-lg text-white border-0 rounded-0`}
+                    className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
                 >
                     <i className={`${registerIconClass} text-footer-size`}></i>
                 </button>
                 <button
                     type="button"
-                    className={`btn btn-lg text-white border-0 rounded-0`}
+                    className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
                 >
                     <i className={`${loginIconClass} text-footer-size`}></i>

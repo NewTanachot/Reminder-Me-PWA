@@ -61,6 +61,18 @@ html, body {
     background-color: #FFC862 !important;
 }
 
+.text-milk-orange {
+    color: #FFC862 !important;
+}
+
+.text-peach {
+    color: #FFE5B4 !important;
+}
+
+.bg-peach-65 {
+    background-color: #FFE5B465 !important;
+}
+
 .bg-viridian-green {
     background-color: #40826D !important;
 }
@@ -80,13 +92,13 @@ html, body {
 }
 
 .text-delete-card-size {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 /*  --- [ Spin Rotation Class ] ---  */
 
 .spin-rotate {
-    animation: rotation 1.25s infinite linear;
+    animation: rotation .75s infinite linear;
   }
 
 @keyframes rotation {

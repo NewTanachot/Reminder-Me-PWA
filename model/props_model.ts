@@ -19,7 +19,7 @@ export interface IPlaceCardProps {
 }
 
 export interface IListPageProps {
-    places: IDisplayPlace[],
+    places: IDisplayPlace[] | undefined,
     currentUserId: string,
     deletePlaceHandler: (placeId: string) => void
 }
