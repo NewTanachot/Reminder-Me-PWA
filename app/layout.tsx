@@ -4,11 +4,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import appIcon from '@/public/image/web-icon/favicon.ico';
 import appleAppIcon from '@/public/image/apple-icon/appstore_v2.png';
 import { Metadata } from 'next'
-import { Itim } from 'next/font/google' // Athiti, Itim, Sriracha
+import { Athiti } from 'next/font/google' // Athiti, Itim, Sriracha
 
-const googleFont = Itim({
-    // weight: '600',
-    weight: '400',
+const googleFont = Athiti({
+    // weight: '400',
+    weight: '600',
     subsets: ['latin'],
 });
 

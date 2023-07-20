@@ -31,11 +31,13 @@ html, body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, .75);
 }
 
-/*  --- [ Color Class ] ---  */
+/*  --- [ Filter Class ] ---  */
 
 .filter-card {
     filter: grayscale(100%) !important;
 }
+
+/*  --- [ Color Class ] ---  */
 
 .bg-whitesmoke {
     background-color: whitesmoke !important;
@@ -66,11 +68,11 @@ html, body {
 }
 
 .text-peach {
-    color: #FFE5B4 !important;
+    color: #FFFDD0 !important;
 }
 
 .bg-peach-65 {
-    background-color: #FFE5B465 !important;
+    background-color: #FFFDD065 !important;
 }
 
 .bg-viridian-green {

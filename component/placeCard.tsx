@@ -83,7 +83,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
             >
                 <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
             </div>
-            <div className="card-header rounded-top-4 bg-milk-orange">
+            <div className="card-header rounded-top-4 bg-warning-subtle text-viridian-green">
                 <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div>{data.name}</div>
                     <div className="text-nowrap">
