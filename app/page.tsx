@@ -4,8 +4,8 @@ import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/exten
 import { CurrentUserRef, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
-import { useRouter } from 'next/navigation';
-import { MouseEvent, useEffect, useState, useRef } from 'react';
+// import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef } from 'react';
 import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import { PwaCurrentPage } from '@/model/enum_model';
 import List from '@/component/mainpage/list';
@@ -30,10 +30,11 @@ export default function Home() {
 
     // react hook initialize
     const user = useRef<CurrentUserRef>({ userId: "", userName: "" });
+    const indexedDbUserStore = useRef<IDBObjectStore>();
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.ReminderList);
-    const [places, setPlaces] = useState<IDisplayPlace[] | undefined>(undefined);
+    const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
 
@@ -77,11 +78,13 @@ export default function Home() {
                     // create transaction of indexedDB
                     const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
                 
-                    // create store of indexedDB transaction
+                    // create store of indexedDB transaction and set it globle useRef
                     const store = transaction.objectStore(indexedDB_UserStore);
-                
+                    indexedDbUserStore.current = store;
+
+
                     // get current user from indexedDB
-                    const response = store.get(indexedDB_UserKey);
+                    const response = indexedDbUserStore.current.get(indexedDB_UserKey);
         
                     // get fail handler
                     response.onerror = () => {
@@ -128,61 +131,60 @@ export default function Home() {
     }, [currentLocation, currentPage])
 
     // fetch place data from api
-    const FetchPlaceData = async () => {
+    const FetchPlaceData = async (isForceFetch: boolean = false) => {
 
         try {
             // check current user from global variable
-            console.log(user.current.userId)
             if (IsStringValid(user.current.userId)) {
 
                 // initialize list of DisplayPlace
                 let displayPlace: IDisplayPlace[] = [];
                 
                 // check if palce [is not undefined], [more than 0 record] and [check user for clear cache on update user]
-                if (places && places.at(0)?.userId == user.current.userId) {
-                    
-                    console.log("not fetch")
-                    displayPlace = places;
-                } 
+                // and check if force fetch is enable
+                // if (places && (places.at(0)?.userId == user.current.userId || !isForceFetch)) {
+
+                //     console.log("not fetch");
+                //     displayPlace = places;
+                // } 
+                // else {)
+
+                console.log("fetch get place api"); // fetch get api
+                const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`);
+
+                if (!response.ok) {
+        
+                    const errorMessage: ResponseModel = await response.json();
+                    alert(`Error message: ${errorMessage.message}`)
+                }
                 else {
+                    const calculationPlace: Place[] = await response.json();
+                    console.log(calculationPlace)
 
-                    // fetch get api
-                    console.log("fetch get place api");
-                    const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`);
+                    // find location distance
+                    displayPlace = calculationPlace.map((e) => {
 
-                    if (!response.ok) {
-            
-                        const errorMessage: ResponseModel = await response.json();
-                        alert(`Error message: ${errorMessage.message}`)
-                    }
-                    else {
-                        const calculationPlace: Place[] = await response.json();
+                        // get location distance for each place
+                        const newTypePlace: IDisplayPlace = {
+                            id: e.id,
+                            name: e.name,
+                            latitude: DecimalToNumber(e.latitude),
+                            longitude: DecimalToNumber(e.longitude),
+                            reminderMessage: e.reminderMessage,
+                            reminderDate: StringDateToDisplayDate(e.reminderDate),
+                            isDisable: e.isDisable,
+                            createdAt: e.createdAt,
+                            userId: e.userId,
+                            locationDistance: GetDistanceBetweenPlace({
+                                latitude_1: currentLocation?.latitude,
+                                longitude_1: currentLocation?.longitude,
+                                latitude_2: DecimalToNumber(e.latitude),
+                                longitude_2: DecimalToNumber(e.longitude)
+                            })
+                        } 
 
-                        // find location distance
-                        displayPlace = calculationPlace.map((e) => {
-
-                            // get location distance for each place
-                            const newTypePlace: IDisplayPlace = {
-                                id: e.id,
-                                name: e.name,
-                                latitude: DecimalToNumber(e.latitude),
-                                longitude: DecimalToNumber(e.longitude),
-                                reminderMessage: e.reminderMessage,
-                                reminderDate: StringDateToDisplayDate(e.reminderDate),
-                                isDisable: e.isDisable,
-                                createdAt: e.createdAt,
-                                userId: e.userId,
-                                locationDistance: GetDistanceBetweenPlace({
-                                    latitude_1: currentLocation?.latitude,
-                                    longitude_1: currentLocation?.longitude,
-                                    latitude_2: DecimalToNumber(e.latitude),
-                                    longitude_2: DecimalToNumber(e.longitude)
-                                })
-                            } 
-
-                            return newTypePlace;
-                        })
-                    }
+                        return newTypePlace;
+                    })
                 }
 
                 // set user State and check OrderBy distance

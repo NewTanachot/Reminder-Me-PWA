@@ -13,6 +13,38 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps) {
 
+    // Define a function to set up indexedDB
+    const SetupIndexedDB = () => {
+        return new Promise<IDBObjectStore>((resolve, reject) => {
+            // set login user to indexedDB -> open indexedDB
+            const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
+        
+            // open indexedDB error handler
+            request.onerror = (event: Event) => {
+                // reject the promise
+                alert("Error open indexedDB: " + event);
+                reject();
+            };
+        
+            // open indexedDB success handler
+            request.onsuccess = () => {
+                // set up indexedDB
+                const dbContext = request.result;
+        
+                // check if store name not exist -> create store name
+                if (!dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                    dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+                }
+        
+                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite");
+                const store = transaction.objectStore(indexedDB_UserStore);
+
+                // resolve the store to promise 
+                resolve(store);
+            };
+        });
+    };
+    
     const userLogin = async () => {
         
         // get data from input form
@@ -41,39 +73,18 @@ export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps
             // get currentUser user
             const currentUser: User = await response.json();
 
-            // set login user to indexedDB -> open indexedDB
-            const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
+            // setup indexedDb
+            const indexedDbUserStore = await SetupIndexedDB();
 
-            // open indexedDB error handler
-            request.onerror = (event: Event) => {
-                alert("Error open indexedDB: " + event);
-            }
+            // store currentUser to indexedDB
+            indexedDbUserStore.put({ CurrentUser: indexedDB_UserKey, ...currentUser });
 
-            // open indexedDB success handler
-            request.onsuccess = () => {
+            // set new user to useRef in list page
+            setCurrentUser({ userId: currentUser.id, userName: currentUser.name });
 
-                // set up indexedDB
-                const dbContext = request.result;
-
-                // check if store name not exist -> create store name
-                if (!dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
-                    dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
-                }
-
-                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
-                const store = transaction.objectStore(indexedDB_UserStore);
-
-
-                // store currentUser to indexedDB
-                store.put({ CurrentUser: indexedDB_UserKey, ...currentUser });
-
-                // set new user to useRef in list page
-                setCurrentUser({ userId: currentUser.id, userName: currentUser.name });
-
-                // Reroute to home page
-                changeCurrentPage(PwaCurrentPage.ReminderList);
-                // router.replace("/");
-            }
+            // Reroute to home page
+            changeCurrentPage(PwaCurrentPage.ReminderList);
+            // router.replace("/");
         }
     }
 

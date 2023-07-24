@@ -66,6 +66,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
 
         const placeCard = document.getElementById(cardId);
 
+        console.log(data.name + "_" + placeDisplayStatus)
         if (placeDisplayStatus) {
             placeCard?.classList.add("filter-card");
         }
