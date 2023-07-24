@@ -3,7 +3,7 @@ import PlaceCard from "../placeCard";
 import Loading from "../loading";
 import NotFound from "../notfound";
 
-export default function List({ places, currentUserId, deletePlaceHandler }: IListPageProps) {
+export default function List({ places, currentUserId, deletePlaceHandler, changePlaceStatusHandler }: IListPageProps) {
 
     return (
         <>
@@ -16,7 +16,13 @@ export default function List({ places, currentUserId, deletePlaceHandler }: ILis
                 }      
                 else {
                     return places.map((element, index) => {
-                        return <PlaceCard key={index} data={element} cardIndex={index} deletePlaceHandler={deletePlaceHandler}></PlaceCard>
+                        return <PlaceCard 
+                            key={index} 
+                            data={element} 
+                            cardIndex={index} 
+                            deletePlaceHandler={deletePlaceHandler}
+                            changePlaceStatusHandler={changePlaceStatusHandler}
+                        ></PlaceCard>
                     }) 
                 }
 

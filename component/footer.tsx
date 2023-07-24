@@ -28,7 +28,7 @@ export default function Footer({ changeCurrentPage, currentPage }: IFooterProps)
     }
 
     return (
-        <footer className='fixed-bottom bg-viridian-green px-2 pb-3 pt-0 shadow-top'>
+        <footer className='fixed-bottom bg-viridian-green px-2 pb-3 pt-0 shadow-top rounded-top-5'>
             <div className='d-flex justify-content-around align-items-start'>
                 <button 
                     type="button" 

@@ -3,16 +3,16 @@
 import { ResponseModel } from "@/model/response_model";
 import { UpdatePlace } from "@/model/subentity_model";
 import { IPlaceCardProps } from "@/model/props_model";
-import { MouseEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlaceCardProps) {
+export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changePlaceStatusHandler }: IPlaceCardProps) {
   
     // Const variable initialize
     const cardId = `placeCard_${cardIndex}`;
-
+    
     // react hook initialize
     const [ placeDisplayStatus, setPlaceStatus ] = useState<boolean>(data.isDisable);
 
@@ -21,6 +21,9 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
         
         // update UI check box by useState
         setPlaceStatus(!placeDisplayStatus);
+
+        // update places state (Cache data) in list page
+        changePlaceStatusHandler(data.id);
 
         // update place display status data with only
         const updatePlace: UpdatePlace = {
@@ -66,7 +69,6 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
 
         const placeCard = document.getElementById(cardId);
 
-        console.log(data.name + "_" + placeDisplayStatus)
         if (placeDisplayStatus) {
             placeCard?.classList.add("filter-card");
         }
@@ -74,7 +76,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler }: IPlac
             placeCard?.classList.remove("filter-card");
         }
 
-    }, [placeDisplayStatus]);
+    });
 
     return (
         <div id={cardId} className="card mb-3 shadow-sm rounded-4 position-relative">

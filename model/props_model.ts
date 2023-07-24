@@ -1,3 +1,4 @@
+import { StringLiteralType } from "typescript"
 import { PwaCurrentPage } from "./enum_model"
 import { CurrentUserRef, IDisplayPlace } from "./subentity_model"
 
@@ -15,13 +16,15 @@ export interface IFooterProps {
 export interface IPlaceCardProps {
     cardIndex: number,
     data: IDisplayPlace,
-    deletePlaceHandler: (placeId: string) => void
+    deletePlaceHandler: (placeId: string) => void,
+    changePlaceStatusHandler: (placeId: string) => void
 }
 
 export interface IListPageProps {
     places: IDisplayPlace[] | undefined,
     currentUserId: string,
-    deletePlaceHandler: (placeId: string) => void
+    deletePlaceHandler: (placeId: string) => void,
+    changePlaceStatusHandler: (placeId: string) => void
 }
 
 

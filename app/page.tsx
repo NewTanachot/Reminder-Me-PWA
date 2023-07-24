@@ -118,10 +118,16 @@ export default function Home() {
     useEffect(() => {
 
         // check if mount rount
-        if (!isMountRound.current && currentPage == PwaCurrentPage.ReminderList) {
+        if (!isMountRound.current) {
 
-            console.log(currentLocation);
-            FetchPlaceData();
+            if (currentPage == PwaCurrentPage.ReminderList) {
+                console.log(currentLocation);
+                FetchPlaceData();
+            }
+            else {
+                console.log("not list page");
+            }
+            
         } 
         else {
             console.log("Mount Round!")
@@ -129,6 +135,7 @@ export default function Home() {
         }
 
     }, [currentLocation, currentPage])
+
 
     // fetch place data from api
     const FetchPlaceData = async (isForceFetch: boolean = false) => {
@@ -140,55 +147,56 @@ export default function Home() {
                 // initialize list of DisplayPlace
                 let displayPlace: IDisplayPlace[] = [];
                 
-                // check if palce [is not undefined], [more than 0 record] and [check user for clear cache on update user]
-                // and check if force fetch is enable
-                // if (places && (places.at(0)?.userId == user.current.userId || !isForceFetch)) {
+                // check if palce [is not undefined], and [check if force fetch is enable]
+                if (places && places.at(0)?.userId == user.current.userId && !isForceFetch) {
 
-                //     console.log("not fetch");
-                //     displayPlace = places;
-                // } 
-                // else {)
-
-                console.log("fetch get place api"); // fetch get api
-                const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`);
-
-                if (!response.ok) {
-        
-                    const errorMessage: ResponseModel = await response.json();
-                    alert(`Error message: ${errorMessage.message}`)
-                }
+                    console.log("not fetch");
+                    displayPlace = places;
+                } 
                 else {
-                    const calculationPlace: Place[] = await response.json();
-                    console.log(calculationPlace)
 
-                    // find location distance
-                    displayPlace = calculationPlace.map((e) => {
-
-                        // get location distance for each place
-                        const newTypePlace: IDisplayPlace = {
-                            id: e.id,
-                            name: e.name,
-                            latitude: DecimalToNumber(e.latitude),
-                            longitude: DecimalToNumber(e.longitude),
-                            reminderMessage: e.reminderMessage,
-                            reminderDate: StringDateToDisplayDate(e.reminderDate),
-                            isDisable: e.isDisable,
-                            createdAt: e.createdAt,
-                            userId: e.userId,
-                            locationDistance: GetDistanceBetweenPlace({
-                                latitude_1: currentLocation?.latitude,
-                                longitude_1: currentLocation?.longitude,
-                                latitude_2: DecimalToNumber(e.latitude),
-                                longitude_2: DecimalToNumber(e.longitude)
-                            })
-                        } 
-
-                        return newTypePlace;
-                    })
+                    // fetch get api
+                    console.log("fetch get place api");
+                    const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`);
+    
+                    if (!response.ok) {
+            
+                        const errorMessage: ResponseModel = await response.json();
+                        alert(`Error message: ${errorMessage.message}`)
+                    }
+                    else {
+                        const calculationPlace: Place[] = await response.json();
+                        console.log(calculationPlace)
+    
+                        // find location distance
+                        displayPlace = calculationPlace.map((e) => {
+    
+                            // get location distance for each place
+                            const newTypePlace: IDisplayPlace = {
+                                id: e.id,
+                                name: e.name,
+                                latitude: DecimalToNumber(e.latitude),
+                                longitude: DecimalToNumber(e.longitude),
+                                reminderMessage: e.reminderMessage,
+                                reminderDate: StringDateToDisplayDate(e.reminderDate),
+                                isDisable: e.isDisable,
+                                createdAt: e.createdAt,
+                                userId: e.userId,
+                                locationDistance: GetDistanceBetweenPlace({
+                                    latitude_1: currentLocation?.latitude,
+                                    longitude_1: currentLocation?.longitude,
+                                    latitude_2: DecimalToNumber(e.latitude),
+                                    longitude_2: DecimalToNumber(e.longitude)
+                                })
+                            } 
+    
+                            return newTypePlace;
+                        })
+                    }
+    
+                    // set user State and check OrderBy distance
+                    setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
                 }
-
-                // set user State and check OrderBy distance
-                setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
             }
             else {
                 alert(`Error message: User not found.`)
@@ -275,6 +283,18 @@ export default function Home() {
         setPlaces(places?.filter(e => e.id != placeId));
     }
 
+    const ChangePlaceStatusHandler = (placeId: string) => {
+
+        setPlaces(places?.map(e => {
+
+            if (e.id === placeId) {
+                e.isDisable = !e.isDisable;
+            }
+
+            return e;
+        }));
+    }
+
     // change color theme
     // useEffect(() => {
     //     var a = document.getElementById("bgColor");
@@ -303,6 +323,7 @@ export default function Home() {
                                         places={places}
                                         currentUserId={user.current.userId}
                                         deletePlaceHandler={DeletePlaceHandler}  
+                                        changePlaceStatusHandler={ChangePlaceStatusHandler}
                                     ></List>
 
                                 case PwaCurrentPage.MapView:
