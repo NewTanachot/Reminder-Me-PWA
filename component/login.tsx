@@ -11,7 +11,7 @@ const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps) {
+export default function Login({ setCurrentUser, changeCurrentPage, currentPage }: ILoginProps) {
 
     // Define a function to set up indexedDB
     const SetupIndexedDB = () => {
@@ -45,7 +45,7 @@ export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps
         });
     };
     
-    const userLogin = async () => {
+    const UserLogin = async () => {
         
         // get data from input form
         const userNameInput = document.getElementById("usernameInput") as HTMLInputElement;
@@ -91,9 +91,10 @@ export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps
     return (
         <div className="card shadow-sm bg-peach-65">
             <div className="card-header bg-warning-subtle text-viridian-green">
-                <h2 className="m-0">Login to Reminder Me app</h2>
+                <h2 className="m-0">Login to Reminder Me</h2>
             </div>
             <div className="card-body m-2">
+                {currentPage.successAlertBox ? <span>HAVE SUCCESS BOX</span> : <></>}
                 <div className="mb-3">
                     <p className="mb-1">
                         Usename:
@@ -109,13 +110,13 @@ export default function Login({ setCurrentUser, changeCurrentPage }: ILoginProps
                 <div className="mt-4 text-center">
                     <button 
                         className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
-                        onClick={userLogin}
+                        onClick={UserLogin}
                     >
                         Log In
                     </button>
                     <button
                         className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2"
-                        onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}
+                        onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
                     >
                         Sign Up
                     </button>

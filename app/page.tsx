@@ -1,7 +1,7 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
-import { CurrentUserRef, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel } from '@/model/subentity_model';
+import { CurrentUserRef, ICurrentPage, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel } from '@/model/subentity_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
 // import { useRouter } from 'next/navigation';
@@ -11,8 +11,8 @@ import { PwaCurrentPage } from '@/model/enum_model';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/navbar';
 import Map from '@/component/mainpage/map';
-import Login from '@/component/mainpage/login';
-import Register from '@/component/mainpage/register';
+import Login from '@/component/login';
+import Register from '@/component/register';
 import Footer from '@/component/footer';
 import AddList from '@/component/mainpage/addList';
 
@@ -33,7 +33,7 @@ export default function Home() {
     const indexedDbUserStore = useRef<IDBObjectStore>();
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
-    const [currentPage, setCurrentPage] = useState<PwaCurrentPage>(PwaCurrentPage.ReminderList);
+    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.ReminderList, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
@@ -60,7 +60,7 @@ export default function Home() {
             skipIndexedDbOnSuccess.current = true;
 
             // change to login page
-            setCurrentPage(PwaCurrentPage.Login);
+            ChangeCurrentPage(PwaCurrentPage.Login);
             // router.replace('/auth/login');
         }
 
@@ -89,7 +89,7 @@ export default function Home() {
                     // get fail handler
                     response.onerror = () => {
                         // change to login page
-                        setCurrentPage(PwaCurrentPage.Login);
+                        ChangeCurrentPage(PwaCurrentPage.Login);
                         // router.replace('/auth/login');
                     }
         
@@ -106,7 +106,7 @@ export default function Home() {
                 }
                 else {
                     // change to login page
-                    setCurrentPage(PwaCurrentPage.Login);
+                    ChangeCurrentPage(PwaCurrentPage.Login);
                     // router.replace('/auth/login');
                 }
             }
@@ -120,7 +120,7 @@ export default function Home() {
         // check if mount rount
         if (!isMountRound.current) {
 
-            if (currentPage == PwaCurrentPage.ReminderList) {
+            if (currentPage.pageName == PwaCurrentPage.ReminderList) {
                 console.log(currentLocation);
                 FetchPlaceData();
             }
@@ -135,7 +135,6 @@ export default function Home() {
         }
 
     }, [currentLocation, currentPage])
-
 
     // fetch place data from api
     const FetchPlaceData = async (isForceFetch: boolean = false) => {
@@ -270,8 +269,11 @@ export default function Home() {
     }
 
     // change Current page method
-    const ChangeCurrentPage = (page: PwaCurrentPage) => {
-        setCurrentPage(page);
+    const ChangeCurrentPage = (page: PwaCurrentPage, successBox: boolean = false) => {
+        setCurrentPage({
+            pageName: page,
+            successAlertBox: successBox
+        });
     }
 
     const SetCurrentUser = (setUser: CurrentUserRef) => {
@@ -308,7 +310,7 @@ export default function Home() {
         <main>
             <Navbar 
                 userName={user.current.userName} 
-                currentPage={currentPage} 
+                currentPageName={currentPage.pageName} 
                 changeCurrentPage={ChangeCurrentPage}
             ></Navbar>
             <br /> <br />
@@ -316,7 +318,7 @@ export default function Home() {
                 <div className='py-5 px-3'>
                     {
                         (() => {
-                            switch (currentPage) {
+                            switch (currentPage.pageName) {
 
                                 case PwaCurrentPage.ReminderList:
                                     return <List 
@@ -334,19 +336,22 @@ export default function Home() {
 
                                 case PwaCurrentPage.Login:
                                     return <Login 
+                                        currentPage={currentPage}
                                         setCurrentUser={SetCurrentUser} 
                                         changeCurrentPage={ChangeCurrentPage}
                                     ></Login>
 
                                 case PwaCurrentPage.Register:
-                                    return <Register></Register>
+                                    return <Register
+                                        changeCurrentPage={ChangeCurrentPage}
+                                    ></Register>
                             }
                         })()
                     }
                 </div>
             </div>
             <br /><br />
-            <Footer changeCurrentPage={ChangeCurrentPage} currentPage={currentPage}></Footer>
+            <Footer changeCurrentPage={ChangeCurrentPage} currentPageName={currentPage.pageName}></Footer>
         </main>
     )
   }

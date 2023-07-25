@@ -1,16 +1,16 @@
 import { StringLiteralType } from "typescript"
 import { PwaCurrentPage } from "./enum_model"
-import { CurrentUserRef, IDisplayPlace } from "./subentity_model"
+import { CurrentUserRef, ICurrentPage, IDisplayPlace } from "./subentity_model"
 
 export interface INavbarProps {
     userName: string,
-    currentPage: PwaCurrentPage,
-    changeCurrentPage: (page: PwaCurrentPage) => void
+    currentPageName: PwaCurrentPage,
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
 }
 
 export interface IFooterProps {
-    currentPage: PwaCurrentPage,
-    changeCurrentPage: (page: PwaCurrentPage) => void
+    currentPageName: PwaCurrentPage,
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
 }
 
 export interface IPlaceCardProps {
@@ -27,8 +27,13 @@ export interface IListPageProps {
     changePlaceStatusHandler: (placeId: string) => void
 }
 
-
 export interface ILoginProps {
+    currentPage: ICurrentPage,
     setCurrentUser: (setUser: CurrentUserRef) => void,
-    changeCurrentPage: (page: PwaCurrentPage) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
 }
+
+export interface IRegisterProps {
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+}
+

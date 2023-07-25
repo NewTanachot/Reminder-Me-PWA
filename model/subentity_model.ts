@@ -1,5 +1,6 @@
 import { User } from "@prisma/client";
 import { Decimal } from "@prisma/client/runtime";
+import { PwaCurrentPage } from "./enum_model";
 
 export type UserExtensionModel = {
     name: string,
@@ -47,4 +48,9 @@ export interface IDisplayPlace {
 
 export interface IUserIndexedDB extends User {
     CurrentUser: string
+}
+
+export interface ICurrentPage {
+    pageName: PwaCurrentPage,
+    successAlertBox: boolean
 }
