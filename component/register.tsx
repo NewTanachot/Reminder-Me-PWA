@@ -70,13 +70,6 @@ export default function Register({ changeCurrentPage }: IRegisterProps) {
                         Back
                     </button>
                 </div>
-                {/* <div>
-                    <button onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}>back</button>
-                    &nbsp; &nbsp; &nbsp;
-                    <button onClick={userLogin}>login</button>
-                    &nbsp; &nbsp; &nbsp;
-                    <button onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}>register</button>
-                </div> */}
             </div>
         </div>
     )

@@ -3,6 +3,7 @@ import { ILoginProps } from "@/model/props_model";
 import { ResponseModel } from "@/model/response_model";
 import { UserExtensionModel } from "@/model/subentity_model";
 import { User } from "@prisma/client";
+import SuccessModal from "./modal/success";
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -89,45 +90,47 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
     }
 
     return (
-        <div className="card shadow-sm bg-peach-65">
-            <div className="card-header bg-warning-subtle text-viridian-green">
-                <h2 className="m-0">Login to Reminder Me</h2>
-            </div>
-            <div className="card-body m-2">
-                {currentPage.successAlertBox ? <span>HAVE SUCCESS BOX</span> : <></>}
-                <div className="mb-3">
-                    <p className="mb-1">
-                        Usename:
-                    </p>
-                    <input className="form-control w-100" id="usernameInput" type="text" min={1} max={20} required/>
+        <div>
+            {
+                currentPage.successAlertBox 
+                    // ? <span>HAVE SUCCESS BOX</span> 
+                    ? <SuccessModal modalMessage="Success ohm is good"></SuccessModal>
+                    : <></>
+            }
+
+            <SuccessModal modalMessage="Success ohm is good"></SuccessModal>
+            <div className="card shadow-sm bg-peach-65">
+                <div className="card-header bg-warning-subtle text-viridian-green">
+                    <h2 className="m-0">Login to Reminder Me</h2>
                 </div>
-                <div className="mt-3">
-                    <p className="mb-1">
-                        Password:
-                    </p>
-                    <input className="form-control w-100" id="passwordInput" type="password" min={1} max={20} required/>
+                <div className="card-body m-2">
+                    <div className="mb-3">
+                        <p className="mb-1">
+                            Usename:
+                        </p>
+                        <input className="form-control w-100" id="usernameInput" type="text" min={1} max={20} required/>
+                    </div>
+                    <div className="mt-3">
+                        <p className="mb-1">
+                            Password:
+                        </p>
+                        <input className="form-control w-100" id="passwordInput" type="password" min={1} max={20} required/>
+                    </div>
+                    <div className="mt-4 text-center">
+                        <button 
+                            className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
+                            onClick={UserLogin}
+                        >
+                            Log In
+                        </button>
+                        <button
+                            className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2"
+                            onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
+                        >
+                            Sign Up
+                        </button>
+                    </div>
                 </div>
-                <div className="mt-4 text-center">
-                    <button 
-                        className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
-                        onClick={UserLogin}
-                    >
-                        Log In
-                    </button>
-                    <button
-                        className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2"
-                        onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
-                    >
-                        Sign Up
-                    </button>
-                </div>
-                {/* <div>
-                    <button onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}>back</button>
-                    &nbsp; &nbsp; &nbsp;
-                    <button onClick={userLogin}>login</button>
-                    &nbsp; &nbsp; &nbsp;
-                    <button onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}>register</button>
-                </div> */}
             </div>
         </div>
     );

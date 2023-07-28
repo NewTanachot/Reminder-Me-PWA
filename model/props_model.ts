@@ -37,3 +37,7 @@ export interface IRegisterProps {
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
 }
 
+export interface ISuccessModal {
+    modalMessage: string
+}
+
