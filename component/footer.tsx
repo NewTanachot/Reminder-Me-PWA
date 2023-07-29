@@ -6,7 +6,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
     let listIconClass = "bi bi-folder";
     let mapIconClass = "bi bi-geo-alt";
     let addListIconClass = "bi bi-plus-circle";
-    let registerIconClass = "bi bi-compass";
+    let evBatteryIconClass = "bi bi-ev-station";
     let loginIconClass = "bi bi-people";
     
     switch (currentPageName) {
@@ -19,8 +19,8 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
         case PwaCurrentPage.AddList:
             addListIconClass += "-fill";
             break;
-        case PwaCurrentPage.Register:
-            registerIconClass += "-fill";
+        case PwaCurrentPage.EvBattery:
+            evBatteryIconClass += "-fill";
             break;
         case PwaCurrentPage.Login:
             loginIconClass += "-fill";
@@ -57,10 +57,10 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                 <button 
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
-                    disabled={currentPageName == PwaCurrentPage.Register}
-                    onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
+                    disabled={currentPageName == PwaCurrentPage.EvBattery}
+                    onClick={() => changeCurrentPage(PwaCurrentPage.EvBattery)}
                 >
-                    <i className={`${registerIconClass} text-footer-size`}></i>
+                    <i className={`${evBatteryIconClass} text-footer-size`}></i>
                 </button>
                 <button
                     type="button"

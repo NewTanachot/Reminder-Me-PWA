@@ -1,7 +1,8 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
-import { CurrentUserRef, ICurrentPage, IDisplayPlace, IUserIndexedDB, PlaceExtensionModel } from '@/model/subentity_model';
+import { PlaceExtensionModel } from '@/model/subentity_model';
+import { CurrentUserRef, ICurrentPage, IDisplayPlace, IUserIndexedDB } from '@/model/useState_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
 // import { useRouter } from 'next/navigation';
@@ -15,6 +16,7 @@ import Login from '@/component/login';
 import Register from '@/component/register';
 import Footer from '@/component/footer';
 import AddList from '@/component/mainpage/addList';
+import EvBattery from '@/component/mainpage/evbattery';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -333,6 +335,9 @@ export default function Home() {
 
                                 case PwaCurrentPage.AddList:
                                     return <AddList></AddList>
+
+                                case PwaCurrentPage.EvBattery:
+                                    return <EvBattery></EvBattery>
 
                                 case PwaCurrentPage.Login:
                                     return <Login 
