@@ -122,7 +122,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
 
             <div className="card shadow-sm bg-peach-65">
                 <div className="card-header bg-warning-subtle text-viridian-green">
-                    <h2 className="m-0">Login to Reminder Me</h2>
+                    <h2 className="m-0 text-center">Login to Reminder Me</h2>
                 </div>
                 <div className="card-body m-2">
                     <div className="mb-3">

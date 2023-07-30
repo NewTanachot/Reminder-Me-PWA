@@ -1,6 +1,5 @@
-import { StringLiteralType } from "typescript"
 import { PwaCurrentPage } from "./enum_model"
-import { CurrentUserRef, ICurrentPage, IDisplayPlace } from "./subentity_model"
+import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useState_model"
 
 export interface INavbarProps {
     userName: string,
@@ -27,6 +26,11 @@ export interface IListPageProps {
     changePlaceStatusHandler: (placeId: string) => void
 }
 
+export interface ISettingProps {
+    currentUserName: string,
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+}
+
 export interface ILoginProps {
     currentPage: ICurrentPage,
     setCurrentUser: (setUser: CurrentUserRef) => void,
@@ -40,4 +44,3 @@ export interface IRegisterProps {
 export interface ISuccessModal {
     modalMessage: string
 }
-

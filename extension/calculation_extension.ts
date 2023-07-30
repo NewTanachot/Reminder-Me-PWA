@@ -1,5 +1,5 @@
 import { CalDistanceModel } from "@/model/calculation_model";
-import { IDisplayPlace } from "@/model/subentity_model";
+import { IDisplayPlace } from "@/model/useState_model";
 
 export const GetDistanceBetweenPlace = (calModel: CalDistanceModel) => {
 

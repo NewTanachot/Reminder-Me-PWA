@@ -17,6 +17,7 @@ import Register from '@/component/register';
 import Footer from '@/component/footer';
 import AddList from '@/component/mainpage/addList';
 import EvBattery from '@/component/mainpage/evbattery';
+import Setting from '@/component/mainpage/setting';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -338,6 +339,12 @@ export default function Home() {
 
                                 case PwaCurrentPage.EvBattery:
                                     return <EvBattery></EvBattery>
+
+                                case PwaCurrentPage.Setting:
+                                    return <Setting
+                                        currentUserName={user.current.userName}
+                                        changeCurrentPage={ChangeCurrentPage}
+                                    ></Setting>
 
                                 case PwaCurrentPage.Login:
                                     return <Login 
