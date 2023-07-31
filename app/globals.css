@@ -37,30 +37,32 @@ html, body {
     filter: grayscale(100%) !important;
 }
 
-/*  --- [ Color Class ] ---  */
+/*  --- [ Background Color Class ] ---  */
 
 .bg-whitesmoke {
     background-color: whitesmoke !important;
-}
-
-.text-cornflowerblue {
-    color: #6495ED !important;
-}
-
-.text-cobalt-blue {
-    color: #0047AB !important;
 }
 
 .bg-milk-yellow {
     background-color: #FFFACA50 !important;
 }
 
-.text-milk-yellow {
-    color: #fffaca !important;
+.bg-peach-65 {
+    background-color: #FFFDD065 !important;
+}
+
+.bg-viridian-green {
+    background-color: #40826D !important;
 }
 
 .bg-milk-orange {
     background-color: #FFC862 !important;
+}
+
+/*  --- [ Text Color Class ] ---  */
+
+.text-milk-yellow {
+    color: #fffaca !important;
 }
 
 .text-milk-orange {
@@ -71,12 +73,12 @@ html, body {
     color: #FFFDD0 !important;
 }
 
-.bg-peach-65 {
-    background-color: #FFFDD065 !important;
+.text-cornflowerblue {
+    color: #6495ED !important;
 }
 
-.bg-viridian-green {
-    background-color: #40826D !important;
+.text-cobalt-blue {
+    color: #0047AB !important;
 }
 
 .text-viridian-green {
@@ -100,7 +102,7 @@ html, body {
 /*  --- [ Spin Rotation Class ] ---  */
 
 .spin-rotate {
-    animation: rotation .75s infinite linear;
+    animation: rotation 1s infinite ease;
   }
 
 @keyframes rotation {
@@ -110,4 +112,4 @@ html, body {
     to {
       transform: rotate(359deg);
     }
-  }
+}

@@ -96,12 +96,12 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
             </div>
             <div className="card-body rounded-bottom-4 bg-peach-65">
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-dark">
+                    <p className="text-dark m-0 lh-1">
                         Message: &nbsp;
                         <span className="text-secondary">
                             {data.reminderMessage ?? "-"}
                         </span>
-                    </div>
+                    </p>
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
                     <div className="text-dark">

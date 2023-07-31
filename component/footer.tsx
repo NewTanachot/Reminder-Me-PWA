@@ -33,7 +33,6 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                 <button 
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
-                    // disabled={currentPageName == PwaCurrentPage.ReminderList}
                     onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}
                 >
                     <i className={`${listIconClass} text-footer-size`}></i>
@@ -41,7 +40,6 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                 <button
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
-                    // disabled={currentPageName == PwaCurrentPage.MapView}
                     onClick={() => changeCurrentPage(PwaCurrentPage.MapView)}
                 >
                     <i className={`${mapIconClass} text-footer-size`}></i>
@@ -49,7 +47,6 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                 <button 
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
-                    // disabled={currentPageName == PwaCurrentPage.AddList}
                     onClick={() => changeCurrentPage(PwaCurrentPage.AddList)}
                 >
                     <i className={`${addListIconClass} text-footer-size`}></i>
@@ -57,7 +54,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                 <button 
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
-                    // disabled={currentPageName == PwaCurrentPage.EvBattery}
+    
                     onClick={() => changeCurrentPage(PwaCurrentPage.EvBattery)}
                 >
                     <i className={`${evBatteryIconClass} text-footer-size`}></i>
@@ -65,7 +62,6 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                 <button
                     type="button"
                     className={`btn btn-lg text-peach border-0 rounded-0`}
-                    // disabled={currentPageName == PwaCurrentPage.Setting}
                     onClick={() => changeCurrentPage(PwaCurrentPage.Setting)}
                 >
                     <i className={`${settingIconClass} text-footer-size`}></i>
