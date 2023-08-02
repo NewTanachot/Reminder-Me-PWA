@@ -1,29 +1,43 @@
-export default function AddList() {
+import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
+import { PwaCurrentPage } from "@/model/enum_model";
+import { IAddPlace } from "@/model/props_model";
+import { ResponseModel } from "@/model/response_model";
+import { PlaceExtensionModel } from "@/model/subentity_model";
+
+// Initialize .ENV variable
+const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
+
+export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
 
     // add place handler
-    const AddNewPlace = async () => {
+    const AddNewPlace = async (event: React.FormEvent<HTMLFormElement>) => {
 
         // check current user from global variable   
-        if (IsStringValid(user.current.userId)) {
-
+        if (IsStringValid(userId)) {
+        
+            event.preventDefault();
+            const formInput = new FormData(event.currentTarget);
+        
             // get data from input form
-            const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
-            const latitudeInput = document.getElementById("latitudeInput") as HTMLInputElement;
-            const longitudeInput = document.getElementById("longitudeInput") as HTMLInputElement;
-            const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
-            const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
+            const placeNameInput = formInput.get("placeNameInput")?.toString();
+            const latitudeInput = formInput.get("latitudeInput")?.toString();
+            const longitudeInput = formInput.get("longitudeInput")?.toString();
+            const reminderMessageInput = formInput.get("reminderMessageInput")?.toString();
+            const reminderDateInput = formInput.get("reminderDateInput")?.toString();
+            const isActiveInput = formInput.get("isActiveInput")?.toString();
 
             const newPlace: PlaceExtensionModel = {
-                name: placeNameInput.value,
-                latitude: +latitudeInput.value, // cast string to number
-                longitude: +longitudeInput.value, // cast string to number
-                reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
-                reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: user.current.userId,
+                name: IsStringValidEmpty(placeNameInput),
+                latitude: +IsStringValidEmpty(latitudeInput), // cast string to number
+                longitude: +IsStringValidEmpty(longitudeInput), // cast string to number
+                reminderMessage: reminderMessageInput,
+                reminderDate: IsStringValid(reminderDateInput) ? new Date(reminderDateInput ?? "") : undefined,
+                isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return flase
+                userId: userId,
             }
 
             // fetch creaet place api
-            const response = await fetch(`${process.env.baseUrlApi}/place`, {
+            const response = await fetch(`${baseUrlApi}/place`, {
                 method: "POST",
                 body: JSON.stringify(newPlace)
             });
@@ -33,9 +47,10 @@ export default function AddList() {
                 const errorMessage: ResponseModel = await response.json();
                 alert(`Error message: ${errorMessage.message}`)
             }
-            
-            // set place state
-            FetchPlaceData();
+            else {
+
+                changeCurrentPage(PwaCurrentPage.ReminderList, false, true);
+            }
         }
         else {
             alert(`Error message: User not found.`)
@@ -45,42 +60,24 @@ export default function AddList() {
 
     return (
         <div className="card shadow-sm bg-peach-65">
-            {/* <div className="card-header bg-warning-subtle text-viridian-green">
-                <h2 className="m-0 text-center text-cornflowerblue">Add New Place</h2>
-            </div> */}
-            <div className="card-body m-2">
+            <form className="card-body m-2" onSubmit={AddNewPlace}>
                 <div className="mb-3">
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input className="form-control w-100" type="text" placeholder="entry place name..." required/>
-                    {/* {
-                        inputValidator.userNameValidator
-                            ? <li className="text-danger text-opacity-75 ms-1">Username is required.</li>
-                            : <></>
-                    } */}
+                    <input name="placeNameInput" className="form-control w-100" type="text" placeholder="entry place name..." required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea className="form-control w-100" placeholder="entry some message..." rows={2} required/>
-                    {/* {
-                        inputValidator.passwordValidator
-                            ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
-                            : <></>
-                    } */}
+                    <textarea name="reminderMessageInput" className="form-control w-100" placeholder="entry some message..." rows={1}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input className="form-control w-100" type="date" required/>
-                    {/* {
-                        inputValidator.passwordValidator
-                            ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
-                            : <></>
-                    } */}
+                    <input name="reminderDateInput" className="form-control w-100" type="date"/>
                 </div>
                 <div className="mt-3 text-center">
                     <a className="text-cobalt-blue">
@@ -92,7 +89,7 @@ export default function AddList() {
                     <p className="mb-1">
                         Latitude:<span className="text-danger">*</span>
                     </p>
-                    <input className="form-control w-100" type="number" defaultValue={0} step={.01} min={0}/>
+                    <input name="latitudeInput" className="form-control w-100" type="number" placeholder="0.000000000000000" step="any" min={0} required/>
                     {/* {
                         inputValidator.passwordValidator
                             ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
@@ -103,7 +100,7 @@ export default function AddList() {
                     <p className="mb-1">
                         Longitude:<span className="text-danger">*</span>
                     </p>
-                    <input className="form-control w-100" type="number" defaultValue={0} step={.01} min={0}/>
+                    <input name="longitudeInput" className="form-control w-100" type="number" placeholder="0.000000000000000" step="any" min={0} required/>
                     {/* {
                         inputValidator.passwordValidator
                             ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
@@ -115,7 +112,8 @@ export default function AddList() {
                         <p className="mb-1">Auto Activate:</p>
                         <div className="form-check form-switch">
                             {
-                                <input type="checkbox" 
+                                <input type="checkbox"
+                                    name="isActiveInput" 
                                     className="form-check-input" 
                                     defaultChecked={true} 
                                 />
@@ -127,12 +125,11 @@ export default function AddList() {
                     <button 
                         type="submit"
                         className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
-                        // onClick={UserLogin}
                     >
                         Add
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }

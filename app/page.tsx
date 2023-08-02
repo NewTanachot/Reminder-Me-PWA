@@ -36,6 +36,7 @@ export default function Home() {
     const indexedDbUserStore = useRef<IDBObjectStore>();
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
+    const isForceFetch = useRef<boolean>(false);
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.ReminderList, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
@@ -140,7 +141,7 @@ export default function Home() {
     }, [currentLocation, currentPage])
 
     // fetch place data from api
-    const FetchPlaceData = async (isForceFetch: boolean = false) => {
+    const FetchPlaceData = async () => {
 
         try {
             // check current user from global variable
@@ -150,7 +151,7 @@ export default function Home() {
                 let displayPlace: IDisplayPlace[] = [];
                 
                 // check if palce [is not undefined], and [check if force fetch is enable]
-                if (places && places.at(0)?.userId == user.current.userId && !isForceFetch) {
+                if (places && places.at(0)?.userId == user.current.userId && !isForceFetch.current) {
 
                     console.log("not fetch");
                     displayPlace = places;
@@ -167,8 +168,12 @@ export default function Home() {
                         alert(`Error message: ${errorMessage.message}`)
                     }
                     else {
+
+                        // reset isForceFetch ref data
+                        isForceFetch.current = false;
+
                         const calculationPlace: Place[] = await response.json();
-                        console.log(calculationPlace)
+                        console.log(calculationPlace);
     
                         // find location distance
                         displayPlace = calculationPlace.map((e) => {
@@ -230,49 +235,54 @@ export default function Home() {
     }
 
     // add place handler
-    const AddNewPlace = async () => {
+    // const AddNewPlace = async () => {
 
-        // check current user from global variable   
-        if (IsStringValid(user.current.userId)) {
+    //     // check current user from global variable   
+    //     if (IsStringValid(user.current.userId)) {
 
-            // get data from input form
-            const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
-            const latitudeInput = document.getElementById("latitudeInput") as HTMLInputElement;
-            const longitudeInput = document.getElementById("longitudeInput") as HTMLInputElement;
-            const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
-            const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
+    //         // get data from input form
+    //         const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
+    //         const latitudeInput = document.getElementById("latitudeInput") as HTMLInputElement;
+    //         const longitudeInput = document.getElementById("longitudeInput") as HTMLInputElement;
+    //         const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
+    //         const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
 
-            const newPlace: PlaceExtensionModel = {
-                name: placeNameInput.value,
-                latitude: +latitudeInput.value, // cast string to number
-                longitude: +longitudeInput.value, // cast string to number
-                reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
-                reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-                userId: user.current.userId,
-            }
+    //         const newPlace: PlaceExtensionModel = {
+    //             name: placeNameInput.value,
+    //             latitude: +latitudeInput.value, // cast string to number
+    //             longitude: +longitudeInput.value, // cast string to number
+    //             reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
+    //             reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
+    //             userId: user.current.userId,
+    //         }
 
-            // fetch creaet place api
-            const response = await fetch(`${process.env.baseUrlApi}/place`, {
-                method: "POST",
-                body: JSON.stringify(newPlace)
-            });
+    //         // fetch creaet place api
+    //         const response = await fetch(`${process.env.baseUrlApi}/place`, {
+    //             method: "POST",
+    //             body: JSON.stringify(newPlace)
+    //         });
 
-            if (!response.ok) {
+    //         if (!response.ok) {
     
-                const errorMessage: ResponseModel = await response.json();
-                alert(`Error message: ${errorMessage.message}`)
-            }
+    //             const errorMessage: ResponseModel = await response.json();
+    //             alert(`Error message: ${errorMessage.message}`)
+    //         }
             
-            // set place state
-            FetchPlaceData();
-        }
-        else {
-            alert(`Error message: User not found.`)
-        }
-    }
+    //         // set place state
+    //         FetchPlaceData();
+    //     }
+    //     else {
+    //         alert(`Error message: User not found.`)
+    //     }
+    // }
 
     // change Current page method
-    const ChangeCurrentPage = (page: PwaCurrentPage, successBox: boolean = false) => {
+    const ChangeCurrentPage = (page: PwaCurrentPage, successBox: boolean = false, forceFetch = false) => {
+
+        // set force fetch in FetchData function
+        isForceFetch.current = forceFetch;
+
+        // change current page
         setCurrentPage({
             pageName: page,
             successAlertBox: successBox
@@ -335,7 +345,10 @@ export default function Home() {
                                     return <Map></Map>
 
                                 case PwaCurrentPage.AddList:
-                                    return <AddList></AddList>
+                                    return <AddList 
+                                        userId={user.current.userId}
+                                        changeCurrentPage={ChangeCurrentPage}
+                                    ></AddList>
 
                                 case PwaCurrentPage.EvBattery:
                                     return <EvBattery></EvBattery>

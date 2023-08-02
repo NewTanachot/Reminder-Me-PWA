@@ -37,6 +37,19 @@ export const IsStringValid = (value: string | null | undefined): boolean => {
     return true; // String is valid
   }
 
+export const IsStringValidEmpty = (value: string | null | undefined): string => {
+    
+    if (value === null || value === undefined) {
+      return ""; // Check for null or undefined
+    }
+  
+    if (value.trim().length === 0) {
+      return ""; // Check for empty string or whitespace
+    }
+  
+    return value; // String is valid
+}
+
 export const DecimalToNumber = (decimal: Decimal | null) => {
 
     // change to string and cast to number with "+"

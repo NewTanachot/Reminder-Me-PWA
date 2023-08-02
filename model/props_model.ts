@@ -4,12 +4,12 @@ import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useState_model"
 export interface INavbarProps {
     userName: string,
     currentPageName: PwaCurrentPage,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface IFooterProps {
     currentPageName: PwaCurrentPage,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface IPlaceCardProps {
@@ -28,22 +28,22 @@ export interface IListPageProps {
 
 export interface IAddPlace {
     userId: string,
-    
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface ISettingProps {
     currentUserName: string,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface ILoginProps {
     currentPage: ICurrentPage,
     setCurrentUser: (setUser: CurrentUserRef) => void,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface IRegisterProps {
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface ISuccessModal {

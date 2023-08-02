@@ -11,6 +11,7 @@ export type PlaceExtensionModel = {
     longitude: number,
     reminderMessage? : string,
     reminderDate?: Date,
+    isDisable: boolean,
     userId: string
 }
 
