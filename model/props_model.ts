@@ -26,6 +26,11 @@ export interface IListPageProps {
     changePlaceStatusHandler: (placeId: string) => void
 }
 
+export interface IAddPlace {
+    userId: string,
+    
+}
+
 export interface ISettingProps {
     currentUserName: string,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean) => void

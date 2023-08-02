@@ -1,4 +1,48 @@
 export default function AddList() {
+
+    // add place handler
+    const AddNewPlace = async () => {
+
+        // check current user from global variable   
+        if (IsStringValid(user.current.userId)) {
+
+            // get data from input form
+            const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
+            const latitudeInput = document.getElementById("latitudeInput") as HTMLInputElement;
+            const longitudeInput = document.getElementById("longitudeInput") as HTMLInputElement;
+            const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
+            const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
+
+            const newPlace: PlaceExtensionModel = {
+                name: placeNameInput.value,
+                latitude: +latitudeInput.value, // cast string to number
+                longitude: +longitudeInput.value, // cast string to number
+                reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
+                reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
+                userId: user.current.userId,
+            }
+
+            // fetch creaet place api
+            const response = await fetch(`${process.env.baseUrlApi}/place`, {
+                method: "POST",
+                body: JSON.stringify(newPlace)
+            });
+
+            if (!response.ok) {
+    
+                const errorMessage: ResponseModel = await response.json();
+                alert(`Error message: ${errorMessage.message}`)
+            }
+            
+            // set place state
+            FetchPlaceData();
+        }
+        else {
+            alert(`Error message: User not found.`)
+        }
+    }
+
+
     return (
         <div className="card shadow-sm bg-peach-65">
             {/* <div className="card-header bg-warning-subtle text-viridian-green">
