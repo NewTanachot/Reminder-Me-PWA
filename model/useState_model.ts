@@ -1,11 +1,6 @@
 import { User } from "@prisma/client"
 import { PwaCurrentPage } from "./enum_model"
 
-export interface IInputValidator {
-    userNameValidator: boolean,
-    passwordValidator: boolean
-}
-
 export interface ICurrentPage {
     pageName: PwaCurrentPage,
     successAlertBox: boolean
@@ -31,4 +26,9 @@ export interface IDisplayPlace {
 
 export interface IUserIndexedDB extends User {
     CurrentUser: string
+}
+
+export interface IRegisterValidator {
+    inputEmptyString: boolean
+    duplicateUserName: boolean
 }

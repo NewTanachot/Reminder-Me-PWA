@@ -3,7 +3,7 @@
 import { ResponseModel } from "@/model/response_model";
 import { UpdatePlace } from "@/model/subentity_model";
 import { IPlaceCardProps } from "@/model/props_model";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
@@ -13,22 +13,16 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
     // Const variable initialize
     const cardId = `placeCard_${cardIndex}`;
     
-    // react hook initialize
-    const [ placeDisplayStatus, setPlaceStatus ] = useState<boolean>(data.isDisable);
-
     // change place active status handler
     const ChangePlaceStatus = async () => {
         
-        // update UI check box by useState
-        setPlaceStatus(!placeDisplayStatus);
-
         // update places state (Cache data) in list page
         changePlaceStatusHandler(data.id);
 
         // update place display status data with only
         const updatePlace: UpdatePlace = {
             id: data.id,
-            isDisable: !placeDisplayStatus
+            isDisable: !data.isDisable
         }
 
         // fetch update place api
@@ -69,7 +63,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
 
         const placeCard = document.getElementById(cardId);
 
-        if (placeDisplayStatus) {
+        if (data.isDisable) {
             placeCard?.classList.add("filter-card");
         }
         else {
@@ -114,7 +108,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
                         {
                             <input type="checkbox" 
                                 className="form-check-input" 
-                                checked={!placeDisplayStatus} 
+                                defaultChecked={!data.isDisable} 
                                 onChange={ChangePlaceStatus}
                             />
                         }

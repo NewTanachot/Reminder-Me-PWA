@@ -5,8 +5,7 @@ import { UserExtensionModel } from "@/model/subentity_model";
 import { User } from "@prisma/client";
 import SuccessModal from "./modal/success";
 import { useState } from "react";
-import { IsStringValid } from "@/extension/string_extension";
-import { IInputValidator } from "@/model/useState_model";
+import { IsStringValidEmpty } from "@/extension/string_extension";
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -18,7 +17,7 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 export default function Login({ setCurrentUser, changeCurrentPage, currentPage }: ILoginProps) {
 
     // react hook initialize
-    const [ inputValidator, setInputValidator ] = useState<IInputValidator>({ userNameValidator: false, passwordValidator: false });
+    const [ inputEmptyStringValidator, setInputEmptyStringValidator ] = useState<boolean>(false);
 
     // Define a function to set up indexedDB
     const SetupIndexedDB = () => {
@@ -52,20 +51,23 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
         });
     };
     
-    const UserLogin = async () => {
+    const UserLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         
+        event.preventDefault();
+        const formInput = new FormData(event.currentTarget);
+
         // get data from input form
-        const userNameInput = document.getElementById("usernameInput") as HTMLInputElement;
-        const passWordInput = document.getElementById("passwordInput") as HTMLInputElement;
+        const userNameInput = formInput.get("usernameInput")?.toString();
+        const passWordInput = formInput.get("passwordInput")?.toString();
 
-        const userNameValidateResult = IsStringValid(userNameInput.value);
-        const passwordValidateResult = IsStringValid(passWordInput.value);
+        const userNameValidateResult = IsStringValidEmpty(userNameInput);
+        const passwordValidateResult = IsStringValidEmpty(passWordInput);
 
-        if (userNameValidateResult && passwordValidateResult) {
+        if (userNameValidateResult != "" && passwordValidateResult != "") {
 
             const loginUser: UserExtensionModel = {
-                name: userNameInput.value,
-                password: passWordInput.value
+                name: userNameValidateResult,
+                password: passwordValidateResult
             }
 
             // fetch add login api
@@ -76,9 +78,6 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
 
             if (!response.ok) {
                 
-                // reset validator state to all false
-                setInputValidator({ userNameValidator: false, passwordValidator: false });
-
                 // check login error
                 const errorMessage: ResponseModel = await response.json();
                 alert(`Error message: ${errorMessage.message}`);
@@ -105,10 +104,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
         else {
 
             // set validator state for warning danger text
-            setInputValidator({
-                userNameValidator: !userNameValidateResult,
-                passwordValidator: !passwordValidateResult
-            });
+            setInputEmptyStringValidator(true);
         }
     }
 
@@ -120,7 +116,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
                     : <></>
             }
 
-            <div className="card shadow-sm bg-peach-65">
+            <form className="card shadow-sm bg-peach-65" onSubmit={UserLogin}>
                 <div className="card-header bg-warning-subtle text-viridian-green">
                     <h2 className="m-0 text-center">Login to Reminder Me</h2>
                 </div>
@@ -129,29 +125,24 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
                         <p className="mb-1">
                             Usename:
                         </p>
-                        <input className="form-control w-100" id="usernameInput" type="text" min={1} max={20} required/>
-                        {
-                            inputValidator.userNameValidator
-                                ? <li className="text-danger text-opacity-75 ms-1">Username is required.</li>
-                                : <></>
-                        }
+                        <input className="form-control w-100" name="usernameInput" type="text" min={1} max={20} required/>
+
                     </div>
                     <div className="mt-3">
                         <p className="mb-1">
                             Password:
                         </p>
-                        <input className="form-control w-100" id="passwordInput" type="password" min={1} max={20} required/>
-                        {
-                            inputValidator.passwordValidator
-                                ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
-                                : <></>
-                        }
+                        <input className="form-control w-100" name="passwordInput" type="password" min={1} max={20} required/>
                     </div>
+                    {
+                        inputEmptyStringValidator
+                            ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text (" ").</li>
+                            : <></>
+                    }
                     <div className="mt-4 text-center">
                         <button 
                             type="submit"
                             className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
-                            onClick={UserLogin}
                         >
                             Log In
                         </button>
@@ -163,7 +154,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
                         </button>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }
