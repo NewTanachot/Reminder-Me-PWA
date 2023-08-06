@@ -4,9 +4,9 @@ import { ISettingProps } from "@/model/props_model";
 export default function Setting({ currentUserName, changeCurrentPage }: ISettingProps) {
     return (
         <div className="card shadow-sm bg-peach-65">
-            <div className="card-header bg-warning-subtle text-viridian-green">
+            {/* <div className="card-header bg-warning-subtle text-viridian-green">
                 <h2 className="m-0 text-center">Setting</h2>
-            </div>
+            </div> */}
             <div className="card-body m-2">
                 <div className="mb-3">
                     <p className="mb-1">
