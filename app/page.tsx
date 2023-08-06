@@ -32,7 +32,14 @@ export default function Home() {
     // const router = useRouter();
 
     // react hook initialize
-    const user = useRef<CurrentUserRef>({ userId: "", userName: "" });
+    const user = useRef<CurrentUserRef>({
+        userId: "", 
+        userName: "", 
+        userLocation: {
+            latitude: -1,
+            longitude: -1
+        } 
+    });
     const indexedDbUserStore = useRef<IDBObjectStore>();
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
@@ -217,7 +224,12 @@ export default function Home() {
     // success case for Geolocation
     const IfGetLocationSuccess = (position: GeolocationPosition) => {
         
-        console.log('success location')
+        console.log('success location');
+
+        // set current user location
+        user.current.userLocation.latitude = position.coords.latitude;
+        user.current.userLocation.longitude = position.coords.longitude;
+
         setCurrentLocation(position.coords);
     }
 
@@ -233,48 +245,6 @@ export default function Home() {
         timeout: 60000, // 60 sec or 1 min timeout
         maximumAge: 0, // no location cache
     }
-
-    // add place handler
-    // const AddNewPlace = async () => {
-
-    //     // check current user from global variable   
-    //     if (IsStringValid(user.current.userId)) {
-
-    //         // get data from input form
-    //         const placeNameInput = document.getElementById("placeNameInput") as HTMLInputElement;
-    //         const latitudeInput = document.getElementById("latitudeInput") as HTMLInputElement;
-    //         const longitudeInput = document.getElementById("longitudeInput") as HTMLInputElement;
-    //         const reminderMessageInput = document.getElementById("reminderMessageInput") as HTMLInputElement;
-    //         const reminderDateInput = document.getElementById("reminderDateInput") as HTMLInputElement;
-
-    //         const newPlace: PlaceExtensionModel = {
-    //             name: placeNameInput.value,
-    //             latitude: +latitudeInput.value, // cast string to number
-    //             longitude: +longitudeInput.value, // cast string to number
-    //             reminderMessage: IsStringValid(reminderMessageInput.value) ? reminderMessageInput.value : undefined,
-    //             reminderDate: IsStringValid(reminderDateInput.value) ? new Date(reminderDateInput.value) : undefined,
-    //             userId: user.current.userId,
-    //         }
-
-    //         // fetch creaet place api
-    //         const response = await fetch(`${process.env.baseUrlApi}/place`, {
-    //             method: "POST",
-    //             body: JSON.stringify(newPlace)
-    //         });
-
-    //         if (!response.ok) {
-    
-    //             const errorMessage: ResponseModel = await response.json();
-    //             alert(`Error message: ${errorMessage.message}`)
-    //         }
-            
-    //         // set place state
-    //         FetchPlaceData();
-    //     }
-    //     else {
-    //         alert(`Error message: User not found.`)
-    //     }
-    // }
 
     // change Current page method
     const ChangeCurrentPage = (page: PwaCurrentPage, successBox: boolean = false, forceFetch = false) => {
@@ -336,7 +306,7 @@ export default function Home() {
                                 case PwaCurrentPage.ReminderList:
                                     return <List 
                                         places={places}
-                                        currentUserId={user.current.userId}
+                                        currentUser={user.current}
                                         deletePlaceHandler={DeletePlaceHandler}  
                                         changePlaceStatusHandler={ChangePlaceStatusHandler}
                                     ></List>

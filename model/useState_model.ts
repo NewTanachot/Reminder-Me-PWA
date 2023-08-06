@@ -1,5 +1,6 @@
 import { User } from "@prisma/client"
 import { PwaCurrentPage } from "./enum_model"
+import { IUserLocation } from "./subentity_model"
 
 export interface ICurrentPage {
     pageName: PwaCurrentPage,
@@ -9,6 +10,7 @@ export interface ICurrentPage {
 export type CurrentUserRef = {
     userId: string
     userName: string
+    userLocation: IUserLocation,
 }
 
 export interface IDisplayPlace {

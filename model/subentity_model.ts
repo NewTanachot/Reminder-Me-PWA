@@ -26,3 +26,8 @@ export type UpdatePlace = {
     createdAt?: Date | undefined
     userId?: string | undefined
 }
+
+export interface IUserLocation {
+    latitude: number
+    longitude: number
+}
