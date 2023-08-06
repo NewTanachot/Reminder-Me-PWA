@@ -12,17 +12,18 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
   
     // Const variable initialize
     const cardId = `placeCard_${cardIndex}`;
-    
+
     // change place active status handler
-    const ChangePlaceStatus = async () => {
+    const ChangePlaceStatus = async (event: React.ChangeEvent<HTMLInputElement>) => {
         
         // update places state (Cache data) in list page
-        changePlaceStatusHandler(data.id);
+        const setIsDisable = !event.currentTarget.checked;
+        changePlaceStatusHandler(data.id, setIsDisable);
 
         // update place display status data with only
         const updatePlace: UpdatePlace = {
             id: data.id,
-            isDisable: !data.isDisable
+            isDisable: setIsDisable
         }
 
         // fetch update place api

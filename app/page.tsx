@@ -298,12 +298,12 @@ export default function Home() {
         setPlaces(places?.filter(e => e.id != placeId));
     }
 
-    const ChangePlaceStatusHandler = (placeId: string) => {
+    const ChangePlaceStatusHandler = (placeId: string, setIsDisable: boolean) => {
 
         setPlaces(places?.map(e => {
 
             if (e.id === placeId) {
-                e.isDisable = !e.isDisable;
+                e.isDisable = setIsDisable;
             }
 
             return e;
