@@ -108,11 +108,21 @@ export default function Home() {
                     response.onsuccess = () => {
         
                         // set global current UserId and UserName
-                        user.current.userId = (response.result as IUserIndexedDB).id;
-                        user.current.userName = (response.result as IUserIndexedDB).name;
+                        const userIdResponse = (response.result as IUserIndexedDB)?.id;
+                        const userNameResponse = (response.result as IUserIndexedDB)?.name;
 
-                        // get current location -> after get location it will call fetch place api (or get state of place if any) for get place data with calculated distanceLocation.
-                        const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
+                        if (IsStringValid(userIdResponse) && IsStringValid(userNameResponse)) {
+                            user.current.userId = userIdResponse;
+                            user.current.userName = userNameResponse;
+    
+                            // get current location -> after get location it will call fetch place api (or get state of place if any) 
+                            // for get place data with calculated distanceLocation.
+                            const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
+                        }
+                        else {
+                            // change to login page
+                            ChangeCurrentPage(PwaCurrentPage.Login);
+                        }
                     }
                 }
                 else {
@@ -134,11 +144,7 @@ export default function Home() {
             if (currentPage.pageName == PwaCurrentPage.ReminderList) {
                 console.log(currentLocation);
                 FetchPlaceData();
-            }
-            else {
-                console.log("not list page");
-            }
-            
+            }            
         } 
         else {
             console.log("Mount Round!")

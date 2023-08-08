@@ -94,7 +94,14 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
                 indexedDbUserStore.put({ CurrentUser: indexedDB_UserKey, ...currentUser });
 
                 // set new user to useRef in list page
-                setCurrentUser({ userId: currentUser.id, userName: currentUser.name });
+                setCurrentUser({ 
+                    userId: currentUser.id, 
+                    userName: currentUser.name,
+                    userLocation: {
+                        latitude: -1,
+                        longitude: -1
+                    }
+                });
 
                 // Reroute to home page
                 changeCurrentPage(PwaCurrentPage.ReminderList);
