@@ -9,7 +9,6 @@ export default function List({ places, currentUser, deletePlaceHandler, changePl
     return (
         <>
             {(() => {
-                console.log(places)
                 if (places == undefined || (places.length != 0 && places.at(0)?.userId != currentUser.userId)) {
                     return <Loading></Loading>
                 }
