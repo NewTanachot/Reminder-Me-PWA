@@ -1,7 +1,35 @@
 import { CalDistanceModel } from "@/model/calculation_model";
 import { IDisplayPlace } from "@/model/useState_model";
+import { Place } from "@prisma/client";
+import { StringDateToDisplayDate } from "./string_extension";
+import { IUserLocation } from "@/model/subentity_model";
 
-export const GetDistanceBetweenPlace = (calModel: CalDistanceModel) => {
+export const CalculatePlaceForDisplay = (places: Place[] | IDisplayPlace[], currentLocation: IUserLocation) => {
+
+    return places.map((e) => {
+
+        // get location distance for each place
+        return <IDisplayPlace> {
+            id: e.id,
+            name: e.name,
+            latitude: e.latitude,
+            longitude: e.longitude,
+            reminderMessage: e.reminderMessage,
+            reminderDate: StringDateToDisplayDate(e.reminderDate),
+            isDisable: e.isDisable,
+            createdAt: e.createdAt,
+            userId: e.userId,
+            locationDistance: GetDistanceBetweenPlace({
+                latitude_1: currentLocation?.latitude,
+                longitude_1: currentLocation?.longitude,
+                latitude_2: e.latitude?.toString() == undefined ? undefined : +(e.latitude?.toString()),
+                longitude_2: e.longitude?.toString() == undefined ? undefined : +(e.longitude?.toString()),
+            })
+        }
+    });
+}
+
+const GetDistanceBetweenPlace = (calModel: CalDistanceModel) => {
 
     if (!calModel.latitude_1 || !calModel.latitude_2 || !calModel.longitude_1 || !calModel.longitude_2) {
         return 0;
@@ -24,6 +52,10 @@ const Deg2rad = (deg: number) => {
     return deg * (Math.PI/180)
 }
 
-export const OrderPlaceByDistance = (place: IDisplayPlace[]) => {
-    return place.sort((a,b) => a.locationDistance - b.locationDistance); // b - a for reverse sort
+export const OrderPlaceByDistance = (place: IDisplayPlace[], orderByDistance: boolean) => {
+
+    // b - a for reverse sort
+    return orderByDistance 
+        ? place.sort((a,b) => a.locationDistance - b.locationDistance)
+        : place.sort((a,b) => b.locationDistance - a.locationDistance);
 }

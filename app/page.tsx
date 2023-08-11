@@ -1,13 +1,12 @@
 'use client';
 
 import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
-import { PlaceExtensionModel } from '@/model/subentity_model';
 import { CurrentUserRef, ICurrentPage, IDisplayPlace, IUserIndexedDB } from '@/model/useState_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
 // import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
-import { GetDistanceBetweenPlace, OrderPlaceByDistance } from '@/extension/calculation_extension';
+import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import { PwaCurrentPage } from '@/model/enum_model';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/navbar';
@@ -135,7 +134,7 @@ export default function Home() {
 
     }, [])
 
-    // effect for update location Distanct and elogin handler
+    // useEffect for reFetch data
     useEffect(() => {
 
         // check if mount rount
@@ -151,7 +150,7 @@ export default function Home() {
             isMountRound.current = false;
         }
 
-    }, [currentLocation, currentPage])
+    }, [currentLocation, currentPage, orderByDistance])
 
     // fetch place data from api
     const FetchPlaceData = async () => {
@@ -161,13 +160,15 @@ export default function Home() {
             if (IsStringValid(user.current.userId)) {
 
                 // initialize list of DisplayPlace
-                let displayPlace: IDisplayPlace[] = [];
+                let displayPlaces: IDisplayPlace[] = [];
                 
                 // check if palce [is not undefined], and [check if force fetch is enable]
                 if (places && places.at(0)?.userId == user.current.userId && !isForceFetch.current) {
 
                     console.log("not fetch");
-                    displayPlace = places;
+
+                    // calculate distance between
+                    displayPlaces = CalculatePlaceForDisplay(places, user.current.userLocation);
                 } 
                 else {
 
@@ -178,52 +179,30 @@ export default function Home() {
                     if (!response.ok) {
             
                         const errorMessage: ResponseModel = await response.json();
-                        alert(`Error message: ${errorMessage.message}`)
+                        alert(`Error message: ${errorMessage.message}`);
                     }
                     else {
 
                         // reset isForceFetch ref data
                         isForceFetch.current = false;
 
-                        const calculationPlace: Place[] = await response.json();
-                        console.log(calculationPlace);
+                        const placeResponse: Place[] = await response.json();
+                        console.log(placeResponse);
     
-                        // find location distance
-                        displayPlace = calculationPlace.map((e) => {
-    
-                            // get location distance for each place
-                            const newTypePlace: IDisplayPlace = {
-                                id: e.id,
-                                name: e.name,
-                                latitude: DecimalToNumber(e.latitude),
-                                longitude: DecimalToNumber(e.longitude),
-                                reminderMessage: e.reminderMessage,
-                                reminderDate: StringDateToDisplayDate(e.reminderDate),
-                                isDisable: e.isDisable,
-                                createdAt: e.createdAt,
-                                userId: e.userId,
-                                locationDistance: GetDistanceBetweenPlace({
-                                    latitude_1: currentLocation?.latitude,
-                                    longitude_1: currentLocation?.longitude,
-                                    latitude_2: DecimalToNumber(e.latitude),
-                                    longitude_2: DecimalToNumber(e.longitude)
-                                })
-                            } 
-    
-                            return newTypePlace;
-                        })
+                        // calculate distance between and parse placeData to IDisplayPlaceData
+                        displayPlaces = CalculatePlaceForDisplay(placeResponse, user.current.userLocation);
                     }
-    
-                    // set user State and check OrderBy distance
-                    setPlaces(orderByDistance ? OrderPlaceByDistance(displayPlace) : displayPlace);
                 }
+
+                // set user State and check OrderBy distance
+                setPlaces(OrderPlaceByDistance(displayPlaces, orderByDistance));
             }
             else {
-                alert(`Error message: User not found.`)
+                alert(`Error message: User not found.`);
             }
         }
         catch(error) {
-            alert(error)
+            alert(error);
         }
     }
 
@@ -286,6 +265,10 @@ export default function Home() {
         }));
     }
 
+    const ChangeOrderByDistanceHandler = (orderByDistance: boolean) => {
+        setOrderByDistance(orderByDistance);
+    }
+
     // change color theme
     // useEffect(() => {
     //     var a = document.getElementById("bgColor");
@@ -298,9 +281,9 @@ export default function Home() {
     return (
         <main>
             <Navbar 
-                userName={user.current.userName} 
                 currentPageName={currentPage.pageName} 
-                changeCurrentPage={ChangeCurrentPage}
+                orderByDistanceValue={orderByDistance}
+                changeOrderByDistanceHandler={ChangeOrderByDistanceHandler}
             ></Navbar>
             <br /> <br />
             <div className="container">

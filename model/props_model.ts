@@ -3,9 +3,9 @@ import { IUserLocation } from "./subentity_model"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useState_model"
 
 export interface INavbarProps {
-    userName: string,
     currentPageName: PwaCurrentPage,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    orderByDistanceValue: boolean,
+    changeOrderByDistanceHandler: (orderByDistance: boolean) => void,
 }
 
 export interface IFooterProps {
