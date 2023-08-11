@@ -58,17 +58,21 @@ export const DecimalToNumber = (decimal: Decimal | null) => {
 
 export const StringDateToDisplayDate = (stringDate: string | null) => {
 
-    if (stringDate != null) {
+    if (stringDate == null) {
+        return "";
+    }
+    
+    const [ year, month, day ] = stringDate.split("T")[0].split("-");
 
-        const [ year, month, day ] = stringDate.split("T")[0].split("-");
-
+    if (year && month && day) {
+        
         const date = new Date(stringDate);
-        const dayOfweekName = DayOfWeekEnum[date.getDay()]
-
+        const dayOfweekName = DayOfWeekEnum[date.getDay()];
+    
         return `${dayOfweekName} ${day}/${month}/${year}`;
     }
 
-    return ""
+    return stringDate;
 }
 
 export const DisplayCurrentPageName = (currentPage: PwaCurrentPage) => {
