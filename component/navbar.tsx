@@ -4,7 +4,7 @@ import { INavbarProps } from "@/model/props_model";
 import appIcon from '@/public/image/web-icon/favicon.ico';
 import Link from "next/link";
 
-export default function Navbar({ userName, currentPageName, changeCurrentPage }: INavbarProps) {
+export default function Navbar({ currentPageName, orderByDistanceValue, changeOrderByDistanceHandler }: INavbarProps) {
 
     return (
         <nav className='fixed-top bg-viridian-green text-white px-2 py-2 shadow-bottom rounded-bottom-4'>
@@ -13,14 +13,21 @@ export default function Navbar({ userName, currentPageName, changeCurrentPage }:
                     <img className="ms-1 me-2" src={appIcon.src} alt="appIcon" width={40} height={40} />
                     {DisplayCurrentPageName(currentPageName)}
                 </h5>
-                <Link
-                        // onClick={() => changeCurrentPage(PwaCurrentPage.Login)} 
-                        href="auth/user"
-                        className='m-0 btn btn-success rounded-3 bg-milk-yellow text-peach'
-                    >
-                        <i className="bi bi-person-circle me-2"></i>
-                        {userName}
-                </Link>
+                {
+                    currentPageName == PwaCurrentPage.ReminderList ?
+                        <button 
+                            onClick={() => changeOrderByDistanceHandler(!orderByDistanceValue)} 
+                            className='m-0 btn btn-dark rounded-3'
+                        >
+                            {
+                                orderByDistanceValue
+                                    ? <i className="bi bi-sort-down"></i>
+                                    : <i className="bi bi-sort-up-alt"></i>
+                            }
+                        </button> 
+                    :
+                        <></>
+                }
                 {/* {
                     currentPageName !== PwaCurrentPage.Login ?
                     <button 

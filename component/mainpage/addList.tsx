@@ -65,13 +65,13 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input name="placeNameInput" className="form-control w-100" type="text" placeholder="entry place name..." required/>
+                    <input name="placeNameInput" className="form-control w-100" type="text" placeholder="entry place name..." maxLength={20} required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea name="reminderMessageInput" className="form-control w-100" placeholder="entry some message..." rows={1}/>
+                    <textarea name="reminderMessageInput" className="form-control w-100" placeholder="entry some message..." maxLength={50} rows={2}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
@@ -90,22 +90,13 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                         Latitude:<span className="text-danger">*</span>
                     </p>
                     <input name="latitudeInput" className="form-control w-100" type="number" placeholder="0.000000000000000" step="any" min={0} required/>
-                    {/* {
-                        inputValidator.passwordValidator
-                            ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
-                            : <></>
-                    } */}
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Longitude:<span className="text-danger">*</span>
                     </p>
                     <input name="longitudeInput" className="form-control w-100" type="number" placeholder="0.000000000000000" step="any" min={0} required/>
-                    {/* {
-                        inputValidator.passwordValidator
-                            ? <li className="text-danger text-opacity-75 ms-1">Password is required.</li>
-                            : <></>
-                    } */}
+
                 </div>
                 <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center">
