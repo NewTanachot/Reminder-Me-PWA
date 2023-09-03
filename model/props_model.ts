@@ -58,6 +58,11 @@ export interface IStaticSettingCardProps {
     cardInfo: string
 }
 
+export interface IThemeSettingCardProps {
+    
+}
+
+
 export interface ISuccessModal {
     modalMessage: string
 }
