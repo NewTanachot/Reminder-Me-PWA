@@ -74,21 +74,13 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
     });
 
     return (
-        <div id={cardId} className="card mb-3 shadow-sm rounded-4 position-relative">
-            {/* <div 
-                className="position-absolute top-0 start-100 translate-middle"
-                onClick={() => DeletePlace(data.id, data.name)}
-            >
-                <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
-            </div> */}
+        <div id={cardId} className="card mb-3 shadow-sm rounded-4 position-relative">    
             <div 
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
             >
-                <i className="bi bi-info-circle-fill text-danger text-delete-card-size"></i>
-                {/* <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i> */}
-            </div>
-            
+                <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
+            </div>         
             <div className="card-header rounded-top-4 bg-warning-subtle text-viridian-green">
                 <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div>{data.name}</div>
@@ -114,13 +106,11 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
                         </span>
                     </div>
                     <div className="form-check form-switch">
-                        {
-                            <input type="checkbox" 
-                                className="form-check-input" 
-                                defaultChecked={!data.isDisable} 
-                                onChange={ChangePlaceStatus}
-                            />
-                        }
+                        <input type="checkbox" 
+                            className="form-check-input" 
+                            defaultChecked={!data.isDisable} 
+                            onChange={ChangePlaceStatus}
+                        />
                     </div>
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
