@@ -52,6 +52,12 @@ export interface IRegisterProps {
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
+export interface IStaticSettingCardProps {
+    cardIcon: string,
+    cardTitle: string,
+    cardInfo: string
+}
+
 export interface ISuccessModal {
     modalMessage: string
 }
