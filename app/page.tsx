@@ -1,6 +1,6 @@
 'use client';
 
-import { DecimalToNumber, IsStringValid, StringDateToDisplayDate } from '@/extension/string_extension';
+import { IsStringValid } from '@/extension/string_extension';
 import { CurrentUserRef, ICurrentPage, IDisplayPlace, IUserIndexedDB } from '@/model/useState_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
@@ -23,6 +23,8 @@ const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
 const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
 const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
+const indexedDB_ThemeStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME ?? "";
+const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Home() {
@@ -40,9 +42,11 @@ export default function Home() {
         } 
     });
     const indexedDbUserStore = useRef<IDBObjectStore>();
+    const indexedDbThemeStore = useRef<IDBObjectStore>();
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const isForceFetch = useRef<boolean>(false);
+    const isDarkTheme = useRef<boolean>(false);
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.ReminderList, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
@@ -82,16 +86,40 @@ export default function Home() {
                 // set up indexedDB
                 const dbContext = request.result;
     
-                // check store name is exist
+                // check theme store name is exist
+                if (dbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
+                    
+                    // create transaction of indexedDB
+                    const transaction = dbContext.transaction(indexedDB_ThemeStore, "readwrite");
+
+                    // create store of indexedDB transaction and set it globle useRef
+                    const store = transaction.objectStore(indexedDB_ThemeStore);
+                    indexedDbThemeStore.current = store;
+
+                    // get current theme data from indexedDB
+                    const response = indexedDbThemeStore.current.get(indexedDB_ThemeKey);
+
+                    // set isDarkTheme in useRef and change page Theme
+                    response.onsuccess = () => {
+                        
+                        isDarkTheme.current = response.result;
+
+                        var bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
+                        if (bodyElement != null && isDarkTheme.current == true) {
+                            bodyElement.style.backgroundColor = "#36393e";
+                        }
+                    }
+                }
+
+                // check use store name is exist
                 if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
                     
                     // create transaction of indexedDB
-                    const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite")
+                    const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite");
                 
                     // create store of indexedDB transaction and set it globle useRef
                     const store = transaction.objectStore(indexedDB_UserStore);
                     indexedDbUserStore.current = store;
-
 
                     // get current user from indexedDB
                     const response = indexedDbUserStore.current.get(indexedDB_UserKey);
@@ -271,10 +299,12 @@ export default function Home() {
 
     // change color theme
     // useEffect(() => {
-    //     var a = document.getElementById("bgColor");
-    //     if (a != null){
+    //     var b: HTMLElement = document.getElementsByTagName("body")[0];
+    //     var h: HTMLElement = document.getElementsByTagName("html")[0];
+    //     if (b != null && h != null){
     //         console.log("not null")
-    //         a.style.backgroundColor = "#36393e"
+    //         b.style.backgroundColor = "#36393e"
+    //         h.style.backgroundColor = "#36393e"
     //     }
     // }, [])
 
@@ -316,6 +346,8 @@ export default function Home() {
                                     return <Setting
                                         currentUserName={user.current.userName}
                                         changeCurrentPage={ChangeCurrentPage}
+                                        themeDbContext={indexedDbThemeStore.current}
+                                        isDarkTheme={isDarkTheme.current}
                                     ></Setting>
 
                                 case PwaCurrentPage.Login:
@@ -335,66 +367,10 @@ export default function Home() {
                 </div>
             </div>
             <br /><br />
-            <Footer changeCurrentPage={ChangeCurrentPage} currentPageName={currentPage.pageName}></Footer>
+            <Footer 
+                changeCurrentPage={ChangeCurrentPage} 
+                currentPageName={currentPage.pageName}
+            ></Footer>
         </main>
     )
-  }
-
-              {/* {
-                !IsStringValid(User.current.userId) ? 
-                <h1>loading...</h1> : 
-                <>
-                    <div>
-                        <Link href="/auth/login" replace={true}>Login</Link>
-                        &nbsp; &nbsp; &nbsp;
-                        <button onClick={UserLogout}>logout</button>
-                        &nbsp; &nbsp; &nbsp;
-                        <Link href="/auth/register">Register page</Link>
-                    </div>
-                    <div>
-                        <ul>
-                            {
-                                places.length > 0 ?
-                                places.map((place, index) => 
-                                    <li key={index}>
-                                        ({place.locationDistance}) - , 
-                                        {place.name}, 
-                                        {place.latitude?.toString()}, 
-                                        {place.longitude?.toString()}, 
-                                        {place.reminderMessage ?? "-"},
-                                        {StringDateToDisplayDate(place.reminderDate)}
-                                        <input type="checkbox" checked={!place.isDisable} onChange={() => ChangePlaceStatus(index, place.isDisable)}/>
-                                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                        <button onClick={DeletePlace} value={place.id}>delete</button>
-                                    </li>
-                                )
-                                : <p>No place data...</p>
-                            }
-                        </ul>
-                    </div>
-                    <br />
-                    <br />
-                    <div>
-                        <h2>Current location: {`${currentLocation?.latitude ?? '-'}, ${currentLocation?.longitude ?? '-'}`}</h2>
-                    </div>
-                    <br />
-                    <br />
-                    <div>
-                        <div>
-                            <h2>Add New Place</h2>
-                            <p>PlaceName:</p>
-                            <input id="placeNameInput" type="text" required/>
-                            <p>Latitude:</p>
-                            <input id="latitudeInput" type="number" step={.1} required/>
-                            <p>Longitude:</p>
-                            <input id="longitudeInput" type="number" step={.1} required/>
-                            <p>Reminder Message:</p>
-                            <input id="reminderMessageInput" type="text" required/>
-                            <p>Reminder Date:</p>
-                            <input id="reminderDateInput" type="date" required/>
-                        </div>
-                        <br />
-                        <button onClick={AddNewPlace}>add place</button>
-                    </div>
-                </>
-            } */}
+}

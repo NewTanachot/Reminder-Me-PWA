@@ -3,7 +3,7 @@ import { ISettingProps } from "@/model/props_model";
 import StaticSettingCard from "../settingCard/staticSettingCard";
 import ThemeSettingCard from "../settingCard/themeSettingCard";
 
-export default function Setting({ currentUserName, changeCurrentPage }: ISettingProps) {
+export default function Setting({ currentUserName, changeCurrentPage, themeDbContext, isDarkTheme }: ISettingProps) {
     return (
         <div className="card shadow-sm bg-peach-65">
             <div className="card-body m-2">
@@ -16,7 +16,10 @@ export default function Setting({ currentUserName, changeCurrentPage }: ISetting
                 ></StaticSettingCard>
 
                 {/* theme */}
-                <ThemeSettingCard></ThemeSettingCard>
+                <ThemeSettingCard
+                    themeDbContext={themeDbContext}
+                    isDarkTheme={isDarkTheme}
+                ></ThemeSettingCard>
 
                 <div className="mt-4 text-center">
                     <button

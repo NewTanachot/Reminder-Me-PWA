@@ -13,8 +13,8 @@ const googleFont = Athiti({
 });
 
 export const metadata: Metadata = {
-    title: 'Reminder-Me',
-    description: 'Reminder-Me place remind and suggest by distance.',
+    title: 'Reminder-Map',
+    description: 'Reminder-Map place remind and suggest by distance.',
     viewport: { 
         width: "device-width",
         userScalable: false,
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
     appleWebApp: { 
         capable: true, 
-        title: "Reminder Me", 
+        title: "Reminder Map", 
         statusBarStyle: "black"
     }
 }

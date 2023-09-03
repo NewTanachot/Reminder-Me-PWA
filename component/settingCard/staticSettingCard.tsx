@@ -4,7 +4,7 @@ export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo }: ISt
 
     return (
     <>
-        <div className="card shadow-sm bg-peach text-viridian-green my-4">
+        <div className="card shadow-sm bg-peach text-viridian-green mb-3">
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
                     <div className="flex-shrink-0 ms-2">

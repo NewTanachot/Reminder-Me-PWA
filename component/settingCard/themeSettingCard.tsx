@@ -1,8 +1,12 @@
-export default function ThemeSettingCard() {
+import { IThemeSettingCardProps } from "@/model/props_model";
+
+export default function ThemeSettingCard({ themeDbContext, isDarkTheme }: IThemeSettingCardProps) {
+
+
 
     return (
     <>
-        <div className="card shadow-sm bg-peach text-viridian-green">
+        <div className="card shadow-sm bg-peach text-viridian-green mb-3">
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
                     <div className="flex-shrink-0 ms-2">
@@ -13,29 +17,24 @@ export default function ThemeSettingCard() {
                             Theme:
                             <br />
                             <span className="text-secondary">
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline mb-0">
                                     <input 
                                         className="form-check-input" 
                                         type="radio" 
-                                        name="inlineRadioOptions" 
-                                        id="inlineRadio1" 
-                                        value="option1"
-                                        defaultChecked={true}
+                                        defaultChecked={!isDarkTheme}
                                     />
                                     <label className="form-check-label">
                                         <i className="bi bi-sun-fill"></i>
                                     </label>
                                 </div>
-                                <div className="form-check form-check-inline">
+                                <div className="form-check form-check-inline mb-0">
                                     <input 
                                         className="form-check-input" 
                                         type="radio" 
-                                        name="inlineRadioOptions" 
-                                        id="inlineRadio2" 
-                                        value="option2"
+                                        defaultChecked={isDarkTheme}
                                     />
                                     <label className="form-check-label">
-                                        <i className="bi bi-moon-stars-fill"></i>
+                                        <i className="bi bi-moon-fill"></i>
                                     </label>
                                 </div>
                             </span>
