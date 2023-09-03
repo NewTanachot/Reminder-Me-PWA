@@ -39,7 +39,9 @@ export interface IAddPlace {
 
 export interface ISettingProps {
     currentUserName: string,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void,
+    themeDbContext: IDBObjectStore | undefined,
+    isDarkTheme: boolean
 }
 
 export interface ILoginProps {
@@ -59,7 +61,8 @@ export interface IStaticSettingCardProps {
 }
 
 export interface IThemeSettingCardProps {
-    
+    themeDbContext: IDBObjectStore | undefined,
+    isDarkTheme: boolean
 }
 
 
