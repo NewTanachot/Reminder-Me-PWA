@@ -8,8 +8,6 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
     let addListIconClass = "bi bi-plus-circle";
     let evBatteryIconClass = "bi bi-lightning-charge";
     let settingIconClass = "bi bi-gear";
-    
-    console.log(currentPageName)
 
     switch (currentPageName) {
         case PwaCurrentPage.ReminderList:

@@ -297,8 +297,6 @@ export default function Home() {
 
     const ChangeCurrentThemeHandler = (isDarkThemeHandler: boolean) => {
 
-        console.log("Handler : " + isDarkThemeHandler)
-
         // change isDarkTheme ref variable
         isDarkTheme.current = isDarkThemeHandler;
 
@@ -316,7 +314,6 @@ export default function Home() {
         // open indexedDB success handler
         request.onsuccess = () => {
 
-            console.log("hello")
             // set up indexedDB
             const dbContext = request.result;
 
