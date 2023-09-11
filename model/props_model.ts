@@ -39,8 +39,8 @@ export interface IAddPlace {
 
 export interface ISettingProps {
     currentUserName: string,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void,
-    themeDbContext: IDBObjectStore | undefined,
+    changeCurrentThemeHandler: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void,
+    changeThemeHandler: (currentTheme: boolean) => void, 
     isDarkTheme: boolean
 }
 
@@ -61,7 +61,7 @@ export interface IStaticSettingCardProps {
 }
 
 export interface IThemeSettingCardProps {
-    themeDbContext: IDBObjectStore | undefined,
+    changeCurrentThemeHandler: (currentTheme: boolean) => void, 
     isDarkTheme: boolean
 }
 
