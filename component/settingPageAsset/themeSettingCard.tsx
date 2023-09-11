@@ -3,11 +3,8 @@ import { IThemeSettingCardProps } from "@/model/props_model";
 export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandler }: IThemeSettingCardProps) {
 
     const UpdateThemeHandler = (isDarkThemeParam: boolean) => {
-        console.log(isDarkThemeParam)
         changeCurrentThemeHandler(isDarkThemeParam);
     };
-
-    console.log("is dark theme : " + isDarkTheme);
 
     return (
     <>

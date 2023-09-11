@@ -9,11 +9,11 @@ import { useEffect, useState, useRef } from 'react';
 import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import { PwaCurrentPage } from '@/model/enum_model';
 import List from '@/component/mainpage/list';
-import Navbar from '@/component/navbar';
+import Navbar from '@/component/layoutAsset/navbar';
 import Map from '@/component/mainpage/map';
-import Login from '@/component/login';
-import Register from '@/component/register';
-import Footer from '@/component/footer';
+import Login from '@/component/authPageAsset/login';
+import Register from '@/component/authPageAsset/register';
+import Footer from '@/component/layoutAsset/footer';
 import AddList from '@/component/mainpage/addList';
 import EvBattery from '@/component/mainpage/evbattery';
 import Setting from '@/component/mainpage/setting';
@@ -102,7 +102,7 @@ export default function Home() {
                         
                         // if indexedDB doesn't have Theme data it will set default to false
                         isDarkTheme.current = (response.result as IThemeIndexedDB)?.isDarkTheme ?? false
-                        
+
                         if (isDarkTheme.current) {
 
                             AdaptiveColorThemeHandler(isDarkTheme.current)
@@ -297,8 +297,6 @@ export default function Home() {
 
     const ChangeCurrentThemeHandler = (isDarkThemeHandler: boolean) => {
 
-        console.log("Handler : " + isDarkThemeHandler)
-
         // change isDarkTheme ref variable
         isDarkTheme.current = isDarkThemeHandler;
 
@@ -316,7 +314,6 @@ export default function Home() {
         // open indexedDB success handler
         request.onsuccess = () => {
 
-            console.log("hello")
             // set up indexedDB
             const dbContext = request.result;
 
