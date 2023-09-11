@@ -3,7 +3,7 @@ import { ILoginProps } from "@/model/props_model";
 import { ResponseModel } from "@/model/response_model";
 import { UserExtensionModel } from "@/model/subentity_model";
 import { User } from "@prisma/client";
-import SuccessModal from "./modal/success";
+import SuccessModal from "../modalAsset/success";
 import { useState } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
 

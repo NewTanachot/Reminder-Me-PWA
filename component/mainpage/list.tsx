@@ -1,8 +1,8 @@
 import { IListPageProps } from "@/model/props_model";
-import PlaceCard from "../placeCard";
-import Loading from "../loading";
-import NotFound from "../notfound";
-import UserInfo from "../userInfo";
+import PlaceCard from "../listPageAsset/placeCard";
+import Loading from "../modalAsset/loading";
+import NotFound from "../modalAsset/notfound";
+import UserInfo from "../listPageAsset/userInfo";
 
 export default function List({ places, currentUser, deletePlaceHandler, changePlaceStatusHandler }: IListPageProps) {
 

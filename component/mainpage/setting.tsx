@@ -1,7 +1,7 @@
 import { PwaCurrentPage } from "@/model/enum_model";
 import { ISettingProps } from "@/model/props_model";
-import StaticSettingCard from "../settingCard/staticSettingCard";
-import ThemeSettingCard from "../settingCard/themeSettingCard";
+import StaticSettingCard from "../settingPageAsset/staticSettingCard";
+import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 
 export default function Setting({ currentUserName, changeCurrentThemeHandler, changeThemeHandler, isDarkTheme }: ISettingProps) {
     return (
