@@ -1,7 +1,7 @@
 'use client';
 
 import { IsStringValid } from '@/extension/string_extension';
-import { CurrentUserRef, ICurrentPage, IDisplayPlace, IUserIndexedDB } from '@/model/useState_model';
+import { CurrentUserRef, ICurrentPage, IDisplayPlace, IThemeIndexedDB, IUserIndexedDB } from '@/model/useState_model';
 import { ResponseModel } from '@/model/response_model';
 import { Place } from '@prisma/client';
 // import { useRouter } from 'next/navigation';
@@ -41,8 +41,6 @@ export default function Home() {
             longitude: -1
         } 
     });
-    const indexedDbUserStore = useRef<IDBObjectStore>();
-    const indexedDbThemeStore = useRef<IDBObjectStore>();
     const isMountRound = useRef<boolean>(true);
     const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const isForceFetch = useRef<boolean>(false);
@@ -66,9 +64,10 @@ export default function Home() {
         // open with indexedDB Initialize handler
         request.onupgradeneeded = () => {
 
-            // create currentUser store
+            // create currentUser / currentTheme store
             const dbContext = request.result;
             dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+            dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
 
             // set variable for skip onsuccess function
             skipIndexedDbOnSuccess.current = true;
@@ -94,19 +93,19 @@ export default function Home() {
 
                     // create store of indexedDB transaction and set it globle useRef
                     const store = transaction.objectStore(indexedDB_ThemeStore);
-                    indexedDbThemeStore.current = store;
 
                     // get current theme data from indexedDB
-                    const response = indexedDbThemeStore.current.get(indexedDB_ThemeKey);
+                    const response = store.get(indexedDB_ThemeKey);
 
                     // set isDarkTheme in useRef and change page Theme
                     response.onsuccess = () => {
                         
-                        isDarkTheme.current = response.result;
+                        // if indexedDB doesn't have Theme data it will set default to false
+                        isDarkTheme.current = (response.result as IThemeIndexedDB)?.isDarkTheme ?? false
+                        
+                        if (isDarkTheme.current) {
 
-                        var bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
-                        if (bodyElement != null && isDarkTheme.current == true) {
-                            bodyElement.style.backgroundColor = "#36393e";
+                            AdaptiveColorThemeHandler(isDarkTheme.current)
                         }
                     }
                 }
@@ -119,10 +118,9 @@ export default function Home() {
                 
                     // create store of indexedDB transaction and set it globle useRef
                     const store = transaction.objectStore(indexedDB_UserStore);
-                    indexedDbUserStore.current = store;
 
                     // get current user from indexedDB
-                    const response = indexedDbUserStore.current.get(indexedDB_UserKey);
+                    const response = store.get(indexedDB_UserKey);
         
                     // get fail handler
                     response.onerror = () => {
@@ -160,7 +158,7 @@ export default function Home() {
             }
         }
 
-    }, [])
+    }, []);
 
     // useEffect for reFetch data
     useEffect(() => {
@@ -178,7 +176,7 @@ export default function Home() {
             isMountRound.current = false;
         }
 
-    }, [currentLocation, currentPage, orderByDistance])
+    }, [currentLocation, currentPage, orderByDistance]);
 
     // fetch place data from api
     const FetchPlaceData = async () => {
@@ -297,16 +295,65 @@ export default function Home() {
         setOrderByDistance(orderByDistance);
     }
 
-    // change color theme
-    // useEffect(() => {
-    //     var b: HTMLElement = document.getElementsByTagName("body")[0];
-    //     var h: HTMLElement = document.getElementsByTagName("html")[0];
-    //     if (b != null && h != null){
-    //         console.log("not null")
-    //         b.style.backgroundColor = "#36393e"
-    //         h.style.backgroundColor = "#36393e"
-    //     }
-    // }, [])
+    const ChangeCurrentThemeHandler = (isDarkThemeHandler: boolean) => {
+
+        console.log("Handler : " + isDarkThemeHandler)
+
+        // change isDarkTheme ref variable
+        isDarkTheme.current = isDarkThemeHandler;
+
+        // set css theme by theme ref variable
+        AdaptiveColorThemeHandler(isDarkTheme.current);
+
+        // check user Credentials -> open indexedDB
+        const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
+
+        // open indexedDB error handler
+        request.onerror = (event: Event) => {
+            alert("Can't open indexedDB.");
+        }
+
+        // open indexedDB success handler
+        request.onsuccess = () => {
+
+            console.log("hello")
+            // set up indexedDB
+            const dbContext = request.result;
+
+            // check theme store name is exist
+            if (dbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
+                
+                // create transaction of indexedDB
+                const transaction = dbContext.transaction(indexedDB_ThemeStore, "readwrite");
+
+                // create store of indexedDB transaction and set it globle useRef
+                const store = transaction.objectStore(indexedDB_ThemeStore);
+
+                // store theme data in indexedDB
+                store.put({CurrentTheme: indexedDB_ThemeKey, isDarkTheme: isDarkThemeHandler});
+            }
+        }
+    }
+
+    const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
+
+        // get all color theme by name
+        var htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
+        var bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
+
+        if (isDarkTheme) {
+
+            // BackGround 
+            htmlElement.style.backgroundColor = "#36393e";
+            bodyElement.style.backgroundColor = "#36393e";
+        }
+        else {
+
+            // BackGround 
+            htmlElement.style.backgroundColor = "#f5f5f5";
+            bodyElement.style.backgroundColor = "#f5f5f5";
+        }
+    }
 
     return (
         <main>
@@ -345,8 +392,8 @@ export default function Home() {
                                 case PwaCurrentPage.Setting:
                                     return <Setting
                                         currentUserName={user.current.userName}
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        themeDbContext={indexedDbThemeStore.current}
+                                        changeCurrentThemeHandler={ChangeCurrentPage}
+                                        changeThemeHandler={ChangeCurrentThemeHandler}
                                         isDarkTheme={isDarkTheme.current}
                                     ></Setting>
 

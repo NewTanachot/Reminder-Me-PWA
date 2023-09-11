@@ -30,6 +30,11 @@ export interface IUserIndexedDB extends User {
     CurrentUser: string
 }
 
+export interface IThemeIndexedDB {
+    CurrentTheme: string,
+    isDarkTheme: boolean
+}
+
 export interface IRegisterValidator {
     inputEmptyString: boolean
     duplicateUserName: boolean

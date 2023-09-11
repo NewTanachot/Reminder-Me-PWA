@@ -1,8 +1,13 @@
 import { IThemeSettingCardProps } from "@/model/props_model";
 
-export default function ThemeSettingCard({ themeDbContext, isDarkTheme }: IThemeSettingCardProps) {
+export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandler }: IThemeSettingCardProps) {
 
+    const UpdateThemeHandler = (isDarkThemeParam: boolean) => {
+        console.log(isDarkThemeParam)
+        changeCurrentThemeHandler(isDarkThemeParam);
+    };
 
+    console.log("is dark theme : " + isDarkTheme);
 
     return (
     <>
@@ -20,8 +25,10 @@ export default function ThemeSettingCard({ themeDbContext, isDarkTheme }: ITheme
                                 <div className="form-check form-check-inline mb-0">
                                     <input 
                                         className="form-check-input" 
+                                        name="flexRadioDefault" 
                                         type="radio" 
                                         defaultChecked={!isDarkTheme}
+                                        onChange={() => {UpdateThemeHandler(false)}}
                                     />
                                     <label className="form-check-label">
                                         <i className="bi bi-sun-fill"></i>
@@ -30,8 +37,10 @@ export default function ThemeSettingCard({ themeDbContext, isDarkTheme }: ITheme
                                 <div className="form-check form-check-inline mb-0">
                                     <input 
                                         className="form-check-input" 
+                                        name="flexRadioDefault" 
                                         type="radio" 
                                         defaultChecked={isDarkTheme}
+                                        onChange={() => {UpdateThemeHandler(true)}}
                                     />
                                     <label className="form-check-label">
                                         <i className="bi bi-moon-fill"></i>

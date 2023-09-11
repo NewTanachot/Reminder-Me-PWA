@@ -28,18 +28,6 @@ export default function Navbar({ currentPageName, orderByDistanceValue, changeOr
                     :
                         <></>
                 }
-                {/* {
-                    currentPageName !== PwaCurrentPage.Login ?
-                    <button 
-                        onClick={() => changeCurrentPage(PwaCurrentPage.Login)} 
-                        className='m-0 btn btn-success rounded-3 bg-milk-yellow text-peach'
-                    >
-                        <i className="bi bi-person-circle me-2"></i>
-                        {userName}
-                    </button>
-                    :
-                    <></>
-                } */}
             </div>
         </nav>
     )
