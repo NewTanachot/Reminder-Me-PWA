@@ -39,7 +39,7 @@ export interface IAddPlace {
 
 export interface ISettingProps {
     currentUserName: string,
-    changeCurrentThemeHandler: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void,
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void,
     changeThemeHandler: (currentTheme: boolean) => void, 
     isDarkTheme: boolean
 }

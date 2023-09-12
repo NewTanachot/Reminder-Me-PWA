@@ -3,7 +3,7 @@ import { ISettingProps } from "@/model/props_model";
 import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 
-export default function Setting({ currentUserName, changeCurrentThemeHandler, changeThemeHandler, isDarkTheme }: ISettingProps) {
+export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, isDarkTheme }: ISettingProps) {
     return (
         <div className="card shadow-sm bg-peach-65">
             <div className="card-body m-2">
@@ -24,7 +24,7 @@ export default function Setting({ currentUserName, changeCurrentThemeHandler, ch
                 <div className="mt-4 text-center">
                     <button
                         className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2"
-                        onClick={() => changeCurrentThemeHandler(PwaCurrentPage.Login)}
+                        onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
                     >
                         Switch User 
                     </button>
