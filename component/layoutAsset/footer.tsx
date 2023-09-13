@@ -1,5 +1,6 @@
 import { PwaCurrentPage } from "@/model/enum_model";
 import { IFooterProps } from "@/model/props_model";
+import { useRef } from "react";
 
 export default function Footer({ changeCurrentPage, currentPageName }: IFooterProps) {
 
@@ -27,6 +28,9 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
             break;
     }
 
+    // check if need to disableAllFooter
+    const disableAllFooter = currentPageName == PwaCurrentPage.Login || currentPageName == PwaCurrentPage.Register ? true : false;
+
     return (
         <footer className='fixed-bottom bg-viridian-green px-2 pb-3 pt-0 shadow-top rounded-top-5'>
             <div className='d-flex justify-content-around align-items-start'>
@@ -34,7 +38,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.ReminderList)}
-                    disabled={currentPageName == PwaCurrentPage.Login}
+                    disabled={disableAllFooter}
                 >
                     <i className={`${listIconClass} text-footer-size`}></i>
                 </button>
@@ -42,7 +46,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.MapView)}
-                    disabled={currentPageName == PwaCurrentPage.Login}
+                    disabled={disableAllFooter}
                 >
                     <i className={`${mapIconClass} text-footer-size`}></i>
                 </button>
@@ -50,7 +54,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.AddList)}
-                    disabled={currentPageName == PwaCurrentPage.Login}
+                    disabled={disableAllFooter}
                 >
                     <i className={`${addListIconClass} text-footer-size`}></i>
                 </button>
@@ -58,7 +62,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.EvBattery)}
-                    disabled={currentPageName == PwaCurrentPage.Login}
+                    disabled={disableAllFooter}
                 >
                     <i className={`${evBatteryIconClass} text-footer-size`}></i>
                 </button>
@@ -66,7 +70,7 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
                     type="button"
                     className={`btn btn-lg text-peach border-0 rounded-0`}
                     onClick={() => changeCurrentPage(PwaCurrentPage.Setting)}
-                    disabled={currentPageName == PwaCurrentPage.Login}
+                    disabled={disableAllFooter}
                 >
                     <i className={`${settingIconClass} text-footer-size`}></i>
                 </button>

@@ -6,51 +6,16 @@ import { User } from "@prisma/client";
 import SuccessModal from "../modalAsset/success";
 import { useState } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
+import { CustomGeoLocationOption } from "@/extension/api_extension";
 
 // Initialize .ENV variable
-const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
-const indexedDB_DBVersion: number = +(process.env.NEXT_PUBLIC_INDEXED_DB_VERSION ?? "");
-const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?? "";
-const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function Login({ setCurrentUser, changeCurrentPage, currentPage }: ILoginProps) {
+export default function Login({ setCurrentUser, changeCurrentPage, insertUserHandler, currentPage }: ILoginProps) {
 
     // react hook initialize
     const [ inputEmptyStringValidator, setInputEmptyStringValidator ] = useState<boolean>(false);
 
-    // Define a function to set up indexedDB
-    const SetupIndexedDB = () => {
-        return new Promise<IDBObjectStore>((resolve, reject) => {
-            // set login user to indexedDB -> open indexedDB
-            const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
-        
-            // open indexedDB error handler
-            request.onerror = (event: Event) => {
-                // reject the promise
-                alert("Error open indexedDB: " + event);
-                reject();
-            };
-        
-            // open indexedDB success handler
-            request.onsuccess = () => {
-                // set up indexedDB
-                const dbContext = request.result;
-        
-                // check if store name not exist -> create store name
-                if (!dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
-                    dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
-                }
-        
-                const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite");
-                const store = transaction.objectStore(indexedDB_UserStore);
-
-                // resolve the store to promise 
-                resolve(store);
-            };
-        });
-    };
-    
     const UserLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         
         event.preventDefault();
@@ -87,25 +52,12 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
                 // get currentUser user
                 const currentUser: User = await response.json();
 
-                // setup indexedDb
-                const indexedDbUserStore = await SetupIndexedDB();
+                // store currentUser to indexedDb
+                insertUserHandler(currentUser);
 
-                // store currentUser to indexedDB
-                indexedDbUserStore.put({ CurrentUser: indexedDB_UserKey, ...currentUser });
-
-                // set new user to useRef in list page
-                setCurrentUser({ 
-                    userId: currentUser.id, 
-                    userName: currentUser.name,
-                    userLocation: {
-                        latitude: -1,
-                        longitude: -1
-                    }
-                });
-
-                // Reroute to home page
-                changeCurrentPage(PwaCurrentPage.ReminderList);
-                // router.replace("/");
+                // get current user geolocation
+                navigator.geolocation.getCurrentPosition((position) => IfGetLocationSuccess(position, currentUser), 
+                    IfGetLocationError, CustomGeoLocationOption);
             }
         }
         else {
@@ -113,6 +65,29 @@ export default function Login({ setCurrentUser, changeCurrentPage, currentPage }
             // set validator state for warning danger text
             setInputEmptyStringValidator(true);
         }
+    }
+
+    // success case for Geolocation
+    const IfGetLocationSuccess = (position: GeolocationPosition, currentUser: User) => {
+
+        // set new user to useRef in list page
+        setCurrentUser({ 
+            userId: currentUser.id, 
+            userName: currentUser.name,
+            userLocation: {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            }
+        });
+
+        // Reroute to home page
+        changeCurrentPage(PwaCurrentPage.ReminderList);
+    }
+
+    // error case for Geolocation
+    const IfGetLocationError = (error : GeolocationPositionError) => {
+
+        alert(`${error.code}: ${error.message}`)
     }
 
     return (

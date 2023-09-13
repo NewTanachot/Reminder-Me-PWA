@@ -26,7 +26,7 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                         className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2"
                         onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
                     >
-                        Switch User 
+                        Sign out
                     </button>
                 </div>
             </div>

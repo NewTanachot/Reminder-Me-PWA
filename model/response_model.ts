@@ -5,5 +5,5 @@ export type ResponseModel = {
 
 export interface ISetupIndexedDBModel {
     themeStore: IDBObjectStore,
-    useStore: IDBObjectStore
+    userStore: IDBObjectStore
 }
