@@ -1,3 +1,4 @@
+import { User } from "@prisma/client"
 import { PwaCurrentPage } from "./enum_model"
 import { IUserLocation } from "./subentity_model"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useState_model"
@@ -47,6 +48,7 @@ export interface ISettingProps {
 export interface ILoginProps {
     currentPage: ICurrentPage,
     setCurrentUser: (setUser: CurrentUserRef) => void,
+    insertUserHandler: (user: User) => void,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 

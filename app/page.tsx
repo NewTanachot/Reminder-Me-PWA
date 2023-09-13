@@ -3,10 +3,11 @@
 import { IsStringValid } from '@/extension/string_extension';
 import { CurrentUserRef, ICurrentPage, IDisplayPlace, IThemeIndexedDB, IUserIndexedDB } from '@/model/useState_model';
 import { ISetupIndexedDBModel, ResponseModel } from '@/model/response_model';
-import { Place } from '@prisma/client';
+import { Place, User } from '@prisma/client';
 import { useEffect, useState, useRef } from 'react';
 import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import { PwaCurrentPage } from '@/model/enum_model';
+import { CustomGeoLocationOption } from '@/extension/api_extension';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/layoutAsset/navbar';
 import Map from '@/component/mainpage/map';
@@ -26,6 +27,9 @@ const indexedDB_ThemeStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME
 const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
+// Initialize global const variable
+const setDefaultLightTheme: boolean = true;
+
 export default function Home() {
 
     // react hook initialize
@@ -38,9 +42,8 @@ export default function Home() {
         } 
     });
     const isMountRound = useRef<boolean>(true);
-    const skipIndexedDbOnSuccess = useRef<boolean>(false);
     const isForceFetch = useRef<boolean>(false);
-    const isDarkTheme = useRef<boolean>(false);
+    const isDarkTheme = useRef<boolean>(!setDefaultLightTheme);
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.ReminderList, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
@@ -59,8 +62,11 @@ export default function Home() {
         
             // open indexedDB error handler
             request.onerror = (event: Event) => {
+
                 // reject the promise
                 alert("Can't open indexedDB: " + event);
+
+                // reject the promise
                 reject();
             };
         
@@ -72,54 +78,67 @@ export default function Home() {
                 dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
 
-                // set variable for skip onsuccess function
-                skipIndexedDbOnSuccess.current = true;
-
                 // change to login page
                 ChangeCurrentPage(PwaCurrentPage.Login);
+
+                // reject the promise
+                reject();
             }
 
             // open indexedDB success handler
             request.onsuccess = () => {
 
-                if (!skipIndexedDbOnSuccess.current)
-                {
-                    // set up indexedDB
-                    const dbContext = request.result;
-        
-                    // check theme store name is exist
-                    if (dbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
-                        
-                        // create transaction of indexedDB
-                        const transaction = dbContext.transaction(indexedDB_ThemeStore, "readwrite");
-
-                        // create store of indexedDB transaction and set it globle useRef
-                        themeStore = transaction.objectStore(indexedDB_ThemeStore);
-                    }
-
-                    // check use store name is exist
-                    if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
-        
-                        // create transaction of indexedDB
-                        const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite");
+                // set up indexedDB
+                const dbContext = request.result;
+    
+                // check theme store name is exist
+                if (dbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
                     
-                        // create store of indexedDB transaction and set it globle useRef
-                        userStore = transaction.objectStore(indexedDB_UserStore);
-                    }
-                    else {
-                        // change to login page
-                        ChangeCurrentPage(PwaCurrentPage.Login);
+                    // create transaction of indexedDB
+                    const transaction = dbContext.transaction(indexedDB_ThemeStore, "readwrite");
+
+                    // create store of indexedDB transaction and set it globle useRef
+                    themeStore = transaction.objectStore(indexedDB_ThemeStore);
+
+                    // #region ------------------------- Initialize default theme value
+
+                    // try to get themeStore
+                    const themeStoreResponse = themeStore.get(indexedDB_ThemeKey);
+
+                    // set default theme as light theme if themeStore doesn't have any data
+                    themeStoreResponse.onsuccess = () => {
+
+                        if (!themeStoreResponse.result) {
+
+                            themeStore.put({CurrentTheme: indexedDB_ThemeKey, isDarkTheme: isDarkTheme.current});
+                        }
                     }
 
-                    // create response for two of store
-                    const response: ISetupIndexedDBModel = {
-                        themeStore: themeStore,
-                        useStore: userStore
-                    }
-
-                    // resolve the store to promise 
-                    resolve(response)
+                    //  #endregion
                 }
+
+                // check use store name is exist
+                if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+    
+                    // create transaction of indexedDB
+                    const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite");
+                
+                    // create store of indexedDB transaction and set it globle useRef
+                    userStore = transaction.objectStore(indexedDB_UserStore);
+                }
+                else {
+                    // change to login page
+                    ChangeCurrentPage(PwaCurrentPage.Login);
+                }
+
+                // create response for two of store
+                const response: ISetupIndexedDBModel = {
+                    themeStore: themeStore,
+                    userStore: userStore
+                }
+
+                // resolve the store to promise 
+                resolve(response)
             }
         });
     };
@@ -139,6 +158,7 @@ export default function Home() {
                 // if indexedDB doesn't have Theme data it will set default to false
                 isDarkTheme.current = (themeStoreResponse.result as IThemeIndexedDB)?.isDarkTheme ?? false
 
+                // set dark theme if user use dark theme as default
                 if (isDarkTheme.current) {
 
                     AdaptiveColorThemeHandler(isDarkTheme.current)
@@ -146,7 +166,7 @@ export default function Home() {
             }
 
             // get current user from indexedDB
-            const userStoreResponse = store.useStore.get(indexedDB_UserKey);
+            const userStoreResponse = store.userStore.get(indexedDB_UserKey);
 
             // get fail handler
             userStoreResponse.onerror = () => {
@@ -169,7 +189,7 @@ export default function Home() {
 
                     // get current location -> after get location it will call fetch place api (or get state of place if any) 
                     // for get place data with calculated distanceLocation.
-                    const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, geoLocationOption);
+                    const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, CustomGeoLocationOption);
                 }
                 else {
 
@@ -250,7 +270,7 @@ export default function Home() {
         catch(error) {
             alert(error);
         }
-    }
+    };
 
     // success case for Geolocation
     const IfGetLocationSuccess = (position: GeolocationPosition) => {
@@ -262,20 +282,13 @@ export default function Home() {
         user.current.userLocation.longitude = position.coords.longitude;
 
         setCurrentLocation(position.coords);
-    }
+    };
 
     // error case for Geolocation
     const IfGetLocationError = (error : GeolocationPositionError) => {
 
         alert(`${error.code}: ${error.message}`)
-    }
-
-    // option srtting for Geolocation
-    const geoLocationOption: PositionOptions = {
-        enableHighAccuracy: true, // use hign accuraacy location
-        timeout: 60000, // 60 sec or 1 min timeout
-        maximumAge: 0, // no location cache
-    }
+    };
 
     // change Current page method
     const ChangeCurrentPage = (page: PwaCurrentPage, successBox: boolean = false, forceFetch = false) => {
@@ -288,16 +301,27 @@ export default function Home() {
             pageName: page,
             successAlertBox: successBox
         });
-    }
+    };
 
     const SetCurrentUser = (setUser: CurrentUserRef) => {
+
         user.current.userId = setUser.userId;
         user.current.userName = setUser.userName;
-    }
+        user.current.userLocation = setUser.userLocation;
+    };
+
+    const InsertUserHandler = async (user: User) => {
+
+        // open indexedDB
+        const store = await SetupIndexedDB();
+
+        // store currentUser to indexedDB
+        store.userStore.put({ CurrentUser: indexedDB_UserKey, ...user });
+    };
 
     const DeletePlaceHandler = (placeId: string) => {
         setPlaces(places?.filter(e => e.id != placeId));
-    }
+    };
 
     const ChangePlaceStatusHandler = (placeId: string, setIsDisable: boolean) => {
 
@@ -309,11 +333,11 @@ export default function Home() {
 
             return e;
         }));
-    }
+    };
 
     const ChangeOrderByDistanceHandler = (orderByDistance: boolean) => {
         setOrderByDistance(orderByDistance);
-    }
+    };
 
     const ChangeCurrentThemeHandler = async (isDarkThemeHandler: boolean) => {
 
@@ -328,7 +352,7 @@ export default function Home() {
 
         // insert theme data to indexedDB
         store.themeStore.put({CurrentTheme: indexedDB_ThemeKey, isDarkTheme: isDarkThemeHandler});
-    }
+    };
 
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
 
@@ -348,7 +372,7 @@ export default function Home() {
             htmlElement.style.backgroundColor = "#f5f5f5";
             bodyElement.style.backgroundColor = "#f5f5f5";
         }
-    }
+    };
 
     return (
         <main>
@@ -396,6 +420,7 @@ export default function Home() {
                                     return <Login 
                                         currentPage={currentPage}
                                         setCurrentUser={SetCurrentUser} 
+                                        insertUserHandler={InsertUserHandler}
                                         changeCurrentPage={ChangeCurrentPage}
                                     ></Login>
 
