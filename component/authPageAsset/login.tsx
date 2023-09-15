@@ -52,8 +52,8 @@ export default function Login({ setCurrentUser, changeCurrentPage, insertUserHan
                 // get currentUser user
                 const currentUser: User = await response.json();
 
-                // store currentUser to indexedDb
-                insertUserHandler(currentUser);
+                // Reroute to loading page
+                changeCurrentPage(PwaCurrentPage.Loading);
 
                 // get current user geolocation
                 navigator.geolocation.getCurrentPosition((position) => IfGetLocationSuccess(position, currentUser), 

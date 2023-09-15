@@ -4,11 +4,12 @@ import { ResponseModel } from "@/model/response_model";
 import { UpdatePlace } from "@/model/subentity_model";
 import { IPlaceCardProps } from "@/model/props_model";
 import { useEffect } from "react";
+import { PwaCurrentPage } from "@/model/enum_model";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changePlaceStatusHandler }: IPlaceCardProps) {
+export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler }: IPlaceCardProps) {
   
     // Const variable initialize
     const cardId = `placeCard_${cardIndex}`;
@@ -83,7 +84,11 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
             </div>         
             <div className="card-header rounded-top-4 bg-warning-subtle text-viridian-green">
                 <div className="d-flex justify-content-between align-items-center text-size-20">
-                    <div>{data.name}</div>
+                    <div 
+                        onClick={() => updatePlaceCardHandler(data.id)}
+                    >
+                        {data.name}
+                    </div>
                     <div className="text-nowrap">
                         {data.locationDistance.toFixed(2)} km
                     </div>

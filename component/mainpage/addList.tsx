@@ -60,6 +60,9 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
 
     return (
         <div className="card shadow-sm bg-peach-65">
+            <div className="card-header bg-warning-subtle text-viridian-green">
+                <h4 className="m-0 text-center">Create new location</h4>
+            </div>
             <form className="card-body m-2" onSubmit={AddNewPlace}>
                 <div className="mb-3">
                     <p className="mb-1">
@@ -100,7 +103,7 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                 </div>
                 <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center">
-                        <p className="mb-1">Auto Activate:</p>
+                        <p className="mb-1">Enable :</p>
                         <div className="form-check form-switch">
                             {
                                 <input type="checkbox"
