@@ -14,23 +14,25 @@ export interface IFooterProps {
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
+export interface IUserInfoProps {
+    username: string,
+    location: IUserLocation
+}
+
 export interface IListPageProps {
     places: IDisplayPlace[] | undefined,
     currentUser: CurrentUserRef,
     deletePlaceHandler: (placeId: string) => void,
-    changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void
-}
-
-export interface IUserInfoProps {
-    username: string,
-    location: IUserLocation
+    changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
+    updatePlaceCardHandler: (cardId: string) => void
 }
 
 export interface IPlaceCardProps {
     cardIndex: number,
     data: IDisplayPlace,
     deletePlaceHandler: (placeId: string) => void,
-    changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void
+    changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
+    updatePlaceCardHandler: (cardId: string) => void
 }
 
 export interface IAddPlace {
@@ -67,6 +69,10 @@ export interface IThemeSettingCardProps {
     isDarkTheme: boolean
 }
 
+export interface IUpdateListProps {
+    cardData: IDisplayPlace,
+    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+}
 
 export interface ISuccessModal {
     modalMessage: string

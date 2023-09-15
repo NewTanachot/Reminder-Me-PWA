@@ -17,6 +17,8 @@ import Footer from '@/component/layoutAsset/footer';
 import AddList from '@/component/mainpage/addList';
 import EvBattery from '@/component/mainpage/evbattery';
 import Setting from '@/component/mainpage/setting';
+import UpdateList from '@/component/mainpage/updateList';
+import Loading from '@/component/modalAsset/loading';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -44,6 +46,7 @@ export default function Home() {
     const isMountRound = useRef<boolean>(true);
     const isForceFetch = useRef<boolean>(false);
     const isDarkTheme = useRef<boolean>(!setDefaultLightTheme);
+    const currentUpdateCard = useRef<IDisplayPlace>();
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.ReminderList, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
@@ -339,6 +342,15 @@ export default function Home() {
         setOrderByDistance(orderByDistance);
     };
 
+    const UpdatePlaceCardHandler = (cardId: string) => {
+        
+        // set cardId to Ref variable
+        currentUpdateCard.current = places?.find(x => x.id == cardId);
+
+        // change current page to UpdateCard
+        ChangeCurrentPage(PwaCurrentPage.UpdateList);
+    };
+
     const ChangeCurrentThemeHandler = async (isDarkThemeHandler: boolean) => {
 
         // change isDarkTheme ref variable
@@ -394,6 +406,7 @@ export default function Home() {
                                         currentUser={user.current}
                                         deletePlaceHandler={DeletePlaceHandler}  
                                         changePlaceStatusHandler={ChangePlaceStatusHandler}
+                                        updatePlaceCardHandler={UpdatePlaceCardHandler}
                                     ></List>
 
                                 case PwaCurrentPage.MapView:
@@ -404,6 +417,23 @@ export default function Home() {
                                         userId={user.current.userId}
                                         changeCurrentPage={ChangeCurrentPage}
                                     ></AddList>
+
+                                case PwaCurrentPage.UpdateList:
+                                    if (currentUpdateCard.current) {
+                                        return <UpdateList 
+                                            cardData={currentUpdateCard.current}
+                                            changeCurrentPage={ChangeCurrentPage}
+                                        ></UpdateList>
+                                    }
+                                    else {
+                                        return <List 
+                                            places={places}
+                                            currentUser={user.current}
+                                            deletePlaceHandler={DeletePlaceHandler}  
+                                            changePlaceStatusHandler={ChangePlaceStatusHandler}
+                                            updatePlaceCardHandler={UpdatePlaceCardHandler}
+                                        ></List>
+                                    }
 
                                 case PwaCurrentPage.EvBattery:
                                     return <EvBattery></EvBattery>
@@ -428,6 +458,9 @@ export default function Home() {
                                     return <Register
                                         changeCurrentPage={ChangeCurrentPage}
                                     ></Register>
+
+                                case PwaCurrentPage.Loading:
+                                    return <Loading></Loading>   
                             }
                         })()
                     }

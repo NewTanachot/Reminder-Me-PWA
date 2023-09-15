@@ -18,10 +18,10 @@ export type PlaceExtensionModel = {
 export type UpdatePlace = {
     id: string
     name?: string | undefined
-    latitude?: Decimal | undefined
-    longitude?: Decimal | undefined
+    latitude?: number | undefined
+    longitude?: number | undefined
     reminderMessage?: string | undefined
-    reminderDate?: string | undefined
+    reminderDate?: Date | undefined
     isDisable?: boolean | undefined
     createdAt?: Date | undefined
     userId?: string | undefined
