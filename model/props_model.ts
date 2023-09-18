@@ -3,6 +3,10 @@ import { PwaCurrentPage } from "./enum_model"
 import { IUserLocation } from "./subentity_model"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useState_model"
 
+interface IBaseProps {
+    isDarkTheme: boolean
+}
+
 export interface INavbarProps {
     currentPageName: PwaCurrentPage,
     orderByDistanceValue: boolean,
@@ -19,7 +23,7 @@ export interface IUserInfoProps {
     location: IUserLocation
 }
 
-export interface IListPageProps {
+export interface IListPageProps extends IBaseProps {
     places: IDisplayPlace[] | undefined,
     currentUser: CurrentUserRef,
     deletePlaceHandler: (placeId: string) => void,
@@ -27,8 +31,7 @@ export interface IListPageProps {
     updatePlaceCardHandler: (cardId: string) => void
 }
 
-export interface IPlaceCardProps {
-    cardIndex: number,
+export interface IPlaceCardProps extends IBaseProps {
     data: IDisplayPlace,
     deletePlaceHandler: (placeId: string) => void,
     changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,

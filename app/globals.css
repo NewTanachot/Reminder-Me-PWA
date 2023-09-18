@@ -67,6 +67,18 @@ html, body {
     background-color: #6495ED !important;
 }
 
+.bg-gray {
+    background-color: #808080 !important;
+}
+
+.bg-lightviolet {
+    background-color: #E0B0FF !important;
+}
+
+.bg-superlightpurple {
+    background-color: #E6E6FA !important;
+}
+
 /*  --- [ Text Color Class ] ---  */
 
 .text-milk-yellow {

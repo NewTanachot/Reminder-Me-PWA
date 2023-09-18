@@ -56,11 +56,11 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
 
     return (
         <div className="card shadow-sm bg-peach-65">
-            <div className="card-header d-flex justify-content-between align-items-center bg-warning-subtle">
+            <div className="card-header d-flex justify-content-between align-items-center bg-warning-subtle text-viridian-green">
                 <div onClick={backButtonHandler}>
-                    <i className="bi bi-caret-left-fill text-secondary"></i>
+                    <i className="bi bi-caret-left-fill"></i>
                 </div>
-                <h4 className="m-0 text-center text-viridian-green">Update location</h4>
+                <h4 className="m-0 text-center">Update location</h4>
                 <div></div>
             </div>
             <form className="card-body m-2" onSubmit={UpdatePlace}>
