@@ -58,7 +58,7 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
         <div className="card shadow-sm bg-peach-65">
             <div className="card-header d-flex justify-content-between align-items-center bg-warning-subtle">
                 <div onClick={backButtonHandler}>
-                    <i className="bi bi-arrow-left"></i>
+                    <i className="bi bi-caret-left-fill text-secondary"></i>
                 </div>
                 <h4 className="m-0 text-center text-viridian-green">Update location</h4>
                 <div></div>
@@ -83,22 +83,22 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
                     <input name="reminderDateInputUpdate" className="form-control w-100" defaultValue={cardData.reminderDate ?? ""} type="date"/>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="text-cobalt-blue">
+                    <a className="btn btn-sm btn-outline-primary">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
                 </div>
                 <div className="mt-1">
                     <p className="mb-1">
-                        Latitude:<span className="text-danger">*</span>
+                        Latitude:
                     </p>
-                    <input name="latitudeInputUpdate" className="form-control w-100" type="number" defaultValue={cardData.latitude} placeholder="0.000000000000000" step="any" min={0} required/>
+                    <input name="latitudeInputUpdate" className="form-control w-100" type="number" defaultValue={cardData.latitude} placeholder="0.00" step="any" min={0}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
-                        Longitude:<span className="text-danger">*</span>
+                        Longitude:
                     </p>
-                    <input name="longitudeInputUpdate" className="form-control w-100" type="number" defaultValue={cardData.longitude} placeholder="0.000000000000000" step="any" min={0} required/>
+                    <input name="longitudeInputUpdate" className="form-control w-100" type="number" defaultValue={cardData.longitude} placeholder="0.00" step="any" min={0}/>
 
                 </div>
                 <div className="mt-3">
@@ -120,7 +120,7 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
                         type="submit"
                         className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
                     >
-                        Add
+                        Save
                     </button>
                 </div>
             </form>

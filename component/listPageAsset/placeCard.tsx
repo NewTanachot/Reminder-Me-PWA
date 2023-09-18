@@ -4,7 +4,6 @@ import { ResponseModel } from "@/model/response_model";
 import { UpdatePlace } from "@/model/subentity_model";
 import { IPlaceCardProps } from "@/model/props_model";
 import { useEffect } from "react";
-import { PwaCurrentPage } from "@/model/enum_model";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
@@ -13,6 +12,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
   
     // Const variable initialize
     const cardId = `placeCard_${cardIndex}`;
+    const cardHeaderElementId = `cardHeader_${cardIndex}`;
 
     // change place active status handler
     const ChangePlaceStatus = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
             >
                 <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
             </div>         
-            <div className="card-header rounded-top-4 bg-warning-subtle text-viridian-green">
+            <div id={cardHeaderElementId} className="card-header rounded-top-4 text-viridian-green" >
                 <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div 
                         onClick={() => updatePlaceCardHandler(data.id)}
@@ -107,7 +107,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
                     <div className="text-dark">
                         location: &nbsp;
                         <span className="text-secondary">
-                            {(+data.latitude).toFixed(4)}, {(+data.longitude).toFixed(4)}
+                            {(data.latitude != 0 && data.longitude != 0) ? `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}` : "-"}
                         </span>
                     </div>
                     <div className="form-check form-switch">

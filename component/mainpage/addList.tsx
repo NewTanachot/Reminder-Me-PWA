@@ -83,22 +83,22 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                     <input name="reminderDateInput" className="form-control w-100" type="date"/>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="text-cobalt-blue">
+                    <a className="btn btn-sm btn-outline-primary">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
                 </div>
                 <div className="mt-1">
                     <p className="mb-1">
-                        Latitude:<span className="text-danger">*</span>
+                        Latitude:
                     </p>
-                    <input name="latitudeInput" className="form-control w-100" type="number" placeholder="0.000000000000000" step="any" min={0} required/>
+                    <input name="latitudeInput" className="form-control w-100" type="number" placeholder="0.00" step="any" min={0}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
-                        Longitude:<span className="text-danger">*</span>
+                        Longitude:
                     </p>
-                    <input name="longitudeInput" className="form-control w-100" type="number" placeholder="0.000000000000000" step="any" min={0} required/>
+                    <input name="longitudeInput" className="form-control w-100" type="number" placeholder="0.00" step="any" min={0}/>
 
                 </div>
                 <div className="mt-3">

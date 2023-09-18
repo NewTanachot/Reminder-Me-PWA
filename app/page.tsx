@@ -369,20 +369,46 @@ export default function Home() {
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
 
         // get all color theme by name
-        var htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
-        var bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
+        const htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
+        const bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
+
+        // const allCardElement: NodeListOf<Element> = document.querySelectorAll("[id='test']");
+
+        const a =  places?.map((element, index) => {
+
+            return document.getElementById(`cardHeader_${index}`);
+            
+        });
+
+        console.log(a)
 
         if (isDarkTheme) {
 
             // BackGround 
             htmlElement.style.backgroundColor = "#36393e";
             bodyElement.style.backgroundColor = "#36393e";
+
+            a?.forEach(e => {
+                
+                if (e) {
+                    console.log("dark")
+                    e.style.backgroundColor = "#CF9FFF";
+                }
+            });
         }
         else {
 
             // BackGround 
             htmlElement.style.backgroundColor = "#f5f5f5";
             bodyElement.style.backgroundColor = "#f5f5f5";
+
+            a?.forEach(e => {
+                
+                if (e) {
+                    console.log("white")
+                    e.style.backgroundColor = "#FFF8DC";
+                }
+            });
         }
     };
 

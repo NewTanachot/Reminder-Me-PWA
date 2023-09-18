@@ -82,8 +82,12 @@ export const DisplayCurrentPageName = (currentPage: PwaCurrentPage) => {
             return "Reminder List";
         case PwaCurrentPage.MapView:
             return "Map View";
+        case PwaCurrentPage.EvBattery:
+            return "Ev Battery";
         case PwaCurrentPage.AddList:
             return "Add New Place";
+        case PwaCurrentPage.UpdateList:
+            return "Update Place Card";
         default:
             return PwaCurrentPage[currentPage];
     }
