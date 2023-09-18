@@ -2,7 +2,6 @@ import { DisplayCurrentPageName } from "@/extension/string_extension";
 import { PwaCurrentPage } from "@/model/enum_model";
 import { INavbarProps } from "@/model/props_model";
 import appIcon from '@/public/image/web-icon/favicon.ico';
-import Link from "next/link";
 
 export default function Navbar({ currentPageName, orderByDistanceValue, changeOrderByDistanceHandler }: INavbarProps) {
 
@@ -17,7 +16,7 @@ export default function Navbar({ currentPageName, orderByDistanceValue, changeOr
                     currentPageName == PwaCurrentPage.ReminderList ?
                         <button 
                             onClick={() => changeOrderByDistanceHandler(!orderByDistanceValue)} 
-                            className='m-0 btn btn-dark rounded-3'
+                            className='m-0 btn btn-dark bg-cornflowerblue rounded-3'
                         >
                             {
                                 orderByDistanceValue

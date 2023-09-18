@@ -3,22 +3,32 @@
 import { ResponseModel } from "@/model/response_model";
 import { UpdatePlace } from "@/model/subentity_model";
 import { IPlaceCardProps } from "@/model/props_model";
-import { useEffect } from "react";
+import { useState } from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler }: IPlaceCardProps) {
+export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme }: IPlaceCardProps) {
   
     // Const variable initialize
-    const cardId = `placeCard_${cardIndex}`;
-    const cardHeaderElementId = `cardHeader_${cardIndex}`;
+    let filterCardClass = "";
+    let cardHeaderThemeColor = "";
+    let cardBodyThemeColor = "";
+
+    // const cardHeaderId = `cardHeader_${cardIndex}`;
+
+    // react hook initialize
+    const [isFilter, setIsFilter] = useState<boolean>(data.isDisable);
 
     // change place active status handler
     const ChangePlaceStatus = async (event: React.ChangeEvent<HTMLInputElement>) => {
         
-        // update places state (Cache data) in list page
         const setIsDisable = !event.currentTarget.checked;
+
+        // set State for refresh page
+        setIsFilter(setIsDisable)
+
+        // update places state (Cache data) in list page [Fix chabge page on footer bug]
         changePlaceStatusHandler(data.id, setIsDisable);
 
         // update place display status data with only
@@ -61,28 +71,32 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
     }
 
     // check disable filter
-    useEffect(() => {
+    if (isFilter) {
 
-        const placeCard = document.getElementById(cardId);
+        filterCardClass = "filter-card";
+    }
 
-        if (data.isDisable) {
-            placeCard?.classList.add("filter-card");
-        }
-        else {
-            placeCard?.classList.remove("filter-card");
-        }
+    // check theme
+    if (isDarkTheme) {
 
-    });
+        cardHeaderThemeColor = "bg-gray text-white";
+        cardBodyThemeColor = "bg-superlightpurple";
+    }
+    else {
+
+        cardHeaderThemeColor = "bg-warning-subtle text-viridian-green";
+        cardBodyThemeColor = "bg-peach-65";
+    }
 
     return (
-        <div id={cardId} className="card mb-3 shadow-sm rounded-4 position-relative">    
+        <div className={`card mb-3 shadow-sm rounded-4 position-relative ${filterCardClass}`}>    
             <div 
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
             >
                 <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
             </div>         
-            <div id={cardHeaderElementId} className="card-header rounded-top-4 text-viridian-green" >
+            <div className={`card-header rounded-top-4 ${cardHeaderThemeColor}`}>
                 <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div 
                         onClick={() => updatePlaceCardHandler(data.id)}
@@ -94,7 +108,7 @@ export default function PlaceCard({ data, cardIndex, deletePlaceHandler, changeP
                     </div>
                  </div>
             </div>
-            <div className="card-body rounded-bottom-4 bg-peach-65">
+            <div className={`card-body rounded-bottom-4 ${cardBodyThemeColor}`}>
                 <div className="d-flex justify-content-between align-items-center">
                     <p className="text-dark m-0 lh-1">
                         Message: &nbsp;
