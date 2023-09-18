@@ -2,6 +2,7 @@ import { DisplayCurrentPageName } from "@/extension/string_extension";
 import { PwaCurrentPage } from "@/model/enum_model";
 import { INavbarProps } from "@/model/props_model";
 import appIcon from '@/public/image/web-icon/favicon.ico';
+import Link from "next/link";
 
 export default function Navbar({ currentPageName, orderByDistanceValue, changeOrderByDistanceHandler }: INavbarProps) {
 
