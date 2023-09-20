@@ -7,18 +7,18 @@ interface IBaseProps {
     isDarkTheme: boolean
 }
 
-export interface INavbarProps {
+export interface INavbarProps extends IBaseProps {
     currentPageName: PwaCurrentPage,
     orderByDistanceValue: boolean,
     changeOrderByDistanceHandler: (orderByDistance: boolean) => void,
 }
 
-export interface IFooterProps {
+export interface IFooterProps extends IBaseProps {
     currentPageName: PwaCurrentPage,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
-export interface IUserInfoProps {
+export interface IUserInfoProps extends IBaseProps {
     username: string,
     location: IUserLocation
 }

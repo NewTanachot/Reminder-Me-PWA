@@ -16,6 +16,7 @@ export default function List({ places, currentUser, deletePlaceHandler, changePl
                     return (
                         <>
                             <UserInfo 
+                                isDarkTheme={isDarkTheme}
                                 username={currentUser.userName}
                                 location={currentUser.userLocation}
                             ></UserInfo>
@@ -26,7 +27,8 @@ export default function List({ places, currentUser, deletePlaceHandler, changePl
                 else {
                     return (
                         <>
-                            <UserInfo 
+                            <UserInfo
+                                isDarkTheme={isDarkTheme} 
                                 username={currentUser.userName}
                                 location={currentUser.userLocation}
                             ></UserInfo>

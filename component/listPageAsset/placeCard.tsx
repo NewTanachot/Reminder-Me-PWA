@@ -14,8 +14,8 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     let filterCardClass = "";
     let cardHeaderThemeColor = "";
     let cardBodyThemeColor = "";
-
-    // const cardHeaderId = `cardHeader_${cardIndex}`;
+    let cardSubDataThemeColor = "";
+    let deleteCardBtnThemeColor = "";
 
     // react hook initialize
     const [isFilter, setIsFilter] = useState<boolean>(data.isDisable);
@@ -79,13 +79,17 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     // check theme
     if (isDarkTheme) {
 
-        cardHeaderThemeColor = "bg-gray text-white";
-        cardBodyThemeColor = "bg-superlightpurple";
+        cardHeaderThemeColor = "bg-mainblack text-cream";
+        cardBodyThemeColor = "bg-superlight-purple";
+        cardSubDataThemeColor = "text-lightblue";
+        deleteCardBtnThemeColor = "text-warning"
     }
     else {
 
         cardHeaderThemeColor = "bg-warning-subtle text-viridian-green";
         cardBodyThemeColor = "bg-peach-65";
+        cardSubDataThemeColor = "text-secondary";
+        deleteCardBtnThemeColor = "text-danger"
     }
 
     return (
@@ -94,7 +98,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
             >
-                <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
+                <i className={`bi bi-x-circle-fill text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
             </div>         
             <div className={`card-header rounded-top-4 ${cardHeaderThemeColor}`}>
                 <div className="d-flex justify-content-between align-items-center text-size-20">
@@ -112,7 +116,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                 <div className="d-flex justify-content-between align-items-center">
                     <p className="text-dark m-0 lh-1">
                         Message: &nbsp;
-                        <span className="text-secondary">
+                        <span className={cardSubDataThemeColor}>
                             {data.reminderMessage ?? "-"}
                         </span>
                     </p>
@@ -120,7 +124,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                  <div className="d-flex justify-content-between align-items-center">
                     <div className="text-dark">
                         location: &nbsp;
-                        <span className="text-secondary">
+                        <span className={cardSubDataThemeColor}>
                             {(data.latitude != 0 && data.longitude != 0) ? `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}` : "-"}
                         </span>
                     </div>
@@ -137,9 +141,9 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                         Date: &nbsp;
                         {
                             data.reminderDate ? 
-                            <span className="text-danger text-opacity-75">{data.reminderDate}</span>
+                            <span className={cardSubDataThemeColor}>{data.reminderDate}</span>
                             :
-                            <span className="text-secondary">-</span>
+                            <span className={cardSubDataThemeColor}>-</span>
                         }
                     </div>
                  </div>

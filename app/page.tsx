@@ -389,6 +389,7 @@ export default function Home() {
     return (
         <main>
             <Navbar 
+                isDarkTheme={isDarkTheme.current}
                 currentPageName={currentPage.pageName} 
                 orderByDistanceValue={orderByDistance}
                 changeOrderByDistanceHandler={ChangeOrderByDistanceHandler}
@@ -470,6 +471,7 @@ export default function Home() {
             </div>
             <br /><br />
             <Footer 
+                isDarkTheme={isDarkTheme.current}
                 changeCurrentPage={ChangeCurrentPage} 
                 currentPageName={currentPage.pageName}
             ></Footer>

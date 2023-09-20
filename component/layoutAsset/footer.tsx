@@ -2,7 +2,9 @@ import { PwaCurrentPage } from "@/model/enum_model";
 import { IFooterProps } from "@/model/props_model";
 import { useRef } from "react";
 
-export default function Footer({ changeCurrentPage, currentPageName }: IFooterProps) {
+export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme }: IFooterProps) {
+
+    let footerColorTheme = "";
 
     let listIconClass = "bi bi-folder";
     let mapIconClass = "bi bi-geo-alt";
@@ -31,8 +33,16 @@ export default function Footer({ changeCurrentPage, currentPageName }: IFooterPr
     // check if need to disableAllFooter
     const disableAllFooter = currentPageName == PwaCurrentPage.Login || currentPageName == PwaCurrentPage.Register ? true : false;
 
+    // check theme color
+    if (isDarkTheme) {
+        footerColorTheme = "bg-mainblack";
+    }
+    else {
+        footerColorTheme = "bg-viridian-green";
+    }
+
     return (
-        <footer className='fixed-bottom bg-viridian-green px-2 pb-3 pt-0 shadow-top rounded-top-5'>
+        <footer className={`fixed-bottom c px-2 pb-3 pt-0 shadow-top rounded-top-5 ${footerColorTheme}`}>
             <div className='d-flex justify-content-around align-items-start'>
                 <button 
                     type="button" 

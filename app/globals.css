@@ -67,16 +67,20 @@ html, body {
     background-color: #6495ED !important;
 }
 
-.bg-gray {
-    background-color: #808080 !important;
+.bg-mainblue {
+    background-color: #035096   !important;
 }
 
-.bg-lightviolet {
+.bg-mainblack {
+    background-color: #36454F   !important;
+}
+
+.bg-light-violet {
     background-color: #E0B0FF !important;
 }
 
-.bg-superlightpurple {
-    background-color: #E6E6FA !important;
+.bg-superlight-purple {
+    background-color: #D3D3D3 !important;
 }
 
 /*  --- [ Text Color Class ] ---  */
@@ -104,6 +108,17 @@ html, body {
 .text-viridian-green {
     color: #40826D !important;
 }
+
+.text-cream {
+    color: #F5F5DC !important;
+}
+
+/* gray 71797E
+blue 6082B6 */
+.text-lightblue {
+    color: #6082B6 !important;
+}
+
 
 /*  --- [ Text Class ] ---  */
 
