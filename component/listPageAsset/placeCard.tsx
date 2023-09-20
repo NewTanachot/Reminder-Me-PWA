@@ -79,8 +79,8 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     // check theme
     if (isDarkTheme) {
 
-        cardHeaderThemeColor = "bg-gray text-white";
-        cardBodyThemeColor = "bg-superlightpurple";
+        cardHeaderThemeColor = "bg-bluegray text-cream";
+        cardBodyThemeColor = "bg-superlight-purple";
     }
     else {
 
@@ -94,7 +94,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
             >
-                <i className="bi bi-x-circle-fill text-danger text-delete-card-size"></i>
+                <i className="bi bi-x-circle-fill text-warning text-delete-card-size"></i>
             </div>         
             <div className={`card-header rounded-top-4 ${cardHeaderThemeColor}`}>
                 <div className="d-flex justify-content-between align-items-center text-size-20">

@@ -67,15 +67,15 @@ html, body {
     background-color: #6495ED !important;
 }
 
-.bg-gray {
-    background-color: #808080 !important;
+.bg-bluegray {
+    background-color: #6082B6 !important;
 }
 
-.bg-lightviolet {
+.bg-light-violet {
     background-color: #E0B0FF !important;
 }
 
-.bg-superlightpurple {
+.bg-superlight-purple {
     background-color: #E6E6FA !important;
 }
 
@@ -103,6 +103,10 @@ html, body {
 
 .text-viridian-green {
     color: #40826D !important;
+}
+
+.text-cream {
+    color: #F5F5DC !important;
 }
 
 /*  --- [ Text Class ] ---  */
