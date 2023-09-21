@@ -4,7 +4,7 @@ import { IsStringValid } from '@/extension/string_extension';
 import { CurrentUserRef, ICurrentPage, IDisplayPlace, IThemeIndexedDB, IUserIndexedDB } from '@/model/useState_model';
 import { ISetupIndexedDBModel, ResponseModel } from '@/model/response_model';
 import { Place, User } from '@prisma/client';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, use } from 'react';
 import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import { PwaCurrentPage } from '@/model/enum_model';
 import { CustomGeoLocationOption } from '@/extension/api_extension';
@@ -19,6 +19,7 @@ import EvBattery from '@/component/mainpage/evbattery';
 import Setting from '@/component/mainpage/setting';
 import UpdateList from '@/component/mainpage/updateList';
 import Loading from '@/component/modalAsset/loading';
+import SplashScreen from '@/component/modalAsset/splashScreen';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -47,10 +48,15 @@ export default function Home() {
     const isForceFetch = useRef<boolean>(false);
     const isDarkTheme = useRef<boolean>(!setDefaultLightTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
-    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.ReminderList, successAlertBox: false });
+    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.SplashScreen, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
+    const [forceRerenderState, setForceRerenderState] = useState<boolean>(false);
+
+    const ForceRerenderState = () => {
+        setForceRerenderState(!forceRerenderState);
+    }
 
     // Define a function to set up indexedDB
     const SetupIndexedDB = () => {
@@ -166,6 +172,8 @@ export default function Home() {
 
                     AdaptiveColorThemeHandler(isDarkTheme.current)
                 }
+                
+                ChangeCurrentPage(PwaCurrentPage.ReminderList);
             }
 
             // get current user from indexedDB
@@ -206,17 +214,21 @@ export default function Home() {
     // useEffect for reFetch data
     useEffect(() => {
 
-        // check if mount rount
-        if (!isMountRound.current) {
+        // check if it SplashScreen page
+        if (currentPage.pageName != PwaCurrentPage.SplashScreen){
 
-            if (currentPage.pageName == PwaCurrentPage.ReminderList) {
-                console.log(currentLocation);
-                FetchPlaceData();
-            }            
-        } 
-        else {
-            console.log("Mount Round!")
-            isMountRound.current = false;
+            // check if mount round
+            if (!isMountRound.current) {
+
+                if (currentPage.pageName == PwaCurrentPage.ReminderList) {
+                    console.log(currentLocation);
+                    FetchPlaceData();
+                }            
+            } 
+            else {
+                console.log("Mount Round!")
+                isMountRound.current = false;
+            }
         }
 
     }, [currentLocation, currentPage, orderByDistance]);
@@ -364,6 +376,9 @@ export default function Home() {
 
         // insert theme data to indexedDB
         store.themeStore.put({CurrentTheme: indexedDB_ThemeKey, isDarkTheme: isDarkThemeHandler});
+
+        // force rerender state
+        ForceRerenderState();
     };
 
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
@@ -385,6 +400,12 @@ export default function Home() {
             bodyElement.style.backgroundColor = "#f5f5f5";
         }
     };
+
+    // ------------------- [ Return JSX Element ] -------------------------
+
+    if (currentPage.pageName == PwaCurrentPage.SplashScreen) {
+        return <SplashScreen></SplashScreen>
+    }
 
     return (
         <main>
