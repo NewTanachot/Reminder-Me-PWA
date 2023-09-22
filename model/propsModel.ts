@@ -1,7 +1,7 @@
 import { User } from "@prisma/client"
-import { PwaCurrentPage } from "./enum_model"
-import { IUserLocation } from "./subentity_model"
-import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useState_model"
+import { PwaCurrentPage } from "./enumModel"
+import { IUserLocation } from "./subentityModel"
+import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 
 interface IBaseProps {
     isDarkTheme: boolean
@@ -52,7 +52,7 @@ export interface ISettingProps {
 
 export interface ILoginProps {
     currentPage: ICurrentPage,
-    userLoginHandler: (setUser: CurrentUserRef) => Promise<void>,
+    userLoginHandler: (setUser: CurrentUserRef) => void,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 

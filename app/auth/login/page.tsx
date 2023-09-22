@@ -1,7 +1,7 @@
 'use client';
 
-import { UserExtensionModel } from "@/model/subentity_model";
-import { ResponseModel } from "@/model/response_model";
+import { UserExtensionModel } from "@/model/subentityModel";
+import { ResponseModel } from "@/model/responseModel";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";

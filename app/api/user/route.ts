@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient, User } from '@prisma/client'
-import { ResponseModel } from '@/model/response_model';
+import { ResponseModel } from '@/model/responseModel';
 import { EncryptString, DecryptString } from '@/extension/string_extension';
 
 // Init Prisma connection

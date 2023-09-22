@@ -1,5 +1,5 @@
-import { PwaCurrentPage } from "@/model/enum_model";
-import { ISettingProps } from "@/model/props_model";
+import { PwaCurrentPage } from "@/model/enumModel";
+import { ISettingProps } from "@/model/propsModel";
 import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 

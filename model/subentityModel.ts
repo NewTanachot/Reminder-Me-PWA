@@ -1,5 +1,3 @@
-import { Decimal } from "@prisma/client/runtime";
-
 export type UserExtensionModel = {
     name: string,
     password: string

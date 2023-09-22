@@ -1,9 +1,9 @@
 import { IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPage } from "@/model/enum_model";
-import { IRegisterProps } from "@/model/props_model";
-import { ResponseModel } from "@/model/response_model";
-import { UserExtensionModel } from "@/model/subentity_model";
-import { IRegisterValidator } from "@/model/useState_model";
+import { PwaCurrentPage } from "@/model/enumModel";
+import { IRegisterProps } from "@/model/propsModel";
+import { ResponseModel } from "@/model/responseModel";
+import { UserExtensionModel } from "@/model/subentityModel";
+import { IRegisterValidator } from "@/model/useStateModel";
 import { useState } from "react";
 
 // Initialize .ENV variable

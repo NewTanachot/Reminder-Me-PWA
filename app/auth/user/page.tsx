@@ -1,6 +1,6 @@
 'use client';
 
-import { ResponseModel } from "@/model/response_model";
+import { ResponseModel } from "@/model/responseModel";
 import { User } from "@prisma/client";
 import { useEffect, useState, MouseEvent } from "react";
 
