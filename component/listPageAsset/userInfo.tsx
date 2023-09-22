@@ -15,7 +15,7 @@ export default function UserInfo({ username, location, isDarkTheme }: IUserInfoP
     }
 
     return (
-        <div style={{ marginBottom: '80px' }}>
+        <div style={{ marginBottom: '25%' }}>
             <div 
                 className={`card mb-3 shadow-sm rounded-4 text-white ${userInfoColorTheme} z-1 position-fixed start-50 translate-middle`} 
                 style={{ marginTop: '8%', width: '86%' }}
