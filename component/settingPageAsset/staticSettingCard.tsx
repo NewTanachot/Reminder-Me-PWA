@@ -1,4 +1,4 @@
-import { IStaticSettingCardProps } from "@/model/props_model"
+import { IStaticSettingCardProps } from "@/model/propsModel"
 
 export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo }: IStaticSettingCardProps) {
 

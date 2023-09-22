@@ -1,4 +1,4 @@
-import { IThemeSettingCardProps } from "@/model/props_model";
+import { IThemeSettingCardProps } from "@/model/propsModel";
 
 export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandler }: IThemeSettingCardProps) {
 

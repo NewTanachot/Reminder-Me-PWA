@@ -1,4 +1,4 @@
-import { IListPageProps } from "@/model/props_model";
+import { IListPageProps } from "@/model/propsModel";
 import PlaceCard from "../listPageAsset/placeCard";
 import Loading from "../modalAsset/loading";
 import NotFound from "../modalAsset/notfound";

@@ -1,6 +1,6 @@
 import { DisplayCurrentPageName } from "@/extension/string_extension";
-import { PwaCurrentPage } from "@/model/enum_model";
-import { INavbarProps } from "@/model/props_model";
+import { PwaCurrentPage } from "@/model/enumModel";
+import { INavbarProps } from "@/model/propsModel";
 import appIcon from '@/public/image/web-icon/favicon.ico';
 
 export default function Navbar({ currentPageName, orderByDistanceValue, changeOrderByDistanceHandler, isDarkTheme }: INavbarProps) {

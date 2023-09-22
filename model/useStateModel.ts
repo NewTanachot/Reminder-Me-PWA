@@ -1,6 +1,6 @@
 import { User } from "@prisma/client"
-import { PwaCurrentPage } from "./enum_model"
-import { IUserLocation } from "./subentity_model"
+import { PwaCurrentPage } from "./enumModel"
+import { IUserLocation } from "./subentityModel"
 
 export interface ICurrentPage {
     pageName: PwaCurrentPage,
@@ -24,15 +24,6 @@ export interface IDisplayPlace {
     createdAt: Date
     userId: string
     locationDistance: number
-}
-
-export interface IUserIndexedDB extends User {
-    CurrentUser: string
-}
-
-export interface IThemeIndexedDB {
-    CurrentTheme: string,
-    isDarkTheme: boolean
 }
 
 export interface IRegisterValidator {

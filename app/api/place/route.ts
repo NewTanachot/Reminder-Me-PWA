@@ -1,4 +1,4 @@
-import { ResponseModel } from "@/model/response_model";
+import { ResponseModel } from "@/model/responseModel";
 import { Place, PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 

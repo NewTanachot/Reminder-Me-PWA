@@ -1,6 +1,6 @@
 import { DecryptString } from "@/extension/string_extension";
-import { UserExtensionModel } from "@/model/subentity_model";
-import { ResponseModel } from "@/model/response_model";
+import { UserExtensionModel } from "@/model/subentityModel";
+import { ResponseModel } from "@/model/responseModel";
 import { PrismaClient, User } from "@prisma/client";
 import { NextResponse } from "next/server";
 

@@ -1,4 +1,4 @@
-import { DayOfWeekEnum, PwaCurrentPage } from '@/model/enum_model';
+import { DayOfWeekEnum, PwaCurrentPage } from '@/model/enumModel';
 import { Decimal } from '@prisma/client/runtime';
 import crypto from 'crypto';
 

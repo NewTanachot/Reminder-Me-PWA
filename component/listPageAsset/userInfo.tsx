@@ -1,4 +1,4 @@
-import { IUserInfoProps } from "@/model/props_model";
+import { IUserInfoProps } from "@/model/propsModel";
 
 export default function UserInfo({ username, location, isDarkTheme }: IUserInfoProps) {
 
@@ -15,7 +15,7 @@ export default function UserInfo({ username, location, isDarkTheme }: IUserInfoP
     }
 
     return (
-        <div style={{ marginBottom: '30%' }}>
+        <div style={{ marginBottom: '28%' }}>
             <div 
                 className={`card mb-3 shadow-sm rounded-4 text-white ${userInfoColorTheme} z-1 position-fixed start-50 translate-middle`} 
                 style={{ marginTop: '8%', width: '86%' }}

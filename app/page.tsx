@@ -1,12 +1,12 @@
 'use client';
 
 import { IsStringValid } from '@/extension/string_extension';
-import { CurrentUserRef, ICurrentPage, IDisplayPlace, IThemeIndexedDB, IUserIndexedDB } from '@/model/useState_model';
-import { ISetupIndexedDBModel, ResponseModel } from '@/model/response_model';
-import { Place, User } from '@prisma/client';
-import { useEffect, useState, useRef, use } from 'react';
+import { CurrentUserRef, ICurrentPage, IDisplayPlace } from '@/model/useStateModel';
+import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
+import { Place } from '@prisma/client';
+import { useEffect, useState, useRef } from 'react';
 import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { PwaCurrentPage } from '@/model/enum_model';
+import { PwaCurrentPage } from '@/model/enumModel';
 import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/layoutAsset/navbar';
@@ -20,6 +20,7 @@ import Setting from '@/component/mainpage/setting';
 import UpdateList from '@/component/mainpage/updateList';
 import Loading from '@/component/modalAsset/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
+import { IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -190,8 +191,8 @@ export default function Home() {
             userStoreResponse.onsuccess = () => {
 
                 // set global current UserId and UserName
-                const userIdResponse = (userStoreResponse.result as IUserIndexedDB)?.id;
-                const userNameResponse = (userStoreResponse.result as IUserIndexedDB)?.name;
+                const userIdResponse = (userStoreResponse.result as IUserIndexedDB)?.userId;
+                const userNameResponse = (userStoreResponse.result as IUserIndexedDB)?.userName;
 
                 if (IsStringValid(userIdResponse) && IsStringValid(userNameResponse)) {
                     
@@ -328,7 +329,14 @@ export default function Home() {
         const store = await SetupIndexedDB();
 
         // store currentUser to indexedDB
-        store.userStore.put({ CurrentUser: indexedDB_UserKey, ...user });
+        // store.userStore.put({ CurrentUser: indexedDB_UserKey, ...user });
+
+        const storeUser: IUserIndexedDB = {
+            userId: setUser.userId,
+            userName: setUser.userName
+        }
+
+        store.userStore.put({ CurrentUser: indexedDB_UserKey, ...storeUser });
     };
 
     const DeletePlaceHandler = (placeId: string) => {

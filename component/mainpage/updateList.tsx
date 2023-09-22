@@ -1,8 +1,8 @@
 import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPage } from "@/model/enum_model";
-import { IUpdateListProps } from "@/model/props_model";
-import { ResponseModel } from "@/model/response_model";
-import { UpdatePlace } from "@/model/subentity_model";
+import { PwaCurrentPage } from "@/model/enumModel";
+import { IUpdateListProps } from "@/model/propsModel";
+import { ResponseModel } from "@/model/responseModel";
+import { UpdatePlace } from "@/model/subentityModel";
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 

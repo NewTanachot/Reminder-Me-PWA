@@ -1,8 +1,8 @@
 'use client';
 
-import { ResponseModel } from "@/model/response_model";
-import { UpdatePlace } from "@/model/subentity_model";
-import { IPlaceCardProps } from "@/model/props_model";
+import { ResponseModel } from "@/model/responseModel";
+import { UpdatePlace } from "@/model/subentityModel";
+import { IPlaceCardProps } from "@/model/propsModel";
 import { useState } from "react";
 
 // Initialize .ENV variable

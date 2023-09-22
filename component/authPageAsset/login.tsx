@@ -1,7 +1,7 @@
-import { PwaCurrentPage } from "@/model/enum_model";
-import { ILoginProps } from "@/model/props_model";
-import { ResponseModel } from "@/model/response_model";
-import { UserExtensionModel } from "@/model/subentity_model";
+import { PwaCurrentPage } from "@/model/enumModel";
+import { ILoginProps } from "@/model/propsModel";
+import { ResponseModel } from "@/model/responseModel";
+import { UserExtensionModel } from "@/model/subentityModel";
 import { User } from "@prisma/client";
 import SuccessModal from "../modalAsset/success";
 import { useState } from "react";

@@ -1,5 +1,5 @@
-import { PwaCurrentPage } from "@/model/enum_model";
-import { IFooterProps } from "@/model/props_model";
+import { PwaCurrentPage } from "@/model/enumModel";
+import { IFooterProps } from "@/model/propsModel";
 import { useRef } from "react";
 
 export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme }: IFooterProps) {
