@@ -414,8 +414,9 @@ export default function Home() {
                 currentPageName={currentPage.pageName} 
                 orderByDistanceValue={orderByDistance}
                 changeOrderByDistanceHandler={ChangeOrderByDistanceHandler}
-            ></Navbar> */}
-            {/* <br /> <br /> */}
+            ></Navbar>
+            <br /> <br /> */}
+            
             <div className="container">
                 <div className='pt-4 pb-5 px-3'>
                     {
