@@ -52,8 +52,7 @@ export interface ISettingProps {
 
 export interface ILoginProps {
     currentPage: ICurrentPage,
-    setCurrentUser: (setUser: CurrentUserRef) => void,
-    insertUserHandler: (user: User) => void,
+    userLoginHandler: (setUser: CurrentUserRef) => Promise<void>,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
