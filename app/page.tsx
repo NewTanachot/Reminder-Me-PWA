@@ -7,7 +7,7 @@ import { Place, User } from '@prisma/client';
 import { useEffect, useState, useRef, use } from 'react';
 import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
 import { PwaCurrentPage } from '@/model/enum_model';
-import { CustomGeoLocationOption } from '@/extension/api_extension';
+import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/layoutAsset/navbar';
 import Map from '@/component/mainpage/map';
@@ -200,7 +200,7 @@ export default function Home() {
 
                     // get current location -> after get location it will call fetch place api (or get state of place if any) 
                     // for get place data with calculated distanceLocation.
-                    const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, CustomGeoLocationOption);
+                    const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, GetCustomGeoLocationOption());
                 }
                 else {
 
@@ -318,14 +318,11 @@ export default function Home() {
         });
     };
 
-    const SetCurrentUser = (setUser: CurrentUserRef) => {
+    const UserLoginHandler = async (setUser: CurrentUserRef) => {
 
         user.current.userId = setUser.userId;
         user.current.userName = setUser.userName;
         user.current.userLocation = setUser.userLocation;
-    };
-
-    const InsertUserHandler = async (user: User) => {
 
         // open indexedDB
         const store = await SetupIndexedDB();
@@ -474,8 +471,7 @@ export default function Home() {
                                 case PwaCurrentPage.Login:
                                     return <Login 
                                         currentPage={currentPage}
-                                        setCurrentUser={SetCurrentUser} 
-                                        insertUserHandler={InsertUserHandler}
+                                        userLoginHandler={UserLoginHandler} 
                                         changeCurrentPage={ChangeCurrentPage}
                                     ></Login>
 

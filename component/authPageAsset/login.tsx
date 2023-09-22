@@ -6,12 +6,12 @@ import { User } from "@prisma/client";
 import SuccessModal from "../modalAsset/success";
 import { useState } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
-import { CustomGeoLocationOption } from "@/extension/api_extension";
+import { GetCustomGeoLocationOption } from "@/extension/api_extension";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function Login({ setCurrentUser, changeCurrentPage, insertUserHandler, currentPage }: ILoginProps) {
+export default function Login({ userLoginHandler, changeCurrentPage, currentPage }: ILoginProps) {
 
     // react hook initialize
     const [ inputEmptyStringValidator, setInputEmptyStringValidator ] = useState<boolean>(false);
@@ -57,7 +57,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, insertUserHan
 
                 // get current user geolocation
                 navigator.geolocation.getCurrentPosition((position) => IfGetLocationSuccess(position, currentUser), 
-                    IfGetLocationError, CustomGeoLocationOption);
+                    IfGetLocationError, GetCustomGeoLocationOption());
             }
         }
         else {
@@ -71,7 +71,7 @@ export default function Login({ setCurrentUser, changeCurrentPage, insertUserHan
     const IfGetLocationSuccess = (position: GeolocationPosition, currentUser: User) => {
 
         // set new user to useRef in list page
-        setCurrentUser({ 
+        userLoginHandler({ 
             userId: currentUser.id, 
             userName: currentUser.name,
             userLocation: {
