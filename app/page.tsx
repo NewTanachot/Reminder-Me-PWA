@@ -409,15 +409,15 @@ export default function Home() {
 
     return (
         <main>
-            <Navbar 
+            {/* <Navbar 
                 isDarkTheme={isDarkTheme.current}
                 currentPageName={currentPage.pageName} 
                 orderByDistanceValue={orderByDistance}
                 changeOrderByDistanceHandler={ChangeOrderByDistanceHandler}
-            ></Navbar>
-            <br /> <br />
+            ></Navbar> */}
+            {/* <br /> <br /> */}
             <div className="container">
-                <div className='py-5 px-3'>
+                <div className='pt-4 pb-5 px-3'>
                     {
                         (() => {
                             switch (currentPage.pageName) {

@@ -42,8 +42,8 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
     }
 
     return (
-        <footer className={`fixed-bottom c px-2 pb-3 pt-0 shadow-top rounded-top-5 ${footerColorTheme}`}>
-            <div className='d-flex justify-content-around align-items-start'>
+        <footer className={`fixed-bottom px-2 pb-4 pt-0 shadow-top rounded-top-5 ${footerColorTheme}`}>
+            <div className='d-flex justify-content-around align-items-start mt-1'>
                 <button 
                     type="button" 
                     className={`btn btn-lg text-peach border-0 rounded-0`}
