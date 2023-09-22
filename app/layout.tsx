@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     appleWebApp: { 
         capable: true, 
         title: "Reminder Map", 
-        statusBarStyle: "default"
+        statusBarStyle: "black-translucent"
     }
 }
 
