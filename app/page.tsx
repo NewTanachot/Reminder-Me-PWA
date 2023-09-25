@@ -445,6 +445,7 @@ export default function Home() {
                                     return <AddList 
                                         userId={user.current.userId}
                                         changeCurrentPage={ChangeCurrentPage}
+                                        isDarkTheme={isDarkTheme.current}
                                     ></AddList>
 
                                 case PwaCurrentPage.UpdateList:
@@ -452,6 +453,7 @@ export default function Home() {
                                         return <UpdateList 
                                             cardData={currentUpdateCard.current}
                                             changeCurrentPage={ChangeCurrentPage}
+                                            isDarkTheme={isDarkTheme.current}
                                         ></UpdateList>
                                     }
                                     else {
