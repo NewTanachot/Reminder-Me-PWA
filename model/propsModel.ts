@@ -38,7 +38,7 @@ export interface IPlaceCardProps extends IBaseProps {
     updatePlaceCardHandler: (cardId: string) => void
 }
 
-export interface IAddPlace {
+export interface IAddPlace extends IBaseProps {
     userId: string,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
@@ -60,18 +60,17 @@ export interface IRegisterProps {
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
-export interface IStaticSettingCardProps {
+export interface IStaticSettingCardProps extends IBaseProps {
     cardIcon: string,
     cardTitle: string,
     cardInfo: string
 }
 
-export interface IThemeSettingCardProps {
+export interface IThemeSettingCardProps extends IBaseProps {
     changeCurrentThemeHandler: (currentTheme: boolean) => void, 
-    isDarkTheme: boolean
 }
 
-export interface IUpdateListProps {
+export interface IUpdateListProps extends IBaseProps {
     cardData: IDisplayPlace,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }

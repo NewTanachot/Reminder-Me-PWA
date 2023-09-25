@@ -79,8 +79,8 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     // check theme
     if (isDarkTheme) {
 
-        cardHeaderThemeColor = "bg-mainblack text-cream";
-        cardBodyThemeColor = "bg-superlight-purple";
+        cardHeaderThemeColor = "bg-mainblack text-whiteSmoke";
+        cardBodyThemeColor = "bg-whitesmoke";
         cardSubDataThemeColor = "text-lightblue";
         deleteCardBtnThemeColor = "text-warning"
     }

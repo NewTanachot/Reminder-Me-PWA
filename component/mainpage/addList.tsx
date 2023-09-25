@@ -7,7 +7,7 @@ import { PlaceExtensionModel } from "@/model/subentityModel";
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
+export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAddPlace) {
 
     // add place handler
     const AddNewPlace = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -57,10 +57,29 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
         }
     }
 
+    let cardColorTheme = "";
+    let cardHeaderColorTheme = "";
+    let textHeaderColorTheme = "";
+    let formColorTheme = ""
+    let submitBtnColorTheme = ""
+
+    if (isDarkTheme) {
+        cardColorTheme = "bg-mainGray";
+        cardHeaderColorTheme = "bg-mainblack";
+        textHeaderColorTheme = "text-whiteSmoke"
+        formColorTheme = "bg-whitesmoke";
+        submitBtnColorTheme = "bg-mainblack";
+    }
+    else {
+        cardColorTheme = "bg-peach-65";
+        cardHeaderColorTheme = "bg-warning-subtle";
+        textHeaderColorTheme = "text-viridian-green";
+        submitBtnColorTheme = "bg-viridian-green";
+    }
 
     return (
-        <div className="card shadow-sm bg-peach-65">
-            <div className="card-header bg-warning-subtle text-viridian-green">
+        <div className={`card shadow-sm ${cardColorTheme}`}>
+            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                 <h4 className="m-0 text-center">Create new location</h4>
             </div>
             <form className="card-body m-2" onSubmit={AddNewPlace}>
@@ -68,22 +87,22 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input name="placeNameInput" className="form-control w-100" type="text" placeholder="entry place name..." maxLength={20} required/>
+                    <input name="placeNameInput" className={`form-control w-100 ${formColorTheme}`} type="text" placeholder="entry place name..." maxLength={20} required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea name="reminderMessageInput" className="form-control w-100" placeholder="entry some message..." maxLength={50} rows={2}/>
+                    <textarea name="reminderMessageInput" className={`form-control w-100 ${formColorTheme}`} placeholder="entry some message..." maxLength={50} rows={2}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input name="reminderDateInput" className="form-control w-100" type="date"/>
+                    <input name="reminderDateInput" className={`form-control w-100 ${formColorTheme}`} type="date"/>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="btn btn-sm btn-outline-primary">
+                    <a className="text-decoration-none">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
@@ -92,13 +111,13 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                     <p className="mb-1">
                         Latitude:
                     </p>
-                    <input name="latitudeInput" className="form-control w-100" type="number" placeholder="0.00" step="any" min={0}/>
+                    <input name="latitudeInput" className={`form-control w-100 ${formColorTheme}`} type="number" placeholder="0.00" step="any" min={0}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Longitude:
                     </p>
-                    <input name="longitudeInput" className="form-control w-100" type="number" placeholder="0.00" step="any" min={0}/>
+                    <input name="longitudeInput" className={`form-control w-100 ${formColorTheme}`} type="number" placeholder="0.00" step="any" min={0}/>
 
                 </div>
                 <div className="mt-3">
@@ -118,7 +137,7 @@ export default function AddList({ userId, changeCurrentPage }: IAddPlace) {
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme}`}
                     >
                         Add
                     </button>

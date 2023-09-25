@@ -1,10 +1,25 @@
 import { IStaticSettingCardProps } from "@/model/propsModel"
 
-export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo }: IStaticSettingCardProps) {
+export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDarkTheme}: IStaticSettingCardProps) {
+
+    let cardColorTheme = "";
+    let textColorTheme = "";
+    let subTextColorTheme = "";
+
+    if (isDarkTheme) {
+        cardColorTheme = "bg-subBlack";
+        textColorTheme = "text-whiteSmoke";
+        subTextColorTheme = "text-milk-orange";
+    }
+    else {
+        cardColorTheme = "bg-peach";
+        textColorTheme = "text-viridian-green";
+        subTextColorTheme = "text-secondary";
+    }
 
     return (
     <>
-        <div className="card shadow-sm bg-peach text-viridian-green mb-3">
+        <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme}`}>
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
                     <div className="flex-shrink-0 ms-2">
@@ -14,7 +29,7 @@ export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo }: ISt
                         <h6 className="m-0 lh-1">
                             {cardTitle}:
                             <br />
-                            <span className="text-secondary">
+                            <span className={subTextColorTheme}>
                                 {cardInfo}
                             </span>
                         </h6>

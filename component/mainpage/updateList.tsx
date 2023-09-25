@@ -6,7 +6,7 @@ import { UpdatePlace } from "@/model/subentityModel";
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function UpdateList({cardData, changeCurrentPage}: IUpdateListProps) {
+export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: IUpdateListProps) {
 
     // add place handler
     const UpdatePlace = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,9 +54,29 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
         changeCurrentPage(PwaCurrentPage.ReminderList);
     }
 
+    let cardColorTheme = "";
+    let cardHeaderColorTheme = "";
+    let textHeaderColorTheme = "";
+    let formColorTheme = ""
+    let submitBtnColorTheme = ""
+
+    if (isDarkTheme) {
+        cardColorTheme = "bg-mainGray";
+        cardHeaderColorTheme = "bg-mainblack";
+        textHeaderColorTheme = "text-whiteSmoke"
+        formColorTheme = "bg-whitesmoke";
+        submitBtnColorTheme = "bg-mainblack";
+    }
+    else {
+        cardColorTheme = "bg-peach-65";
+        cardHeaderColorTheme = "bg-warning-subtle";
+        textHeaderColorTheme = "text-viridian-green";
+        submitBtnColorTheme = "bg-viridian-green";
+    }
+
     return (
-        <div className="card shadow-sm bg-peach-65">
-            <div className="card-header d-flex justify-content-between align-items-center bg-warning-subtle text-viridian-green">
+        <div className={`card shadow-sm ${cardColorTheme}`}>
+            <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                 <div onClick={backButtonHandler}>
                     <i className="bi bi-caret-left-fill"></i>
                 </div>
@@ -68,22 +88,22 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input name="placeNameInputUpdate" className="form-control w-100" type="text" defaultValue={cardData.name} placeholder="entry place name..." maxLength={20} required/>
+                    <input name="placeNameInputUpdate" className={`form-control w-100 ${formColorTheme}`} type="text" defaultValue={cardData.name} placeholder="entry place name..." maxLength={20} required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea name="reminderMessageInputUpdate" className="form-control w-100" defaultValue={cardData.reminderMessage ?? ""} placeholder="entry some message..." maxLength={50} rows={2}/>
+                    <textarea name="reminderMessageInputUpdate" className={`form-control w-100 ${formColorTheme}`} defaultValue={cardData.reminderMessage ?? ""} placeholder="entry some message..." maxLength={50} rows={2}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input name="reminderDateInputUpdate" className="form-control w-100" defaultValue={cardData.reminderDate ?? ""} type="date"/>
+                    <input name="reminderDateInputUpdate" className={`form-control w-100 ${formColorTheme}`} defaultValue={cardData.reminderDate ?? ""} type="date"/>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="btn btn-sm btn-outline-primary">
+                    <a className="text-decoration-none">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
@@ -92,13 +112,13 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
                     <p className="mb-1">
                         Latitude:
                     </p>
-                    <input name="latitudeInputUpdate" className="form-control w-100" type="number" defaultValue={cardData.latitude} placeholder="0.00" step="any" min={0}/>
+                    <input name="latitudeInputUpdate" className={`form-control w-100 ${formColorTheme}`} type="number" defaultValue={cardData.latitude} placeholder="0.00" step="any" min={0}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Longitude:
                     </p>
-                    <input name="longitudeInputUpdate" className="form-control w-100" type="number" defaultValue={cardData.longitude} placeholder="0.00" step="any" min={0}/>
+                    <input name="longitudeInputUpdate" className={`form-control w-100 ${formColorTheme}`} type="number" defaultValue={cardData.longitude} placeholder="0.00" step="any" min={0}/>
 
                 </div>
                 <div className="mt-3">
@@ -118,7 +138,7 @@ export default function UpdateList({cardData, changeCurrentPage}: IUpdateListPro
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme}`}
                     >
                         Save
                     </button>
