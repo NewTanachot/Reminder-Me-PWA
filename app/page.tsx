@@ -483,11 +483,13 @@ export default function Home() {
                                         currentPage={currentPage}
                                         userLoginHandler={UserLoginHandler} 
                                         changeCurrentPage={ChangeCurrentPage}
+                                        isDarkTheme={isDarkTheme.current}
                                     ></Login>
 
                                 case PwaCurrentPage.Register:
                                     return <Register
                                         changeCurrentPage={ChangeCurrentPage}
+                                        isDarkTheme={isDarkTheme.current}
                                     ></Register>
 
                                 case PwaCurrentPage.Loading:

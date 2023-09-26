@@ -1,4 +1,5 @@
 import { IUserInfoProps } from "@/model/propsModel";
+import Link from "next/link";
 
 export default function UserInfo({ username, location, isDarkTheme }: IUserInfoProps) {
 
@@ -26,9 +27,12 @@ export default function UserInfo({ username, location, isDarkTheme }: IUserInfoP
                         {displayUsername} {location.latitude}, {location.longitude}
                     </p>
                     <div>
-                        <button className="btn btn-sm btn-primary bg-gradient text-cream">
+                        {/* <button className="btn btn-sm btn-primary bg-gradient text-cream">
                             <i className="bi bi-pin-map-fill"></i>
-                        </button>
+                        </button> */}
+                        <Link href="/testpage" className="btn btn-sm btn-primary bg-gradient text-cream">
+                            <i className="bi bi-pin-map-fill"></i>
+                        </Link>
                     </div>
                 </div>
             </div>
