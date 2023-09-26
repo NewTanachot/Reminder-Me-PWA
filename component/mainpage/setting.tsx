@@ -37,7 +37,7 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
 
                 <div className="mt-4 text-center">
                     <button
-                        className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2`}
+                        className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
                         onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
                     >
                         Sign out

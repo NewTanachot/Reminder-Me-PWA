@@ -103,13 +103,13 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                     <p className="mb-1">
                         Usename:
                     </p>
-                    <input className={`form-control w-100 ${formColorTheme}`} name="usernameInputRegister" type="text" min={1} max={20} required/>
+                    <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInputRegister" type="text" min={1} max={20} required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Password:
                     </p>
-                    <input className={`form-control w-100 ${formColorTheme}`} name="passwordInputRegister" type="password" min={1} max={20} required/>
+                    <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInputRegister" type="password" min={1} max={20} required/>
                 </div>
                 {
                     inputValidator.inputEmptyString
@@ -124,12 +124,12 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 ${createBtnColorTheme} text-white`}
+                        className={`btn btn-sm w-100 my-2 ${createBtnColorTheme} text-white shadow-sm`}
                     >
                         Create User
                     </button>
                     <button
-                        className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2"
+                        className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
                         onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
                     >
                         Back

@@ -88,19 +88,19 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input name="placeNameInputUpdate" className={`form-control w-100 ${formColorTheme}`} type="text" defaultValue={cardData.name} placeholder="entry place name..." maxLength={20} required/>
+                    <input name="placeNameInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="text" defaultValue={cardData.name} placeholder="entry place name..." maxLength={20} required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea name="reminderMessageInputUpdate" className={`form-control w-100 ${formColorTheme}`} defaultValue={cardData.reminderMessage ?? ""} placeholder="entry some message..." maxLength={50} rows={2}/>
+                    <textarea name="reminderMessageInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} defaultValue={cardData.reminderMessage ?? ""} placeholder="entry some message..." maxLength={50} rows={2}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input name="reminderDateInputUpdate" className={`form-control w-100 ${formColorTheme}`} defaultValue={cardData.reminderDate ?? ""} type="date"/>
+                    <input name="reminderDateInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} defaultValue={cardData.reminderDate ?? ""} type="date"/>
                 </div>
                 <div className="mt-3 text-center">
                     <a className="text-decoration-none">
@@ -112,13 +112,13 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <p className="mb-1">
                         Latitude:
                     </p>
-                    <input name="latitudeInputUpdate" className={`form-control w-100 ${formColorTheme}`} type="number" defaultValue={cardData.latitude} placeholder="0.00" step="any" min={0}/>
+                    <input name="latitudeInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="number" defaultValue={cardData.latitude} placeholder="0.00" step="any" min={0}/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Longitude:
                     </p>
-                    <input name="longitudeInputUpdate" className={`form-control w-100 ${formColorTheme}`} type="number" defaultValue={cardData.longitude} placeholder="0.00" step="any" min={0}/>
+                    <input name="longitudeInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="number" defaultValue={cardData.longitude} placeholder="0.00" step="any" min={0}/>
 
                 </div>
                 <div className="mt-3">
@@ -138,7 +138,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme}`}
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme}  shadow-sm`}
                     >
                         Save
                     </button>
