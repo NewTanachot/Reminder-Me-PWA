@@ -27,7 +27,11 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
                     <div className="flex-shrink-0 ms-2">
-                        <i style={{ fontSize: "2rem"}} className="bi bi-palette"></i>
+                        {
+                            isDarkTheme
+                                ? <i style={{ fontSize: "2rem"}} className="bi bi-moon-fill"></i>
+                                : <i style={{ fontSize: "2rem"}} className="bi bi-sun-fill"></i>
+                        }
                     </div>
                     <div className="flex-grow-1 ms-3">
                         <h6 className="m-0">
@@ -43,7 +47,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                                         onChange={() => {UpdateThemeHandler(false)}}
                                     />
                                     <label className="form-check-label">
-                                        <i className="bi bi-sun-fill"></i>
+                                        Light
                                     </label>
                                 </div>
                                 <div className="form-check form-check-inline mb-0">
@@ -55,7 +59,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                                         onChange={() => {UpdateThemeHandler(true)}}
                                     />
                                     <label className="form-check-label">
-                                        <i className="bi bi-moon-fill"></i>
+                                        Dark
                                     </label>
                                 </div>
                             </span>
