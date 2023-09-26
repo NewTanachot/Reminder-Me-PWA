@@ -50,13 +50,13 @@ export interface ISettingProps {
     isDarkTheme: boolean
 }
 
-export interface ILoginProps {
+export interface ILoginProps extends IBaseProps {
     currentPage: ICurrentPage,
     userLoginHandler: (setUser: CurrentUserRef) => void,
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 
-export interface IRegisterProps {
+export interface IRegisterProps extends IBaseProps {
     changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
 }
 

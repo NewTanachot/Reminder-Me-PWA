@@ -9,7 +9,7 @@ import { useState } from "react";
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
-export default function Register({ changeCurrentPage }: IRegisterProps) {
+export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterProps) {
 
     // default setState object
     let RegisterValidatorObject: IRegisterValidator = {
@@ -72,9 +72,30 @@ export default function Register({ changeCurrentPage }: IRegisterProps) {
         }
     }
 
+    // Color theme handler
+    let cardColorTheme = "";
+    let cardHeaderColorTheme = "";
+    let textHeaderColorTheme = "";
+    let formColorTheme = "";
+    let createBtnColorTheme = "";
+
+    if (isDarkTheme) {
+        cardColorTheme = "bg-mainGray";
+        cardHeaderColorTheme = "bg-mainblack";
+        textHeaderColorTheme = "text-whiteSmoke";
+        createBtnColorTheme = "bg-mainblack";
+        formColorTheme = "bg-whitesmoke";
+    }
+    else {
+        cardColorTheme = "bg-peach-65";
+        cardHeaderColorTheme = "bg-warning-subtle";
+        textHeaderColorTheme = "text-viridian-green";
+        createBtnColorTheme = "bg-viridian-green";
+    }
+
     return (
-        <form className="card shadow-sm bg-peach-65" onSubmit={UserRegister}>
-            <div className="card-header bg-warning-subtle text-viridian-green">
+        <form className={`card shadow-sm ${cardColorTheme}`} onSubmit={UserRegister}>
+            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                 <h2 className="m-0 text-center">Register to Reminder Me</h2>
             </div>
             <div className="card-body m-2">
@@ -82,13 +103,13 @@ export default function Register({ changeCurrentPage }: IRegisterProps) {
                     <p className="mb-1">
                         Usename:
                     </p>
-                    <input className="form-control w-100" name="usernameInputRegister" type="text" min={1} max={20} required/>
+                    <input className={`form-control w-100 ${formColorTheme}`} name="usernameInputRegister" type="text" min={1} max={20} required/>
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Password:
                     </p>
-                    <input className="form-control w-100" name="passwordInputRegister" type="password" min={1} max={20} required/>
+                    <input className={`form-control w-100 ${formColorTheme}`} name="passwordInputRegister" type="password" min={1} max={20} required/>
                 </div>
                 {
                     inputValidator.inputEmptyString
@@ -103,7 +124,7 @@ export default function Register({ changeCurrentPage }: IRegisterProps) {
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className="btn btn-sm w-100 my-2 bg-viridian-green text-white"
+                        className={`btn btn-sm w-100 my-2 ${createBtnColorTheme} text-white`}
                     >
                         Create User
                     </button>

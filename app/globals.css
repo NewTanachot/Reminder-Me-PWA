@@ -39,10 +39,6 @@ html, body {
 
 /*  --- [ Background Color Class ] ---  */
 
-.bg-whitesmoke {
-    background-color: whitesmoke !important;
-}
-
 .bg-milk-yellow {
     background-color: #FFFACA50 !important;
 }
@@ -89,6 +85,10 @@ html, body {
 
 .bg-darkBlack {
     background-color: #28282B !important;
+}
+
+.bg-whitesmoke {
+    background-color: whitesmoke !important;
 }
 
 /*  --- [ Text Color Class ] ---  */
