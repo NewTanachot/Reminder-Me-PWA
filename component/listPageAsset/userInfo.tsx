@@ -27,7 +27,7 @@ export default function UserInfo({ username, location, isDarkTheme }: IUserInfoP
                     {username + ": "} {location.latitude}, {location.longitude}
                 </p>
             </div>
-            <div className="card-footer d-flex justify-content-evenly align-items-center shadow">
+            <div className="card-footer d-flex justify-content-evenly align-items-center">
                 <select 
                     className={`form-select form-select-sm ${selectFormColorTheme} w-50`} 
                     aria-label=".form-select-sm example"
@@ -37,7 +37,7 @@ export default function UserInfo({ username, location, isDarkTheme }: IUserInfoP
                     <option value="2">Distance DESC</option>
                 </select>
                 <button className={`btn btn-sm ${btnColorTheme} w-25`}>
-                    <i className="bi bi-pin-map-fill"></i>
+                    <i className="fa-solid fa-map-location-dot"></i>
                 </button>
             </div>
         </div>
