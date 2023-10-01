@@ -1,4 +1,4 @@
-import { PwaCurrentPage } from "@/model/enumModel";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { ILoginProps } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
 import { UserExtensionModel } from "@/model/subentityModel";
@@ -53,7 +53,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                 const currentUser: User = await response.json();
 
                 // Reroute to loading page
-                changeCurrentPage(PwaCurrentPage.Loading);
+                changeCurrentPage(PwaCurrentPageEnum.Loading);
 
                 // get current user geolocation
                 navigator.geolocation.getCurrentPosition((position) => IfGetLocationSuccess(position, currentUser), 
@@ -81,7 +81,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         });
 
         // Reroute to home page
-        changeCurrentPage(PwaCurrentPage.ReminderList);
+        changeCurrentPage(PwaCurrentPageEnum.ReminderList);
     }
 
     // error case for Geolocation
@@ -151,7 +151,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                         </button>
                         <button
                             className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
-                            onClick={() => changeCurrentPage(PwaCurrentPage.Register)}
+                            onClick={() => changeCurrentPage(PwaCurrentPageEnum.Register)}
                         >
                             Sign Up
                         </button>

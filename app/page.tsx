@@ -6,7 +6,7 @@ import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
 import { Place } from '@prisma/client';
 import { useEffect, useState, useRef } from 'react';
 import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { PwaCurrentPage } from '@/model/enumModel';
+import { CardOrderByEnum, PwaCurrentPageEnum } from '@/model/enumModel';
 import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import List from '@/component/mainpage/list';
 import Navbar from '@/component/layoutAsset/navbar';
@@ -49,10 +49,10 @@ export default function Home() {
     const isForceFetch = useRef<boolean>(false);
     const isDarkTheme = useRef<boolean>(!setDefaultLightTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
-    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPage.SplashScreen, successAlertBox: false });
+    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen, successAlertBox: false });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
-    const [orderByDistance, setOrderByDistance] = useState<boolean>(true);
+    const [cardOrderBy, setCardOrderBy] = useState<CardOrderByEnum>(CardOrderByEnum.CreateDate);
     const [forceRerenderState, setForceRerenderState] = useState<boolean>(false);
 
     const ForceRerenderState = () => {
@@ -89,7 +89,7 @@ export default function Home() {
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
 
                 // change to login page
-                ChangeCurrentPage(PwaCurrentPage.Login);
+                ChangeCurrentPage(PwaCurrentPageEnum.Login);
 
                 // reject the promise
                 reject();
@@ -138,7 +138,7 @@ export default function Home() {
                 }
                 else {
                     // change to login page
-                    ChangeCurrentPage(PwaCurrentPage.Login);
+                    ChangeCurrentPage(PwaCurrentPageEnum.Login);
                 }
 
                 // create response for two of store
@@ -174,7 +174,7 @@ export default function Home() {
                     AdaptiveColorThemeHandler(isDarkTheme.current)
                 }
                 
-                ChangeCurrentPage(PwaCurrentPage.ReminderList);
+                ChangeCurrentPage(PwaCurrentPageEnum.ReminderList);
             }
 
             // get current user from indexedDB
@@ -184,7 +184,7 @@ export default function Home() {
             userStoreResponse.onerror = () => {
 
                 // change to login page
-                ChangeCurrentPage(PwaCurrentPage.Login);
+                ChangeCurrentPage(PwaCurrentPageEnum.Login);
             }
 
             // get success handler
@@ -206,7 +206,7 @@ export default function Home() {
                 else {
 
                     // change to login page
-                    ChangeCurrentPage(PwaCurrentPage.Login);
+                    ChangeCurrentPage(PwaCurrentPageEnum.Login);
                 }
             }
         });
@@ -216,12 +216,12 @@ export default function Home() {
     useEffect(() => {
 
         // check if it SplashScreen page
-        if (currentPage.pageName != PwaCurrentPage.SplashScreen){
+        if (currentPage.pageName != PwaCurrentPageEnum.SplashScreen){
 
             // check if mount round
             if (!isMountRound.current) {
 
-                if (currentPage.pageName == PwaCurrentPage.ReminderList) {
+                if (currentPage.pageName == PwaCurrentPageEnum.ReminderList) {
                     console.log(currentLocation);
                     FetchPlaceData();
                 }            
@@ -232,7 +232,7 @@ export default function Home() {
             }
         }
 
-    }, [currentLocation, currentPage, orderByDistance]);
+    }, [currentLocation, currentPage, cardOrderBy]);
 
     // fetch place data from api
     const FetchPlaceData = async () => {
@@ -277,7 +277,7 @@ export default function Home() {
                 }
 
                 // set user State and check OrderBy distance
-                setPlaces(OrderPlaceByDistance(displayPlaces, orderByDistance));
+                setPlaces(OrderPlaceByDistance(displayPlaces, cardOrderBy));
             }
             else {
                 alert(`Error message: User not found.`);
@@ -307,7 +307,7 @@ export default function Home() {
     };
 
     // change Current page method
-    const ChangeCurrentPage = (page: PwaCurrentPage, successBox: boolean = false, forceFetch = false) => {
+    const ChangeCurrentPage = (page: PwaCurrentPageEnum, successBox: boolean = false, forceFetch = false) => {
 
         // set force fetch in FetchData function
         isForceFetch.current = forceFetch;
@@ -355,8 +355,8 @@ export default function Home() {
         }));
     };
 
-    const ChangeOrderByDistanceHandler = (orderByDistance: boolean) => {
-        setOrderByDistance(orderByDistance);
+    const ChangeCardOrderByHandler = (orderBy: CardOrderByEnum) => {
+        setCardOrderBy(orderBy);
     };
 
     const UpdatePlaceCardHandler = (cardId: string) => {
@@ -365,7 +365,7 @@ export default function Home() {
         currentUpdateCard.current = places?.find(x => x.id == cardId);
 
         // change current page to UpdateCard
-        ChangeCurrentPage(PwaCurrentPage.UpdateList);
+        ChangeCurrentPage(PwaCurrentPageEnum.UpdateList);
     };
 
     const ChangeCurrentThemeHandler = async (isDarkThemeHandler: boolean) => {
@@ -408,7 +408,7 @@ export default function Home() {
 
     // ------------------- [ Return JSX Element ] -------------------------
 
-    if (currentPage.pageName == PwaCurrentPage.SplashScreen) {
+    if (currentPage.pageName == PwaCurrentPageEnum.SplashScreen) {
         return <SplashScreen></SplashScreen>
     }
 
@@ -428,7 +428,7 @@ export default function Home() {
                         (() => {
                             switch (currentPage.pageName) {
 
-                                case PwaCurrentPage.ReminderList:
+                                case PwaCurrentPageEnum.ReminderList:
                                     return <List 
                                         places={places}
                                         currentUser={user.current}
@@ -436,19 +436,20 @@ export default function Home() {
                                         changePlaceStatusHandler={ChangePlaceStatusHandler}
                                         updatePlaceCardHandler={UpdatePlaceCardHandler}
                                         isDarkTheme={isDarkTheme.current}
+                                        changeCardOrderByHandler={ChangeCardOrderByHandler}
                                     ></List>
 
-                                case PwaCurrentPage.MapView:
+                                case PwaCurrentPageEnum.MapView:
                                     return <Map></Map>
 
-                                case PwaCurrentPage.AddList:
+                                case PwaCurrentPageEnum.AddList:
                                     return <AddList 
                                         userId={user.current.userId}
                                         changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
                                     ></AddList>
 
-                                case PwaCurrentPage.UpdateList:
+                                case PwaCurrentPageEnum.UpdateList:
                                     if (currentUpdateCard.current) {
                                         return <UpdateList 
                                             cardData={currentUpdateCard.current}
@@ -464,13 +465,14 @@ export default function Home() {
                                             changePlaceStatusHandler={ChangePlaceStatusHandler}
                                             updatePlaceCardHandler={UpdatePlaceCardHandler}
                                             isDarkTheme={isDarkTheme.current}
+                                            changeCardOrderByHandler={ChangeCardOrderByHandler}
                                         ></List>
                                     }
 
-                                case PwaCurrentPage.EvBattery:
+                                case PwaCurrentPageEnum.EvBattery:
                                     return <EvBattery></EvBattery>
 
-                                case PwaCurrentPage.Setting:
+                                case PwaCurrentPageEnum.Setting:
                                     return <Setting
                                         currentUserName={user.current.userName}
                                         changeCurrentPage={ChangeCurrentPage}
@@ -478,7 +480,7 @@ export default function Home() {
                                         isDarkTheme={isDarkTheme.current}
                                     ></Setting>
 
-                                case PwaCurrentPage.Login:
+                                case PwaCurrentPageEnum.Login:
                                     return <Login 
                                         currentPage={currentPage}
                                         userLoginHandler={UserLoginHandler} 
@@ -486,13 +488,13 @@ export default function Home() {
                                         isDarkTheme={isDarkTheme.current}
                                     ></Login>
 
-                                case PwaCurrentPage.Register:
+                                case PwaCurrentPageEnum.Register:
                                     return <Register
                                         changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
                                     ></Register>
 
-                                case PwaCurrentPage.Loading:
+                                case PwaCurrentPageEnum.Loading:
                                     return <Loading></Loading>   
                             }
                         })()

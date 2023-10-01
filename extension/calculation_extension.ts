@@ -3,6 +3,7 @@ import { IDisplayPlace } from "@/model/useStateModel";
 import { Place } from "@prisma/client";
 import { StringDateToDisplayDate } from "./string_extension";
 import { IUserLocation } from "@/model/subentityModel";
+import { CardOrderByEnum } from "@/model/enumModel";
 
 export const CalculatePlaceForDisplay = (places: Place[] | IDisplayPlace[], currentLocation: IUserLocation) => {
 
@@ -52,10 +53,32 @@ const Deg2rad = (deg: number) => {
     return deg * (Math.PI/180)
 }
 
-export const OrderPlaceByDistance = (place: IDisplayPlace[], orderByDistance: boolean) => {
+export const OrderPlaceByDistance = (place: IDisplayPlace[], orderBy: CardOrderByEnum) => {
 
-    // b - a for reverse sort
-    return orderByDistance 
-        ? place.sort((a,b) => a.locationDistance - b.locationDistance)
-        : place.sort((a,b) => b.locationDistance - a.locationDistance);
+    let result: IDisplayPlace[]; 
+
+    switch (orderBy) {
+
+        case CardOrderByEnum.CreateDate:
+            result = place.sort((a,b) => a.createdAt.getTime() - b.createdAt.getTime());
+            break;
+        
+        case CardOrderByEnum.CreateDateDESC:
+            result = place.sort((a,b) => b.createdAt.getTime() - a.createdAt.getTime());
+            break;
+
+        case CardOrderByEnum.Distance:
+            result = place.sort((a,b) => a.locationDistance - b.locationDistance);
+            break;
+
+        case CardOrderByEnum.DistanceDESC:
+            result = place.sort((a,b) => b.locationDistance - a.locationDistance);
+            break;
+
+        default: 
+            result = place;
+            break;
+    }
+
+    return result;
 }

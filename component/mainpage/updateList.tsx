@@ -1,5 +1,5 @@
 import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPage } from "@/model/enumModel";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { IUpdateListProps } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
 import { UpdatePlace } from "@/model/subentityModel";
@@ -46,12 +46,12 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         }
         else {
 
-            changeCurrentPage(PwaCurrentPage.ReminderList, false, true);
+            changeCurrentPage(PwaCurrentPageEnum.ReminderList, false, true);
         }
     }
 
     const backButtonHandler = () => {
-        changeCurrentPage(PwaCurrentPage.ReminderList);
+        changeCurrentPage(PwaCurrentPageEnum.ReminderList);
     }
 
     let cardColorTheme = "";

@@ -1,7 +1,13 @@
+import { CardOrderByEnum } from "@/model/enumModel";
 import { IUserInfoProps } from "@/model/propsModel";
 import Link from "next/link";
 
-export default function UserInfo({ username, location, isDarkTheme }: IUserInfoProps) {
+export default function UserInfo({ username, location, isDarkTheme, changeCardOrderByHandler }: IUserInfoProps) {
+
+    // change orderby handler
+    const ChangeCardOrderByHandler = (event : React.ChangeEvent<HTMLSelectElement>) => {
+        changeCardOrderByHandler(+event.target.value);
+    }
 
     let userInfoColorTheme = "";
     let selectFormColorTheme = "";
@@ -31,10 +37,12 @@ export default function UserInfo({ username, location, isDarkTheme }: IUserInfoP
                 <select 
                     className={`form-select form-select-sm ${selectFormColorTheme} w-50`} 
                     aria-label=".form-select-sm example"
+                    onChange={ChangeCardOrderByHandler}
                 >
-                    <option value="3">Create date</option>
-                    <option value="1">Distance</option>
-                    <option value="2">Distance DESC</option>
+                    <option value={CardOrderByEnum.CreateDate}>Create date</option>
+                    <option value={CardOrderByEnum.CreateDateDESC}>Create date DESC</option>
+                    <option value={CardOrderByEnum.Distance}>Distance</option>
+                    <option value={CardOrderByEnum.DistanceDESC}>Distance DESC</option>
                 </select>
                 <button className={`btn btn-sm ${btnColorTheme} w-25`}>
                     <i className="fa-solid fa-map-location-dot"></i>

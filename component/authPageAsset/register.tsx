@@ -1,5 +1,5 @@
 import { IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPage } from "@/model/enumModel";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { IRegisterProps } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
 import { UserExtensionModel } from "@/model/subentityModel";
@@ -61,7 +61,7 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
             else {
     
                 // Reroute to home page
-                changeCurrentPage(PwaCurrentPage.Login, true);
+                changeCurrentPage(PwaCurrentPageEnum.Login, true);
             }
         }
         else {
@@ -130,7 +130,7 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                     </button>
                     <button
                         className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
-                        onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
+                        onClick={() => changeCurrentPage(PwaCurrentPageEnum.Login)}
                     >
                         Back
                     </button>

@@ -1,5 +1,5 @@
 import { User } from "@prisma/client"
-import { PwaCurrentPage } from "./enumModel"
+import { CardOrderByEnum, PwaCurrentPageEnum } from "./enumModel"
 import { IUserLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 
@@ -8,19 +8,20 @@ interface IBaseProps {
 }
 
 export interface INavbarProps extends IBaseProps {
-    currentPageName: PwaCurrentPage,
+    currentPageName: PwaCurrentPageEnum,
     orderByDistanceValue: boolean,
     changeOrderByDistanceHandler: (orderByDistance: boolean) => void,
 }
 
 export interface IFooterProps extends IBaseProps {
-    currentPageName: PwaCurrentPage,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    currentPageName: PwaCurrentPageEnum,
+    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface IUserInfoProps extends IBaseProps {
     username: string,
-    location: IUserLocation
+    location: IUserLocation,
+    changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
 
 export interface IListPageProps extends IBaseProps {
@@ -28,7 +29,8 @@ export interface IListPageProps extends IBaseProps {
     currentUser: CurrentUserRef,
     deletePlaceHandler: (placeId: string) => void,
     changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
-    updatePlaceCardHandler: (cardId: string) => void
+    updatePlaceCardHandler: (cardId: string) => void,
+    changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
 
 export interface IPlaceCardProps extends IBaseProps {
@@ -40,12 +42,12 @@ export interface IPlaceCardProps extends IBaseProps {
 
 export interface IAddPlace extends IBaseProps {
     userId: string,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface ISettingProps {
     currentUserName: string,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void,
+    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void,
     changeThemeHandler: (currentTheme: boolean) => void, 
     isDarkTheme: boolean
 }
@@ -53,11 +55,11 @@ export interface ISettingProps {
 export interface ILoginProps extends IBaseProps {
     currentPage: ICurrentPage,
     userLoginHandler: (setUser: CurrentUserRef) => void,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface IRegisterProps extends IBaseProps {
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface IStaticSettingCardProps extends IBaseProps {
@@ -72,7 +74,7 @@ export interface IThemeSettingCardProps extends IBaseProps {
 
 export interface IUpdateListProps extends IBaseProps {
     cardData: IDisplayPlace,
-    changeCurrentPage: (page: PwaCurrentPage, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
 }
 
 export interface ISuccessModal {

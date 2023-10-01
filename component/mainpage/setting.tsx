@@ -1,4 +1,4 @@
-import { PwaCurrentPage } from "@/model/enumModel";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { ISettingProps } from "@/model/propsModel";
 import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
@@ -38,7 +38,7 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                 <div className="mt-4 text-center">
                     <button
                         className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
-                        onClick={() => changeCurrentPage(PwaCurrentPage.Login)}
+                        onClick={() => changeCurrentPage(PwaCurrentPageEnum.Login)}
                     >
                         Sign out
                     </button>

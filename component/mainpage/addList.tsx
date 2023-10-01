@@ -1,5 +1,5 @@
 import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPage } from "@/model/enumModel";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { IAddPlace } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
 import { PlaceExtensionModel } from "@/model/subentityModel";
@@ -49,7 +49,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
             }
             else {
 
-                changeCurrentPage(PwaCurrentPage.ReminderList, false, true);
+                changeCurrentPage(PwaCurrentPageEnum.ReminderList, false, true);
             }
         }
         else {

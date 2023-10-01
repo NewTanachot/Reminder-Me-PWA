@@ -6,6 +6,10 @@ export enum DayOfWeekEnum {
     Sun, Mon, Tue, Wed, Thu, Fri, Sat
 }
 
-export enum PwaCurrentPage {
+export enum PwaCurrentPageEnum {
     Login, Register, MapView, ReminderList, AddList, UpdateList, EvBattery, Setting, Loading,  SplashScreen
+}
+
+export enum CardOrderByEnum {
+    CreateDate, CreateDateDESC, Distance, DistanceDESC
 }

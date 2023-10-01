@@ -1,9 +1,9 @@
 import { User } from "@prisma/client"
-import { PwaCurrentPage } from "./enumModel"
+import { PwaCurrentPageEnum } from "./enumModel"
 import { IUserLocation } from "./subentityModel"
 
 export interface ICurrentPage {
-    pageName: PwaCurrentPage,
+    pageName: PwaCurrentPageEnum,
     successAlertBox: boolean
 }
 
