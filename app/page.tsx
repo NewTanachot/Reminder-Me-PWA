@@ -276,8 +276,11 @@ export default function Home() {
                     }
                 }
 
-                // set user State and check OrderBy distance
-                setPlaces(OrderPlaceByDistance(displayPlaces, cardOrderBy));
+                // order card of display place
+                const orderedDiplayPlaces = OrderPlaceByDistance(displayPlaces, cardOrderBy);
+
+                // set display place State
+                setPlaces(orderedDiplayPlaces);
             }
             else {
                 alert(`Error message: User not found.`);

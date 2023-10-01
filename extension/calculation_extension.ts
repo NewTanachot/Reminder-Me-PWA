@@ -55,16 +55,32 @@ const Deg2rad = (deg: number) => {
 
 export const OrderPlaceByDistance = (place: IDisplayPlace[], orderBy: CardOrderByEnum) => {
 
-    let result: IDisplayPlace[]; 
+    let result: IDisplayPlace[];
 
     switch (orderBy) {
 
         case CardOrderByEnum.CreateDate:
-            result = place.sort((a,b) => a.createdAt.getTime() - b.createdAt.getTime());
+
+            result = place.sort((a,b) => {
+
+                const createDateA = new Date(a.createdAt);
+                const createDateB = new Date(b.createdAt);
+
+                return createDateA.getTime() - createDateB.getTime();
+            });
+
             break;
         
         case CardOrderByEnum.CreateDateDESC:
-            result = place.sort((a,b) => b.createdAt.getTime() - a.createdAt.getTime());
+            
+            result = place.sort((a,b) => {
+
+                const createDateA = new Date(a.createdAt);
+                const createDateB = new Date(b.createdAt);
+
+                return createDateB.getTime() - createDateA.getTime();
+            });
+
             break;
 
         case CardOrderByEnum.Distance:
