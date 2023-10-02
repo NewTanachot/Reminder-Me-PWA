@@ -498,7 +498,9 @@ export default function Home() {
                                     ></Register>
 
                                 case PwaCurrentPageEnum.Loading:
-                                    return <Loading></Loading>   
+                                    return <Loading
+                                        isDarkTheme={isDarkTheme.current}
+                                    ></Loading>   
                             }
                         })()
                     }

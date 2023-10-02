@@ -77,6 +77,10 @@ export interface IUpdateListProps extends IBaseProps {
     changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
 }
 
+export interface ILoadingPageProps extends IBaseProps {
+    
+}
+
 export interface ISuccessModal {
     modalMessage: string
 }

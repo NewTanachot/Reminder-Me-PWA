@@ -30,7 +30,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                         {
                             isDarkTheme
                                 ? <i style={{ fontSize: "2rem"}} className="bi bi-moon-fill"></i>
-                                : <i style={{ fontSize: "2rem"}} className="bi bi-sun-fill"></i>
+                                : <i style={{ fontSize: "2rem"}} className="fa-regular fa-sun"></i>
                         }
                     </div>
                     <div className="flex-grow-1 ms-3">

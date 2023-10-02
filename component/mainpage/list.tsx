@@ -10,7 +10,9 @@ export default function List({ places, currentUser, deletePlaceHandler, changePl
         <>
             {(() => {
                 if (places == undefined || (places.length != 0 && places.at(0)?.userId != currentUser.userId)) {
-                    return <Loading></Loading>
+                    return <Loading
+                        isDarkTheme={isDarkTheme}
+                    ></Loading>
                 }
                 else if (places.length == 0) {
                     return (

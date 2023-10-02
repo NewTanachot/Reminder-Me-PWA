@@ -98,7 +98,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
             >
-                <i className={`bi bi-x-circle-fill text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
+                <i className={`fa-solid fa-circle-xmark text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
             </div>         
             <div className={`card-header rounded-top-4 ${cardHeaderThemeColor}`}>
                 <div className="d-flex justify-content-between align-items-center text-size-20">
@@ -112,7 +112,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                     </div>
                  </div>
             </div>
-            <div className={`card-body rounded-bottom-4 ${cardBodyThemeColor}`}>
+            <div className={`card-body ${cardBodyThemeColor}`}>
                 <div className="d-flex justify-content-between align-items-center">
                     <p className="text-dark m-0 lh-1">
                         Message: &nbsp;
@@ -123,7 +123,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
                     <div className="text-dark">
-                        location: &nbsp;
+                        Location: &nbsp;
                         <span className={cardSubDataThemeColor}>
                             {(data.latitude != 0 && data.longitude != 0) ? `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}` : "-"}
                         </span>
@@ -147,6 +147,12 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                         }
                     </div>
                  </div>
+            </div>
+            <div 
+                className={`card-footer rounded-bottom-4 text-end py-0 h-25 text-secondary ${cardBodyThemeColor}`}
+                style={{ fontSize: "12px" }}
+            >
+                {data.createdAt.toString()}
             </div>
         </div>
     )
