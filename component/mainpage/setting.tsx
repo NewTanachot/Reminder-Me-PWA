@@ -23,7 +23,7 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
 
                 {/* user info */}
                 <StaticSettingCard
-                    cardIcon="bi bi-person-square"
+                    cardIcon="fa-solid fa-user-tie"
                     cardTitle="UserName"
                     cardInfo={currentUserName}
                     isDarkTheme={isDarkTheme}

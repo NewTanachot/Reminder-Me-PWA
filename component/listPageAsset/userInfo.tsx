@@ -29,8 +29,8 @@ export default function UserInfo({ username, location, isDarkTheme, changeCardOr
         <div className={`card mb-3 rounded-4 text-white ${userInfoColorTheme} shadow-sm`}>
             <div className="card-body d-flex justify-content-center align-items-center text-white">
                 <p className="m-0">
-                    <i className="bi bi-person-circle h5 me-2"></i>
-                    {username + ": "} {location.latitude}, {location.longitude}
+                    <i className="fa-solid fa-street-view me-2"></i>
+                    {username + ": "} {location.latitude.toFixed(5)}, {location.longitude.toFixed(5)}
                 </p>
             </div>
             <div className="card-footer d-flex justify-content-evenly align-items-center">

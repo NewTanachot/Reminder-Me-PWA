@@ -150,6 +150,10 @@ blue 6082B6 */
     font-size: 1.2rem;
 }
 
+.text-loading-size {
+    font-size: 3.5rem;
+}
+
 /*  --- [ Spin Rotation Class ] ---  */
 
 .spin-rotate {
