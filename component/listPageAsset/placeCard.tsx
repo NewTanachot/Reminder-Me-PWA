@@ -152,7 +152,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                 className={`card-footer rounded-bottom-4 text-end py-0 h-25 text-secondary ${cardBodyThemeColor}`}
                 style={{ fontSize: "12px" }}
             >
-                {data.createdAt.toString()}
+                {data.displayCreateAt}
             </div>
         </div>
     )

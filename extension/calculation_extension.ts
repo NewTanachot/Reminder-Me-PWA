@@ -19,6 +19,7 @@ export const CalculatePlaceForDisplay = (places: Place[] | IDisplayPlace[], curr
             reminderDate: StringDateToDisplayDate(e.reminderDate),
             isDisable: e.isDisable,
             createdAt: e.createdAt,
+            displayCreateAt: StringDateToDisplayDate(e.createdAt, true),
             userId: e.userId,
             locationDistance: GetDistanceBetweenPlace({
                 latitude_1: currentLocation?.latitude,

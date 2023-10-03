@@ -56,25 +56,6 @@ export const DecimalToNumber = (decimal: Decimal | null) => {
     return decimal ? +(decimal.toString()) : 0;
 }
 
-export const StringDateToDisplayDate = (stringDate: string | null) => {
-
-    if (stringDate == null) {
-        return "";
-    }
-    
-    const [ year, month, day ] = stringDate.split("T")[0].split("-");
-
-    if (year && month && day) {
-        
-        const date = new Date(stringDate);
-        const dayOfweekName = DayOfWeekEnum[date.getDay()];
-    
-        return `${dayOfweekName} ${day}/${month}/${year}`;
-    }
-
-    return stringDate;
-}
-
 export const DisplayCurrentPageName = (currentPage: PwaCurrentPageEnum) => {
 
     switch (currentPage) {
@@ -92,3 +73,56 @@ export const DisplayCurrentPageName = (currentPage: PwaCurrentPageEnum) => {
             return PwaCurrentPageEnum[currentPage];
     }
 }
+
+export const DisplayStringDateToUpdateForm = (stringDate: string | null) => {
+
+    if (stringDate) {
+
+        const [ date, month, year ] = stringDate.split(" ")[1].split("/");
+
+        if (date && month && year) {
+    
+            return `${year}-${month}-${date}`;
+        }
+    }
+
+    return null;
+}
+
+export const StringDateToDisplayDate = (date: string | Date | null, includeTime = false) => {
+
+    if (date == null) {
+
+        return "";
+    }
+
+    // 24 is number of char in default prisma Date object
+    if (typeof date == "string" && date.length == 24) {
+        
+        const dateObject = new Date(date);
+
+        const day = ConvertToDisplayStringOfNumber(dateObject.getDate());
+        const month = ConvertToDisplayStringOfNumber(dateObject.getMonth() + 1); // +1 because 1st month is 0 "idk why"
+        const year = dateObject.getFullYear();  
+        const dayOfweekName = DayOfWeekEnum[dateObject.getDay()];
+    
+        let result = `${dayOfweekName} ${day}/${month}/${year}`;
+
+        if (includeTime) {
+
+            const hour = ConvertToDisplayStringOfNumber(dateObject.getHours());
+            const minute = ConvertToDisplayStringOfNumber(dateObject.getMinutes());
+
+            result += ` - ${hour}:${minute}`;
+        }
+
+        return result;
+    }
+
+    // return same string value - (for case that date is already correct string format)
+    return date;  
+}
+
+const ConvertToDisplayStringOfNumber = (number: number) => {
+    return number < 10 ? `0${number}` : number.toString();
+} 
