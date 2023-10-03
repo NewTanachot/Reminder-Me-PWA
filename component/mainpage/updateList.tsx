@@ -1,4 +1,4 @@
-import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
+import { DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
 import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { IUpdateListProps } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
@@ -100,7 +100,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input name="reminderDateInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} defaultValue={cardData.reminderDate ?? ""} type="date"/>
+                    <input name="reminderDateInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} defaultValue={DisplayStringDateToUpdateForm(cardData.reminderDate) ?? ""} type="date"/>
                 </div>
                 <div className="mt-3 text-center">
                     <a className="text-decoration-none">

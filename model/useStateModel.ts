@@ -22,6 +22,7 @@ export interface IDisplayPlace {
     reminderDate: string | null
     isDisable: boolean
     createdAt: Date
+    displayCreateAt: string
     userId: string
     locationDistance: number
 }

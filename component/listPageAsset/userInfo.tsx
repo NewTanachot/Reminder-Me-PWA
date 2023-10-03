@@ -39,8 +39,8 @@ export default function UserInfo({ username, location, isDarkTheme, changeCardOr
                     aria-label=".form-select-sm example"
                     onChange={ChangeCardOrderByHandler}
                 >
-                    <option value={CardOrderByEnum.CreateDate}>Create date</option>
-                    <option value={CardOrderByEnum.CreateDateDESC}>Create date DESC</option>
+                    <option value={CardOrderByEnum.CreateDate}>Create at</option>
+                    <option value={CardOrderByEnum.CreateDateDESC}>Create at DESC</option>
                     <option value={CardOrderByEnum.Distance}>Distance</option>
                     <option value={CardOrderByEnum.DistanceDESC}>Distance DESC</option>
                 </select>
