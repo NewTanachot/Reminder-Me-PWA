@@ -5,10 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="249c9700-a9aa-40dd-b7be-8441e93708fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/component/modalAsset/splashScreen.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component/mainpage/loading.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component/settingPageAsset/userInfoSettingCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/model/requestModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/enum_model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/model/enum_model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/authPageAsset/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/authPageAsset/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/authPageAsset/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/authPageAsset/register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/layoutAsset/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/layoutAsset/footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/layoutAsset/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/layoutAsset/navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/listPageAsset/userInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/listPageAsset/userInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/mainpage/addList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/addList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/mainpage/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/mainpage/setting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/setting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/mainpage/updateList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/updateList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/modalAsset/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/modalAsset/loading.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/settingPageAsset/staticSettingCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/settingPageAsset/staticSettingCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/settingPageAsset/themeSettingCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/settingPageAsset/themeSettingCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/propsModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/model/propsModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/useStateModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/model/useStateModel.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +38,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -36,23 +56,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;js.last.introduce.type&quot;: &quot;LET&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Next.js/reminder-me&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\Next.js\\reminder-me\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "develop",
+    "js.last.introduce.type": "LET",
+    "last_opened_file_path": "D:/Next.js/reminder-me",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Users/80832/personalproject/reminder-me/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/component/mainpage" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="run" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -74,6 +99,7 @@
       <option name="presentableId" value="Default" />
       <updated>1695309155233</updated>
       <workItem from="1695309156196" duration="5822000" />
+      <workItem from="1696427535235" duration="13716000" />
     </task>
     <servers />
   </component>

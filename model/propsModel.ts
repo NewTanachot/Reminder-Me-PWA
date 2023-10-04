@@ -2,6 +2,7 @@ import { User } from "@prisma/client"
 import { CardOrderByEnum, PwaCurrentPageEnum } from "./enumModel"
 import { IUserLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
+import {IChangeCurrentPageRequest} from "@/model/requestModel";
 
 interface IBaseProps {
     isDarkTheme: boolean
@@ -15,7 +16,7 @@ export interface INavbarProps extends IBaseProps {
 
 export interface IFooterProps extends IBaseProps {
     currentPageName: PwaCurrentPageEnum,
-    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
 export interface IUserInfoProps extends IBaseProps {
@@ -42,24 +43,24 @@ export interface IPlaceCardProps extends IBaseProps {
 
 export interface IAddPlace extends IBaseProps {
     userId: string,
-    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
-export interface ISettingProps {
+export interface ISettingProps extends IBaseProps {
     currentUserName: string,
-    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void,
-    changeThemeHandler: (currentTheme: boolean) => void, 
-    isDarkTheme: boolean
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+    changeThemeHandler: (currentTheme: boolean) => void,
+    softwareVersion: string
 }
 
 export interface ILoginProps extends IBaseProps {
     currentPage: ICurrentPage,
     userLoginHandler: (setUser: CurrentUserRef) => void,
-    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
 export interface IRegisterProps extends IBaseProps {
-    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
 export interface IStaticSettingCardProps extends IBaseProps {
@@ -68,18 +69,21 @@ export interface IStaticSettingCardProps extends IBaseProps {
     cardInfo: string
 }
 
+export interface IUserInfoSettingCardProps extends IBaseProps {
+    userInfo: string
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
+}
+
 export interface IThemeSettingCardProps extends IBaseProps {
     changeCurrentThemeHandler: (currentTheme: boolean) => void, 
 }
 
 export interface IUpdateListProps extends IBaseProps {
     cardData: IDisplayPlace,
-    changeCurrentPage: (page: PwaCurrentPageEnum, successBox?: boolean, forceFetch?: boolean) => void
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
-export interface ILoadingPageProps extends IBaseProps {
-    
-}
+export interface ILoadingPageProps extends IBaseProps { }
 
 export interface ISuccessModal {
     modalMessage: string

@@ -3,46 +3,53 @@ import { IFooterProps } from "@/model/propsModel";
 
 export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme }: IFooterProps) {
 
-    // check if need to disableAllFooter
-    const disableAllFooter = currentPageName == PwaCurrentPageEnum.Login || currentPageName == PwaCurrentPageEnum.Register ? true : false;
+    // check if it need to disableAllFooter
+    const disableAllFooter = currentPageName == PwaCurrentPageEnum.Login || currentPageName == PwaCurrentPageEnum.Register;
 
-    // footer theme handler
-    const TextLightColorTheme = "text-cream";
-    const TextDarkColorTheme = "text-mainGray";
+    const defaultTextColor = "text-whiteSmoke";
 
-    const defaultTextColorTheme = isDarkTheme ? TextDarkColorTheme : TextLightColorTheme;
+    let listIconClass = `${defaultTextColor} bi bi-folder`;
+    let mapIconClass = `${defaultTextColor} bi bi-geo-alt`;
+    let addListIconClass = `${defaultTextColor} bi bi-plus-circle`;
+    let evBatteryIconClass = `${defaultTextColor} bi bi-lightning-charge`;
+    let settingIconClass = `${defaultTextColor} bi bi-gear`;
 
-    let listIconClass = `${defaultTextColorTheme} bi bi-folder`;
-    let mapIconClass = `${defaultTextColorTheme} bi bi-geo-alt`;
-    let addListIconClass = `${defaultTextColorTheme} bi bi-plus-circle`;
-    let evBatteryIconClass = `${defaultTextColorTheme} bi bi-lightning-charge`;
-    let settingIconClass = `${defaultTextColorTheme} bi bi-gear`;
+    let listTopIconBorder = "";
+    let mapTopIconBorder = "";
+    let addListTopIconBorder = "";
+    let evBatteryIconBorder = "";
+    let settingIconBorder = "";
     
     switch (currentPageName) {
         case PwaCurrentPageEnum.ReminderList:
-            listIconClass = listIconClass.replace(defaultTextColorTheme, "text-whiteSmoke");
-            listIconClass += "-fill";
+            listIconClass = listIconClass.replace(defaultTextColor, "text-whiteSmoke");
+            listIconClass += "-fill ";
+            listTopIconBorder += " border-top border-2 rounded-start-1";
             break;
         case PwaCurrentPageEnum.MapView:
-            mapIconClass = mapIconClass.replace(defaultTextColorTheme, "text-whiteSmoke");
+            mapIconClass = mapIconClass.replace(defaultTextColor, "text-whiteSmoke");
             mapIconClass += "-fill";
+            mapTopIconBorder += " border-top border-2";
             break;
         case PwaCurrentPageEnum.AddList:
-            addListIconClass = addListIconClass.replace(defaultTextColorTheme, "text-whiteSmoke");
+            addListIconClass = addListIconClass.replace(defaultTextColor, "text-whiteSmoke");
             addListIconClass += "-fill";
+            addListTopIconBorder += " border-top border-2";
             break;
         case PwaCurrentPageEnum.EvBattery:
-            evBatteryIconClass = evBatteryIconClass.replace(defaultTextColorTheme, "text-whiteSmoke");
+            evBatteryIconClass = evBatteryIconClass.replace(defaultTextColor, "text-whiteSmoke");
             evBatteryIconClass += "-fill";
+            evBatteryIconBorder += " border-top border-2";
             break;
         case PwaCurrentPageEnum.Setting:
-            settingIconClass = settingIconClass.replace(defaultTextColorTheme, "text-whiteSmoke");
+            settingIconClass = settingIconClass.replace(defaultTextColor, "text-whiteSmoke");
             settingIconClass += "-fill";
+            settingIconBorder += " border-top border-2 rounded-end-1";
             break;
     }
 
     // check theme color
-    let footerColorTheme = "";
+    let footerColorTheme: string;
 
     if (isDarkTheme) {
         footerColorTheme = "bg-mainblack";
@@ -53,43 +60,43 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
 
     return (
         <footer className={`fixed-bottom px-2 pb-4 pt-0 shadow-top rounded-top-5 ${footerColorTheme}`}>
-            <div className='d-flex justify-content-around align-items-start mt-1 text-'>
+            <div className='d-flex justify-content-around align-items-start'>
                 <button 
                     type="button" 
-                    className={`btn btn-lg border-0 rounded-0`}
-                    onClick={() => changeCurrentPage(PwaCurrentPageEnum.ReminderList)}
+                    className={`btn btn-lg rounded-0 border-0 ${listTopIconBorder}`}
+                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList })}
                     disabled={disableAllFooter}
                 >
                     <i className={`${listIconClass} text-footer-size`}></i>
                 </button>
                 <button
-                    type="button" 
-                    className={`btn btn-lg border-0 rounded-0`}
-                    onClick={() => changeCurrentPage(PwaCurrentPageEnum.MapView)}
+                    type="button"
+                    className={`btn btn-lg rounded-0 border-0 ${mapTopIconBorder}`}
+                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.MapView })}
                     disabled={disableAllFooter}
                 >
                     <i className={`${mapIconClass} text-footer-size`}></i>
                 </button>
                 <button 
                     type="button" 
-                    className={`btn btn-lg border-0 rounded-0`}
-                    onClick={() => changeCurrentPage(PwaCurrentPageEnum.AddList)}
+                    className={`btn btn-lg rounded-0 border-0 ${addListTopIconBorder}`}
+                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.AddList })}
                     disabled={disableAllFooter}
                 >
                     <i className={`${addListIconClass} text-footer-size`}></i>
                 </button>
-                <button 
-                    type="button" 
-                    className={`btn btn-lg border-0 rounded-0`}
-                    onClick={() => changeCurrentPage(PwaCurrentPageEnum.EvBattery)}
+                <button
+                    type="button"
+                    className={`btn btn-lg rounded-0 border-0 ${evBatteryIconBorder}`}
+                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.EvBattery })}
                     disabled={disableAllFooter}
                 >
                     <i className={`${evBatteryIconClass} text-footer-size`}></i>
                 </button>
                 <button
                     type="button"
-                    className={`btn btn-lg border-0 rounded-0`}
-                    onClick={() => changeCurrentPage(PwaCurrentPageEnum.Setting)}
+                    className={`btn btn-lg rounded-0 border-0 ${settingIconBorder}`}
+                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Setting })}
                     disabled={disableAllFooter}
                 >
                     <i className={`${settingIconClass} text-footer-size`}></i>

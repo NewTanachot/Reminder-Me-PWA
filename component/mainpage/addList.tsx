@@ -1,8 +1,9 @@
-import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPageEnum } from "@/model/enumModel";
-import { IAddPlace } from "@/model/propsModel";
-import { ResponseModel } from "@/model/responseModel";
-import { PlaceExtensionModel } from "@/model/subentityModel";
+import {IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
+import {PwaCurrentPageEnum} from "@/model/enumModel";
+import {IAddPlace} from "@/model/propsModel";
+import {ResponseModel} from "@/model/responseModel";
+import {PlaceExtensionModel} from "@/model/subentityModel";
+import {FormEvent} from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
@@ -10,11 +11,14 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAddPlace) {
 
     // add place handler
-    const AddNewPlace = async (event: React.FormEvent<HTMLFormElement>) => {
+    const AddNewPlace = async (event: FormEvent<HTMLFormElement>) => {
 
         // check current user from global variable   
         if (IsStringValid(userId)) {
-        
+
+            // change current page to loading page
+            changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
+
             event.preventDefault();
             const formInput = new FormData(event.currentTarget);
         
@@ -32,11 +36,11 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                 longitude: +IsStringValidEmpty(longitudeInput), // cast string to number
                 reminderMessage: reminderMessageInput,
                 reminderDate: IsStringValid(reminderDateInput) ? new Date(reminderDateInput ?? "") : undefined,
-                isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return flase
+                isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return false
                 userId: userId,
             }
 
-            // fetch creaet place api
+            // fetch create place api
             const response = await fetch(`${baseUrlApi}/place`, {
                 method: "POST",
                 body: JSON.stringify(newPlace)
@@ -49,7 +53,10 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
             }
             else {
 
-                changeCurrentPage(PwaCurrentPageEnum.ReminderList, false, true);
+                changeCurrentPage({
+                    page: PwaCurrentPageEnum.ReminderList,
+                    forceFetch: true
+                });
             }
         }
         else {
@@ -57,11 +64,11 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
         }
     }
 
-    let cardColorTheme = "";
-    let cardHeaderColorTheme = "";
-    let textHeaderColorTheme = "";
-    let formColorTheme = ""
-    let submitBtnColorTheme = ""
+    let cardColorTheme: string;
+    let cardHeaderColorTheme: string;
+    let textHeaderColorTheme: string;
+    let formColorTheme = "";
+    let submitBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";

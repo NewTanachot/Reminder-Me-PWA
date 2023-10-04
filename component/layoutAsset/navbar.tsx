@@ -5,7 +5,7 @@ import appIcon from '@/public/image/web-icon/favicon.ico';
 
 export default function Navbar({ currentPageName, orderByDistanceValue, changeOrderByDistanceHandler, isDarkTheme }: INavbarProps) {
 
-    let navbarColorTheme = "";
+    let navbarColorTheme: string;
 
     if (isDarkTheme) {
         navbarColorTheme = "bg-mainblack";

@@ -1,15 +1,14 @@
 'use client';
 
-import { IsStringValid } from '@/extension/string_extension';
-import { CurrentUserRef, ICurrentPage, IDisplayPlace } from '@/model/useStateModel';
-import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
-import { Place } from '@prisma/client';
-import { useEffect, useState, useRef } from 'react';
-import { CalculatePlaceForDisplay, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { CardOrderByEnum, PwaCurrentPageEnum } from '@/model/enumModel';
-import { GetCustomGeoLocationOption } from '@/extension/api_extension';
+import {IsStringValid} from '@/extension/string_extension';
+import {CurrentUserRef, ICurrentPage, IDisplayPlace} from '@/model/useStateModel';
+import {ISetupIndexedDBModel, ResponseModel} from '@/model/responseModel';
+import {Place} from '@prisma/client';
+import {useEffect, useRef, useState} from 'react';
+import {CalculatePlaceForDisplay, OrderPlaceByDistance} from '@/extension/calculation_extension';
+import {CardOrderByEnum, PwaCurrentPageEnum} from '@/model/enumModel';
+import {GetCustomGeoLocationOption} from '@/extension/api_extension';
 import List from '@/component/mainpage/list';
-import Navbar from '@/component/layoutAsset/navbar';
 import Map from '@/component/mainpage/map';
 import Login from '@/component/authPageAsset/login';
 import Register from '@/component/authPageAsset/register';
@@ -18,9 +17,10 @@ import AddList from '@/component/mainpage/addList';
 import EvBattery from '@/component/mainpage/evbattery';
 import Setting from '@/component/mainpage/setting';
 import UpdateList from '@/component/mainpage/updateList';
-import Loading from '@/component/modalAsset/loading';
+import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
-import { IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
+import {IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbModel';
+import {IChangeCurrentPageRequest} from "@/model/requestModel";
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -30,6 +30,7 @@ const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY
 const indexedDB_ThemeStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME ?? "";
 const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
+const softwareVersion: string = process.env.NEXT_PUBLIC_SOFTWARE_VERSION ?? "";
 
 // Initialize global const variable
 const setDefaultLightTheme: boolean = true;
@@ -49,7 +50,7 @@ export default function Home() {
     const isForceFetch = useRef<boolean>(false);
     const isDarkTheme = useRef<boolean>(!setDefaultLightTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
-    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen, successAlertBox: false });
+    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [cardOrderBy, setCardOrderBy] = useState<CardOrderByEnum>(CardOrderByEnum.CreateDate);
@@ -89,7 +90,7 @@ export default function Home() {
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
 
                 // change to login page
-                ChangeCurrentPage(PwaCurrentPageEnum.Login);
+                ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
 
                 // reject the promise
                 reject();
@@ -138,7 +139,7 @@ export default function Home() {
                 }
                 else {
                     // change to login page
-                    ChangeCurrentPage(PwaCurrentPageEnum.Login);
+                    ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
                 }
 
                 // create response for two of store
@@ -153,7 +154,7 @@ export default function Home() {
         });
     };
 
-    // check user creadential, fetch get place api, get current location
+    // check user credential, fetch get place api, get current location
     useEffect(() => {
 
         // open indexedDB 
@@ -173,8 +174,8 @@ export default function Home() {
 
                     AdaptiveColorThemeHandler(isDarkTheme.current)
                 }
-                
-                ChangeCurrentPage(PwaCurrentPageEnum.ReminderList);
+
+                ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
             }
 
             // get current user from indexedDB
@@ -184,7 +185,7 @@ export default function Home() {
             userStoreResponse.onerror = () => {
 
                 // change to login page
-                ChangeCurrentPage(PwaCurrentPageEnum.Login);
+                ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
             }
 
             // get success handler
@@ -206,7 +207,7 @@ export default function Home() {
                 else {
 
                     // change to login page
-                    ChangeCurrentPage(PwaCurrentPageEnum.Login);
+                    ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
                 }
             }
         });
@@ -310,15 +311,18 @@ export default function Home() {
     };
 
     // change Current page method
-    const ChangeCurrentPage = (page: PwaCurrentPageEnum, successBox: boolean = false, forceFetch = false) => {
+    const ChangeCurrentPage = (requestDto: IChangeCurrentPageRequest) => {
 
         // set force fetch in FetchData function
-        isForceFetch.current = forceFetch;
+        if (requestDto.forceFetch != undefined) {
+            isForceFetch.current = requestDto.forceFetch;
+        }
 
         // change current page
         setCurrentPage({
-            pageName: page,
-            successAlertBox: successBox
+            pageName: requestDto.page,
+            successAlertBox: requestDto.successBox,
+            backBtn: requestDto.backBtn
         });
     };
 
@@ -368,7 +372,7 @@ export default function Home() {
         currentUpdateCard.current = places?.find(x => x.id == cardId);
 
         // change current page to UpdateCard
-        ChangeCurrentPage(PwaCurrentPageEnum.UpdateList);
+        ChangeCurrentPage({ page: PwaCurrentPageEnum.UpdateList });
     };
 
     const ChangeCurrentThemeHandler = async (isDarkThemeHandler: boolean) => {
@@ -481,6 +485,7 @@ export default function Home() {
                                         changeCurrentPage={ChangeCurrentPage}
                                         changeThemeHandler={ChangeCurrentThemeHandler}
                                         isDarkTheme={isDarkTheme.current}
+                                        softwareVersion={softwareVersion}
                                     ></Setting>
 
                                 case PwaCurrentPageEnum.Login:

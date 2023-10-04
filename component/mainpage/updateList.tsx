@@ -1,15 +1,20 @@
-import { DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPageEnum } from "@/model/enumModel";
-import { IUpdateListProps } from "@/model/propsModel";
-import { ResponseModel } from "@/model/responseModel";
-import { UpdatePlace } from "@/model/subentityModel";
+import {DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
+import {PwaCurrentPageEnum} from "@/model/enumModel";
+import {IUpdateListProps} from "@/model/propsModel";
+import {ResponseModel} from "@/model/responseModel";
+import {UpdatePlace} from "@/model/subentityModel";
+import {FormEvent} from "react";
+
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: IUpdateListProps) {
 
     // add place handler
-    const UpdatePlace = async (event: React.FormEvent<HTMLFormElement>) => {
+    const UpdatePlace = async (event: FormEvent<HTMLFormElement>) => {
+
+        // change current page to loading page
+        changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
 
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
@@ -29,11 +34,11 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
             longitude: +IsStringValidEmpty(longitudeInput), // cast string to number
             reminderMessage: reminderMessageInput,
             reminderDate: IsStringValid(reminderDateInput) ? new Date(reminderDateInput ?? "") : undefined,
-            isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return flase
+            isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return false
             userId: cardData.userId,
         }
 
-        // fetch creaet place api
+        // fetch create place api
         const response = await fetch(`${baseUrlApi}/place`, {
             method: "PUT",
             body: JSON.stringify(updatePlace)
@@ -46,19 +51,22 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         }
         else {
 
-            changeCurrentPage(PwaCurrentPageEnum.ReminderList, false, true);
+            changeCurrentPage({
+                page: PwaCurrentPageEnum.ReminderList,
+                forceFetch: true
+            });
         }
     }
 
     const backButtonHandler = () => {
-        changeCurrentPage(PwaCurrentPageEnum.ReminderList);
+        changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
     }
 
-    let cardColorTheme = "";
-    let cardHeaderColorTheme = "";
-    let textHeaderColorTheme = "";
-    let formColorTheme = ""
-    let submitBtnColorTheme = ""
+    let cardColorTheme: string;
+    let cardHeaderColorTheme: string;
+    let textHeaderColorTheme: string;
+    let formColorTheme = "";
+    let submitBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";

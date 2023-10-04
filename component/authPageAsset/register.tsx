@@ -1,10 +1,10 @@
-import { IsStringValidEmpty } from "@/extension/string_extension";
-import { PwaCurrentPageEnum } from "@/model/enumModel";
-import { IRegisterProps } from "@/model/propsModel";
-import { ResponseModel } from "@/model/responseModel";
-import { UserExtensionModel } from "@/model/subentityModel";
-import { IRegisterValidator } from "@/model/useStateModel";
-import { useState } from "react";
+import {IsStringValidEmpty} from "@/extension/string_extension";
+import {PwaCurrentPageEnum} from "@/model/enumModel";
+import {IRegisterProps} from "@/model/propsModel";
+import {ResponseModel} from "@/model/responseModel";
+import {UserExtensionModel} from "@/model/subentityModel";
+import {IRegisterValidator} from "@/model/useStateModel";
+import {FormEvent, useState} from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
@@ -20,7 +20,7 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
     // react hook initialize
     const [ inputValidator, setInputValidator ] = useState<IRegisterValidator>(RegisterValidatorObject);
 
-    const UserRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+    const UserRegister = async (event: FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
@@ -60,8 +60,11 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
             }
             else {
     
-                // Reroute to home page
-                changeCurrentPage(PwaCurrentPageEnum.Login, true);
+                // Reroute to login page with successBox
+                changeCurrentPage({
+                    page: PwaCurrentPageEnum.Login,
+                    successBox: true
+                });
             }
         }
         else {
@@ -73,11 +76,11 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
     }
 
     // Color theme handler
-    let cardColorTheme = "";
-    let cardHeaderColorTheme = "";
-    let textHeaderColorTheme = "";
+    let cardColorTheme: string;
+    let cardHeaderColorTheme: string;
+    let textHeaderColorTheme: string;
     let formColorTheme = "";
-    let createBtnColorTheme = "";
+    let createBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
@@ -101,7 +104,7 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
             <div className="card-body m-2">
                 <div className="mb-3">
                     <p className="mb-1">
-                        Usename:
+                        Username:
                     </p>
                     <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInputRegister" type="text" min={1} max={20} required/>
                 </div>
@@ -113,7 +116,8 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                 </div>
                 {
                     inputValidator.inputEmptyString
-                        ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text (" ").</li>
+                        // eslint-disable-next-line react/no-unescaped-entities
+                        ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text.</li>
                         : <></>
                 }
                 {
@@ -130,7 +134,7 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                     </button>
                     <button
                         className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
-                        onClick={() => changeCurrentPage(PwaCurrentPageEnum.Login)}
+                        onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
                     >
                         Back
                     </button>
