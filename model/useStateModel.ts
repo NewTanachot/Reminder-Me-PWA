@@ -4,7 +4,8 @@ import { IUserLocation } from "./subentityModel"
 
 export interface ICurrentPage {
     pageName: PwaCurrentPageEnum,
-    successAlertBox: boolean
+    successAlertBox?: boolean,
+    backBtn?: boolean
 }
 
 export type CurrentUserRef = {

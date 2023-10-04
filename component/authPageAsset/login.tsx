@@ -4,7 +4,7 @@ import { ResponseModel } from "@/model/responseModel";
 import { UserExtensionModel } from "@/model/subentityModel";
 import { User } from "@prisma/client";
 import SuccessModal from "../modalAsset/success";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
 import { GetCustomGeoLocationOption } from "@/extension/api_extension";
 
@@ -16,8 +16,8 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
     // react hook initialize
     const [ inputEmptyStringValidator, setInputEmptyStringValidator ] = useState<boolean>(false);
 
-    const UserLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-        
+    const UserLogin = async (event: FormEvent<HTMLFormElement>) => {
+
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
 
@@ -53,7 +53,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                 const currentUser: User = await response.json();
 
                 // Reroute to loading page
-                changeCurrentPage(PwaCurrentPageEnum.Loading);
+                changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
 
                 // get current user geolocation
                 navigator.geolocation.getCurrentPosition((position) => IfGetLocationSuccess(position, currentUser), 
@@ -80,8 +80,8 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
             }
         });
 
-        // Reroute to home page
-        changeCurrentPage(PwaCurrentPageEnum.ReminderList);
+        // Reroute to card list page
+        changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
     }
 
     // error case for Geolocation
@@ -90,12 +90,16 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         alert(`${error.code}: ${error.message}`)
     }
 
+    const backButtonHandler = () => {
+        changeCurrentPage({ page: PwaCurrentPageEnum.Setting });
+    }
+
     // Color theme handler
-    let cardColorTheme = "";
-    let cardHeaderColorTheme = "";
-    let textHeaderColorTheme = "";
+    let cardColorTheme: string;
+    let cardHeaderColorTheme: string;
+    let textHeaderColorTheme: string;
     let formColorTheme = "";
-    let loginBtnColorTheme = "";
+    let loginBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
@@ -120,13 +124,21 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
             }
 
             <form className={`card shadow-sm ${cardColorTheme}`} onSubmit={UserLogin}>
-                <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+                <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+                    {
+                        currentPage.backBtn
+                            ? <div onClick={backButtonHandler}>
+                                <i className="bi bi-caret-left-fill"></i>
+                            </div>
+                            : <div></div>
+                    }
                     <h2 className="m-0 text-center">Login to Reminder Me</h2>
+                    <div></div>
                 </div>
                 <div className="card-body m-2">
                     <div className="mb-3">
                         <p className="mb-1">
-                            Usename:
+                            Username:
                         </p>
                         <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInput" type="text" min={1} max={20} required/>
 
@@ -139,7 +151,8 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                     </div>
                     {
                         inputEmptyStringValidator
-                            ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text (" ").</li>
+                            // eslint-disable-next-line react/no-unescaped-entities
+                            ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text.</li>
                             : <></>
                     }
                     <div className="mt-4 text-center">
@@ -151,7 +164,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                         </button>
                         <button
                             className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
-                            onClick={() => changeCurrentPage(PwaCurrentPageEnum.Register)}
+                            onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Register })}
                         >
                             Sign Up
                         </button>

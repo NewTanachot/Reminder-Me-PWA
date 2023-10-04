@@ -1,6 +1,6 @@
 import { IListPageProps } from "@/model/propsModel";
 import PlaceCard from "../listPageAsset/placeCard";
-import Loading from "../modalAsset/loading";
+import Loading from "./loading";
 import NotFound from "../modalAsset/notfound";
 import UserInfo from "../listPageAsset/userInfo";
 

@@ -9,9 +9,9 @@ export default function UserInfo({ username, location, isDarkTheme, changeCardOr
         changeCardOrderByHandler(+event.target.value);
     }
 
-    let userInfoColorTheme = "";
-    let selectFormColorTheme = "";
-    let btnColorTheme = "";
+    let userInfoColorTheme: string;
+    let selectFormColorTheme: string;
+    let btnColorTheme: string;
 
     // check theme color
     if (isDarkTheme) {

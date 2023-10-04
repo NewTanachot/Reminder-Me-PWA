@@ -1,9 +1,8 @@
-import { ILoadingPageProps } from '@/model/propsModel';
-// import loadingImage from '@/public/image/loading2.png';
+import {ILoadingPageProps} from "@/model/propsModel";
 
-export default function Loading({isDarkTheme}: ILoadingPageProps) {
+export default function LoadingComponent({ isDarkTheme }: ILoadingPageProps) {
 
-    let loadingColorTheme = "";
+    let loadingColorTheme: string;
 
     if (isDarkTheme) {
         loadingColorTheme = "text-white";
@@ -13,11 +12,8 @@ export default function Loading({isDarkTheme}: ILoadingPageProps) {
     }
 
     return (
-        <>
-            <div className="text-center m-5">
-                {/* <img className="spin-rotate" src={loadingImage.src} alt="loadingImage" width={60} height={60} /> */}
-                <i className={`fa-solid fa-spinner fa-spin-pulse text-loading-size ${loadingColorTheme}`}></i>
-            </div>
-        </>
+        <div className="text-center m-5">
+            <i className={`fa-solid fa-spinner fa-spin-pulse text-loading-component-size ${loadingColorTheme}`}></i>
+        </div>
     )
 }

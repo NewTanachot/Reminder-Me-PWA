@@ -6,9 +6,9 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
         changeCurrentThemeHandler(isDarkThemeParam);
     };
 
-    let cardColorTheme = "";
-    let textColorTheme = "";
-    let subTextColorTheme = "";
+    let cardColorTheme: string;
+    let textColorTheme: string;
+    let subTextColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-subBlack";

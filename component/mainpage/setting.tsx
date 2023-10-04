@@ -2,11 +2,12 @@ import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { ISettingProps } from "@/model/propsModel";
 import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
+import UserInfoSettingCard from "@/component/settingPageAsset/userInfoSettingCard";
 
-export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, isDarkTheme }: ISettingProps) {
+export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, softwareVersion, isDarkTheme }: ISettingProps) {
 
-    let cardColorTheme = "";
-    let signOutBtnColorTheme = "";
+    let cardColorTheme: string;
+    let signOutBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainblack";
@@ -22,12 +23,11 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
             <div className="card-body m-2">
 
                 {/* user info */}
-                <StaticSettingCard
-                    cardIcon="fa-solid fa-user-tie"
-                    cardTitle="UserName"
-                    cardInfo={currentUserName}
+                <UserInfoSettingCard
+                    userInfo={currentUserName}
+                    changeCurrentPage={changeCurrentPage}
                     isDarkTheme={isDarkTheme}
-                ></StaticSettingCard>
+                ></UserInfoSettingCard>
 
                 {/* theme */}
                 <ThemeSettingCard
@@ -35,10 +35,18 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                     isDarkTheme={isDarkTheme}
                 ></ThemeSettingCard>
 
+                {/* version */}
+                <StaticSettingCard
+                    cardIcon="fa-solid fa-code-branch"
+                    cardTitle="Software Version"
+                    cardInfo={softwareVersion}
+                    isDarkTheme={isDarkTheme}
+                ></StaticSettingCard>
+
                 <div className="mt-4 text-center">
                     <button
                         className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
-                        onClick={() => changeCurrentPage(PwaCurrentPageEnum.Login)}
+                        onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
                     >
                         Sign out
                     </button>
