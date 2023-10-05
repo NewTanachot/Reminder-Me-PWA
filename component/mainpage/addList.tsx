@@ -49,7 +49,9 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
             if (!response.ok) {
     
                 const errorMessage: ResponseModel = await response.json();
-                alert(`Error message: ${errorMessage.message}`)
+                alert(`Error message: ${errorMessage.message}`);
+
+                changeCurrentPage({ page: PwaCurrentPageEnum.AddList });
             }
             else {
 

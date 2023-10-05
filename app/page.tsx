@@ -53,7 +53,7 @@ export default function Home() {
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
-    const [cardOrderBy, setCardOrderBy] = useState<CardOrderByEnum>(CardOrderByEnum.CreateDate);
+    const [cardOrderBy, setCardOrderBy] = useState<CardOrderByEnum>(CardOrderByEnum.CreateDateDESC);
     const [forceRerenderState, setForceRerenderState] = useState<boolean>(false);
 
     const ForceRerenderState = () => {
@@ -223,7 +223,7 @@ export default function Home() {
             if (!isMountRound.current) {
 
                 if (currentPage.pageName == PwaCurrentPageEnum.ReminderList) {
-                    console.log(currentLocation);
+                    // console.log(currentLocation);
                     FetchPlaceData();
                 }            
             } 
@@ -443,6 +443,7 @@ export default function Home() {
                                         changePlaceStatusHandler={ChangePlaceStatusHandler}
                                         updatePlaceCardHandler={UpdatePlaceCardHandler}
                                         isDarkTheme={isDarkTheme.current}
+                                        currentCardOrder={cardOrderBy}
                                         changeCardOrderByHandler={ChangeCardOrderByHandler}
                                     ></List>
 
@@ -472,6 +473,7 @@ export default function Home() {
                                             changePlaceStatusHandler={ChangePlaceStatusHandler}
                                             updatePlaceCardHandler={UpdatePlaceCardHandler}
                                             isDarkTheme={isDarkTheme.current}
+                                            currentCardOrder={cardOrderBy}
                                             changeCardOrderByHandler={ChangeCardOrderByHandler}
                                         ></List>
                                     }

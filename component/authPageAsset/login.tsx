@@ -13,14 +13,13 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Login({ userLoginHandler, changeCurrentPage, currentPage, isDarkTheme }: ILoginProps) {
 
-    // react hook initialize
-    const [ inputEmptyStringValidator, setInputEmptyStringValidator ] = useState<boolean>(false);
-
     const UserLogin = async (event: FormEvent<HTMLFormElement>) => {
+
+        changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
 
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
-
+        
         // get data from input form
         const userNameInput = formInput.get("usernameInput")?.toString();
         const passWordInput = formInput.get("passwordInput")?.toString();
@@ -46,14 +45,13 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                 // check login error
                 const errorMessage: ResponseModel = await response.json();
                 alert(`Error message: ${errorMessage.message}`);
+
+                changeCurrentPage({ page: PwaCurrentPageEnum.Login, backBtn: currentPage.backBtn });
             }
             else {
 
                 // get currentUser user
                 const currentUser: User = await response.json();
-
-                // Reroute to loading page
-                changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
 
                 // get current user geolocation
                 navigator.geolocation.getCurrentPosition((position) => IfGetLocationSuccess(position, currentUser), 
@@ -62,8 +60,8 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         }
         else {
 
-            // set validator state for warning danger text
-            setInputEmptyStringValidator(true);
+            alert(`Error message: Username and Password is shouldn't be empty text.`);
+            changeCurrentPage({ page: PwaCurrentPageEnum.Login, backBtn: currentPage.backBtn });
         }
     }
 
@@ -149,12 +147,6 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                         </p>
                         <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInput" type="password" min={1} max={20} required/>
                     </div>
-                    {
-                        inputEmptyStringValidator
-                            // eslint-disable-next-line react/no-unescaped-entities
-                            ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text.</li>
-                            : <></>
-                    }
                     <div className="mt-4 text-center">
                         <button 
                             type="submit"

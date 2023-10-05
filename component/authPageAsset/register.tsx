@@ -11,16 +11,9 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterProps) {
 
-    // default setState object
-    let RegisterValidatorObject: IRegisterValidator = {
-        inputEmptyString: false,
-        duplicateUserName: false 
-    };
-
-    // react hook initialize
-    const [ inputValidator, setInputValidator ] = useState<IRegisterValidator>(RegisterValidatorObject);
-
     const UserRegister = async (event: FormEvent<HTMLFormElement>) => {
+
+        changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
 
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
@@ -51,12 +44,13 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
 
                 if (errorMessage.message.includes("Maybe duplicate name")) {
 
-                    RegisterValidatorObject.duplicateUserName = true;
-                    setInputValidator(RegisterValidatorObject);
+                    alert(`Error message: UserName ${userNameInput} is duplicate.`);
                 }
                 else {
                     alert(`Error message: ${errorMessage.message}`);
                 }
+
+                changeCurrentPage({ page: PwaCurrentPageEnum.Register });
             }
             else {
     
@@ -69,9 +63,8 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
         }
         else {
 
-            // set validator state for warning danger text
-            RegisterValidatorObject.inputEmptyString = true;
-            setInputValidator(RegisterValidatorObject);
+            alert(`Error message: Username and Password is shouldn't be empty text.`);
+            changeCurrentPage({ page: PwaCurrentPageEnum.Register });
         }
     }
 
@@ -114,17 +107,6 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                     </p>
                     <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInputRegister" type="password" min={1} max={20} required/>
                 </div>
-                {
-                    inputValidator.inputEmptyString
-                        // eslint-disable-next-line react/no-unescaped-entities
-                        ? <li className="text-danger text-opacity-75 ms-1 mt-2">Username and Password is shouldn't be empty text.</li>
-                        : <></>
-                }
-                {
-                    inputValidator.duplicateUserName
-                        ? <li className="text-danger text-opacity-75 ms-1 mt-2">This Username is registered already.</li>
-                        : <></>
-                }
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"

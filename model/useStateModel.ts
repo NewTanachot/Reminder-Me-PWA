@@ -17,8 +17,8 @@ export type CurrentUserRef = {
 export interface IDisplayPlace {
     id: string
     name: string
-    latitude: number
-    longitude: number
+    latitude: number | null
+    longitude: number | null
     reminderMessage: string | null
     reminderDate: string | null
     isDisable: boolean

@@ -4,7 +4,16 @@ import Loading from "./loading";
 import NotFound from "../modalAsset/notfound";
 import UserInfo from "../listPageAsset/userInfo";
 
-export default function List({ places, currentUser, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme, changeCardOrderByHandler }: IListPageProps) {
+export default function List({ 
+        places, 
+        currentUser, 
+        deletePlaceHandler, 
+        changePlaceStatusHandler, 
+        updatePlaceCardHandler, 
+        isDarkTheme,
+        currentCardOrder,
+        changeCardOrderByHandler
+    }: IListPageProps) {
 
     return (
         <>
@@ -21,6 +30,7 @@ export default function List({ places, currentUser, deletePlaceHandler, changePl
                                 isDarkTheme={isDarkTheme}
                                 username={currentUser.userName}
                                 location={currentUser.userLocation}
+                                currentCardOrder={currentCardOrder}
                                 changeCardOrderByHandler={changeCardOrderByHandler}
                             ></UserInfo>
                             <NotFound></NotFound>
@@ -34,6 +44,7 @@ export default function List({ places, currentUser, deletePlaceHandler, changePl
                                 isDarkTheme={isDarkTheme} 
                                 username={currentUser.userName}
                                 location={currentUser.userLocation}
+                                currentCardOrder={currentCardOrder}
                                 changeCardOrderByHandler={changeCardOrderByHandler}
                             ></UserInfo>
                             {
