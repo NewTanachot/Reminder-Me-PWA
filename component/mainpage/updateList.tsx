@@ -47,7 +47,9 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         if (!response.ok) {
 
             const errorMessage: ResponseModel = await response.json();
-            alert(`Error message: ${errorMessage.message}`)
+            alert(`Error message: ${errorMessage.message}`);
+
+            changeCurrentPage({ page: PwaCurrentPageEnum.UpdateList });
         }
         else {
 
@@ -58,8 +60,19 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         }
     }
 
+    // back button handler
     const backButtonHandler = () => {
         changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
+    }
+
+    // clear date in datepicker handler
+    const ClearDatePickerFormHandler = () => {
+
+        const reminderDateForm = document.getElementsByName("reminderDateInputUpdate")[0] as HTMLInputElement;
+
+        if (reminderDateForm) {
+            reminderDateForm.value = "";
+        }
     }
 
     let cardColorTheme: string;
@@ -71,7 +84,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
         cardHeaderColorTheme = "bg-mainblack";
-        textHeaderColorTheme = "text-whiteSmoke"
+        textHeaderColorTheme = "text-whiteSmoke";
         formColorTheme = "bg-whitesmoke";
         submitBtnColorTheme = "bg-mainblack";
     }
@@ -96,22 +109,50 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input name="placeNameInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="text" defaultValue={cardData.name} placeholder="entry place name..." maxLength={20} required/>
+                    <input
+                        type="text" 
+                        name="placeNameInputUpdate" 
+                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        defaultValue={cardData.name} 
+                        placeholder="entry place name..." 
+                        maxLength={20} 
+                        required
+                    />
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea name="reminderMessageInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} defaultValue={cardData.reminderMessage ?? ""} placeholder="entry some message..." maxLength={50} rows={2}/>
+                    <textarea 
+                        name="reminderMessageInputUpdate" 
+                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        defaultValue={cardData.reminderMessage ?? ""} 
+                        placeholder="entry some message..." 
+                        maxLength={50} 
+                        rows={2}
+                    />
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input name="reminderDateInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} defaultValue={DisplayStringDateToUpdateForm(cardData.reminderDate) ?? ""} type="date"/>
+                    <div className="input-group">
+                        <input 
+                            type="date"
+                            name="reminderDateInputUpdate" 
+                            className={`form-control ${formColorTheme} shadow-sm`} 
+                            defaultValue={DisplayStringDateToUpdateForm(cardData.reminderDate) ?? ""} 
+                        />
+                        <div className={`input-group-text ${formColorTheme} shadow-sm`}>
+                            <i 
+                                className="fa-solid fa-circle-xmark text-cobalt-blue"
+                                onClick={ClearDatePickerFormHandler}
+                            ></i>
+                        </div>
+                    </div>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="text-decoration-none">
+                    <a className="text-decoration-none text-cobalt-blue">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
@@ -120,14 +161,29 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <p className="mb-1">
                         Latitude:
                     </p>
-                    <input name="latitudeInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="number" defaultValue={cardData.latitude} placeholder="0.00" step="any" min={0}/>
+                    <input
+                        type="number" 
+                        name="latitudeInputUpdate" 
+                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        defaultValue={cardData.latitude && cardData.latitude != 0 ? cardData.latitude : ""} 
+                        placeholder="0.00" 
+                        step="any" 
+                        min={0}
+                    />
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Longitude:
                     </p>
-                    <input name="longitudeInputUpdate" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="number" defaultValue={cardData.longitude} placeholder="0.00" step="any" min={0}/>
-
+                    <input 
+                        type="number" 
+                        name="longitudeInputUpdate" 
+                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        defaultValue={cardData.longitude && cardData.longitude != 0 ? cardData.longitude : ""} 
+                        placeholder="0.00" 
+                        step="any" 
+                        min={0}
+                        />
                 </div>
                 <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center">

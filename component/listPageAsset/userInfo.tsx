@@ -2,7 +2,7 @@ import { CardOrderByEnum } from "@/model/enumModel";
 import { IUserInfoProps } from "@/model/propsModel";
 import Link from "next/link";
 
-export default function UserInfo({ username, location, isDarkTheme, changeCardOrderByHandler }: IUserInfoProps) {
+export default function UserInfo({ username, location, isDarkTheme, currentCardOrder, changeCardOrderByHandler }: IUserInfoProps) {
 
     // change orderby handler
     const ChangeCardOrderByHandler = (event : React.ChangeEvent<HTMLSelectElement>) => {
@@ -37,12 +37,13 @@ export default function UserInfo({ username, location, isDarkTheme, changeCardOr
                 <select 
                     className={`form-select form-select-sm ${selectFormColorTheme} w-50`} 
                     aria-label=".form-select-sm example"
+                    defaultValue={currentCardOrder}
                     onChange={ChangeCardOrderByHandler}
                 >
-                    <option value={CardOrderByEnum.CreateDate}>Create at</option>
-                    <option value={CardOrderByEnum.CreateDateDESC}>Create at DESC</option>
-                    <option value={CardOrderByEnum.Distance}>Distance</option>
-                    <option value={CardOrderByEnum.DistanceDESC}>Distance DESC</option>
+                    <option value={CardOrderByEnum.CreateDateDESC}>Old - New</option>
+                    <option value={CardOrderByEnum.CreateDate}>New - Old</option>
+                    <option value={CardOrderByEnum.DistanceDESC}>Long - Short</option>
+                    <option value={CardOrderByEnum.Distance}>Short - Long</option>
                 </select>
                 <button className={`btn btn-sm ${btnColorTheme} w-25`}>
                     <i className="fa-solid fa-map-location-dot"></i>
@@ -51,29 +52,3 @@ export default function UserInfo({ username, location, isDarkTheme, changeCardOr
         </div>
     )
 }
-
-// Static Info Component
-
-// return (
-//     <div className="shadow-sm" style={{ marginBottom: '28%' }}>
-//         <div 
-//             className={`card mb-3 rounded-4 text-white ${userInfoColorTheme} z-1 position-fixed start-50 translate-middle`} 
-//             style={{ marginTop: '8%', width: '86%' }}
-//         >
-//             <div className="card-body d-flex justify-content-between align-items-center text-whiteSmoke">
-//                 <p className="m-0">
-//                     <i className="bi bi-person-circle me-2 h5"></i>
-//                     {displayUsername} {location.latitude}, {location.longitude}
-//                 </p>
-//                 <div>
-//                     {/* <button className="btn btn-sm btn-primary bg-gradient text-cream">
-//                         <i className="bi bi-pin-map-fill"></i>
-//                     </button> */}
-//                     <Link href="/testpage" className="btn btn-sm btn-primary bg-gradient text-cream">
-//                         <i className="bi bi-pin-map-fill"></i>
-//                     </Link>
-//                 </div>
-//             </div>
-//         </div>
-//     </div>
-// )

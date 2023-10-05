@@ -27,7 +27,7 @@ export async function GET() : Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[GET User]: Get user fail. ======== " + error
+            message: "[GET User]: Get user fail. - " + error
         }, { status: 500 });
     }
 };
@@ -54,7 +54,7 @@ export async function POST(request: Request) : Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[POST User]: Create user fail. Maybe duplicate name ======== " + error
+            message: "[POST User]: Create user fail. Maybe duplicate name - " + error
         }, { status: 400 });
     }
 };
@@ -97,7 +97,7 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[PUT User]: Update user fail. Maybe duplicate name ======== " + error
+            message: "[PUT User]: Update user fail. Maybe duplicate name - " + error
         }, { status: 400 });
     }
 };

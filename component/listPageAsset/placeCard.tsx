@@ -9,16 +9,17 @@ import { useState } from "react";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme }: IPlaceCardProps) {
-  
-    // Const variable initialize
-    let filterCardClass = "";
-    let cardHeaderThemeColor = "";
-    let cardBodyThemeColor = "";
-    let cardSubDataThemeColor = "";
-    let deleteCardBtnThemeColor = "";
 
     // react hook initialize
     const [isFilter, setIsFilter] = useState<boolean>(data.isDisable);
+
+    // cal display location
+    let displayLocation = "-";
+    
+    if (data.latitude && data.latitude != 0 && data.longitude && data.longitude != 0) {
+
+        displayLocation = `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}`;
+    }
 
     // change place active status handler
     const ChangePlaceStatus = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,13 +71,22 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
         }
     }
 
+    // #region ------------------------- Theme and Filter
+    
     // check disable filter
+    let filterCardClass = "";
+
     if (isFilter) {
 
         filterCardClass = "filter-card";
     }
 
     // check theme
+    let cardHeaderThemeColor = "";
+    let cardBodyThemeColor = "";
+    let cardSubDataThemeColor = "";
+    let deleteCardBtnThemeColor = "";
+
     if (isDarkTheme) {
 
         cardHeaderThemeColor = "bg-mainblack text-whiteSmoke";
@@ -91,6 +101,8 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
         cardSubDataThemeColor = "text-secondary";
         deleteCardBtnThemeColor = "text-danger"
     }
+
+    //  #endregion
 
     return (
         <div className={`card mb-3 shadow-sm rounded-4 position-relative ${filterCardClass}`}>    
@@ -117,7 +129,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                     <p className="text-dark m-0 lh-1">
                         Message: &nbsp;
                         <span className={cardSubDataThemeColor}>
-                            {data.reminderMessage ?? "-"}
+                            {data.reminderMessage ? data.reminderMessage : "-"}
                         </span>
                     </p>
                  </div>
@@ -125,7 +137,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                     <div className="text-dark">
                         Location: &nbsp;
                         <span className={cardSubDataThemeColor}>
-                            {(data.latitude != 0 && data.longitude != 0) ? `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}` : "-"}
+                            {displayLocation}
                         </span>
                     </div>
                     <div className="form-check form-switch">

@@ -22,6 +22,7 @@ export interface IFooterProps extends IBaseProps {
 export interface IUserInfoProps extends IBaseProps {
     username: string,
     location: IUserLocation,
+    currentCardOrder: CardOrderByEnum,
     changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
 
@@ -31,6 +32,7 @@ export interface IListPageProps extends IBaseProps {
     deletePlaceHandler: (placeId: string) => void,
     changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
     updatePlaceCardHandler: (cardId: string) => void,
+    currentCardOrder: CardOrderByEnum,
     changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
 
