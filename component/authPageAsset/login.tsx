@@ -4,7 +4,7 @@ import { ResponseModel } from "@/model/responseModel";
 import { UserExtensionModel } from "@/model/subentityModel";
 import { User } from "@prisma/client";
 import SuccessModal from "../modalAsset/success";
-import { useState, FormEvent } from "react";
+import { FormEvent } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
 import { GetCustomGeoLocationOption } from "@/extension/api_extension";
 

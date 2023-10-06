@@ -66,6 +66,16 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
         }
     }
 
+    // clear date in datepicker handler
+    const ClearDatePickerFormHandler = () => {
+
+        const reminderDateForm = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
+
+        if (reminderDateForm) {
+            reminderDateForm.value = "";
+        }
+    }
+
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
     let textHeaderColorTheme: string;
@@ -108,7 +118,19 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <input name="reminderDateInput" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="date"/>
+                    <div className="input-group">
+                        <input 
+                            type="date"
+                            name="reminderDateInput" 
+                            className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        />
+                        <div className={`input-group-text ${formColorTheme} shadow-sm`}>
+                            <i 
+                                className="fa-solid fa-circle-xmark text-cobalt-blue"
+                                onClick={ClearDatePickerFormHandler}
+                            ></i>
+                        </div>
+                    </div>
                 </div>
                 <div className="mt-3 text-center">
                     <a className="text-decoration-none">

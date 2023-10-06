@@ -3,8 +3,7 @@ import {PwaCurrentPageEnum} from "@/model/enumModel";
 import {IRegisterProps} from "@/model/propsModel";
 import {ResponseModel} from "@/model/responseModel";
 import {UserExtensionModel} from "@/model/subentityModel";
-import {IRegisterValidator} from "@/model/useStateModel";
-import {FormEvent, useState} from "react";
+import {FormEvent} from "react";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
