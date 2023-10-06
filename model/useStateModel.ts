@@ -1,4 +1,3 @@
-import { User } from "@prisma/client"
 import { PwaCurrentPageEnum } from "./enumModel"
 import { IUserLocation } from "./subentityModel"
 
@@ -26,9 +25,4 @@ export interface IDisplayPlace {
     displayCreateAt: string
     userId: string
     locationDistance: number
-}
-
-export interface IRegisterValidator {
-    inputEmptyString: boolean
-    duplicateUserName: boolean
 }
