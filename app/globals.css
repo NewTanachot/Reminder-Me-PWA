@@ -109,6 +109,10 @@ html, body {
     color: #6495ED !important;
 }
 
+.text-mainblue {
+    color: #035096 !important;
+}
+
 .text-cobalt-blue {
     color: #0047AB !important;
 }
@@ -129,12 +133,27 @@ html, body {
     color: #71797E !important;
 }
 
+.text-mainBlack {
+    color: #36454F !important;
+}
+
 /* gray 71797E
 blue 6082B6 */
 .text-lightblue {
     color: #6082B6 !important;
 }
 
+/*  --- [ Input Class ] ---  */
+
+.custom-switch-light:checked {
+    background-color: #40826D !important;
+    border-color: #40826D !important;
+}
+
+.custom-switch-dark:checked {
+    background-color: #36454F !important;
+    border-color: #36454F !important;
+}
 
 /*  --- [ Text Class ] ---  */
 

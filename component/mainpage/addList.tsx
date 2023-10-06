@@ -76,24 +76,28 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
         }
     }
 
+    let formColorTheme: string;
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
     let textHeaderColorTheme: string;
-    let formColorTheme = "";
     let submitBtnColorTheme: string;
+    let switchBtnColorTheme: string;
 
     if (isDarkTheme) {
+        formColorTheme = "bg-whitesmoke";
         cardColorTheme = "bg-mainGray";
         cardHeaderColorTheme = "bg-mainblack";
         textHeaderColorTheme = "text-whiteSmoke"
-        formColorTheme = "bg-whitesmoke";
         submitBtnColorTheme = "bg-mainblack";
+        switchBtnColorTheme = "custom-switch-dark"
     }
     else {
+        formColorTheme = "bg-white";
         cardColorTheme = "bg-peach-65";
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         submitBtnColorTheme = "bg-viridian-green";
+        switchBtnColorTheme = "custom-switch-light"
     }
 
     return (
@@ -106,13 +110,26 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input name="placeNameInput" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="text" placeholder="entry place name..." maxLength={20} required/>
+                    <input 
+                        name="placeNameInput" 
+                        className={`form-control w-100 ${formColorTheme}`} 
+                        type="text" 
+                        placeholder="entry place name..." 
+                        maxLength={20} 
+                        required
+                    />
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Reminder Message:
                     </p>
-                    <textarea name="reminderMessageInput" className={`form-control w-100 ${formColorTheme} shadow-sm`} placeholder="entry some message..." maxLength={50} rows={2}/>
+                    <textarea 
+                        name="reminderMessageInput" 
+                        className={`form-control w-100 ${formColorTheme}`} 
+                        placeholder="entry some message..." 
+                        maxLength={50} 
+                        rows={2}
+                    />
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
@@ -122,18 +139,18 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                         <input 
                             type="date"
                             name="reminderDateInput" 
-                            className={`form-control w-100 ${formColorTheme} shadow-sm`} 
-                        />
-                        <div className={`input-group-text ${formColorTheme} shadow-sm`}>
+                            className={`form-control ${formColorTheme}`} 
+                        />          
+                        <div className={`input-group-text ${formColorTheme}`}>
                             <i 
-                                className="fa-solid fa-circle-xmark text-cobalt-blue"
+                                className="fa-regular fa-trash-can text-mainblack"
                                 onClick={ClearDatePickerFormHandler}
                             ></i>
                         </div>
                     </div>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="text-decoration-none">
+                    <a className="text-decoration-none text-mainblue">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
@@ -142,13 +159,27 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                     <p className="mb-1">
                         Latitude:
                     </p>
-                    <input name="latitudeInput" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="number" placeholder="0.00" step="any" min={0}/>
+                    <input 
+                        name="latitudeInput" 
+                        className={`form-control w-100 ${formColorTheme}`} 
+                        type="number" 
+                        placeholder="0.00" 
+                        step="any" 
+                        min={0}
+                    />
                 </div>
                 <div className="mt-3">
                     <p className="mb-1">
                         Longitude:
                     </p>
-                    <input name="longitudeInput" className={`form-control w-100 ${formColorTheme} shadow-sm`} type="number" placeholder="0.00" step="any" min={0}/>
+                    <input 
+                        name="longitudeInput" 
+                        className={`form-control w-100 ${formColorTheme}`} 
+                        type="number" 
+                        placeholder="0.00" 
+                        step="any" 
+                        min={0}
+                    />
 
                 </div>
                 <div className="mt-3">
@@ -158,7 +189,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                             {
                                 <input type="checkbox"
                                     name="isActiveInput" 
-                                    className="form-check-input" 
+                                    className={`form-check-input ${switchBtnColorTheme}`}
                                     defaultChecked={true} 
                                 />
                             }
