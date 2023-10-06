@@ -82,10 +82,11 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     }
 
     // check theme
-    let cardHeaderThemeColor = "";
-    let cardBodyThemeColor = "";
-    let cardSubDataThemeColor = "";
-    let deleteCardBtnThemeColor = "";
+    let cardHeaderThemeColor: string;
+    let cardBodyThemeColor: string;
+    let cardSubDataThemeColor: string;
+    let deleteCardBtnThemeColor: string;
+    let switchBtnColorTheme: string;
 
     if (isDarkTheme) {
 
@@ -93,6 +94,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
         cardBodyThemeColor = "bg-whitesmoke";
         cardSubDataThemeColor = "text-lightblue";
         deleteCardBtnThemeColor = "text-warning"
+        switchBtnColorTheme = "custom-switch-dark"
     }
     else {
 
@@ -100,6 +102,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
         cardBodyThemeColor = "bg-peach-65";
         cardSubDataThemeColor = "text-secondary";
         deleteCardBtnThemeColor = "text-danger"
+        switchBtnColorTheme = "custom-switch-light"
     }
 
     //  #endregion
@@ -142,7 +145,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                     </div>
                     <div className="form-check form-switch">
                         <input type="checkbox" 
-                            className="form-check-input" 
+                            className={`form-check-input ${switchBtnColorTheme}`}
                             defaultChecked={!data.isDisable} 
                             onChange={ChangePlaceStatus}
                         />

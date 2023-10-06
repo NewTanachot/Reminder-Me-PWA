@@ -75,24 +75,28 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         }
     }
 
+    let formColorTheme: string;
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
     let textHeaderColorTheme: string;
-    let formColorTheme = "";
     let submitBtnColorTheme: string;
+    let switchBtnColorTheme: string;
 
     if (isDarkTheme) {
+        formColorTheme = "bg-whitesmoke";
         cardColorTheme = "bg-mainGray";
         cardHeaderColorTheme = "bg-mainblack";
         textHeaderColorTheme = "text-whiteSmoke";
-        formColorTheme = "bg-whitesmoke";
         submitBtnColorTheme = "bg-mainblack";
+        switchBtnColorTheme = "custom-switch-dark"
     }
     else {
+        formColorTheme = "bg-white";
         cardColorTheme = "bg-peach-65";
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         submitBtnColorTheme = "bg-viridian-green";
+        switchBtnColorTheme = "custom-switch-light"
     }
 
     return (
@@ -112,7 +116,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <input
                         type="text" 
                         name="placeNameInputUpdate" 
-                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        className={`form-control w-100 ${formColorTheme}`} 
                         defaultValue={cardData.name} 
                         placeholder="entry place name..." 
                         maxLength={20} 
@@ -125,7 +129,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     </p>
                     <textarea 
                         name="reminderMessageInputUpdate" 
-                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        className={`form-control w-100 ${formColorTheme}`} 
                         defaultValue={cardData.reminderMessage ?? ""} 
                         placeholder="entry some message..." 
                         maxLength={50} 
@@ -140,19 +144,19 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                         <input 
                             type="date"
                             name="reminderDateInputUpdate" 
-                            className={`form-control ${formColorTheme} shadow-sm`} 
+                            className={`form-control ${formColorTheme}`} 
                             defaultValue={DisplayStringDateToUpdateForm(cardData.reminderDate) ?? ""} 
                         />
-                        <div className={`input-group-text ${formColorTheme} shadow-sm`}>
+                        <div className={`input-group-text ${formColorTheme}`}>
                             <i 
-                                className="fa-solid fa-circle-xmark text-cobalt-blue"
+                                className="fa-regular fa-trash-can text-mainblack"
                                 onClick={ClearDatePickerFormHandler}
                             ></i>
                         </div>
                     </div>
                 </div>
                 <div className="mt-3 text-center">
-                    <a className="text-decoration-none text-cobalt-blue">
+                    <a className="text-decoration-none text-mainblue">
                         <i className="bi bi-geo-fill me-2"></i>
                         Mark location
                     </a>
@@ -164,7 +168,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <input
                         type="number" 
                         name="latitudeInputUpdate" 
-                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        className={`form-control w-100 ${formColorTheme}`} 
                         defaultValue={cardData.latitude && cardData.latitude != 0 ? cardData.latitude : ""} 
                         placeholder="0.00" 
                         step="any" 
@@ -178,7 +182,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                     <input 
                         type="number" 
                         name="longitudeInputUpdate" 
-                        className={`form-control w-100 ${formColorTheme} shadow-sm`} 
+                        className={`form-control w-100 ${formColorTheme}`} 
                         defaultValue={cardData.longitude && cardData.longitude != 0 ? cardData.longitude : ""} 
                         placeholder="0.00" 
                         step="any" 
@@ -192,7 +196,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                             {
                                 <input type="checkbox"
                                     name="isActiveInputUpdate" 
-                                    className="form-check-input" 
+                                    className={`form-check-input ${switchBtnColorTheme}`}
                                     defaultChecked={!cardData.isDisable} 
                                 />
                             }
@@ -202,7 +206,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme}  shadow-sm`}
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme}`}
                     >
                         Save
                     </button>
