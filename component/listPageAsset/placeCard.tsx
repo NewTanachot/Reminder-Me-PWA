@@ -1,7 +1,6 @@
 'use client';
 
 import { ResponseModel } from "@/model/responseModel";
-import { UpdatePlace } from "@/model/subentityModel";
 import { IPlaceCardProps } from "@/model/propsModel";
 import { useState } from "react";
 import { IUpdateCardStatusApiRequest } from "@/model/requestModel";

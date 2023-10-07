@@ -71,8 +71,9 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
     let textHeaderColorTheme: string;
-    let formColorTheme = "";
     let createBtnColorTheme: string;
+    let formColorTheme: string;
+    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
@@ -80,16 +81,22 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
         textHeaderColorTheme = "text-whiteSmoke";
         createBtnColorTheme = "bg-mainblack";
         formColorTheme = "bg-whitesmoke";
+        cardBorderThemeColor = "border-secondary";
     }
     else {
         cardColorTheme = "bg-peach-65";
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         createBtnColorTheme = "bg-viridian-green";
+        formColorTheme = "";
+        cardBorderThemeColor = "";
     }
 
     return (
-        <form className={`card shadow-sm ${cardColorTheme}`} onSubmit={UserRegister}>
+        <form 
+            className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
+            onSubmit={UserRegister}
+        >
             <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                 <h2 className="m-0 text-center">Register to Reminder Me</h2>
             </div>
