@@ -96,8 +96,9 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
     let textHeaderColorTheme: string;
-    let formColorTheme = "";
+    let formColorTheme: string;
     let loginBtnColorTheme: string;
+    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
@@ -105,12 +106,15 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         textHeaderColorTheme = "text-whiteSmoke";
         loginBtnColorTheme = "bg-mainblack";
         formColorTheme = "bg-whitesmoke";
+        cardBorderThemeColor = "border-secondary";
     }
     else {
         cardColorTheme = "bg-peach-65";
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         loginBtnColorTheme = "bg-viridian-green";
+        formColorTheme = "";
+        cardBorderThemeColor = "";
     }
 
     return (
@@ -121,7 +125,10 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                     : <></>
             }
 
-            <form className={`card shadow-sm ${cardColorTheme}`} onSubmit={UserLogin}>
+            <form 
+                className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
+                onSubmit={UserLogin}
+            >
                 <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                     {
                         currentPage.backBtn

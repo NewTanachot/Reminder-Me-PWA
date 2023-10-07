@@ -82,6 +82,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
     let textHeaderColorTheme: string;
     let submitBtnColorTheme: string;
     let switchBtnColorTheme: string;
+    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
         formColorTheme = "bg-whitesmoke";
@@ -89,7 +90,8 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
         cardHeaderColorTheme = "bg-mainblack";
         textHeaderColorTheme = "text-whiteSmoke"
         submitBtnColorTheme = "bg-mainblack";
-        switchBtnColorTheme = "custom-switch-dark"
+        switchBtnColorTheme = "custom-switch-dark";
+        cardBorderThemeColor = "border-secondary";
     }
     else {
         formColorTheme = "bg-white";
@@ -97,11 +99,12 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         submitBtnColorTheme = "bg-viridian-green";
-        switchBtnColorTheme = "custom-switch-light"
+        switchBtnColorTheme = "custom-switch-light";
+        cardBorderThemeColor = "";
     }
 
     return (
-        <div className={`card shadow-sm ${cardColorTheme}`}>
+        <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
             <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                 <h4 className="m-0 text-center">Create new location</h4>
             </div>
@@ -114,7 +117,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                         name="placeNameInput" 
                         className={`form-control w-100 ${formColorTheme}`} 
                         type="text" 
-                        placeholder="entry place name..." 
+                        placeholder="place name..." 
                         maxLength={20} 
                         required
                     />
@@ -126,7 +129,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                     <textarea 
                         name="reminderMessageInput" 
                         className={`form-control w-100 ${formColorTheme}`} 
-                        placeholder="entry some message..." 
+                        placeholder="some message..." 
                         maxLength={50} 
                         rows={2}
                     />
@@ -149,38 +152,37 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme }: IAdd
                         </div>
                     </div>
                 </div>
-                <div className="mt-3 text-center">
-                    <a className="text-decoration-none text-mainblue">
-                        <i className="bi bi-geo-fill me-2"></i>
-                        Mark location
-                    </a>
-                </div>
-                <div className="mt-1">
-                    <p className="mb-1">
-                        Latitude:
-                    </p>
-                    <input 
-                        name="latitudeInput" 
-                        className={`form-control w-100 ${formColorTheme}`} 
-                        type="number" 
-                        placeholder="0.00" 
-                        step="any" 
-                        min={0}
-                    />
-                </div>
                 <div className="mt-3">
                     <p className="mb-1">
-                        Longitude:
+                        Location:
                     </p>
-                    <input 
-                        name="longitudeInput" 
-                        className={`form-control w-100 ${formColorTheme}`} 
-                        type="number" 
-                        placeholder="0.00" 
-                        step="any" 
-                        min={0}
-                    />
-
+                    <div className="input-group">
+                        <input 
+                            name="latitudeInput" 
+                            className={`form-control ${formColorTheme}`} 
+                            type="number" 
+                            placeholder="Latitude..." 
+                            step="any" 
+                            min={0}
+                        />
+                        <input 
+                            name="longitudeInput" 
+                            className={`form-control ${formColorTheme}`} 
+                            type="number" 
+                            placeholder="Longitude..." 
+                            step="any" 
+                            min={0}
+                        />
+                    </div>
+                </div>
+                <div className="mt-3 text-center">
+                    <button 
+                        type="button"
+                        className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                    >
+                        <i className="fa-solid fa-map-location-dot me-2"></i>
+                        Mark location
+                    </button>
                 </div>
                 <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center">

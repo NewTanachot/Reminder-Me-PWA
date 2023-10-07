@@ -81,6 +81,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
     let textHeaderColorTheme: string;
     let submitBtnColorTheme: string;
     let switchBtnColorTheme: string;
+    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
         formColorTheme = "bg-whitesmoke";
@@ -88,7 +89,8 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         cardHeaderColorTheme = "bg-mainblack";
         textHeaderColorTheme = "text-whiteSmoke";
         submitBtnColorTheme = "bg-mainblack";
-        switchBtnColorTheme = "custom-switch-dark"
+        switchBtnColorTheme = "custom-switch-dark";
+        cardBorderThemeColor = "border-secondary";
     }
     else {
         formColorTheme = "bg-white";
@@ -96,11 +98,12 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         submitBtnColorTheme = "bg-viridian-green";
-        switchBtnColorTheme = "custom-switch-light"
+        switchBtnColorTheme = "custom-switch-light";
+        cardBorderThemeColor = "";
     }
 
     return (
-        <div className={`card shadow-sm ${cardColorTheme}`}>
+        <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
             <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
                 <div onClick={backButtonHandler}>
                     <i className="bi bi-caret-left-fill"></i>
@@ -118,7 +121,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                         name="placeNameInputUpdate" 
                         className={`form-control w-100 ${formColorTheme}`} 
                         defaultValue={cardData.name} 
-                        placeholder="entry place name..." 
+                        placeholder="place name..." 
                         maxLength={20} 
                         required
                     />
@@ -131,7 +134,7 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                         name="reminderMessageInputUpdate" 
                         className={`form-control w-100 ${formColorTheme}`} 
                         defaultValue={cardData.reminderMessage ?? ""} 
-                        placeholder="entry some message..." 
+                        placeholder="some message..." 
                         maxLength={50} 
                         rows={2}
                     />
@@ -155,39 +158,39 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme}: I
                         </div>
                     </div>
                 </div>
-                <div className="mt-3 text-center">
-                    <a className="text-decoration-none text-mainblue">
-                        <i className="bi bi-geo-fill me-2"></i>
-                        Mark location
-                    </a>
-                </div>
-                <div className="mt-1">
-                    <p className="mb-1">
-                        Latitude:
-                    </p>
-                    <input
-                        type="number" 
-                        name="latitudeInputUpdate" 
-                        className={`form-control w-100 ${formColorTheme}`} 
-                        defaultValue={cardData.latitude && cardData.latitude != 0 ? cardData.latitude : ""} 
-                        placeholder="0.00" 
-                        step="any" 
-                        min={0}
-                    />
-                </div>
                 <div className="mt-3">
                     <p className="mb-1">
-                        Longitude:
+                        Location:
                     </p>
-                    <input 
-                        type="number" 
-                        name="longitudeInputUpdate" 
-                        className={`form-control w-100 ${formColorTheme}`} 
-                        defaultValue={cardData.longitude && cardData.longitude != 0 ? cardData.longitude : ""} 
-                        placeholder="0.00" 
-                        step="any" 
-                        min={0}
+                    <div className="input-group">
+                        <input
+                            type="number" 
+                            name="latitudeInputUpdate" 
+                            className={`form-control ${formColorTheme}`} 
+                            defaultValue={cardData.latitude && cardData.latitude != 0 ? cardData.latitude : ""} 
+                            placeholder="Latitude..." 
+                            step="any" 
+                            min={0}
                         />
+                        <input 
+                            type="number" 
+                            name="longitudeInputUpdate" 
+                            className={`form-control ${formColorTheme}`} 
+                            defaultValue={cardData.longitude && cardData.longitude != 0 ? cardData.longitude : ""} 
+                            placeholder="Longitude..." 
+                            step="any" 
+                            min={0}
+                        />
+                    </div>
+                </div>
+                <div className="mt-3 text-center">
+                    <button 
+                        type="button"
+                        className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                    >
+                        <i className="fa-solid fa-map-location-dot me-2"></i>
+                        Mark location
+                    </button>
                 </div>
                 <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center">
