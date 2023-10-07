@@ -33,8 +33,12 @@ html, body {
 
 /*  --- [ Filter Class ] ---  */
 
-.filter-card {
+.filter-card-light {
     filter: grayscale(100%) !important;
+}
+
+.filter-card-dark {
+    filter: brightness(60%) !important;
 }
 
 /*  --- [ Background Color Class ] ---  */
