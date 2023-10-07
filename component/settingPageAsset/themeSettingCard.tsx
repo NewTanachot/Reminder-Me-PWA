@@ -2,23 +2,26 @@ import { IThemeSettingCardProps } from "@/model/propsModel";
 
 export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandler }: IThemeSettingCardProps) {
 
-    const UpdateThemeHandler = (isDarkThemeParam: boolean) => {
-        changeCurrentThemeHandler(isDarkThemeParam);
+    const UpdateThemeHandler = () => {
+        changeCurrentThemeHandler(!isDarkTheme);
     };
 
     let cardColorTheme: string;
     let textColorTheme: string;
     let subTextColorTheme: string;
+    let switchThemeBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-subBlack";
         textColorTheme = "text-whiteSmoke";
         subTextColorTheme = "text-milk-orange";
+        switchThemeBtnColorTheme = "btn-secondary";
     }
     else {
         cardColorTheme = "bg-peach";
         textColorTheme = "text-viridian-green";
         subTextColorTheme = "text-secondary";
+        switchThemeBtnColorTheme = "bg-viridian-green text-white";
     }
 
     return (
@@ -29,42 +32,26 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                     <div className="flex-shrink-0 ms-2">
                         {
                             isDarkTheme
-                                ? <i style={{ fontSize: "2rem"}} className="bi bi-moon-fill"></i>
+                                ? <i style={{ fontSize: "2rem"}} className="fa-solid fa-moon"></i>
                                 : <i style={{ fontSize: "2rem"}} className="fa-regular fa-sun"></i>
                         }
                     </div>
                     <div className="flex-grow-1 ms-3">
-                        <h6 className="m-0">
+                        <h6 className="m-0 lh-1">
                             Theme:
                             <br />
                             <span className={subTextColorTheme}>
-                                <div className="form-check form-check-inline mb-0">
-                                    <input 
-                                        className="form-check-input" 
-                                        name="flexRadioDefault" 
-                                        type="radio" 
-                                        defaultChecked={!isDarkTheme}
-                                        onChange={() => {UpdateThemeHandler(false)}}
-                                    />
-                                    <label className="form-check-label">
-                                        Light
-                                    </label>
-                                </div>
-                                <div className="form-check form-check-inline mb-0">
-                                    <input 
-                                        className="form-check-input" 
-                                        name="flexRadioDefault" 
-                                        type="radio" 
-                                        defaultChecked={isDarkTheme}
-                                        onChange={() => {UpdateThemeHandler(true)}}
-                                    />
-                                    <label className="form-check-label">
-                                        Dark
-                                    </label>
-                                </div>
+                                {isDarkTheme ? "Dark" : "Light"}
                             </span>
                         </h6>
                     </div>
+                    <button
+                        className={`btn btn-sm ${switchThemeBtnColorTheme}`}
+                        style={{ width: "13%" }}
+                        onClick={UpdateThemeHandler}
+                    >
+                        <i className="fa-solid fa-repeat"></i>
+                    </button>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import { ResponseModel } from "@/model/responseModel";
 import { UpdatePlace } from "@/model/subentityModel";
 import { IPlaceCardProps } from "@/model/propsModel";
 import { useState } from "react";
+import { IUpdateCardStatusApiRequest } from "@/model/requestModel";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
@@ -33,15 +34,14 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
         changePlaceStatusHandler(data.id, setIsDisable);
 
         // update place display status data with only
-        const updatePlace: UpdatePlace = {
-            id: data.id,
+        const updatePlaceStatus: IUpdateCardStatusApiRequest = {
             isDisable: setIsDisable
         }
 
-        // fetch update place api
-        const response = await fetch(`${baseUrlApi}/place`, {
+        // fetch update place status api
+        const response = await fetch(`${baseUrlApi}/place/${data.id}`, {
             method: "PUT",
-            body: JSON.stringify(updatePlace)
+            body: JSON.stringify(updatePlaceStatus)
         });
 
         if (!response.ok) {
@@ -78,7 +78,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
 
     if (isFilter) {
 
-        filterCardClass = "filter-card";
+        filterCardClass = isDarkTheme ? "filter-card-dark" : "filter-card-light";
     }
 
     // check theme
@@ -87,28 +87,31 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     let cardSubDataThemeColor: string;
     let deleteCardBtnThemeColor: string;
     let switchBtnColorTheme: string;
+    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
 
         cardHeaderThemeColor = "bg-mainblack text-whiteSmoke";
         cardBodyThemeColor = "bg-whitesmoke";
         cardSubDataThemeColor = "text-lightblue";
-        deleteCardBtnThemeColor = "text-warning"
-        switchBtnColorTheme = "custom-switch-dark"
+        deleteCardBtnThemeColor = "text-warning";
+        switchBtnColorTheme = "custom-switch-dark";
+        cardBorderThemeColor = "border-secondary";
     }
     else {
 
         cardHeaderThemeColor = "bg-warning-subtle text-viridian-green";
         cardBodyThemeColor = "bg-peach-65";
         cardSubDataThemeColor = "text-secondary";
-        deleteCardBtnThemeColor = "text-danger"
-        switchBtnColorTheme = "custom-switch-light"
+        deleteCardBtnThemeColor = "text-danger";
+        switchBtnColorTheme = "custom-switch-light";
+        cardBorderThemeColor = "";
     }
 
     //  #endregion
 
     return (
-        <div className={`card mb-3 shadow-sm rounded-4 position-relative ${filterCardClass}`}>    
+        <div className={`card mb-3 shadow-sm rounded-4 position-relative ${cardBorderThemeColor} ${filterCardClass}`}>    
             <div 
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
