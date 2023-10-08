@@ -34,7 +34,7 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
                 <div className="card-body m-2 p-0">
                     <div className="d-flex align-items-center">
                         <div className="flex-shrink-0 ms-2">
-                            <i style={{ fontSize: "2rem"}} className="fa-solid fa-user-tie"></i>
+                            <i className="fa-solid fa-user-tie text-setting-icon-size"></i>
                         </div>
                         <div className="flex-grow-1 ms-3">
                             <h6 className="m-0 lh-1">
@@ -46,8 +46,7 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
                             </h6>
                         </div>
                         <button
-                                className={`btn btn-sm ${switchUserBtnColorTheme}`}
-                                style={{ width: "13%" }}
+                                className={`btn btn-sm ${switchUserBtnColorTheme} btn-setting-icon-size`}
                                 onClick={switchUserHandler}
                             >
                                 <i className="fa-solid fa-people-arrows"></i>

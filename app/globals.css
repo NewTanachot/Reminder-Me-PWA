@@ -19,9 +19,9 @@ html, body {
     background-color: whitesmoke;
 }
 
-/*  --------------------- [ Boostrap 5 Extention ] ---------------------  */
-
 /*  --- [ Shadow Class ] ---  */
+
+/* #region ------- [ Shadow Class ] ------- */
 
 .shadow-top {
     box-shadow: 0px -4px 5px rgba(0, 0, 0, .25);
@@ -31,7 +31,9 @@ html, body {
     box-shadow: 0px 4px 5px rgba(0, 0, 0, .25);
 }
 
-/*  --- [ Filter Class ] ---  */
+/* #endregion */
+
+/* #region ------- [ Filter Class ] ------- */
 
 .filter-card-light {
     filter: grayscale(100%) !important;
@@ -41,7 +43,9 @@ html, body {
     filter: brightness(60%) !important;
 }
 
-/*  --- [ Background Color Class ] ---  */
+/* #endregion */
+
+/* #region ------- [ Background Color Class ] ------- */
 
 .bg-milk-yellow {
     background-color: #FFFACA50 !important;
@@ -95,7 +99,9 @@ html, body {
     background-color: whitesmoke !important;
 }
 
-/*  --- [ Text Color Class ] ---  */
+/* #endregion */
+
+/* #region ------- [ Text Color Class ] ------- */
 
 .text-milk-yellow {
     color: #fffaca !important;
@@ -147,7 +153,9 @@ blue 6082B6 */
     color: #6082B6 !important;
 }
 
-/*  --- [ Input Class ] ---  */
+/* #endregion */
+
+/* #region ------- [  Input Class ] ------- */
 
 .custom-switch-light:checked {
     background-color: #40826D !important;
@@ -159,13 +167,19 @@ blue 6082B6 */
     border-color: #36454F !important;
 }
 
-/*  --- [ Text Class ] ---  */
+/* #endregion */
+
+/* #region ------- [ Text Class ] ------- */
 
 .text-size-20 {
     font-size: 20px;
 }
 
 .text-footer-size {
+    font-size: 0.8rem;
+}
+
+.text-footer-icon-size {
     font-size: 1.5rem;
 }
 
@@ -181,7 +195,33 @@ blue 6082B6 */
     font-size: 2rem;
 }
 
-/*  --- [ Spin Rotation Class ] ---  */
+.text-setting-icon-size {
+    font-size: 2rem;
+}
+
+.text-card-footer-size {
+    font-size: 12px;
+}
+
+/* #endregion */
+
+/* #region ------- [ Btn Size Class ] ------- */
+
+.btn-setting-icon-size {
+    width: 13%;
+}
+
+/* #endregion */
+
+/* #region ------- [ Spacing Size Class ] ------- */
+
+.spacing-footer-bottom {
+    padding-bottom: 2rem;
+}
+
+/* #endregion */
+
+/* #region ------- [ Spin Rotation Class ] ------- */
 
 .spin-rotate {
     animation: rotation 1s infinite ease;
@@ -195,3 +235,5 @@ blue 6082B6 */
       transform: rotate(359deg);
     }
 }
+
+/* #endregion */
