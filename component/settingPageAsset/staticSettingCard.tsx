@@ -23,7 +23,7 @@ export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDar
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
                     <div className="flex-shrink-0 ms-2">
-                        <i style={{ fontSize: "2rem"}} className={cardIcon}></i>
+                        <i className={`${cardIcon} text-setting-icon-size`}></i>
                     </div>
                     <div className="flex-grow-1 ms-3">
                         <h6 className="m-0 lh-1">

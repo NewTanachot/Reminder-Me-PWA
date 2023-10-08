@@ -166,8 +166,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                  </div>
             </div>
             <div 
-                className={`card-footer rounded-bottom-4 text-end py-0 h-25 text-secondary ${cardBodyThemeColor}`}
-                style={{ fontSize: "12px" }}
+                className={`card-footer rounded-bottom-4 text-end py-0 h-25 text-secondary ${cardBodyThemeColor} text-card-footer-size`}
             >
                 {data.displayCreateAt}
             </div>

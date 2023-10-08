@@ -32,8 +32,8 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                     <div className="flex-shrink-0 ms-2">
                         {
                             isDarkTheme
-                                ? <i style={{ fontSize: "2rem"}} className="fa-solid fa-moon"></i>
-                                : <i style={{ fontSize: "2rem"}} className="fa-regular fa-sun"></i>
+                                ? <i className="fa-solid fa-moon text-setting-icon-size"></i>
+                                : <i className="fa-solid fa-sun text-setting-icon-size"></i>
                         }
                     </div>
                     <div className="flex-grow-1 ms-3">
@@ -46,11 +46,10 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                         </h6>
                     </div>
                     <button
-                        className={`btn btn-sm ${switchThemeBtnColorTheme}`}
-                        style={{ width: "13%" }}
+                        className={`btn btn-sm ${switchThemeBtnColorTheme} btn-setting-icon-size`}
                         onClick={UpdateThemeHandler}
                     >
-                        <i className="fa-solid fa-repeat"></i>
+                        <i className="fa-solid fa-rotate"></i>
                     </button>
                 </div>
             </div>
