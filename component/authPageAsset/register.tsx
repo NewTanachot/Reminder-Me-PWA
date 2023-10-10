@@ -3,16 +3,20 @@ import {PwaCurrentPageEnum} from "@/model/enumModel";
 import {IRegisterProps} from "@/model/propsModel";
 import {ResponseModel} from "@/model/responseModel";
 import {UserExtensionModel} from "@/model/subentityModel";
-import {FormEvent} from "react";
+import {FormEvent, useState} from "react";
+import LoadingComponent from "../modalAsset/loading";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterProps) {
 
+    const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
+
     const UserRegister = async (event: FormEvent<HTMLFormElement>) => {
 
-        changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
+        // show loading component
+        setDisplayLoadingComponent(true);
 
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
@@ -49,6 +53,8 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                     alert(`Error message: ${errorMessage.message}`);
                 }
 
+                // hide loading component and re render the page 
+                setDisplayLoadingComponent(false);
                 changeCurrentPage({ page: PwaCurrentPageEnum.Register });
             }
             else {
@@ -63,6 +69,9 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
         else {
 
             alert(`Error message: Username and Password is shouldn't be empty text.`);
+
+            // hide loading component and re render the page 
+            setDisplayLoadingComponent(false);
             changeCurrentPage({ page: PwaCurrentPageEnum.Register });
         }
     }
@@ -93,41 +102,49 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
     }
 
     return (
-        <form 
-            className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
-            onSubmit={UserRegister}
-        >
-            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
-                <h2 className="m-0 text-center">Register to Reminder Me</h2>
-            </div>
-            <div className="card-body m-2">
-                <div className="mb-3">
-                    <p className="mb-1">
-                        Username:
-                    </p>
-                    <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInputRegister" type="text" min={1} max={20} required/>
+        <div>
+            {
+                displayLoadingComponent
+                    ? <LoadingComponent isDarkTheme={isDarkTheme}></LoadingComponent>
+                    : <></>
+            }
+
+            <form 
+                className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
+                onSubmit={UserRegister}
+            >
+                <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+                    <h2 className="m-0 text-center">Register</h2>
                 </div>
-                <div className="mt-3">
-                    <p className="mb-1">
-                        Password:
-                    </p>
-                    <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInputRegister" type="password" min={1} max={20} required/>
+                <div className="card-body m-2">
+                    <div className="mb-3">
+                        <p className="mb-1">
+                            Username:
+                        </p>
+                        <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInputRegister" type="text" min={1} max={20} required/>
+                    </div>
+                    <div className="mt-3">
+                        <p className="mb-1">
+                            Password:
+                        </p>
+                        <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInputRegister" type="password" min={1} max={20} required/>
+                    </div>
+                    <div className="mt-4 text-center">
+                        <button 
+                            type="submit"
+                            className={`btn btn-sm w-100 my-2 ${createBtnColorTheme} text-white shadow-sm`}
+                        >
+                            Create User
+                        </button>
+                        <button
+                            className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
+                            onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
+                        >
+                            Back
+                        </button>
+                    </div>
                 </div>
-                <div className="mt-4 text-center">
-                    <button 
-                        type="submit"
-                        className={`btn btn-sm w-100 my-2 ${createBtnColorTheme} text-white shadow-sm`}
-                    >
-                        Create User
-                    </button>
-                    <button
-                        className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
-                        onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
-                    >
-                        Back
-                    </button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     )
 }
