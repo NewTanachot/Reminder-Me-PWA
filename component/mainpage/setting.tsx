@@ -4,7 +4,7 @@ import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 import UserInfoSettingCard from "@/component/settingPageAsset/userInfoSettingCard";
 
-export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, softwareVersion, isDarkTheme }: ISettingProps) {
+export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, userLogoutHandler, softwareVersion, isDarkTheme }: ISettingProps) {
 
     let cardColorTheme: string;
     let signOutBtnColorTheme: string;
@@ -46,7 +46,8 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                 <div className="mt-4 text-center">
                     <button
                         className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
-                        onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
+                        // onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
+                        onClick={userLogoutHandler}
                     >
                         Sign out
                     </button>

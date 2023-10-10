@@ -4,18 +4,22 @@ import { ResponseModel } from "@/model/responseModel";
 import { UserExtensionModel } from "@/model/subentityModel";
 import { User } from "@prisma/client";
 import SuccessModal from "../modalAsset/success";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
 import { GetCustomGeoLocationOption } from "@/extension/api_extension";
+import LoadingComponent from "../modalAsset/loading";
 
 // Initialize .ENV variable
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 
 export default function Login({ userLoginHandler, changeCurrentPage, currentPage, isDarkTheme }: ILoginProps) {
 
+    const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
+
     const UserLogin = async (event: FormEvent<HTMLFormElement>) => {
 
-        changeCurrentPage({ page: PwaCurrentPageEnum.Loading });
+        // show loading component
+        setDisplayLoadingComponent(true);
 
         event.preventDefault();
         const formInput = new FormData(event.currentTarget);
@@ -46,6 +50,8 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                 const errorMessage: ResponseModel = await response.json();
                 alert(`Error message: ${errorMessage.message}`);
 
+                // hide loading component and re render the page 
+                setDisplayLoadingComponent(false);
                 changeCurrentPage({ page: PwaCurrentPageEnum.Login, backBtn: currentPage.backBtn });
             }
             else {
@@ -61,6 +67,9 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         else {
 
             alert(`Error message: Username and Password is shouldn't be empty text.`);
+
+            // hide loading component and re render the page 
+            setDisplayLoadingComponent(false);
             changeCurrentPage({ page: PwaCurrentPageEnum.Login, backBtn: currentPage.backBtn });
         }
     }
@@ -124,6 +133,11 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                     ? <SuccessModal modalMessage="Create new user success."></SuccessModal>
                     : <></>
             }
+            {
+                displayLoadingComponent
+                    ? <LoadingComponent isDarkTheme={isDarkTheme}></LoadingComponent>
+                    : <></>
+            }
 
             <form 
                 className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
@@ -137,7 +151,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                             </div>
                             : <div></div>
                     }
-                    <h2 className="m-0 text-center">Login to Reminder Me</h2>
+                    <h2 className="m-0 text-center">Login</h2>
                     <div></div>
                 </div>
                 <div className="card-body m-2">

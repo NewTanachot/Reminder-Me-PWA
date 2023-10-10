@@ -12,7 +12,7 @@ export default function LoadingComponent({ isDarkTheme }: ILoadingPageProps) {
     }
 
     return (
-        <div className="text-center m-5">
+        <div className="text-center m-4">
             <i className={`fa-solid fa-spinner fa-spin-pulse text-loading-component-size ${loadingColorTheme}`}></i>
         </div>
     )

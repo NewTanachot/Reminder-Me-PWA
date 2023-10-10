@@ -335,16 +335,24 @@ export default function Home() {
         // open indexedDB
         const store = await SetupIndexedDB();
 
-        // store currentUser to indexedDB
-        // store.userStore.put({ CurrentUser: indexedDB_UserKey, ...user });
-
         const storeUser: IUserIndexedDB = {
             userId: setUser.userId,
             userName: setUser.userName
         }
 
+        // store currentUser to indexedDB
         store.userStore.put({ CurrentUser: indexedDB_UserKey, ...storeUser });
     };
+
+    const UserLogoutHandler = async () => {
+
+        // change page to login page
+        ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
+
+        // open indexedDB and clear all record in userStore
+        const store = await SetupIndexedDB();
+        store.userStore.clear();
+    }
 
     const DeletePlaceHandler = (placeId: string) => {
         setPlaces(places?.filter(e => e.id != placeId));
@@ -420,15 +428,7 @@ export default function Home() {
     }
 
     return (
-        <main>
-            {/* <Navbar 
-                isDarkTheme={isDarkTheme.current}
-                currentPageName={currentPage.pageName} 
-                orderByDistanceValue={orderByDistance}
-                changeOrderByDistanceHandler={ChangeOrderByDistanceHandler}
-            ></Navbar>
-            <br /> <br /> */}
-            
+        <main> 
             <div className="container">
                 <div className='pt-4 pb-5 px-3'>
                     {
@@ -487,6 +487,7 @@ export default function Home() {
                                         changeCurrentPage={ChangeCurrentPage}
                                         changeThemeHandler={ChangeCurrentThemeHandler}
                                         isDarkTheme={isDarkTheme.current}
+                                        userLogoutHandler={UserLogoutHandler}
                                         softwareVersion={softwareVersion}
                                     ></Setting>
 
