@@ -33,7 +33,7 @@ const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 const softwareVersion: string = process.env.NEXT_PUBLIC_SOFTWARE_VERSION ?? "";
 
 // Initialize global const variable
-const setDefaultLightTheme: boolean = true;
+const setDefaultDarkTheme: boolean = true;
 
 export default function Home() {
 
@@ -48,7 +48,7 @@ export default function Home() {
     });
     const isMountRound = useRef<boolean>(true);
     const isForceFetch = useRef<boolean>(false);
-    const isDarkTheme = useRef<boolean>(!setDefaultLightTheme);
+    const isDarkTheme = useRef<boolean>(setDefaultDarkTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
@@ -88,6 +88,9 @@ export default function Home() {
                 const dbContext = request.result;
                 dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
+
+                // fix background color theme when initailize indexedDB
+                AdaptiveColorThemeHandler(isDarkTheme.current);
 
                 // change to login page
                 ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
@@ -167,13 +170,10 @@ export default function Home() {
             themeStoreResponse.onsuccess = () => {
     
                 // if indexedDB doesn't have Theme data it will set default to false
-                isDarkTheme.current = (themeStoreResponse.result as IThemeIndexedDB)?.isDarkTheme ?? false
+                isDarkTheme.current = (themeStoreResponse.result as IThemeIndexedDB)?.isDarkTheme ?? setDefaultDarkTheme;
 
                 // set dark theme if user use dark theme as default
-                if (isDarkTheme.current) {
-
-                    AdaptiveColorThemeHandler(isDarkTheme.current)
-                }
+                AdaptiveColorThemeHandler(isDarkTheme.current);
 
                 ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
             }
@@ -402,6 +402,8 @@ export default function Home() {
     };
 
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
+
+        console.log(isDarkTheme ? "dark" : "light")
 
         // get all color theme by name
         const htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
