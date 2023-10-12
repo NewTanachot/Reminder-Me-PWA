@@ -5,10 +5,7 @@ import { IPlaceCardProps } from "@/model/propsModel";
 import { useState } from "react";
 import { IUpdateCardStatusApiRequest } from "@/model/requestModel";
 
-// Initialize .ENV variable
-const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
-
-export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme }: IPlaceCardProps) {
+export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme, baseUrlApi }: IPlaceCardProps) {
 
     // react hook initialize
     const [isFilter, setIsFilter] = useState<boolean>(data.isDisable);

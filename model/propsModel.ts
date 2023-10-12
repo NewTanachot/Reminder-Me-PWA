@@ -1,4 +1,3 @@
-import { User } from "@prisma/client"
 import { CardOrderByEnum, PwaCurrentPageEnum } from "./enumModel"
 import { IUserLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
@@ -7,6 +6,10 @@ import {IChangeCurrentPageRequest} from "@/model/requestModel";
 interface IBaseProps {
     isDarkTheme: boolean
 }
+
+interface IBaseApiUrl {
+    baseUrlApi: string
+} 
 
 export interface INavbarProps extends IBaseProps {
     currentPageName: PwaCurrentPageEnum,
@@ -36,14 +39,14 @@ export interface IListPageProps extends IBaseProps {
     changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
 
-export interface IPlaceCardProps extends IBaseProps {
+export interface IPlaceCardProps extends IBaseProps, IBaseApiUrl {
     data: IDisplayPlace,
     deletePlaceHandler: (placeId: string) => void,
     changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
     updatePlaceCardHandler: (cardId: string) => void
 }
 
-export interface IAddPlace extends IBaseProps {
+export interface IAddPlace extends IBaseProps, IBaseApiUrl {
     userId: string,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
@@ -56,13 +59,13 @@ export interface ISettingProps extends IBaseProps {
     softwareVersion: string
 }
 
-export interface ILoginProps extends IBaseProps {
+export interface ILoginProps extends IBaseProps, IBaseApiUrl {
     currentPage: ICurrentPage,
     userLoginHandler: (setUser: CurrentUserRef) => void,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
-export interface IRegisterProps extends IBaseProps {
+export interface IRegisterProps extends IBaseProps, IBaseApiUrl {
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
@@ -81,12 +84,16 @@ export interface IThemeSettingCardProps extends IBaseProps {
     changeCurrentThemeHandler: (currentTheme: boolean) => void, 
 }
 
-export interface IUpdateListProps extends IBaseProps {
+export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
     cardData: IDisplayPlace,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
 export interface ILoadingPageProps extends IBaseProps { }
+
+export interface ILoadingComponentProps extends IBaseProps {
+    isDisplay: boolean
+}
 
 export interface ISuccessModal {
     modalMessage: string

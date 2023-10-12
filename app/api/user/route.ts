@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { PrismaClient, User } from '@prisma/client'
 import { ResponseModel } from '@/model/responseModel';
 import { EncryptString, DecryptString } from '@/extension/string_extension';
+import { UserModelDecorator } from '@/extension/api_extension';
 
 // Init Prisma connection
 const prisma = new PrismaClient()
@@ -37,15 +38,18 @@ export async function POST(request: Request) : Promise<NextResponse> {
     // get body of request
     const userCreateFromBody: User = await request.json();
 
-    const [ encryptPassword, IV_Key ] = EncryptString(userCreateFromBody.password, secretKey);
-    userCreateFromBody.password = encryptPassword
-    userCreateFromBody.IV_key = IV_Key
+    // decorated user (Clean data)
+    const decoratedUser = UserModelDecorator(userCreateFromBody);
+
+    const [ encryptPassword, IV_Key ] = EncryptString(decoratedUser.password, secretKey);
+    decoratedUser.password = encryptPassword
+    decoratedUser.IV_key = IV_Key
 
     // create user to database
     try 
     {
         const addedUser = await prisma.user.create({
-            data: userCreateFromBody,
+            data: decoratedUser,
           })
 
         return NextResponse.json(addedUser, { status : 200 });
@@ -64,10 +68,13 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     // get body of request
     const userUpdateFromBody: User = await request.json();
 
+    // decorated user (Clean data)
+    const decoratedUser = UserModelDecorator(userUpdateFromBody);
+
     // check if userName exist
     const countIfNameExist = await prisma.user.count({
         where: {
-            name: userUpdateFromBody.name
+            name: decoratedUser.name
         }
     });
 
@@ -77,18 +84,18 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     }
 
     // encrypt password
-    const [ encryptPassword, IV_Key ] = EncryptString(userUpdateFromBody.password, secretKey);
-    userUpdateFromBody.password = encryptPassword
-    userUpdateFromBody.IV_key = IV_Key
+    const [ encryptPassword, IV_Key ] = EncryptString(decoratedUser.password, secretKey);
+    decoratedUser.password = encryptPassword
+    decoratedUser.IV_key = IV_Key
 
     // update user in database
     try 
     {
         const updateUser = await prisma.user.update({
             where: {
-                id: userUpdateFromBody.id
+                id: decoratedUser.id
             },
-            data: userUpdateFromBody
+            data: decoratedUser
         });
 
         return NextResponse.json(updateUser, { status : 200 });
