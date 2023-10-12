@@ -9,10 +9,7 @@ import { IsStringValidEmpty } from "@/extension/string_extension";
 import { GetCustomGeoLocationOption } from "@/extension/api_extension";
 import LoadingComponent from "../modalAsset/loading";
 
-// Initialize .ENV variable
-const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
-
-export default function Login({ userLoginHandler, changeCurrentPage, currentPage, isDarkTheme }: ILoginProps) {
+export default function Login({ userLoginHandler, changeCurrentPage, currentPage, isDarkTheme, baseUrlApi }: ILoginProps) {
 
     const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
 
@@ -50,9 +47,8 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                 const errorMessage: ResponseModel = await response.json();
                 alert(`Error message: ${errorMessage.message}`);
 
-                // hide loading component and re render the page 
+                // hide loading component
                 setDisplayLoadingComponent(false);
-                changeCurrentPage({ page: PwaCurrentPageEnum.Login, backBtn: currentPage.backBtn });
             }
             else {
 
@@ -65,12 +61,10 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
             }
         }
         else {
-
+            
+            // hide loading component and alert error
             alert(`Error message: Username and Password is shouldn't be empty text.`);
-
-            // hide loading component and re render the page 
             setDisplayLoadingComponent(false);
-            changeCurrentPage({ page: PwaCurrentPageEnum.Login, backBtn: currentPage.backBtn });
         }
     }
 
@@ -133,12 +127,11 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                     ? <SuccessModal modalMessage="Create new user success."></SuccessModal>
                     : <></>
             }
-            {
-                displayLoadingComponent
-                    ? <LoadingComponent isDarkTheme={isDarkTheme}></LoadingComponent>
-                    : <></>
-            }
 
+            <LoadingComponent 
+                isDarkTheme={isDarkTheme}
+                isDisplay={displayLoadingComponent}
+            ></LoadingComponent>
             <form 
                 className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
                 onSubmit={UserLogin}

@@ -1,6 +1,6 @@
-import {ILoadingPageProps} from "@/model/propsModel";
+import {ILoadingComponentProps, ILoadingPageProps} from "@/model/propsModel";
 
-export default function LoadingComponent({ isDarkTheme }: ILoadingPageProps) {
+export default function LoadingComponent({ isDarkTheme, isDisplay }: ILoadingComponentProps) {
 
     let loadingColorTheme: string;
 
@@ -11,9 +11,10 @@ export default function LoadingComponent({ isDarkTheme }: ILoadingPageProps) {
         loadingColorTheme = "text-dark";
     }
 
-    return (
+    const loadingComponent: JSX.Element =        
         <div className="text-center m-4">
             <i className={`fa-solid fa-spinner fa-spin-pulse text-loading-component-size ${loadingColorTheme}`}></i>
         </div>
-    )
+
+    return isDisplay ? loadingComponent : <></>
 }

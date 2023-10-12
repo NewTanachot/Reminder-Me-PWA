@@ -1,4 +1,4 @@
-import { Place } from "@prisma/client";
+import { Place, User } from "@prisma/client";
 import { IsStringValid } from "./string_extension";
 import { Decimal } from "@prisma/client/runtime";
 
@@ -51,4 +51,12 @@ export const PlaceModelDecorator = (place: Place) => {
     }
 
     return place;
+}
+
+export const UserModelDecorator = (user: User) => {
+    
+    user.name = user.name.trim().toLowerCase();
+    user.password = user.password.trim();
+
+    return user;
 }

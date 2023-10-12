@@ -6,10 +6,7 @@ import {UserExtensionModel} from "@/model/subentityModel";
 import {FormEvent, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
 
-// Initialize .ENV variable
-const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
-
-export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterProps) {
+export default function Register({ changeCurrentPage, isDarkTheme, baseUrlApi }: IRegisterProps) {
 
     const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
 
@@ -53,9 +50,8 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
                     alert(`Error message: ${errorMessage.message}`);
                 }
 
-                // hide loading component and re render the page 
+                // hide loading component
                 setDisplayLoadingComponent(false);
-                changeCurrentPage({ page: PwaCurrentPageEnum.Register });
             }
             else {
     
@@ -68,11 +64,9 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
         }
         else {
 
+            // hide loading component and alert error
             alert(`Error message: Username and Password is shouldn't be empty text.`);
-
-            // hide loading component and re render the page 
             setDisplayLoadingComponent(false);
-            changeCurrentPage({ page: PwaCurrentPageEnum.Register });
         }
     }
 
@@ -103,12 +97,10 @@ export default function Register({ changeCurrentPage, isDarkTheme }: IRegisterPr
 
     return (
         <div>
-            {
-                displayLoadingComponent
-                    ? <LoadingComponent isDarkTheme={isDarkTheme}></LoadingComponent>
-                    : <></>
-            }
-
+            <LoadingComponent 
+                isDarkTheme={isDarkTheme}
+                isDisplay={displayLoadingComponent}
+            ></LoadingComponent>    
             <form 
                 className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
                 onSubmit={UserRegister}

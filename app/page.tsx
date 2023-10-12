@@ -403,8 +403,6 @@ export default function Home() {
 
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
 
-        console.log(isDarkTheme ? "dark" : "light")
-
         // get all color theme by name
         const htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
         const bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
@@ -457,6 +455,7 @@ export default function Home() {
                                         userId={user.current.userId}
                                         changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
+                                        baseUrlApi={baseUrlApi}
                                     ></AddList>
 
                                 case PwaCurrentPageEnum.UpdateList:
@@ -465,6 +464,7 @@ export default function Home() {
                                             cardData={currentUpdateCard.current}
                                             changeCurrentPage={ChangeCurrentPage}
                                             isDarkTheme={isDarkTheme.current}
+                                            baseUrlApi={baseUrlApi}
                                         ></UpdateList>
                                     }
                                     else {
@@ -499,12 +499,14 @@ export default function Home() {
                                         userLoginHandler={UserLoginHandler} 
                                         changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
+                                        baseUrlApi={baseUrlApi}
                                     ></Login>
 
                                 case PwaCurrentPageEnum.Register:
                                     return <Register
                                         changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
+                                        baseUrlApi={baseUrlApi}
                                     ></Register>
 
                                 case PwaCurrentPageEnum.Loading:
