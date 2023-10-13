@@ -445,6 +445,7 @@ export default function Home() {
                                         isDarkTheme={isDarkTheme.current}
                                         currentCardOrder={cardOrderBy}
                                         changeCardOrderByHandler={ChangeCardOrderByHandler}
+                                        baseUrlApi={baseUrlApi}
                                     ></List>
 
                                 case PwaCurrentPageEnum.MapView:
@@ -477,6 +478,7 @@ export default function Home() {
                                             isDarkTheme={isDarkTheme.current}
                                             currentCardOrder={cardOrderBy}
                                             changeCardOrderByHandler={ChangeCardOrderByHandler}
+                                            baseUrlApi={baseUrlApi}
                                         ></List>
                                     }
 

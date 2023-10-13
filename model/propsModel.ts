@@ -29,7 +29,7 @@ export interface IUserInfoProps extends IBaseProps {
     changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
 
-export interface IListPageProps extends IBaseProps {
+export interface IListPageProps extends IBaseProps, IBaseApiUrl {
     places: IDisplayPlace[] | undefined,
     currentUser: CurrentUserRef,
     deletePlaceHandler: (placeId: string) => void,

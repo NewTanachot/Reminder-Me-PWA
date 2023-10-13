@@ -12,7 +12,8 @@ export default function List({
         updatePlaceCardHandler, 
         isDarkTheme,
         currentCardOrder,
-        changeCardOrderByHandler
+        changeCardOrderByHandler,
+        baseUrlApi
     }: IListPageProps) {
 
     return (
@@ -56,6 +57,7 @@ export default function List({
                                         changePlaceStatusHandler={changePlaceStatusHandler}
                                         updatePlaceCardHandler={updatePlaceCardHandler}
                                         isDarkTheme={isDarkTheme}
+                                        baseUrlApi={baseUrlApi}
                                     ></PlaceCard>
                                 }) 
                             }
