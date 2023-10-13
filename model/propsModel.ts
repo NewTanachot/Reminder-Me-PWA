@@ -95,6 +95,10 @@ export interface ILoadingComponentProps extends IBaseProps {
     isDisplay: boolean
 }
 
-export interface ISuccessModal {
+export interface ISuccessModalProps {
     modalMessage: string
+}
+
+export interface ISplashScreenProps { 
+    softwareVersion: string
 }

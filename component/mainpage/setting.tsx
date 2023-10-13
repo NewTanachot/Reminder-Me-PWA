@@ -1,4 +1,3 @@
-import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { ISettingProps } from "@/model/propsModel";
 import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
@@ -39,14 +38,13 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                 <StaticSettingCard
                     cardIcon="fa-solid fa-code-branch"
                     cardTitle="Software Version"
-                    cardInfo={softwareVersion}
+                    cardInfo={`v${softwareVersion}`}
                     isDarkTheme={isDarkTheme}
                 ></StaticSettingCard>
 
                 <div className="mt-4 text-center">
                     <button
                         className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
-                        // onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
                         onClick={userLogoutHandler}
                     >
                         Sign out

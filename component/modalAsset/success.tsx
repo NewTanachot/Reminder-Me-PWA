@@ -1,9 +1,9 @@
 'use client';
 
-import { ISuccessModal } from "@/model/propsModel";
+import { ISuccessModalProps } from "@/model/propsModel";
 import { useEffect } from "react";
 
-export default function SuccessModal({ modalMessage }: ISuccessModal) {
+export default function SuccessModal({ modalMessage }: ISuccessModalProps) {
 
     useEffect(() => {
         

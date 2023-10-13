@@ -68,12 +68,11 @@ html, body {
 }
 
 .bg-cornflowerblue {
-    background-color: #6082B6 !important;
+    background-color: #4682B4 !important;
 }
 
-/* 4682B4 */
 .bg-mainblue {
-    background-color: #035096 !important;
+    background-color: #145DA0 !important; /*  035096 */
 }
 
 .bg-mainblack {
@@ -148,10 +147,8 @@ html, body {
     color: #36454F !important;
 }
 
-/* gray 71797E
-blue 6082B6 */
 .text-lightblue {
-    color: #6082B6 !important;
+    color: #6082B6 !important; /* gray 71797E, blue 6082B6 */
 }
 
 /* #endregion */
