@@ -424,7 +424,7 @@ export default function Home() {
     // ------------------- [ Return JSX Element ] -------------------------
 
     if (currentPage.pageName == PwaCurrentPageEnum.SplashScreen) {
-        return <SplashScreen></SplashScreen>
+        return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
     }
 
     return (

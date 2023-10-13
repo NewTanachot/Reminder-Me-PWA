@@ -1,6 +1,5 @@
 import { CardOrderByEnum } from "@/model/enumModel";
 import { IUserInfoProps } from "@/model/propsModel";
-import Link from "next/link";
 
 export default function UserInfo({ username, location, isDarkTheme, currentCardOrder, changeCardOrderByHandler }: IUserInfoProps) {
 
