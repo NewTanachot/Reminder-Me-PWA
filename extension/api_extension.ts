@@ -1,6 +1,5 @@
 import { Place, User } from "@prisma/client";
 import { IsStringValid } from "./string_extension";
-import { Decimal } from "@prisma/client/runtime";
 
 export const GetLastVariableFromPath = (url: string) => {
     return url.slice(url.lastIndexOf("/") + 1);
