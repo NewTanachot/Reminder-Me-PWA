@@ -102,3 +102,5 @@ export interface ISuccessModalProps {
 export interface ISplashScreenProps { 
     softwareVersion: string
 }
+
+export interface INotFoundProps extends IBaseProps {}

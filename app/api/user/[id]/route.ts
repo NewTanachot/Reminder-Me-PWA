@@ -2,9 +2,13 @@ import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { ResponseModel } from '@/model/responseModel';
 import { GetLastVariableFromPath } from '@/extension/api_extension';
+import { DecryptString } from '@/extension/string_extension';
 
 // Init Prisma connection
 const prisma = new PrismaClient()
+
+// get secret key from .env
+const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
 
 export async function GET(request: Request) : Promise<NextResponse> {
 
@@ -24,6 +28,8 @@ export async function GET(request: Request) : Promise<NextResponse> {
     if (!user) {
         return NextResponse.json(<ResponseModel> { isSuccess: false, message: "[Get User]: User not found." }, { status: 400 });
     }
+
+    user.password = DecryptString(user.password, secretKey, user.IV_key);
 
     return NextResponse.json(user, { status: 200 });
 };

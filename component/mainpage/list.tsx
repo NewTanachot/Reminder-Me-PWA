@@ -34,7 +34,9 @@ export default function List({
                                 currentCardOrder={currentCardOrder}
                                 changeCardOrderByHandler={changeCardOrderByHandler}
                             ></UserInfo>
-                            <NotFound></NotFound>
+                            <NotFound
+                                isDarkTheme={isDarkTheme}
+                            ></NotFound>
                         </>
                     )
                 }      
