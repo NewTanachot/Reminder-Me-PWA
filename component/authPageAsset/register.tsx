@@ -29,7 +29,7 @@ export default function Register({ changeCurrentPage, isDarkTheme, baseUrlApi }:
 
             const registerUser: UserExtensionModel = {
                 name: userNameValidateResult,
-                password: userNameValidateResult
+                password: passwordValidateResult
             }
     
             const response = await fetch(`${baseUrlApi}/user`, {
