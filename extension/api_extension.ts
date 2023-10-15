@@ -5,6 +5,11 @@ export const GetLastVariableFromPath = (url: string) => {
     return url.slice(url.lastIndexOf("/") + 1);
 }
 
+export const GetSecondLastVariableFromPath = (url: string) => {
+    const splitvalue = url.split("/");
+    return splitvalue[splitvalue.length - 2];
+}
+
 // custom Geolocation option setting
 export const GetCustomGeoLocationOption = (timeOutSec?: number | undefined) => {
     

@@ -1,4 +1,4 @@
-import { GetLastVariableFromPath } from '@/extension/api_extension';
+import { GetSecondLastVariableFromPath } from '@/extension/api_extension';
 import { DecryptString } from '@/extension/string_extension';
 import { ResponseModel } from '@/model/responseModel';
 import { PrismaClient } from '@prisma/client'
@@ -13,7 +13,7 @@ const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
 export async function GET(request: Request) : Promise<NextResponse> {
 
     // get User By Id
-    const userData = GetLastVariableFromPath(request.url);
+    const userData = GetSecondLastVariableFromPath(request.url);
 
     // get user from database
     const user = await prisma.user.findFirst({
