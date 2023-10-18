@@ -3,7 +3,7 @@ import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 import UserInfoSettingCard from "@/component/settingPageAsset/userInfoSettingCard";
 
-export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, userLogoutHandler, softwareVersion, isDarkTheme }: ISettingProps) {
+export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, userLogoutHandler, softwareVersion, isDarkTheme, developedBy }: ISettingProps) {
 
     let cardColorTheme: string;
     let signOutBtnColorTheme: string;
@@ -33,6 +33,14 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                     changeCurrentThemeHandler={changeThemeHandler}
                     isDarkTheme={isDarkTheme}
                 ></ThemeSettingCard>
+
+                {/* Develop by */}
+                <StaticSettingCard
+                    cardIcon="fa-solid fa-file-code"
+                    cardTitle="Developed By"
+                    cardInfo={developedBy}
+                    isDarkTheme={isDarkTheme}
+                ></StaticSettingCard>
 
                 {/* version */}
                 <StaticSettingCard

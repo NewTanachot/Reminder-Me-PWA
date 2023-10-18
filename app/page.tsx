@@ -31,6 +31,7 @@ const indexedDB_ThemeStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME
 const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 const softwareVersion: string = process.env.NEXT_PUBLIC_SOFTWARE_VERSION ?? "";
+const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 
 // Initialize global const variable
 const setDefaultDarkTheme: boolean = true;
@@ -493,6 +494,7 @@ export default function Home() {
                                         isDarkTheme={isDarkTheme.current}
                                         userLogoutHandler={UserLogoutHandler}
                                         softwareVersion={softwareVersion}
+                                        developedBy={developedBy}
                                     ></Setting>
 
                                 case PwaCurrentPageEnum.Login:
