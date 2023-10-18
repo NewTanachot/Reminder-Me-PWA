@@ -41,7 +41,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                             Theme:
                             <br />
                             <span className={subTextColorTheme}>
-                                {isDarkTheme ? "Dark" : "Light"}
+                                {isDarkTheme ? "dark" : "light"}
                             </span>
                         </h6>
                     </div>

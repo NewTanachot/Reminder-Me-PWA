@@ -56,7 +56,8 @@ export interface ISettingProps extends IBaseProps {
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
     changeThemeHandler: (currentTheme: boolean) => void,
     userLogoutHandler: () => void,
-    softwareVersion: string
+    softwareVersion: string,
+    developedBy: string
 }
 
 export interface ILoginProps extends IBaseProps, IBaseApiUrl {
