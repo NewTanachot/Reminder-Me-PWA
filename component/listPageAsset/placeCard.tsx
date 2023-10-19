@@ -1,24 +1,32 @@
-// 'use client';
+'use client';
 
 import { ResponseModel } from "@/model/responseModel";
 import { IPlaceCardProps } from "@/model/propsModel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IUpdateCardStatusApiRequest } from "@/model/requestModel";
 
 export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme, baseUrlApi }: IPlaceCardProps) {
 
+    const cardId = `card_${data.id}`;
     const cardStatusSwitchId = `cardStatusSwitch_${data.id}`;
+    const filterTheme = isDarkTheme ? "filter-card-dark" : "filter-card-light";
     let displayLocation = "-";
     let filterCardClass = "";
 
     // react hook initialize
     const [isFilter, setIsFilter] = useState<boolean>(data.isDisable);
 
-    // cal display location
-    if (data.latitude && data.latitude != 0 && data.longitude && data.longitude != 0) {
+    // check card status when change in updateCard page 
+    // need to use useEffect cause of window loading and useState not set initial isFilter value
+    useEffect(() => {
 
-        displayLocation = `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}`;
-    }
+        const card = document.getElementById(cardId) as HTMLElement;
+        data.isDisable ? card.classList.add(filterTheme) : card.classList.remove(filterTheme);
+        
+        const cardStatusSwitch = document.getElementById(cardStatusSwitchId) as HTMLInputElement;
+        cardStatusSwitch.checked = !data.isDisable;
+
+    }, [data.isDisable]);
 
     // change place active status handler
     const ChangePlaceStatus = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,17 +77,14 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
         }
     }
 
+    // cal display location
+    if (data.latitude && data.latitude != 0 && data.longitude && data.longitude != 0) {
+        displayLocation = `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}`;
+    }
+
     // check disable filter
     if (isFilter || data.isDisable) {
-        
-        // check web page is loaded or not
-        window.onload = function() {
-            // fix switch is not switch off
-            const cardStatusSwitch = document.getElementById(cardStatusSwitchId) as HTMLInputElement;
-            cardStatusSwitch.checked = false;
-        }
-
-        filterCardClass = isDarkTheme ? "filter-card-dark" : "filter-card-light";
+        filterCardClass = filterTheme;
     }
 
     // check theme
@@ -112,7 +117,10 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     //  #endregion
 
     return (
-        <div className={`card mb-3 shadow-sm rounded-4 position-relative ${cardBorderThemeColor} ${filterCardClass}`}>    
+        <div 
+            id={cardId}
+            className={`card mb-3 shadow-sm rounded-4 position-relative ${cardBorderThemeColor} ${filterCardClass}`}
+        >    
             <div 
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
