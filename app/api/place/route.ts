@@ -1,10 +1,8 @@
 import { PlaceModelDecorator, PlaceModelValidator } from "@/extension/api_extension";
 import { ResponseModel } from "@/model/responseModel";
-import { Place, PrismaClient } from "@prisma/client";
+import { Place } from "@prisma/client";
 import { NextResponse } from "next/server";
-
-// Init Prisma connection
-const prisma = new PrismaClient();
+import prisma from "@/prisma";
 
 export async function GET(request: Request): Promise<NextResponse> {
 

@@ -1,11 +1,9 @@
-import { NextResponse } from 'next/server'
-import { PrismaClient, User } from '@prisma/client'
+import { NextResponse } from 'next/server';
 import { ResponseModel } from '@/model/responseModel';
 import { EncryptString, DecryptString } from '@/extension/string_extension';
 import { UserModelDecorator } from '@/extension/api_extension';
-
-// Init Prisma connection
-const prisma = new PrismaClient()
+import { User } from '@prisma/client';
+import prisma from "@/prisma";
 
 // get secret key from .env
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
