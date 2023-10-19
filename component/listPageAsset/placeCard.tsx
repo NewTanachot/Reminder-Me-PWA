@@ -1,3 +1,5 @@
+// 'use client';
+
 import { ResponseModel } from "@/model/responseModel";
 import { IPlaceCardProps } from "@/model/propsModel";
 import { useState } from "react";
@@ -5,12 +7,14 @@ import { IUpdateCardStatusApiRequest } from "@/model/requestModel";
 
 export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme, baseUrlApi }: IPlaceCardProps) {
 
+    const cardStatusSwitchId = `cardStatusSwitch_${data.id}`;
+    let displayLocation = "-";
+    let filterCardClass = "";
+
     // react hook initialize
     const [isFilter, setIsFilter] = useState<boolean>(data.isDisable);
 
     // cal display location
-    let displayLocation = "-";
-    
     if (data.latitude && data.latitude != 0 && data.longitude && data.longitude != 0) {
 
         displayLocation = `${(+data.latitude).toFixed(4)}, ${(+data.longitude).toFixed(4)}`;
@@ -66,13 +70,14 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
     }
 
     // check disable filter
-    let filterCardClass = "";
-
     if (isFilter || data.isDisable) {
         
-        // fix switch is not switch off
-        const cardStatusSwitch = document.getElementById("cardStatusSwitch") as HTMLInputElement;
-        cardStatusSwitch.checked = false;
+        // check web page is loaded or not
+        window.onload = function() {
+            // fix switch is not switch off
+            const cardStatusSwitch = document.getElementById(cardStatusSwitchId) as HTMLInputElement;
+            cardStatusSwitch.checked = false;
+        }
 
         filterCardClass = isDarkTheme ? "filter-card-dark" : "filter-card-light";
     }
@@ -144,7 +149,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                     </div>
                     <div className="form-check form-switch">
                         <input 
-                            id="cardStatusSwitch"
+                            id={cardStatusSwitchId}
                             type="checkbox" 
                             className={`form-check-input ${switchBtnColorTheme}`}
                             defaultChecked={!isFilter} 
