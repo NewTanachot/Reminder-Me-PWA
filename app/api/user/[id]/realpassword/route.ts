@@ -1,11 +1,8 @@
 import { GetSecondLastVariableFromPath } from '@/extension/api_extension';
 import { DecryptString } from '@/extension/string_extension';
 import { ResponseModel } from '@/model/responseModel';
-import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server';
-
-// Init Prisma connection
-const prisma = new PrismaClient();
+import prisma from "@/prisma";
 
 // get secret key from .env
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";

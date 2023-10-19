@@ -1,11 +1,8 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
 import { ResponseModel } from '@/model/responseModel';
 import { GetLastVariableFromPath } from '@/extension/api_extension';
 import { IUpdateCardStatusApiRequest } from '@/model/requestModel';
-
-// Init Prisma connection
-const prisma = new PrismaClient()
+import prisma from "@/prisma";
 
 export async function GET(request: Request) : Promise<NextResponse> {
 
