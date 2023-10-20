@@ -84,7 +84,7 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
                     </button>
                     <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Add</p>
                 </div>
-                <div>
+                {/* <div>
                     <button
                         type="button"
                         className="btn btn-lg rounded-0 border-0 pb-1 pt-3 lh-1"
@@ -94,7 +94,7 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
                         <i className={`${evBatteryIconClass} text-footer-icon-size`}></i>
                     </button>
                     <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Ev</p>
-                </div>
+                </div> */}
                 <div>
                     <button
                         type="button"
