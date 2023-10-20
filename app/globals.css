@@ -235,3 +235,8 @@ html, body {
 }
 
 /* #endregion */
+
+.map {
+    width: 100%;
+    height: 85vh;
+}

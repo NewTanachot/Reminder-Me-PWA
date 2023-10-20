@@ -8,8 +8,9 @@ import {useEffect, useRef, useState} from 'react';
 import {CalculatePlaceForDisplay, OrderPlaceByDistance} from '@/extension/calculation_extension';
 import {CardOrderByEnum, PwaCurrentPageEnum} from '@/model/enumModel';
 import {GetCustomGeoLocationOption} from '@/extension/api_extension';
+import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
-import Map from '@/component/mainpage/map';
+const Map = dynamic(() => import("@/component/mainpage/map"), { ssr:false })
 import Login from '@/component/authPageAsset/login';
 import Register from '@/component/authPageAsset/register';
 import Footer from '@/component/layoutAsset/footer';
@@ -428,10 +429,12 @@ export default function Home() {
         return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
     }
 
+    const containerClass = currentPage.pageName == PwaCurrentPageEnum.MapView ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
+
     return (
         <main> 
             <div className="container">
-                <div className='pt-4 pb-5 px-3'>
+                <div className={containerClass}>
                     {
                         (() => {
                             switch (currentPage.pageName) {
