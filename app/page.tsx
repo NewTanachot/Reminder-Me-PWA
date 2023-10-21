@@ -429,7 +429,7 @@ export default function Home() {
         return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
     }
 
-    const containerClass = currentPage.pageName == PwaCurrentPageEnum.MapView ? 'pt-2 pb-0' : 'pt-4 pb-5 px-3'
+    const containerClass = currentPage.pageName == PwaCurrentPageEnum.MapView ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
 
     return (
         <main> 
@@ -453,7 +453,12 @@ export default function Home() {
                                     ></List>
 
                                 case PwaCurrentPageEnum.MapView:
-                                    return <Map></Map>
+                                    return <Map
+                                        places={places}
+                                        user={user.current}
+                                        mapTheme=''
+                                        isDarkTheme={isDarkTheme.current}
+                                    ></Map>
 
                                 case PwaCurrentPageEnum.AddList:
                                     return <AddList 

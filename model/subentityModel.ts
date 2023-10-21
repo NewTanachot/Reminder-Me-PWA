@@ -25,7 +25,7 @@ export type UpdatePlace = {
     userId?: string | undefined
 }
 
-export interface IUserLocation {
+export interface IBaseLocation {
     latitude: number
     longitude: number
 }

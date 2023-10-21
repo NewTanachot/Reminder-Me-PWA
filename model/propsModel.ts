@@ -1,5 +1,5 @@
 import { CardOrderByEnum, PwaCurrentPageEnum } from "./enumModel"
-import { IUserLocation } from "./subentityModel"
+import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
 
@@ -24,7 +24,7 @@ export interface IFooterProps extends IBaseProps {
 
 export interface IUserInfoProps extends IBaseProps {
     username: string,
-    location: IUserLocation,
+    location: IBaseLocation,
     currentCardOrder: CardOrderByEnum,
     changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
 }
@@ -105,3 +105,9 @@ export interface ISplashScreenProps {
 }
 
 export interface INotFoundProps extends IBaseProps {}
+
+export interface IMapProps extends IBaseProps {
+    places: IDisplayPlace[] | undefined,
+    user: CurrentUserRef
+    mapTheme: string
+}
