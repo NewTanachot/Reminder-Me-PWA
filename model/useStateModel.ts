@@ -1,5 +1,5 @@
 import { PwaCurrentPageEnum } from "./enumModel"
-import { IUserLocation } from "./subentityModel"
+import { IBaseLocation } from "./subentityModel"
 
 export interface ICurrentPage {
     pageName: PwaCurrentPageEnum,
@@ -10,7 +10,7 @@ export interface ICurrentPage {
 export type CurrentUserRef = {
     userId: string
     userName: string
-    userLocation: IUserLocation,
+    userLocation: IBaseLocation,
 }
 
 export interface IDisplayPlace {

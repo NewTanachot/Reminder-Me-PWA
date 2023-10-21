@@ -201,6 +201,10 @@ html, body {
     font-size: 12px;
 }
 
+.text-cursive {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* #endregion */
 
 /* #region ------- [ Btn Size Class ] ------- */
@@ -236,7 +240,11 @@ html, body {
 
 /* #endregion */
 
+/* #region ------- [ Map Class ] ------- */
+
 .map {
     width: 100%;
     height: 85vh;
 }
+
+/* #endregion */

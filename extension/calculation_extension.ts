@@ -2,10 +2,10 @@ import { CalDistanceModel } from "@/model/calculationModel";
 import { IDisplayPlace } from "@/model/useStateModel";
 import { Place } from "@prisma/client";
 import { StringDateToDisplayDate } from "./string_extension";
-import { IUserLocation } from "@/model/subentityModel";
+import { IBaseLocation } from "@/model/subentityModel";
 import { CardOrderByEnum } from "@/model/enumModel";
 
-export const CalculatePlaceForDisplay = (places: Place[] | IDisplayPlace[], currentLocation: IUserLocation) => {
+export const CalculatePlaceForDisplay = (places: Place[] | IDisplayPlace[], currentLocation: IBaseLocation) => {
 
     return places.map((e) => {
 
