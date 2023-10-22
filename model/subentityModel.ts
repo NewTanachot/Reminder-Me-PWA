@@ -5,8 +5,8 @@ export type UserExtensionModel = {
 
 export type PlaceExtensionModel = {
     name: string,
-    latitude: number,
-    longitude: number,
+    latitude?: number,
+    longitude?: number,
     reminderMessage? : string,
     reminderDate?: Date,
     isDisable: boolean,
