@@ -27,16 +27,21 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme, ba
         const reminderDateInput = formInput.get("reminderDateInputUpdate")?.toString();
         const isActiveInput = formInput.get("isActiveInputUpdate")?.toString();
 
+        const latitude = IsStringValidEmpty(latitudeInput);
+        const longitude = IsStringValidEmpty(longitudeInput);
+
         const updatePlace: UpdatePlace = {
             id: cardData.id,
             name: IsStringValidEmpty(placeNameInput),
-            latitude: +IsStringValidEmpty(latitudeInput), // cast string to number
-            longitude: +IsStringValidEmpty(longitudeInput), // cast string to number
+            latitude: latitude != "" ? +latitude : undefined, // cast string to number
+            longitude: longitude != "" ? +longitude : undefined, // cast string to number
             reminderMessage: reminderMessageInput,
             reminderDate: IsStringValid(reminderDateInput) ? new Date(reminderDateInput ?? "") : undefined,
             isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return false
             userId: cardData.userId,
         }
+
+        console.log(updatePlace)
 
         // fetch create place api
         const response = await fetch(`${baseUrlApi}/place`, {

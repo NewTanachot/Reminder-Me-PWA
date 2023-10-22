@@ -30,10 +30,13 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
             const reminderDateInput = formInput.get("reminderDateInput")?.toString();
             const isActiveInput = formInput.get("isActiveInput")?.toString();
 
+            const latitude = IsStringValidEmpty(latitudeInput);
+            const longitude = IsStringValidEmpty(longitudeInput);
+
             const newPlace: PlaceExtensionModel = {
                 name: IsStringValidEmpty(placeNameInput),
-                latitude: +IsStringValidEmpty(latitudeInput), // cast string to number
-                longitude: +IsStringValidEmpty(longitudeInput), // cast string to number
+                latitude: latitude != "" ? +latitude : undefined, // cast string to number
+                longitude: longitude != "" ? +longitude : undefined, // cast string to number
                 reminderMessage: reminderMessageInput,
                 reminderDate: IsStringValid(reminderDateInput) ? new Date(reminderDateInput ?? "") : undefined,
                 isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return false

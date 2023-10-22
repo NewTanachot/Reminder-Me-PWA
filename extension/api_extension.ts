@@ -28,16 +28,16 @@ export const PlaceModelValidator = (place: Place) => {
         return false
     }
 
-    if (place.latitude && place.longitude) {
+    // if (place.latitude && place.longitude) {
         
-        const invalidLatitude = place.latitude.toString().split(".")[1]?.length != 13;
-        const invalidLongitude = place.latitude.toString().split(".")[1]?.length != 13;
+    //     const invalidLatitude = place.latitude.toString().split(".")[1]?.length < 13;
+    //     const invalidLongitude = place.latitude.toString().split(".")[1]?.length != 13;
 
-        if (invalidLatitude || invalidLongitude) {
+    //     if (invalidLatitude || invalidLongitude) {
             
-            return false
-        }
-    }
+    //         return false
+    //     }
+    // }
 
     return true;
 }
