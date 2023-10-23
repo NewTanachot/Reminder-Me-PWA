@@ -69,6 +69,7 @@ export default function Home() {
             
             let themeStore: IDBObjectStore;
             let userStore: IDBObjectStore;
+            let mapStore: IDBObjectStore;
 
             // check user Credentials -> open indexedDB
             const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
@@ -90,6 +91,7 @@ export default function Home() {
                 const dbContext = request.result;
                 dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
+                dbContext.createObjectStore();
 
                 // fix background color theme when initailize indexedDB
                 AdaptiveColorThemeHandler(isDarkTheme.current);
