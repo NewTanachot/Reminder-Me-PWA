@@ -1,4 +1,4 @@
-import { CardOrderByEnum, PwaCurrentPageEnum } from "./enumModel"
+import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from "./enumModel"
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
@@ -57,7 +57,9 @@ export interface ISettingProps extends IBaseProps {
     changeThemeHandler: (currentTheme: boolean) => void,
     userLogoutHandler: () => void,
     softwareVersion: string,
-    developedBy: string
+    developedBy: string,
+    currentMap: MapStyleTitleEnum,
+    changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
 }
 
 export interface ILoginProps extends IBaseProps, IBaseApiUrl {
@@ -110,4 +112,9 @@ export interface IMapProps extends IBaseProps {
     places: IDisplayPlace[] | undefined,
     user: CurrentUserRef
     mapTheme: string
+}
+
+export interface IMapSettingCardProps extends IBaseProps { 
+    currentMap: MapStyleTitleEnum
+    changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
 }

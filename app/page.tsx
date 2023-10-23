@@ -6,7 +6,7 @@ import {ISetupIndexedDBModel, ResponseModel} from '@/model/responseModel';
 import {Place} from '@prisma/client';
 import {useEffect, useRef, useState} from 'react';
 import {CalculatePlaceForDisplay, OrderPlaceByDistance} from '@/extension/calculation_extension';
-import {CardOrderByEnum, PwaCurrentPageEnum} from '@/model/enumModel';
+import {CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum} from '@/model/enumModel';
 import {GetCustomGeoLocationOption} from '@/extension/api_extension';
 import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
@@ -20,8 +20,9 @@ import Setting from '@/component/mainpage/setting';
 import UpdateList from '@/component/mainpage/updateList';
 import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
-import {IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbModel';
+import {IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbModel';
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
+import { MapStyleTitle } from '@/model/mapModel';
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -30,12 +31,15 @@ const indexedDB_UserStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER ?
 const indexedDB_UserKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_USER_KEY ?? "";
 const indexedDB_ThemeStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME ?? "";
 const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_KEY ?? "";
+const indexedDB_MapStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_MAP ?? "";
+const indexedDB_MapKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_MAP_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 const softwareVersion: string = process.env.NEXT_PUBLIC_SOFTWARE_VERSION ?? "";
 const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 
 // Initialize global const variable
 const setDefaultDarkTheme: boolean = true;
+const setDefaultMapTheme = MapStyleTitleEnum.Street;
 
 export default function Home() {
 
@@ -51,6 +55,7 @@ export default function Home() {
     const isMountRound = useRef<boolean>(true);
     const isForceFetch = useRef<boolean>(false);
     const isDarkTheme = useRef<boolean>(setDefaultDarkTheme);
+    const mapTheme = useRef<MapStyleTitleEnum>(setDefaultMapTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
@@ -91,7 +96,7 @@ export default function Home() {
                 const dbContext = request.result;
                 dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
-                dbContext.createObjectStore();
+                dbContext.createObjectStore(indexedDB_MapStore, { keyPath: indexedDB_MapKey });
 
                 // fix background color theme when initailize indexedDB
                 AdaptiveColorThemeHandler(isDarkTheme.current);
@@ -135,6 +140,29 @@ export default function Home() {
                     //  #endregion
                 }
 
+                // check map store name is exist
+                if (dbContext.objectStoreNames.contains(indexedDB_MapStore)) {
+
+                    const transaction = dbContext.transaction(indexedDB_MapStore, "readwrite");
+                    mapStore = transaction.objectStore(indexedDB_MapStore);
+
+                    // #region ------------------------- Initialize default map value
+
+                    // try to get amp Store
+                    const mapStoreResponse = mapStore.get(indexedDB_MapKey);
+
+                    // set default theme as light theme if map doesn't have any data
+                    mapStoreResponse.onsuccess = () => {
+
+                        if (!mapStoreResponse.result) {
+
+                            mapStore.put({CurrentMap: indexedDB_MapKey, mapTheme: mapTheme.current});
+                        }
+                    }
+
+                    //  #endregion
+                }
+
                 // check use store name is exist
                 if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
     
@@ -152,7 +180,8 @@ export default function Home() {
                 // create response for two of store
                 const response: ISetupIndexedDBModel = {
                     themeStore: themeStore,
-                    userStore: userStore
+                    userStore: userStore,
+                    mapStore: mapStore
                 }
 
                 // resolve the store to promise 
@@ -166,6 +195,8 @@ export default function Home() {
 
         // open indexedDB 
         SetupIndexedDB().then((store: ISetupIndexedDBModel) => {
+
+            // #region ------------------------- Theme data
 
             // get current theme data from indexedDB
             const themeStoreResponse = store.themeStore.get(indexedDB_ThemeKey);
@@ -181,6 +212,24 @@ export default function Home() {
 
                 ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
             }
+
+            // #endregion
+
+            // #region ------------------------- Map data
+
+            // get current map data from indexedDB
+            const mapStoreResponse = store.mapStore.get(indexedDB_MapKey);
+
+            // set default map in useRef
+            mapStoreResponse.onsuccess = () => {
+
+                // if indexedDB doesn't have map data it will set default
+                mapTheme.current = (mapStoreResponse.result as IMapIndexedDB)?.mapTheme ?? setDefaultMapTheme;
+            }
+
+            // #endregion
+
+            // #region ------------------------- user data
 
             // get current user from indexedDB
             const userStoreResponse = store.userStore.get(indexedDB_UserKey);
@@ -214,6 +263,8 @@ export default function Home() {
                     ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
                 }
             }
+
+            // #endregion
         });
     }, []);
 
@@ -387,6 +438,21 @@ export default function Home() {
         ChangeCurrentPage({ page: PwaCurrentPageEnum.UpdateList });
     };
 
+    const ChangeCurrentMapHandler = async (mapStyle: MapStyleTitleEnum) => {
+
+        // change map style ref variable
+        mapTheme.current = mapStyle;
+
+        // open indexedDB
+        const store = await SetupIndexedDB();
+
+        // insert theme data to indexedDB
+        store.mapStore.put({CurrentMap: indexedDB_MapKey, mapTheme: mapStyle});
+
+        // force rerender state
+        ForceRerenderState();
+    }
+
     const ChangeCurrentThemeHandler = async (isDarkThemeHandler: boolean) => {
 
         // change isDarkTheme ref variable
@@ -458,7 +524,7 @@ export default function Home() {
                                     return <Map
                                         places={places}
                                         user={user.current}
-                                        mapTheme=''
+                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                     ></Map>
 
@@ -505,6 +571,8 @@ export default function Home() {
                                         userLogoutHandler={UserLogoutHandler}
                                         softwareVersion={softwareVersion}
                                         developedBy={developedBy}
+                                        currentMap={mapTheme.current}
+                                        changeCurrentMapHandler={ChangeCurrentMapHandler}
                                     ></Setting>
 
                                 case PwaCurrentPageEnum.Login:
