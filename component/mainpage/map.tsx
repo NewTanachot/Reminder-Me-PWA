@@ -54,7 +54,7 @@ export default function Map({ places, user, mapTheme, isDarkTheme }: IMapProps) 
             attributionControl={false}
         >
             <TileLayer
-                url={MapStyleTitle.default}
+                url={MapStyleTitle.street}
             />
             <Marker 
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}
@@ -97,9 +97,6 @@ export default function Map({ places, user, mapTheme, isDarkTheme }: IMapProps) 
                     )
                     : <></>
             }
-            <button className=' btn btn-dark z-3 position-absolute'>
-                btn
-            </button>
         </MapContainer>
     )
 }
