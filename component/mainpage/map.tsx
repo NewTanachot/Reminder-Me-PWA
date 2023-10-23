@@ -4,9 +4,9 @@ import 'leaflet/dist/leaflet.css'
 import L, { map } from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
-import { IMarker, MapStyleTitle } from '@/model/mapModel';
+import { IMarker } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-red-icon.png';
+import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const userMarkerIcon = L.icon({
@@ -54,7 +54,7 @@ export default function Map({ places, user, mapTheme, isDarkTheme }: IMapProps) 
             attributionControl={false}
         >
             <TileLayer
-                url={MapStyleTitle.street}
+                url={mapTheme}
             />
             <Marker 
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}

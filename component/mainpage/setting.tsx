@@ -2,8 +2,19 @@ import { ISettingProps } from "@/model/propsModel";
 import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 import UserInfoSettingCard from "@/component/settingPageAsset/userInfoSettingCard";
+import MapSettingCard from "../settingPageAsset/mapSettingCard";
 
-export default function Setting({ currentUserName, changeCurrentPage, changeThemeHandler, userLogoutHandler, softwareVersion, isDarkTheme, developedBy }: ISettingProps) {
+export default function Setting({ 
+    currentUserName, 
+    changeCurrentPage, 
+    changeThemeHandler, 
+    userLogoutHandler, 
+    softwareVersion, 
+    isDarkTheme, 
+    developedBy, 
+    currentMap, 
+    changeCurrentMapHandler 
+}: ISettingProps) {
 
     let cardColorTheme: string;
     let signOutBtnColorTheme: string;
@@ -33,6 +44,13 @@ export default function Setting({ currentUserName, changeCurrentPage, changeThem
                     changeCurrentThemeHandler={changeThemeHandler}
                     isDarkTheme={isDarkTheme}
                 ></ThemeSettingCard>
+
+                {/* Map Theme */}
+                <MapSettingCard
+                    currentMap={currentMap}
+                    isDarkTheme={isDarkTheme}
+                    changeCurrentMapHandler={changeCurrentMapHandler}
+                ></MapSettingCard>
 
                 {/* Develop by */}
                 <StaticSettingCard
