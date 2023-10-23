@@ -19,8 +19,6 @@ html, body {
     background-color: whitesmoke;
 }
 
-/*  --- [ Shadow Class ] ---  */
-
 /* #region ------- [ Shadow Class ] ------- */
 
 .shadow-top {
@@ -248,3 +246,12 @@ html, body {
 }
 
 /* #endregion */
+
+/* #region ------- [ Sizing Class ] ------- */
+
+.w-38 {
+    width: 38% !important;
+}
+
+/* #endregion */
+

@@ -14,3 +14,9 @@ export enum CardOrderByEnum {
     CreateDate, CreateDateDESC, Distance, DistanceDESC
 }
 
+export enum MapStyleTitleEnum {
+    Street, Full, Clean, Light, Dark, Satellite, Bright, Topo, Basic, Default
+}
+
+
+

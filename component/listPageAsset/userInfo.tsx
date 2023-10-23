@@ -35,7 +35,6 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
             <div className="card-footer d-flex justify-content-evenly align-items-center">
                 <select 
                     className={`form-select form-select-sm ${selectFormColorTheme} w-50`} 
-                    aria-label=".form-select-sm example"
                     defaultValue={currentCardOrder}
                     onChange={ChangeCardOrderByHandler}
                 >
