@@ -40,7 +40,7 @@ const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 
 // Initialize global const variable
 const setDefaultDarkTheme: boolean = true;
-const setDefaultMapTheme = MapStyleTitleEnum.Street;
+const setDefaultMapTheme = MapStyleTitleEnum.Default;
 
 export default function Home() {
 
@@ -526,7 +526,7 @@ export default function Home() {
                                     return <Map
                                         placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
-                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current)}
+                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                     ></Map>
 
@@ -581,7 +581,7 @@ export default function Home() {
                                     return <AddListMap
                                         placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
-                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current)}
+                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                     ></AddListMap>
 
