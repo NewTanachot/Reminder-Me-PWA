@@ -15,7 +15,7 @@ export enum CardOrderByEnum {
 }
 
 export enum MapStyleTitleEnum {
-    Street, Full, Clean, Light, Dark, Satellite, Bright, Topo, Basic, Default
+    Default, Original, Clean, Bright, Light, Dark, Sync, Satellite
 }
 
 

@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-icon.png';
+import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const userMarkerIcon = L.icon({

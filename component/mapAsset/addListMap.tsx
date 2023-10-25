@@ -7,7 +7,7 @@ import { IAddListMapProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-icon.png';
+import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useState } from 'react';
 
