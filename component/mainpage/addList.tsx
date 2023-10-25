@@ -190,6 +190,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                         <button 
                             type="button"
                             className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                            onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.MapUpsert })}
                         >
                             <i className="fa-solid fa-map-location-dot me-2"></i>
                             Mark location

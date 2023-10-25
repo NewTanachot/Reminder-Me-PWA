@@ -1,4 +1,5 @@
 import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from "./enumModel"
+import { IMarker } from "./mapModel";
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
@@ -109,7 +110,7 @@ export interface ISplashScreenProps {
 export interface INotFoundProps extends IBaseProps {}
 
 export interface IMapProps extends IBaseProps {
-    places: IDisplayPlace[] | undefined,
+    placeMarkers?: IMarker[],
     user: CurrentUserRef
     mapTheme: string
 }
@@ -118,3 +119,5 @@ export interface IMapSettingCardProps extends IBaseProps {
     currentMap: MapStyleTitleEnum
     changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
 }
+
+export interface IAddListMapProps extends IMapProps { }

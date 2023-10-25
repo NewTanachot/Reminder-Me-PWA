@@ -4,6 +4,7 @@ import { Place } from "@prisma/client";
 import { StringDateToDisplayDate } from "./string_extension";
 import { IBaseLocation } from "@/model/subentityModel";
 import { CardOrderByEnum } from "@/model/enumModel";
+import { IMarker } from "@/model/mapModel";
 
 export const CalculatePlaceForDisplay = (places: Place[] | IDisplayPlace[], currentLocation: IBaseLocation) => {
 
@@ -96,6 +97,22 @@ export const OrderPlaceByDistance = (place: IDisplayPlace[], orderBy: CardOrderB
             result = place;
             break;
     }
+
+    return result;
+}
+
+export const GetPlaceMarkers = (places?: IDisplayPlace[]) => {
+
+    const result: IMarker[] | undefined = places?.filter(place => place.latitude && place.longitude && !place.isDisable)
+    .map(place => ({
+        markerName: place.name,
+        markerMessage: place.reminderMessage ?? undefined,
+        markerDate: place.reminderDate ?? undefined,
+        markerLocation: {
+            latitude: place.latitude as number,
+            longitude: place.longitude as number
+        }
+    }));
 
     return result;
 }

@@ -5,12 +5,11 @@ import {CurrentUserRef, ICurrentPage, IDisplayPlace} from '@/model/useStateModel
 import {ISetupIndexedDBModel, ResponseModel} from '@/model/responseModel';
 import {Place} from '@prisma/client';
 import {useEffect, useRef, useState} from 'react';
-import {CalculatePlaceForDisplay, OrderPlaceByDistance} from '@/extension/calculation_extension';
+import {CalculatePlaceForDisplay, GetPlaceMarkers, OrderPlaceByDistance} from '@/extension/calculation_extension';
 import {CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum} from '@/model/enumModel';
 import {GetCustomGeoLocationOption} from '@/extension/api_extension';
 import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
-const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 import Login from '@/component/authPageAsset/login';
 import Register from '@/component/authPageAsset/register';
 import Footer from '@/component/layoutAsset/footer';
@@ -23,6 +22,8 @@ import SplashScreen from '@/component/modalAsset/splashScreen';
 import {IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbModel';
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
 import { MapStyleTitle } from '@/model/mapModel';
+const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
+const AddListMap = dynamic(() => import("@/component/mapAsset/addListMap"), { ssr: false });
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -497,7 +498,8 @@ export default function Home() {
         return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
     }
 
-    const containerClass = currentPage.pageName == PwaCurrentPageEnum.MapView ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
+    const containerClass = currentPage.pageName == PwaCurrentPageEnum.MapView 
+        || currentPage.pageName == PwaCurrentPageEnum.MapUpsert ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
 
     return (
         <main> 
@@ -522,7 +524,7 @@ export default function Home() {
 
                                 case PwaCurrentPageEnum.MapView:
                                     return <Map
-                                        places={places}
+                                        placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
                                         mapTheme={MapStyleTitle.getMaptitle(mapTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
@@ -574,6 +576,14 @@ export default function Home() {
                                         currentMap={mapTheme.current}
                                         changeCurrentMapHandler={ChangeCurrentMapHandler}
                                     ></Setting>
+
+                                case PwaCurrentPageEnum.MapUpsert:
+                                    return <AddListMap
+                                        placeMarkers={GetPlaceMarkers(places)}
+                                        user={user.current}
+                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current)}
+                                        isDarkTheme={isDarkTheme.current}
+                                    ></AddListMap>
 
                                 case PwaCurrentPageEnum.Login:
                                     return <Login 
