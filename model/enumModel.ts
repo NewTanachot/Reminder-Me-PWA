@@ -7,7 +7,7 @@ export enum DayOfWeekEnum {
 }
 
 export enum PwaCurrentPageEnum {
-    Login, Register, MapView, ReminderList, AddList, UpdateList, EvBattery, Setting, Loading,  SplashScreen
+    Login, Register, MapView, ReminderList, AddList, UpdateList, EvBattery, Setting, Loading, MapUpsert, SplashScreen
 }
 
 export enum CardOrderByEnum {

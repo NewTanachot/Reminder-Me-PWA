@@ -1,12 +1,12 @@
 'use client';
 
 import 'leaflet/dist/leaflet.css'
-import L, { map } from 'leaflet';
+import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
+import userIcon from '@/public/image/map-icon/user-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const userMarkerIcon = L.icon({
@@ -21,7 +21,7 @@ const placeMarkerIcon = L.icon({
     // shadowUrl: iconShadow.src
 });
 
-export default function Map({ places, user, mapTheme, isDarkTheme }: IMapProps) {
+export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapProps) {
 
     const userMarker: IMarker = {
         markerName: user.userName,
@@ -30,19 +30,6 @@ export default function Map({ places, user, mapTheme, isDarkTheme }: IMapProps) 
             longitude: user.userLocation.longitude
         }
     }
-
-    const placeMarkers: IMarker[] | undefined = places?.filter(place => place.latitude && place.longitude && !place.isDisable)
-        .map(place => ({
-            markerName: place.name,
-            markerMessage: place.reminderMessage ?? undefined,
-            markerDate: place.reminderDate ?? undefined,
-            markerLocation: {
-                latitude: place.latitude as number,
-                longitude: place.longitude as number
-            }
-        }));
-
-    console.log(placeMarkers)
 
     return (
         <MapContainer 
