@@ -41,8 +41,6 @@ export default function UpdateList({cardData, changeCurrentPage, isDarkTheme, ba
             userId: cardData.userId,
         }
 
-        console.log(updatePlace)
-
         // fetch create place api
         const response = await fetch(`${baseUrlApi}/place`, {
             method: "PUT",

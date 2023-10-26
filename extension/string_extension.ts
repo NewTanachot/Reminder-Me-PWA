@@ -74,7 +74,7 @@ export const DisplayCurrentPageName = (currentPage: PwaCurrentPageEnum) => {
     }
 }
 
-export const DisplayStringDateToUpdateForm = (stringDate: string | null) => {
+export const DisplayStringDateToUpdateForm = (stringDate?: string | null) => {
 
     if (stringDate) {
 

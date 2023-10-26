@@ -26,3 +26,10 @@ export interface IDisplayPlace {
     userId: string
     locationDistance: number
 }
+
+export interface IUpsertFormData {
+    name?: string,
+    message?: string,
+    reminderDate?: string,
+    enableSwitch?: boolean
+}

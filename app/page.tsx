@@ -582,6 +582,7 @@ export default function Home() {
                                         placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
                                         mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                        changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
                                     ></AddListMap>
 
