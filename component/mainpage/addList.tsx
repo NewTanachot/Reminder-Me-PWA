@@ -1,14 +1,16 @@
-import {IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
+import {DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
 import {PwaCurrentPageEnum} from "@/model/enumModel";
 import {IAddPlace} from "@/model/propsModel";
 import {ResponseModel} from "@/model/responseModel";
 import {PlaceExtensionModel} from "@/model/subentityModel";
-import {FormEvent, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
+import { IUpsertFormData } from "@/model/useStateModel";
 
 export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUrlApi }: IAddPlace) {
 
-    const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
+    const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
+    const formDataRef = useRef<IUpsertFormData>();
 
     // add place handler
     const AddNewPlace = async (event: FormEvent<HTMLFormElement>) => {
@@ -82,6 +84,25 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
         }
     }
 
+    // mark location button handler
+    const GetLocationBtnHandler = () => {
+
+        const placeNameInput = document.getElementsByName("placeNameInput")[0] as HTMLInputElement;
+        const reminderMessageInput = document.getElementsByName("reminderMessageInput")[0] as HTMLInputElement;
+        const reminderDateInput = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
+        const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
+
+        formDataRef.current = {
+            name: placeNameInput.value,
+            message: reminderMessageInput.value,
+            reminderDate: reminderDateInput.value,
+            enableSwitch: isActiveInput.value == "on" ? true : false
+        };
+
+        // open marker map
+        changeCurrentPage({ page: PwaCurrentPageEnum.MapUpsert })
+    }
+
     let formColorTheme: string;
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
@@ -129,6 +150,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                             className={`form-control w-100 ${formColorTheme}`} 
                             type="text" 
                             placeholder="place name..." 
+                            defaultValue={formDataRef.current?.name}
                             maxLength={20} 
                             required
                         />
@@ -141,6 +163,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                             name="reminderMessageInput" 
                             className={`form-control w-100 ${formColorTheme}`} 
                             placeholder="some message..." 
+                            defaultValue={formDataRef.current?.message}
                             maxLength={50} 
                             rows={2}
                         />
@@ -154,6 +177,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                                 type="date"
                                 name="reminderDateInput" 
                                 className={`form-control ${formColorTheme}`} 
+                                defaultValue={DisplayStringDateToUpdateForm(formDataRef.current?.reminderDate) ?? ""} 
                             />          
                             <div className={`input-group-text ${formColorTheme}`}>
                                 <i 
@@ -190,7 +214,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                         <button 
                             type="button"
                             className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
-                            onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.MapUpsert })}
+                            onClick={GetLocationBtnHandler}
                         >
                             <i className="fa-solid fa-map-location-dot me-2"></i>
                             Mark location
@@ -204,7 +228,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                                     <input type="checkbox"
                                         name="isActiveInput" 
                                         className={`form-check-input ${switchBtnColorTheme}`}
-                                        defaultChecked={true} 
+                                        defaultChecked={formDataRef.current?.enableSwitch ?? true} 
                                     />
                                 }
                             </div>

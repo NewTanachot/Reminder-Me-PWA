@@ -33,7 +33,7 @@ export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapP
 
     return (
         <MapContainer 
-            className='map' 
+            className='map shadow-sm rounded-3' 
             // center={[13.758442667913602, 100.60116846647361]} 
             center={[user.userLocation.latitude, user.userLocation.longitude]} 
             zoom={11} 
@@ -41,6 +41,7 @@ export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapP
             attributionControl={false}
         >
             <TileLayer
+                attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
                 url={mapTheme}
             />
             <Marker 

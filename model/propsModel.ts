@@ -120,4 +120,6 @@ export interface IMapSettingCardProps extends IBaseProps {
     changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
 }
 
-export interface IAddListMapProps extends IMapProps { }
+export interface IAddListMapProps extends IMapProps { 
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+}

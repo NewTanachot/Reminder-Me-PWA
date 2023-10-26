@@ -10,6 +10,7 @@ import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
 import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useState } from 'react';
+import { PwaCurrentPageEnum } from '@/model/enumModel';
 
 const userMarkerIcon = L.icon({
     iconUrl: userIcon.src,
@@ -26,7 +27,7 @@ const newPlaceMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-export default function AddListMap({ placeMarkers, user, mapTheme, isDarkTheme }: IAddListMapProps) {
+export default function AddListMap({ placeMarkers, user, changeCurrentPage, mapTheme, isDarkTheme }: IAddListMapProps) {
 
     const [newMarkerPosition, setNewMarkerPosition] = useState<IBaseLocation>();
 
@@ -63,7 +64,7 @@ export default function AddListMap({ placeMarkers, user, mapTheme, isDarkTheme }
     return (
         <>
             <MapContainer 
-                className='map-asset' 
+                className='map-asset shadow-sm rounded-3' 
                 center={[user.userLocation.latitude, user.userLocation.longitude]} 
                 zoom={11} 
                 scrollWheelZoom={true}
@@ -119,8 +120,13 @@ export default function AddListMap({ placeMarkers, user, mapTheme, isDarkTheme }
                 }
             </MapContainer>
             <div className='d-flex justify-content-around align-items-center mt-3'>
-                <button className='btn btn-primary w-38'>Cancel</button>
-                <button className='btn btn-primary w-38'>Confirm</button>
+                <button 
+                    className='btn bg-mainblack text-white w-38'
+                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.AddList })}
+                >
+                    Cancel
+                </button>
+                <button className='btn bg-mainblue text-white w-38'>Confirm</button>
             </div>
         </>
     )
