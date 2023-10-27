@@ -48,7 +48,9 @@ export interface IPlaceCardProps extends IBaseProps, IBaseApiUrl {
 }
 
 export interface IAddPlace extends IBaseProps, IBaseApiUrl {
-    userId: string,
+    user: CurrentUserRef,
+    mapTheme: string,
+    places?: IDisplayPlace[],
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
@@ -121,5 +123,6 @@ export interface IMapSettingCardProps extends IBaseProps {
 }
 
 export interface IAddListMapProps extends IMapProps { 
-    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+    // changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+    backtoFormPage: () => void
 }

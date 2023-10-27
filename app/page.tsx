@@ -23,7 +23,6 @@ import {IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbM
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
 import { MapStyleTitle } from '@/model/mapModel';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
-const AddListMap = dynamic(() => import("@/component/mapAsset/addListMap"), { ssr: false });
 
 // Initialize .ENV variable
 const indexedDB_DBName: string = process.env.NEXT_PUBLIC_INDEXED_DB_NAME ?? "";
@@ -41,6 +40,7 @@ const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 // Initialize global const variable
 const setDefaultDarkTheme: boolean = true;
 const setDefaultMapTheme = MapStyleTitleEnum.Default;
+const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
 
 export default function Home() {
 
@@ -58,7 +58,9 @@ export default function Home() {
     const isDarkTheme = useRef<boolean>(setDefaultDarkTheme);
     const mapTheme = useRef<MapStyleTitleEnum>(setDefaultMapTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
-    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: PwaCurrentPageEnum.SplashScreen });
+    const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString())
+
+    const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: setDefaultCurrentPage });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
     const [currentLocation, setCurrentLocation] = useState<GeolocationCoordinates>();
     const [cardOrderBy, setCardOrderBy] = useState<CardOrderByEnum>(CardOrderByEnum.CreateDateDESC);
@@ -374,6 +376,14 @@ export default function Home() {
             isForceFetch.current = requestDto.forceFetch;
         }
 
+        // set isMapPage if current page is map page
+        if (requestDto.page == PwaCurrentPageEnum.MapView) {
+            isMapPage.current = true;
+        }
+        else {
+            isMapPage.current = false;
+        }
+
         // change current page
         setCurrentPage({
             pageName: requestDto.page,
@@ -498,8 +508,7 @@ export default function Home() {
         return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
     }
 
-    const containerClass = currentPage.pageName == PwaCurrentPageEnum.MapView 
-        || currentPage.pageName == PwaCurrentPageEnum.MapUpsert ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
+    const containerClass = isMapPage.current ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
 
     return (
         <main> 
@@ -532,8 +541,10 @@ export default function Home() {
 
                                 case PwaCurrentPageEnum.AddList:
                                     return <AddList 
-                                        userId={user.current.userId}
+                                        user={user.current}
                                         changeCurrentPage={ChangeCurrentPage}
+                                        places={places}
+                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                         baseUrlApi={baseUrlApi}
                                     ></AddList>
@@ -576,15 +587,6 @@ export default function Home() {
                                         currentMap={mapTheme.current}
                                         changeCurrentMapHandler={ChangeCurrentMapHandler}
                                     ></Setting>
-
-                                case PwaCurrentPageEnum.MapUpsert:
-                                    return <AddListMap
-                                        placeMarkers={GetPlaceMarkers(places)}
-                                        user={user.current}
-                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        isDarkTheme={isDarkTheme.current}
-                                    ></AddListMap>
 
                                 case PwaCurrentPageEnum.Login:
                                     return <Login 

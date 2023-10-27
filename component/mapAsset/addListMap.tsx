@@ -27,7 +27,7 @@ const newPlaceMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-export default function AddListMap({ placeMarkers, user, changeCurrentPage, mapTheme, isDarkTheme }: IAddListMapProps) {
+export default function AddListMap({ placeMarkers, user, backtoFormPage, mapTheme, isDarkTheme }: IAddListMapProps) {
 
     const [newMarkerPosition, setNewMarkerPosition] = useState<IBaseLocation>();
 
@@ -122,7 +122,7 @@ export default function AddListMap({ placeMarkers, user, changeCurrentPage, mapT
             <div className='d-flex justify-content-around align-items-center mt-3'>
                 <button 
                     className='btn bg-mainblack text-white w-38'
-                    onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.AddList })}
+                    onClick={backtoFormPage}
                 >
                     Cancel
                 </button>
