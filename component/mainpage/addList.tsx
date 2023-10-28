@@ -97,27 +97,31 @@ export default function AddList({
     }
 
     // mark location button handler
-    const ToggleDisplayMapModal = () => {
+    const GoToMapModalPage = () => {
 
         const placeNameInput = document.getElementsByName("placeNameInput")[0] as HTMLInputElement;
         const reminderMessageInput = document.getElementsByName("reminderMessageInput")[0] as HTMLInputElement;
         const reminderDateInput = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
         const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
-
         const containerElement = document.getElementById("containerId") as HTMLElement;
 
-        containerElement.classList.add(containerClassObject.mapClass.toString().split(','));
-        containerElement.classList.remove(containerClassObject.notMapClass.join(" "));
+        // add map container class
+        containerClassObject.mapClass.forEach(e => {
+            containerElement.classList.add(e);
+        });
 
-        // containerElement.classList.replace("pt-4", "pt-3");
-        // containerElement.classList.replace("pb-5", "pb-0");
-        // containerElement.classList.remove("px-3");
+        // remove notmap container class
+        containerClassObject.notMapClass.forEach(e => {
+            containerElement.classList.remove(e);
+        });
+
+        console.log(isActiveInput.checked)
 
         refData.current = {
             name: placeNameInput.value,
             message: reminderMessageInput.value,
             reminderDate: reminderDateInput.value,
-            enableSwitch: isActiveInput.value == "on" ? true : false
+            enableSwitch: isActiveInput.checked
         };
 
         setDisplayMapModal(true);
@@ -126,12 +130,15 @@ export default function AddList({
     const BackToFormPage = () => {
         const containerElement = document.getElementById("containerId") as HTMLElement;
 
-        containerElement.classList.add(containerClassObject.notMapClass.join(" "));
-        containerElement.classList.remove(containerClassObject.mapClass.join(" "));
+        // remove map container class
+        containerClassObject.mapClass.forEach(e => {
+            containerElement.classList.remove(e);
+        });
 
-        // containerElement.classList.replace("pt-3", "pt-4" );
-        // containerElement.classList.replace("pb-0", "pb-5");
-        // containerElement.classList.add("px-3");
+        // add notmap container class
+        containerClassObject.notMapClass.forEach(e => {
+            containerElement.classList.add(e);
+        });
 
         setDisplayMapModal(false);
     }
@@ -217,7 +224,7 @@ export default function AddList({
                             type="date"
                             name="reminderDateInput" 
                             className={`form-control ${formColorTheme}`} 
-                            defaultValue={DisplayStringDateToUpdateForm(refData.current?.reminderDate) ?? ""}
+                            defaultValue={refData.current?.reminderDate}
                         />          
                         <div className={`input-group-text ${formColorTheme}`}>
                             <i 
@@ -254,7 +261,7 @@ export default function AddList({
                     <button 
                         type="button"
                         className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
-                        onClick={ToggleDisplayMapModal}
+                        onClick={GoToMapModalPage}
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
                         Mark location

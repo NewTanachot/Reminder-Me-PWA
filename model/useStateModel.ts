@@ -31,5 +31,6 @@ export interface IUpsertFormData {
     name?: string,
     message?: string,
     reminderDate?: string,
+    location?: IBaseLocation,
     enableSwitch?: boolean
 }
