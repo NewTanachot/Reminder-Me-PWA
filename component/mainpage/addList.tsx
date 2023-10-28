@@ -10,7 +10,15 @@ import { GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";
 const AddListMap = dynamic(() => import("@/component/mapAsset/addListMap"), { ssr: false });
 
-export default function AddList({ user, places, changeCurrentPage, mapTheme, isDarkTheme, baseUrlApi }: IAddPlace) {
+export default function AddList({ 
+    user, 
+    places, 
+    changeCurrentPage, 
+    mapTheme, 
+    isDarkTheme, 
+    baseUrlApi, 
+    containerClassObject 
+}: IAddPlace) {
 
     const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
     const [displayMapModal, setDisplayMapModal] = useState<boolean>(false);
@@ -96,6 +104,15 @@ export default function AddList({ user, places, changeCurrentPage, mapTheme, isD
         const reminderDateInput = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
         const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
 
+        const containerElement = document.getElementById("containerId") as HTMLElement;
+
+        containerElement.classList.add(containerClassObject.mapClass.toString().split(','));
+        containerElement.classList.remove(containerClassObject.notMapClass.join(" "));
+
+        // containerElement.classList.replace("pt-4", "pt-3");
+        // containerElement.classList.replace("pb-5", "pb-0");
+        // containerElement.classList.remove("px-3");
+
         refData.current = {
             name: placeNameInput.value,
             message: reminderMessageInput.value,
@@ -106,7 +123,16 @@ export default function AddList({ user, places, changeCurrentPage, mapTheme, isD
         setDisplayMapModal(true);
     }
 
-    const Back = () => {
+    const BackToFormPage = () => {
+        const containerElement = document.getElementById("containerId") as HTMLElement;
+
+        containerElement.classList.add(containerClassObject.notMapClass.join(" "));
+        containerElement.classList.remove(containerClassObject.mapClass.join(" "));
+
+        // containerElement.classList.replace("pt-3", "pt-4" );
+        // containerElement.classList.replace("pb-0", "pb-5");
+        // containerElement.classList.add("px-3");
+
         setDisplayMapModal(false);
     }
 
@@ -141,8 +167,7 @@ export default function AddList({ user, places, changeCurrentPage, mapTheme, isD
         placeMarkers={GetPlaceMarkers(places)}
         user={user}
         mapTheme={mapTheme}
-        // changeCurrentPage={changeCurrentPage}
-        backtoFormPage={Back}
+        backtoFormPage={BackToFormPage}
         isDarkTheme={isDarkTheme}
     ></AddListMap>
 

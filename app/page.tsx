@@ -21,7 +21,7 @@ import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
 import {IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbModel';
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
-import { MapStyleTitle } from '@/model/mapModel';
+import { IContainerClass, MapStyleTitle } from '@/model/mapModel';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 
 // Initialize .ENV variable
@@ -41,6 +41,10 @@ const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 const setDefaultDarkTheme: boolean = true;
 const setDefaultMapTheme = MapStyleTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
+const containerClassObject: IContainerClass = {
+    notMapClass: ["pt-4", "pb-5", "px-3"],
+    mapClass: ["pt-3", "pb-0"]
+}
 
 export default function Home() {
 
@@ -508,12 +512,14 @@ export default function Home() {
         return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
     }
 
-    const containerClass = isMapPage.current ? 'pt-3 pb-0' : 'pt-4 pb-5 px-3'
+    const containerClass = isMapPage.current 
+        ? containerClassObject.mapClass.join(' ') 
+        : containerClassObject.notMapClass.join(' ');
 
     return (
         <main> 
             <div className="container">
-                <div className={containerClass}>
+                <div id='containerId' className={containerClass}>
                     {
                         (() => {
                             switch (currentPage.pageName) {
@@ -547,6 +553,7 @@ export default function Home() {
                                         mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                         baseUrlApi={baseUrlApi}
+                                        containerClassObject={containerClassObject}
                                     ></AddList>
 
                                 case PwaCurrentPageEnum.UpdateList:

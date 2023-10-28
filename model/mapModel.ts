@@ -1,6 +1,11 @@
 import { MapStyleTitleEnum } from "./enumModel";
 import { IBaseLocation } from "./subentityModel";
 
+export interface IContainerClass {
+    notMapClass: string[],
+    mapClass: string[]
+}
+
 // https://cloud.maptiler.com/account/keys/?_ga=2.74998166.504639508.1698037213-71810968.1698037213&_gl=1*1nbzh2s*_gcl_au*NDUzMDM2MTY2LjE2OTgwMzcyMTM.*_ga*NzE4MTA5NjguMTY5ODAzNzIxMw..*_ga_K4SXYBF4HT*MTY5ODAzNzIxMi4xLjEuMTY5ODAzNzI3Mi42MC4wLjA.
 export class MapStyleTitle {
     public static default = "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo";

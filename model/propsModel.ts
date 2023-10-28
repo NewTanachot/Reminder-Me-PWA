@@ -1,5 +1,5 @@
 import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from "./enumModel"
-import { IMarker } from "./mapModel";
+import { IContainerClass, IMarker } from "./mapModel";
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
@@ -51,6 +51,7 @@ export interface IAddPlace extends IBaseProps, IBaseApiUrl {
     user: CurrentUserRef,
     mapTheme: string,
     places?: IDisplayPlace[],
+    containerClassObject: IContainerClass,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
