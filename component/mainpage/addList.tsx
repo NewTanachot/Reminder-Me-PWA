@@ -1,22 +1,34 @@
-import {DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
+import dynamic from "next/dynamic";
+import {IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
 import {PwaCurrentPageEnum} from "@/model/enumModel";
 import {IAddPlace} from "@/model/propsModel";
 import {ResponseModel} from "@/model/responseModel";
-import {PlaceExtensionModel} from "@/model/subentityModel";
+import {IBaseLocation, PlaceExtensionModel} from "@/model/subentityModel";
 import {FormEvent, useRef, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
+import { GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";
+const AddListMap = dynamic(() => import("@/component/mapAsset/addListMap"), { ssr: false });
 
-export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUrlApi }: IAddPlace) {
+export default function AddList({ 
+    user, 
+    places, 
+    changeCurrentPage, 
+    mapTheme, 
+    isDarkTheme, 
+    baseUrlApi, 
+    containerClassObject 
+}: IAddPlace) {
 
     const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
+    const [displayMapModal, setDisplayMapModal] = useState<boolean>(false);
     const formDataRef = useRef<IUpsertFormData>();
 
     // add place handler
     const AddNewPlace = async (event: FormEvent<HTMLFormElement>) => {
 
         // check current user from global variable   
-        if (IsStringValid(userId)) {
+        if (IsStringValid(user.userId)) {
 
             // show loading component
             setDisplayLoadingComponent(true);
@@ -42,7 +54,7 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
                 reminderMessage: reminderMessageInput,
                 reminderDate: IsStringValid(reminderDateInput) ? new Date(reminderDateInput ?? "") : undefined,
                 isDisable: !IsStringValid(isActiveInput), // if isActiveInput is "on" it return false
-                userId: userId,
+                userId: user.userId,
             }
 
             // fetch create place api
@@ -78,29 +90,81 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
     const ClearDatePickerFormHandler = () => {
 
         const reminderDateForm = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
+        reminderDateForm.value = "";
+    }
 
-        if (reminderDateForm) {
-            reminderDateForm.value = "";
-        }
+    // clear location data
+    const ClearLocationFormData = () => {
+        
+        const latitudeInput = document.getElementsByName("latitudeInput")[0] as HTMLInputElement;
+        const longitudeInput = document.getElementsByName("longitudeInput")[0] as HTMLInputElement;
+
+        latitudeInput.value = "";
+        longitudeInput.value = "";
     }
 
     // mark location button handler
-    const GetLocationBtnHandler = () => {
+    const GoToMapModalPage = () => {
 
         const placeNameInput = document.getElementsByName("placeNameInput")[0] as HTMLInputElement;
         const reminderMessageInput = document.getElementsByName("reminderMessageInput")[0] as HTMLInputElement;
         const reminderDateInput = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
         const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
+        const latitudeInput = document.getElementsByName("latitudeInput")[0] as HTMLInputElement;
+        const longitudeInput = document.getElementsByName("longitudeInput")[0] as HTMLInputElement;
+        const containerElement = document.getElementById("containerId") as HTMLElement;
+
+        // add map container class
+        containerClassObject.mapClass.forEach(e => {
+            containerElement.classList.add(e);
+        });
+
+        // remove notmap container class
+        containerClassObject.notMapClass.forEach(e => {
+            containerElement.classList.remove(e);
+        });
 
         formDataRef.current = {
             name: placeNameInput.value,
             message: reminderMessageInput.value,
             reminderDate: reminderDateInput.value,
-            enableSwitch: isActiveInput.value == "on" ? true : false
+            latitude: latitudeInput.value,
+            longitude: longitudeInput.value,
+            enableSwitch: isActiveInput.checked
         };
 
-        // open marker map
-        changeCurrentPage({ page: PwaCurrentPageEnum.MapUpsert })
+        setDisplayMapModal(true);
+    }
+
+    // confirm btn handler
+    const AddLocationDataToRef = (location: IBaseLocation | undefined) => {
+
+        // add Location to ref data
+        if (formDataRef.current) {
+            formDataRef.current.latitude = location?.latitude.toString();
+            formDataRef.current.longitude = location?.longitude.toString();
+        }
+
+        // back to form page
+        setDisplayMapModal(false);
+    }
+
+    // cancle btn handler 
+    const BackToFormPage = () => {
+        const containerElement = document.getElementById("containerId") as HTMLElement;
+
+        // remove map container class
+        containerClassObject.mapClass.forEach(e => {
+            containerElement.classList.remove(e);
+        });
+
+        // add notmap container class
+        containerClassObject.notMapClass.forEach(e => {
+            containerElement.classList.add(e);
+        });
+
+        // back to form page
+        setDisplayMapModal(false);
     }
 
     let formColorTheme: string;
@@ -130,120 +194,147 @@ export default function AddList({ userId, changeCurrentPage, isDarkTheme, baseUr
         cardBorderThemeColor = "";
     }
 
-    return (
-        <>
-            <LoadingComponent 
-                isDarkTheme={isDarkTheme}
-                isDisplay={displayLoadingComponent}
-            ></LoadingComponent>
-            <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
-                <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
-                    <h4 className="m-0 text-center">Create new location</h4>
-                </div>
-                <form className="card-body m-2" onSubmit={AddNewPlace}>
-                    <div className="mb-3">
-                        <p className="mb-1">
-                            Name:<span className="text-danger">*</span>
-                        </p>
-                        <input 
-                            name="placeNameInput" 
-                            className={`form-control w-100 ${formColorTheme}`} 
-                            type="text" 
-                            placeholder="place name..." 
-                            defaultValue={formDataRef.current?.name}
-                            maxLength={20} 
-                            required
-                        />
-                    </div>
-                    <div className="mt-3">
-                        <p className="mb-1">
-                            Reminder Message:
-                        </p>
-                        <textarea 
-                            name="reminderMessageInput" 
-                            className={`form-control w-100 ${formColorTheme}`} 
-                            placeholder="some message..." 
-                            defaultValue={formDataRef.current?.message}
-                            maxLength={50} 
-                            rows={2}
-                        />
-                    </div>
-                    <div className="mt-3">
-                        <p className="mb-1">
-                            Reminder Date:
-                        </p>
-                        <div className="input-group">
-                            <input 
-                                type="date"
-                                name="reminderDateInput" 
-                                className={`form-control ${formColorTheme}`} 
-                                defaultValue={DisplayStringDateToUpdateForm(formDataRef.current?.reminderDate) ?? ""} 
-                            />          
-                            <div className={`input-group-text ${formColorTheme}`}>
-                                <i 
-                                    className="fa-regular fa-trash-can text-mainblack"
-                                    onClick={ClearDatePickerFormHandler}
-                                ></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-3">
-                        <p className="mb-1">
-                            Location:
-                        </p>
-                        <div className="input-group">
-                            <input 
-                                name="latitudeInput" 
-                                className={`form-control ${formColorTheme}`} 
-                                type="number" 
-                                placeholder="Latitude..." 
-                                step="any" 
-                                min={0}
-                            />
-                            <input 
-                                name="longitudeInput" 
-                                className={`form-control ${formColorTheme}`} 
-                                type="number" 
-                                placeholder="Longitude..." 
-                                step="any" 
-                                min={0}
-                            />
-                        </div>
-                    </div>
-                    <div className="mt-3 text-center">
-                        <button 
-                            type="button"
-                            className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
-                            onClick={GetLocationBtnHandler}
-                        >
-                            <i className="fa-solid fa-map-location-dot me-2"></i>
-                            Mark location
-                        </button>
-                    </div>
-                    <div className="mt-3">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <p className="mb-1">Enable :</p>
-                            <div className="form-check form-switch">
-                                {
-                                    <input type="checkbox"
-                                        name="isActiveInput" 
-                                        className={`form-check-input ${switchBtnColorTheme}`}
-                                        defaultChecked={formDataRef.current?.enableSwitch ?? true} 
-                                    />
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-4 text-center">
-                        <button 
-                            type="submit"
-                            className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
-                        >
-                            Add
-                        </button>
-                    </div>
-                </form>
+    // create new marker location object
+    let newMarkerLocationRequest: IBaseLocation | undefined;
+    if (formDataRef.current?.latitude && formDataRef.current?.longitude) {
+        newMarkerLocationRequest = {
+            latitude: +formDataRef.current.latitude,
+            longitude: +formDataRef.current.longitude
+        }
+    }
+
+    const MapPage = <AddListMap
+        placeMarkers={GetPlaceMarkers(places)}
+        user={user}
+        mapTheme={mapTheme}
+        newMarkerInitLocation={newMarkerLocationRequest}
+        backtoFormPage={BackToFormPage}
+        addLocationDataToRef={AddLocationDataToRef}
+        isDarkTheme={isDarkTheme}
+    ></AddListMap>
+
+    const AddListPage = <>
+        <LoadingComponent 
+            isDarkTheme={isDarkTheme}
+            isDisplay={displayLoadingComponent}
+        ></LoadingComponent>
+        <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
+            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+                <h4 className="m-0 text-center">Create new location</h4>
             </div>
-        </>
-    )
+            <form className="card-body m-2" onSubmit={AddNewPlace}>
+                <div className="mb-3">
+                    <p className="mb-1">
+                        Name:<span className="text-danger">*</span>
+                    </p>
+                    <textarea 
+                        name="placeNameInput" 
+                        className={`form-control w-100 shadow-sm ${formColorTheme}`} 
+                        defaultValue={formDataRef.current?.name}
+                        placeholder="..."
+                        maxLength={20} 
+                        rows={1}
+                        required
+                    />
+                </div>
+                <div className="mt-3">
+                    <p className="mb-1">
+                        Reminder Message:
+                    </p>
+                    <textarea 
+                        name="reminderMessageInput" 
+                        className={`form-control w-100 shadow-sm ${formColorTheme}`} 
+                        defaultValue={formDataRef.current?.message}
+                        placeholder="..."
+                        maxLength={50} 
+                        rows={2}
+                    />
+                </div>
+                <div className="mt-3">
+                    <p className="mb-1">
+                        Reminder Date:
+                    </p>
+                    <div className="input-group shadow-sm">
+                        <input 
+                            type="date"
+                            name="reminderDateInput" 
+                            className={`form-control ${formColorTheme}`} 
+                            defaultValue={formDataRef.current?.reminderDate}
+                        />          
+                        <div className={`input-group-text ${formColorTheme}`}>
+                            <i 
+                                className="fa-regular fa-trash-can text-mainblack"
+                                onClick={ClearDatePickerFormHandler}
+                            ></i>
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-3">
+                    <p className="mb-1">
+                        Location:
+                    </p>
+                    <div className="input-group shadow-sm">
+                        <input 
+                            name="latitudeInput" 
+                            className={`form-control ${formColorTheme}`} 
+                            type="number" 
+                            placeholder="..." 
+                            defaultValue={formDataRef.current?.latitude}
+                            step="any" 
+                            min={0}
+                        />
+                        <input 
+                            name="longitudeInput" 
+                            className={`form-control ${formColorTheme}`} 
+                            type="number" 
+                            placeholder="..." 
+                            defaultValue={formDataRef.current?.longitude}
+                            step="any" 
+                            min={0}
+                        />
+                    </div>
+                </div>
+                <div className="mt-3 d-flex justify-content-evenly">
+                    <button 
+                        type="button"
+                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        onClick={GoToMapModalPage}
+                    >
+                        <i className="fa-solid fa-map-location-dot me-2"></i>
+                        Mark location
+                    </button>
+                    <button
+                        type="button"
+                        className='btn btn-sm my-2 btn-outline-secondary shadow-sm'
+                        onClick={ClearLocationFormData}
+                    >
+                        <i className="fa-regular fa-trash-can me-2"></i>
+                        Clear location
+                    </button>
+                </div>
+                <div className="mt-3">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <p className="mb-1">Enable :</p>
+                        <div className="form-check form-switch">
+                            <input type="checkbox"
+                                name="isActiveInput" 
+                                className={`form-check-input ${switchBtnColorTheme}`}
+                                defaultChecked={formDataRef.current?.enableSwitch ?? true}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-4 text-center">
+                    <button 
+                        type="submit"
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                    >
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </>
+
+    return displayMapModal ? MapPage : AddListPage;
 }

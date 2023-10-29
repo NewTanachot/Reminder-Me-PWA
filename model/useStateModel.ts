@@ -31,5 +31,7 @@ export interface IUpsertFormData {
     name?: string,
     message?: string,
     reminderDate?: string,
+    latitude?: string,
+    longitude?: string,
     enableSwitch?: boolean
 }
