@@ -10,7 +10,6 @@ import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
 import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useState } from 'react';
-import { PwaCurrentPageEnum } from '@/model/enumModel';
 
 const userMarkerIcon = L.icon({
     iconUrl: userIcon.src,
@@ -27,10 +26,19 @@ const newPlaceMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-export default function AddListMap({ placeMarkers, user, backtoFormPage, mapTheme, isDarkTheme }: IAddListMapProps) {
+export default function AddListMap({ 
+    placeMarkers, 
+    user, 
+    newMarkerInitLocation,
+    backtoFormPage, 
+    mapTheme, 
+    addLocationDataToRef,
+    isDarkTheme
+}: IAddListMapProps) {
 
-    const [newMarkerPosition, setNewMarkerPosition] = useState<IBaseLocation>();
+    const [newMarkerPosition, setNewMarkerPosition] = useState<IBaseLocation | undefined>(newMarkerInitLocation);
 
+    // create new marker component
     const NewMarker = () => {
 
         useMapEvents({
@@ -53,12 +61,26 @@ export default function AddListMap({ placeMarkers, user, backtoFormPage, mapThem
         
     }
 
+    // create user marker model
     const userMarker: IMarker = {
         markerName: user.userName,
         markerLocation: {
             latitude: user.userLocation.latitude,
             longitude: user.userLocation.longitude
         }
+    }
+
+    // check theme color
+    let confirmBtnClass: string;
+    let cancleBtnClass: string;
+
+    if (isDarkTheme) {
+        confirmBtnClass = "bg-mainblue";
+        cancleBtnClass = "bg-mainblack";
+    }
+    else {
+        confirmBtnClass = "bg-viridian-green";
+        cancleBtnClass = "btn-secondary";
     }
 
     return (
@@ -121,12 +143,17 @@ export default function AddListMap({ placeMarkers, user, backtoFormPage, mapThem
             </MapContainer>
             <div className='d-flex justify-content-around align-items-center mt-3'>
                 <button 
-                    className='btn bg-mainblack text-white w-38'
+                    className={`btn ${cancleBtnClass} text-white w-38`}
                     onClick={backtoFormPage}
                 >
                     Cancel
                 </button>
-                <button className='btn bg-mainblue text-white w-38'>Confirm</button>
+                <button 
+                    className={`btn ${confirmBtnClass} text-white w-38`}
+                    onClick={() => addLocationDataToRef(newMarkerPosition)}
+                >
+                    Confirm
+                </button>
             </div>
         </>
     )

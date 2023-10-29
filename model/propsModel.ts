@@ -114,16 +114,17 @@ export interface INotFoundProps extends IBaseProps {}
 
 export interface IMapProps extends IBaseProps {
     placeMarkers?: IMarker[],
-    user: CurrentUserRef
+    user: CurrentUserRef,
     mapTheme: string
 }
 
 export interface IMapSettingCardProps extends IBaseProps { 
-    currentMap: MapStyleTitleEnum
+    currentMap: MapStyleTitleEnum,
     changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
 }
 
 export interface IAddListMapProps extends IMapProps { 
-    // changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+    newMarkerInitLocation?: IBaseLocation,
+    addLocationDataToRef: (location: IBaseLocation | undefined) => void,
     backtoFormPage: () => void
 }

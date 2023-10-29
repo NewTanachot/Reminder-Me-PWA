@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
-import {DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
+import {IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
 import {PwaCurrentPageEnum} from "@/model/enumModel";
 import {IAddPlace} from "@/model/propsModel";
 import {ResponseModel} from "@/model/responseModel";
-import {PlaceExtensionModel} from "@/model/subentityModel";
+import {IBaseLocation, PlaceExtensionModel} from "@/model/subentityModel";
 import {FormEvent, useRef, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
 import { GetPlaceMarkers } from "@/extension/calculation_extension";
@@ -22,7 +22,7 @@ export default function AddList({
 
     const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
     const [displayMapModal, setDisplayMapModal] = useState<boolean>(false);
-    const refData = useRef<IUpsertFormData>();
+    const formDataRef = useRef<IUpsertFormData>();
 
     // add place handler
     const AddNewPlace = async (event: FormEvent<HTMLFormElement>) => {
@@ -90,10 +90,17 @@ export default function AddList({
     const ClearDatePickerFormHandler = () => {
 
         const reminderDateForm = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
+        reminderDateForm.value = "";
+    }
 
-        if (reminderDateForm) {
-            reminderDateForm.value = "";
-        }
+    // clear location data
+    const ClearLocationFormData = () => {
+        
+        const latitudeInput = document.getElementsByName("latitudeInput")[0] as HTMLInputElement;
+        const longitudeInput = document.getElementsByName("longitudeInput")[0] as HTMLInputElement;
+
+        latitudeInput.value = "";
+        longitudeInput.value = "";
     }
 
     // mark location button handler
@@ -103,6 +110,8 @@ export default function AddList({
         const reminderMessageInput = document.getElementsByName("reminderMessageInput")[0] as HTMLInputElement;
         const reminderDateInput = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
         const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
+        const latitudeInput = document.getElementsByName("latitudeInput")[0] as HTMLInputElement;
+        const longitudeInput = document.getElementsByName("longitudeInput")[0] as HTMLInputElement;
         const containerElement = document.getElementById("containerId") as HTMLElement;
 
         // add map container class
@@ -115,18 +124,32 @@ export default function AddList({
             containerElement.classList.remove(e);
         });
 
-        console.log(isActiveInput.checked)
-
-        refData.current = {
+        formDataRef.current = {
             name: placeNameInput.value,
             message: reminderMessageInput.value,
             reminderDate: reminderDateInput.value,
+            latitude: latitudeInput.value,
+            longitude: longitudeInput.value,
             enableSwitch: isActiveInput.checked
         };
 
         setDisplayMapModal(true);
     }
 
+    // confirm btn handler
+    const AddLocationDataToRef = (location: IBaseLocation | undefined) => {
+
+        // add Location to ref data
+        if (formDataRef.current) {
+            formDataRef.current.latitude = location?.latitude.toString();
+            formDataRef.current.longitude = location?.longitude.toString();
+        }
+
+        // back to form page
+        setDisplayMapModal(false);
+    }
+
+    // cancle btn handler 
     const BackToFormPage = () => {
         const containerElement = document.getElementById("containerId") as HTMLElement;
 
@@ -140,6 +163,7 @@ export default function AddList({
             containerElement.classList.add(e);
         });
 
+        // back to form page
         setDisplayMapModal(false);
     }
 
@@ -170,11 +194,22 @@ export default function AddList({
         cardBorderThemeColor = "";
     }
 
+    // create new marker location object
+    let newMarkerLocationRequest: IBaseLocation | undefined;
+    if (formDataRef.current?.latitude && formDataRef.current?.longitude) {
+        newMarkerLocationRequest = {
+            latitude: +formDataRef.current.latitude,
+            longitude: +formDataRef.current.longitude
+        }
+    }
+
     const MapPage = <AddListMap
         placeMarkers={GetPlaceMarkers(places)}
         user={user}
         mapTheme={mapTheme}
+        newMarkerInitLocation={newMarkerLocationRequest}
         backtoFormPage={BackToFormPage}
+        addLocationDataToRef={AddLocationDataToRef}
         isDarkTheme={isDarkTheme}
     ></AddListMap>
 
@@ -192,13 +227,13 @@ export default function AddList({
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <input 
+                    <textarea 
                         name="placeNameInput" 
-                        className={`form-control w-100 ${formColorTheme}`} 
-                        type="text" 
-                        defaultValue={refData.current?.name}
-                        placeholder="place name..." 
+                        className={`form-control w-100 shadow-sm ${formColorTheme}`} 
+                        defaultValue={formDataRef.current?.name}
+                        placeholder="..."
                         maxLength={20} 
+                        rows={1}
                         required
                     />
                 </div>
@@ -208,9 +243,9 @@ export default function AddList({
                     </p>
                     <textarea 
                         name="reminderMessageInput" 
-                        className={`form-control w-100 ${formColorTheme}`} 
-                        defaultValue={refData.current?.message}
-                        placeholder="some message..." 
+                        className={`form-control w-100 shadow-sm ${formColorTheme}`} 
+                        defaultValue={formDataRef.current?.message}
+                        placeholder="..."
                         maxLength={50} 
                         rows={2}
                     />
@@ -219,12 +254,12 @@ export default function AddList({
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <div className="input-group">
+                    <div className="input-group shadow-sm">
                         <input 
                             type="date"
                             name="reminderDateInput" 
                             className={`form-control ${formColorTheme}`} 
-                            defaultValue={refData.current?.reminderDate}
+                            defaultValue={formDataRef.current?.reminderDate}
                         />          
                         <div className={`input-group-text ${formColorTheme}`}>
                             <i 
@@ -238,12 +273,13 @@ export default function AddList({
                     <p className="mb-1">
                         Location:
                     </p>
-                    <div className="input-group">
+                    <div className="input-group shadow-sm">
                         <input 
                             name="latitudeInput" 
                             className={`form-control ${formColorTheme}`} 
                             type="number" 
-                            placeholder="Latitude..." 
+                            placeholder="..." 
+                            defaultValue={formDataRef.current?.latitude}
                             step="any" 
                             min={0}
                         />
@@ -251,20 +287,29 @@ export default function AddList({
                             name="longitudeInput" 
                             className={`form-control ${formColorTheme}`} 
                             type="number" 
-                            placeholder="Longitude..." 
+                            placeholder="..." 
+                            defaultValue={formDataRef.current?.longitude}
                             step="any" 
                             min={0}
                         />
                     </div>
                 </div>
-                <div className="mt-3 text-center">
+                <div className="mt-3 d-flex justify-content-evenly">
                     <button 
                         type="button"
-                        className={`btn btn-sm w-50 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
                         onClick={GoToMapModalPage}
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
                         Mark location
+                    </button>
+                    <button
+                        type="button"
+                        className='btn btn-sm my-2 btn-outline-secondary shadow-sm'
+                        onClick={ClearLocationFormData}
+                    >
+                        <i className="fa-regular fa-trash-can me-2"></i>
+                        Clear location
                     </button>
                 </div>
                 <div className="mt-3">
@@ -274,7 +319,7 @@ export default function AddList({
                             <input type="checkbox"
                                 name="isActiveInput" 
                                 className={`form-check-input ${switchBtnColorTheme}`}
-                                defaultChecked={refData.current?.enableSwitch ?? true}
+                                defaultChecked={formDataRef.current?.enableSwitch ?? true}
                             />
                         </div>
                     </div>
