@@ -1,5 +1,5 @@
 import { CalDistanceModel } from "@/model/calculationModel";
-import { IDisplayPlace } from "@/model/useStateModel";
+import { IDisplayPlace, IUpsertFormData } from "@/model/useStateModel";
 import { Place } from "@prisma/client";
 import { StringDateToDisplayDate } from "./string_extension";
 import { IBaseLocation } from "@/model/subentityModel";
@@ -115,4 +115,17 @@ export const GetPlaceMarkers = (places?: IDisplayPlace[]) => {
     }));
 
     return result;
+}
+
+export const GetNewMarkerLocation = (data?: IUpsertFormData) => {
+
+    let newMarkerLocationRequest: IBaseLocation | undefined;
+    if (data?.latitude && data?.longitude) {
+        newMarkerLocationRequest = {
+            latitude: +data.latitude,
+            longitude: +data.longitude
+        }
+    }
+
+    return newMarkerLocationRequest;
 }

@@ -1,14 +1,14 @@
 import dynamic from "next/dynamic";
 import {IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
 import {PwaCurrentPageEnum} from "@/model/enumModel";
-import {IAddPlace} from "@/model/propsModel";
+import {IAddListProps} from "@/model/propsModel";
 import {ResponseModel} from "@/model/responseModel";
 import {IBaseLocation, PlaceExtensionModel} from "@/model/subentityModel";
 import {FormEvent, useRef, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
-import { GetPlaceMarkers } from "@/extension/calculation_extension";
+import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";
-const AddListMap = dynamic(() => import("@/component/mapAsset/addListMap"), { ssr: false });
+const MapModal = dynamic(() => import("@/component/mapAsset/mapModal"), { ssr: false });
 
 export default function AddList({ 
     user, 
@@ -17,8 +17,9 @@ export default function AddList({
     mapTheme, 
     isDarkTheme, 
     baseUrlApi, 
-    containerClassObject 
-}: IAddPlace) {
+    containerClassObject,
+    setIsMapPage
+}: IAddListProps) {
 
     const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
     const [displayMapModal, setDisplayMapModal] = useState<boolean>(false);
@@ -133,7 +134,9 @@ export default function AddList({
             enableSwitch: isActiveInput.checked
         };
 
+        // set go to page map
         setDisplayMapModal(true);
+        setIsMapPage(true);
     }
 
     // confirm btn handler
@@ -165,6 +168,7 @@ export default function AddList({
 
         // back to form page
         setDisplayMapModal(false);
+        setIsMapPage(false);
     }
 
     let formColorTheme: string;
@@ -194,24 +198,15 @@ export default function AddList({
         cardBorderThemeColor = "";
     }
 
-    // create new marker location object
-    let newMarkerLocationRequest: IBaseLocation | undefined;
-    if (formDataRef.current?.latitude && formDataRef.current?.longitude) {
-        newMarkerLocationRequest = {
-            latitude: +formDataRef.current.latitude,
-            longitude: +formDataRef.current.longitude
-        }
-    }
-
-    const MapPage = <AddListMap
+    const MapPage = <MapModal
         placeMarkers={GetPlaceMarkers(places)}
         user={user}
         mapTheme={mapTheme}
-        newMarkerInitLocation={newMarkerLocationRequest}
+        newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
         backtoFormPage={BackToFormPage}
         addLocationDataToRef={AddLocationDataToRef}
         isDarkTheme={isDarkTheme}
-    ></AddListMap>
+    ></MapModal>
 
     const AddListPage = <>
         <LoadingComponent 
@@ -254,14 +249,15 @@ export default function AddList({
                     <p className="mb-1">
                         Reminder Date:
                     </p>
-                    <div className="input-group shadow-sm">
+                    <div className="input-group">
                         <input 
                             type="date"
                             name="reminderDateInput" 
-                            className={`form-control ${formColorTheme}`} 
+                            className={`form-control ${formColorTheme} shadow-sm`} 
                             defaultValue={formDataRef.current?.reminderDate}
+                            placeholder="..."
                         />          
-                        <div className={`input-group-text ${formColorTheme}`}>
+                        <div className={`input-group-text ${formColorTheme} shadow-sm`}>
                             <i 
                                 className="fa-regular fa-trash-can text-mainblack"
                                 onClick={ClearDatePickerFormHandler}
@@ -273,10 +269,10 @@ export default function AddList({
                     <p className="mb-1">
                         Location:
                     </p>
-                    <div className="input-group shadow-sm">
+                    <div className="input-group">
                         <input 
                             name="latitudeInput" 
-                            className={`form-control ${formColorTheme}`} 
+                            className={`form-control ${formColorTheme} shadow-sm`} 
                             type="number" 
                             placeholder="..." 
                             defaultValue={formDataRef.current?.latitude}
@@ -285,7 +281,7 @@ export default function AddList({
                         />
                         <input 
                             name="longitudeInput" 
-                            className={`form-control ${formColorTheme}`} 
+                            className={`form-control ${formColorTheme} shadow-sm`} 
                             type="number" 
                             placeholder="..." 
                             defaultValue={formDataRef.current?.longitude}

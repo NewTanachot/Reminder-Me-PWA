@@ -42,7 +42,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                             Map Style:
                             <br />
                             <span className={subTextColorTheme}>
-                                {currentMapString}
+                                {currentMapString.toLowerCase()}
                             </span>
                         </h6>
                     </div>
@@ -57,7 +57,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                                 key={index}
                                 value={mapTitle}
                             >
-                                {mapTitle}             
+                                {mapTitle.toString().toLowerCase()}             
                             </option>
                         )
                     }

@@ -47,6 +47,10 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
         footerColorTheme = "bg-viridian-green";
     }
 
+    if (currentPageName != PwaCurrentPageEnum.MapView) {
+        
+    }
+
     return (
         // justify-content-around
         <footer className={`fixed-bottom px-2 pt-0 shadow-top rounded-top-5 ${footerColorTheme} spacing-footer-bottom`}>
