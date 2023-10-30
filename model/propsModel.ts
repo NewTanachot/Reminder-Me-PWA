@@ -47,12 +47,23 @@ export interface IPlaceCardProps extends IBaseProps, IBaseApiUrl {
     updatePlaceCardHandler: (cardId: string) => void
 }
 
-export interface IAddPlace extends IBaseProps, IBaseApiUrl {
+export interface IAddListProps extends IBaseProps, IBaseApiUrl {
     user: CurrentUserRef,
     mapTheme: string,
     places?: IDisplayPlace[],
     containerClassObject: IContainerClass,
-    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+    setIsMapPage: (flag: boolean) => void
+}
+
+export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
+    user: CurrentUserRef,
+    mapTheme: string,
+    places?: IDisplayPlace[],
+    containerClassObject: IContainerClass,
+    cardData: IDisplayPlace,
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+    setIsMapPage: (flag: boolean) => void
 }
 
 export interface ISettingProps extends IBaseProps {
@@ -91,11 +102,6 @@ export interface IThemeSettingCardProps extends IBaseProps {
     changeCurrentThemeHandler: (currentTheme: boolean) => void, 
 }
 
-export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
-    cardData: IDisplayPlace,
-    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
-}
-
 export interface ILoadingPageProps extends IBaseProps { }
 
 export interface ILoadingComponentProps extends IBaseProps {
@@ -123,7 +129,7 @@ export interface IMapSettingCardProps extends IBaseProps {
     changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
 }
 
-export interface IAddListMapProps extends IMapProps { 
+export interface IMapModalProps extends IMapProps { 
     newMarkerInitLocation?: IBaseLocation,
     addLocationDataToRef: (location: IBaseLocation | undefined) => void,
     backtoFormPage: () => void

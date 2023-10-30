@@ -3,7 +3,7 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { IMarker } from '@/model/mapModel';
-import { IAddListMapProps } from '@/model/propsModel';
+import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
@@ -26,7 +26,7 @@ const newPlaceMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-export default function AddListMap({ 
+export default function MapModal({ 
     placeMarkers, 
     user, 
     newMarkerInitLocation,
@@ -34,9 +34,12 @@ export default function AddListMap({
     mapTheme, 
     addLocationDataToRef,
     isDarkTheme
-}: IAddListMapProps) {
+}: IMapModalProps) {
 
     const [newMarkerPosition, setNewMarkerPosition] = useState<IBaseLocation | undefined>(newMarkerInitLocation);
+
+    //  set center location
+    const centerLocation: IBaseLocation = newMarkerInitLocation ? newMarkerInitLocation : user.userLocation;
 
     // create new marker component
     const NewMarker = () => {
@@ -59,6 +62,14 @@ export default function AddListMap({
             : <></>
         )   
         
+    }
+
+    // click here handler
+    const MarkNewLocationAtUser = () => {
+        setNewMarkerPosition({
+            latitude: user.userLocation.latitude,
+            longitude: user.userLocation.longitude
+        });
     }
 
     // create user marker model
@@ -87,7 +98,7 @@ export default function AddListMap({
         <>
             <MapContainer 
                 className='map-asset shadow-sm rounded-3' 
-                center={[user.userLocation.latitude, user.userLocation.longitude]} 
+                center={[centerLocation.latitude, centerLocation.longitude]} 
                 zoom={11} 
                 scrollWheelZoom={true}
                 attributionControl={false}
@@ -103,6 +114,17 @@ export default function AddListMap({
                     <Popup>
                         <span className='text-cobalt-blue text-cursive'>
                             {userMarker.markerName} is here! 
+                            <br />
+                            <span className='text-secondary'>
+                                click&nbsp;
+                                <span 
+                                    className='text-decoration-underline text-danger'
+                                    onClick={MarkNewLocationAtUser}
+                                >
+                                    here
+                                </span> 
+                                &nbsp;to mark at this location
+                            </span>
                         </span>
                     </Popup>
                 </Marker>

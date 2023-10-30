@@ -381,12 +381,7 @@ export default function Home() {
         }
 
         // set isMapPage if current page is map page
-        if (requestDto.page == PwaCurrentPageEnum.MapView) {
-            isMapPage.current = true;
-        }
-        else {
-            isMapPage.current = false;
-        }
+        SetIsMapPage(requestDto.page == PwaCurrentPageEnum.MapView);
 
         // change current page
         setCurrentPage({
@@ -486,6 +481,15 @@ export default function Home() {
         ForceRerenderState();
     };
 
+    const SetIsMapPage = (flag: boolean) => {
+
+        isMapPage.current = flag;
+
+        if (flag) {
+            ForceRerenderState();
+        }
+    }
+
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
 
         // get all color theme by name
@@ -554,15 +558,21 @@ export default function Home() {
                                         isDarkTheme={isDarkTheme.current}
                                         baseUrlApi={baseUrlApi}
                                         containerClassObject={containerClassObject}
+                                        setIsMapPage={SetIsMapPage}
                                     ></AddList>
 
                                 case PwaCurrentPageEnum.UpdateList:
                                     if (currentUpdateCard.current) {
                                         return <UpdateList 
+                                            user={user.current}
+                                            places={places}
                                             cardData={currentUpdateCard.current}
                                             changeCurrentPage={ChangeCurrentPage}
+                                            mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                             isDarkTheme={isDarkTheme.current}
                                             baseUrlApi={baseUrlApi}
+                                            containerClassObject={containerClassObject}
+                                            setIsMapPage={SetIsMapPage}
                                         ></UpdateList>
                                     }
                                     else {
