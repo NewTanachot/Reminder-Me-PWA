@@ -227,13 +227,13 @@ export default function AddList({
                     <p className="mb-1">
                         Name:<span className="text-danger">*</span>
                     </p>
-                    <textarea 
+                    <input 
+                        type="text"
                         name="placeNameInput" 
                         className={`form-control w-100 shadow-sm ${formColorTheme}`} 
                         defaultValue={formDataRef.current?.name}
                         placeholder="..."
                         maxLength={20} 
-                        rows={1}
                         required
                     />
                 </div>
@@ -295,6 +295,14 @@ export default function AddList({
                     </div>
                 </div>
                 <div className="mt-3 d-flex justify-content-evenly">
+                    <button
+                        type="button"
+                        className='btn btn-sm my-2 text-secondary border-secondary shadow-sm'
+                        onClick={ClearLocationFormData}
+                    >
+                        <i className="fa-regular fa-trash-can me-2"></i>
+                        Clear location
+                    </button>
                     <button 
                         type="button"
                         className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
@@ -302,14 +310,6 @@ export default function AddList({
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
                         Mark location
-                    </button>
-                    <button
-                        type="button"
-                        className='btn btn-sm my-2 btn-outline-secondary shadow-sm'
-                        onClick={ClearLocationFormData}
-                    >
-                        <i className="fa-regular fa-trash-can me-2"></i>
-                        Clear location
                     </button>
                 </div>
                 <div className="mt-3">
