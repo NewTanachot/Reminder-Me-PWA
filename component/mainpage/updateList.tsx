@@ -8,6 +8,7 @@ import LoadingComponent from "../modalAsset/loading";
 import { IUpsertFormData } from "@/model/useStateModel";
 import dynamic from "next/dynamic";
 import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
+import { SetPageContainerClass } from "@/extension/style_extension";
 const MapModal = dynamic(() => import("@/component/mapAsset/mapModal"), { ssr: false });
 
 export default function UpdateList({
@@ -22,7 +23,7 @@ export default function UpdateList({
     baseUrlApi
 }: IUpdateListProps) {
 
-    const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
+    const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
     const [displayMapModal, setDisplayMapModal] = useState<boolean>(false);
     const formDataRef = useRef<IUpsertFormData>({
         name: cardData.name,
@@ -87,19 +88,6 @@ export default function UpdateList({
         }
     }
 
-    // confirm btn handler
-    const AddLocationDataToRef = (location: IBaseLocation | undefined) => {
-
-        // add Location to ref data
-        if (formDataRef.current) {
-            formDataRef.current.latitude = location?.latitude.toString();
-            formDataRef.current.longitude = location?.longitude.toString();
-        }
-
-        // back to form page
-        setDisplayMapModal(false);
-    }
-
     // back button handler
     const backButtonHandler = () => {
         changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
@@ -115,19 +103,27 @@ export default function UpdateList({
         }
     }
 
+    // confirm btn handler
+    const AddLocationDataToRef = (location: IBaseLocation | undefined) => {
+
+        // add Location to ref data
+        if (formDataRef.current) {
+            formDataRef.current.latitude = location?.latitude.toString();
+            formDataRef.current.longitude = location?.longitude.toString();
+        }
+
+        // change container class to not map page
+        SetPageContainerClass(containerClassObject, false);
+
+        // back to form page
+        setDisplayMapModal(false);
+    }
+
     // cancle btn handler 
     const BackToFormPage = () => {
-        const containerElement = document.getElementById("containerId") as HTMLElement;
 
-        // remove map container class
-        containerClassObject.mapClass.forEach(e => {
-            containerElement.classList.remove(e);
-        });
-
-        // add notmap container class
-        containerClassObject.notMapClass.forEach(e => {
-            containerElement.classList.add(e);
-        });
+        // change container class to map page
+        SetPageContainerClass(containerClassObject, true);
 
         // back to form page
         setDisplayMapModal(false);
@@ -143,17 +139,9 @@ export default function UpdateList({
         const isActiveInput = document.getElementsByName("isActiveInputUpdate")[0] as HTMLInputElement;
         const latitudeInput = document.getElementsByName("latitudeInputUpdate")[0] as HTMLInputElement;
         const longitudeInput = document.getElementsByName("longitudeInputUpdate")[0] as HTMLInputElement;
-        const containerElement = document.getElementById("containerId") as HTMLElement;
-
-        // add map container class
-        containerClassObject.mapClass.forEach(e => {
-            containerElement.classList.add(e);
-        });
-
-        // remove notmap container class
-        containerClassObject.notMapClass.forEach(e => {
-            containerElement.classList.remove(e);
-        });
+        
+        // change container class to map page
+        SetPageContainerClass(containerClassObject, true);
 
         formDataRef.current = {
             name: placeNameInput.value,
@@ -207,7 +195,7 @@ export default function UpdateList({
     }
 
     const MapPage = <MapModal
-        placeMarkers={GetPlaceMarkers(places)}
+        placeMarkers={GetPlaceMarkers(places?.filter(e => e.id != cardData.id))}
         user={user}
         mapTheme={mapTheme}
         newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
