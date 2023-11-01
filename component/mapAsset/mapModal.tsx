@@ -7,7 +7,7 @@ import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
+import userIcon from '@/public/image/map-icon/user-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useState } from 'react';
 
@@ -66,6 +66,8 @@ export default function MapModal({
 
     // click here handler
     const MarkNewLocationAtUser = () => {
+
+        // set location value
         setNewMarkerPosition({
             latitude: user.userLocation.latitude,
             longitude: user.userLocation.longitude
