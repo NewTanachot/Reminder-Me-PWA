@@ -152,7 +152,7 @@ export default function AddList({
     const BackToFormPage = () => {
         
         // change container class to not map page
-        SetPageContainerClass(containerClassObject, true);
+        SetPageContainerClass(containerClassObject, false);
 
         // back to form page
         setDisplayMapModal(false);
