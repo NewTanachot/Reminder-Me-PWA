@@ -9,7 +9,7 @@ import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
 import userIcon from '@/public/image/map-icon/user-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const userMarkerIcon = L.icon({
     iconUrl: userIcon.src,
@@ -40,12 +40,15 @@ export default function MapModal({
 
     //  set center location
     const centerLocation: IBaseLocation = newMarkerInitLocation ? newMarkerInitLocation : user.userLocation;
+     // Create a ref for the markers.
+    const markersRef = useRef<L.Marker<any>>();
 
     // create new marker component
     const NewMarker = () => {
 
-        useMapEvents({
-            click(event) {                                
+        const map = useMapEvents({
+            click(event) {       
+                
                 setNewMarkerPosition({
                     latitude: event.latlng.lat,
                     longitude: event.latlng.lng
@@ -66,6 +69,9 @@ export default function MapModal({
 
     // click here handler
     const MarkNewLocationAtUser = () => {
+
+        // close marker popup
+        markersRef.current?.closePopup();
 
         // set location value
         setNewMarkerPosition({
@@ -112,6 +118,8 @@ export default function MapModal({
                 <Marker 
                     position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}
                     icon={userMarkerIcon}
+                    // Add the marker to the ref - [ you can ref component in useRef like this ]
+                    ref={(marker) => markersRef.current = marker ?? undefined}
                 >
                     <Popup>
                         <span className='text-cobalt-blue text-cursive'>

@@ -103,6 +103,33 @@ export default function UpdateList({
         }
     }
 
+    // mark location button handler
+    const GoToMapModalPage = () => {
+
+        const placeNameInput = document.getElementsByName("placeNameInputUpdate")[0] as HTMLInputElement;
+        const reminderMessageInput = document.getElementsByName("reminderMessageInputUpdate")[0] as HTMLInputElement;
+        const reminderDateInput = document.getElementsByName("reminderDateInputUpdate")[0] as HTMLInputElement;
+        const isActiveInput = document.getElementsByName("isActiveInputUpdate")[0] as HTMLInputElement;
+        const latitudeInput = document.getElementsByName("latitudeInputUpdate")[0] as HTMLInputElement;
+        const longitudeInput = document.getElementsByName("longitudeInputUpdate")[0] as HTMLInputElement;
+
+        formDataRef.current = {
+            name: placeNameInput.value,
+            message: reminderMessageInput.value,
+            reminderDate: reminderDateInput.value,
+            latitude: latitudeInput.value,
+            longitude: longitudeInput.value,
+            enableSwitch: isActiveInput.checked
+        };
+
+        // change container class to map page
+        SetPageContainerClass(containerClassObject, true);
+
+        // set go to page map
+        setDisplayMapModal(true);
+        setIsMapPage(true);
+    }
+
     // confirm btn handler
     const AddLocationDataToRef = (location: IBaseLocation | undefined) => {
 
@@ -123,38 +150,11 @@ export default function UpdateList({
     const BackToFormPage = () => {
 
         // change container class to map page
-        SetPageContainerClass(containerClassObject, true);
+        SetPageContainerClass(containerClassObject, false);
 
         // back to form page
         setDisplayMapModal(false);
         setIsMapPage(false);
-    }
-
-    // mark location button handler
-    const GoToMapModalPage = () => {
-
-        const placeNameInput = document.getElementsByName("placeNameInputUpdate")[0] as HTMLInputElement;
-        const reminderMessageInput = document.getElementsByName("reminderMessageInputUpdate")[0] as HTMLInputElement;
-        const reminderDateInput = document.getElementsByName("reminderDateInputUpdate")[0] as HTMLInputElement;
-        const isActiveInput = document.getElementsByName("isActiveInputUpdate")[0] as HTMLInputElement;
-        const latitudeInput = document.getElementsByName("latitudeInputUpdate")[0] as HTMLInputElement;
-        const longitudeInput = document.getElementsByName("longitudeInputUpdate")[0] as HTMLInputElement;
-        
-        // change container class to map page
-        SetPageContainerClass(containerClassObject, true);
-
-        formDataRef.current = {
-            name: placeNameInput.value,
-            message: reminderMessageInput.value,
-            reminderDate: reminderDateInput.value,
-            latitude: latitudeInput.value,
-            longitude: longitudeInput.value,
-            enableSwitch: isActiveInput.checked
-        };
-
-        // set go to page map
-        setDisplayMapModal(true);
-        setIsMapPage(true);
     }
 
     // clear location data
