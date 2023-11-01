@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-dark-green-icon.png';
+import userIcon from '@/public/image/map-icon/user-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const userMarkerIcon = L.icon({
@@ -34,7 +34,6 @@ export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapP
     return (
         <MapContainer 
             className='map shadow-sm rounded-3' 
-            // center={[13.758442667913602, 100.60116846647361]} 
             center={[user.userLocation.latitude, user.userLocation.longitude]} 
             zoom={11} 
             scrollWheelZoom={true}
