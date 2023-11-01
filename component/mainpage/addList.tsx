@@ -8,6 +8,7 @@ import {FormEvent, useRef, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
 import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";
+import { SetPageContainerClass } from "@/extension/style_extension";
 const MapModal = dynamic(() => import("@/component/mapAsset/mapModal"), { ssr: false });
 
 export default function AddList({ 
@@ -113,17 +114,9 @@ export default function AddList({
         const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
         const latitudeInput = document.getElementsByName("latitudeInput")[0] as HTMLInputElement;
         const longitudeInput = document.getElementsByName("longitudeInput")[0] as HTMLInputElement;
-        const containerElement = document.getElementById("containerId") as HTMLElement;
-
-        // add map container class
-        containerClassObject.mapClass.forEach(e => {
-            containerElement.classList.add(e);
-        });
-
-        // remove notmap container class
-        containerClassObject.notMapClass.forEach(e => {
-            containerElement.classList.remove(e);
-        });
+        
+        // change container class to map page
+        SetPageContainerClass(containerClassObject, true);
 
         formDataRef.current = {
             name: placeNameInput.value,
@@ -148,23 +141,18 @@ export default function AddList({
             formDataRef.current.longitude = location?.longitude.toString();
         }
 
+        // change container class to not map page
+        SetPageContainerClass(containerClassObject, false);
+
         // back to form page
         setDisplayMapModal(false);
     }
 
     // cancle btn handler 
     const BackToFormPage = () => {
-        const containerElement = document.getElementById("containerId") as HTMLElement;
-
-        // remove map container class
-        containerClassObject.mapClass.forEach(e => {
-            containerElement.classList.remove(e);
-        });
-
-        // add notmap container class
-        containerClassObject.notMapClass.forEach(e => {
-            containerElement.classList.add(e);
-        });
+        
+        // change container class to not map page
+        SetPageContainerClass(containerClassObject, true);
 
         // back to form page
         setDisplayMapModal(false);

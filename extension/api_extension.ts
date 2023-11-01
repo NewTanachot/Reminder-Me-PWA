@@ -22,24 +22,8 @@ export const GetCustomGeoLocationOption = (timeOutSec?: number | undefined) => {
 
 // place object model validator
 export const PlaceModelValidator = (place: Place) => {
-
-    if (!IsStringValid(place.userId) || !IsStringValid(place.name)) {
-
-        return false
-    }
-
-    // if (place.latitude && place.longitude) {
-        
-    //     const invalidLatitude = place.latitude.toString().split(".")[1]?.length < 13;
-    //     const invalidLongitude = place.latitude.toString().split(".")[1]?.length != 13;
-
-    //     if (invalidLatitude || invalidLongitude) {
-            
-    //         return false
-    //     }
-    // }
-
-    return true;
+    
+    return !IsStringValid(place.userId) || !IsStringValid(place.name) ? false : true;
 }
 
 export const PlaceModelDecorator = (place: Place) => {
