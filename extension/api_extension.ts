@@ -1,5 +1,6 @@
 import { Place, User } from "@prisma/client";
 import { IsStringValid } from "./string_extension";
+import { IModelValidatorResponse } from "@/model/responseModel";
 
 export const GetLastVariableFromPath = (url: string) => {
     return url.slice(url.lastIndexOf("/") + 1);
@@ -21,9 +22,91 @@ export const GetCustomGeoLocationOption = (timeOutSec?: number | undefined) => {
 }
 
 // place object model validator
-export const PlaceModelValidator = (place: Place) => {
+export const PlaceModelCreateValidator = (place: Place, alluserPlace: Place[]) => {
     
-    return !IsStringValid(place.userId) || !IsStringValid(place.name) ? false : true;
+    let response: IModelValidatorResponse = {
+        isValid: true
+    }
+
+    if (!IsStringValid(place.userId) || !IsStringValid(place.name)) {
+
+        response.isValid = false;
+        return response;
+    }
+
+    if (alluserPlace.some(e => e.name == place.name)) {
+
+        response.isValid = false;
+        response.message = "duplicate place name";
+        return response;
+    }
+
+    return response;
+}
+
+export const PlaceModelUpdateValidator = (place: Place, alluserPlace: Place[]) => {
+    
+    let response: IModelValidatorResponse = {
+        isValid: true
+    }
+
+    if (!IsStringValid(place.userId) || !IsStringValid(place.name)) {
+
+        response.isValid = false;
+        return response;
+    }
+
+    const placeDuplicateName = alluserPlace.filter(e => e.name == place.name).length
+
+    if (placeDuplicateName != 0) {
+
+        response.isValid = false;
+        response.message = "duplicate place name";
+        return response;
+    }
+
+    return response;
+}
+
+export const UserModelCreateValidator = (user: User, allUsers: User[]) => {
+
+    let response: IModelValidatorResponse = {
+        isValid: true
+    }
+
+    if (IsStringValid(user.password)) {
+        response.isValid = false;
+        response.message = "invalid empty password"; 
+    }
+
+    if (allUsers.some(e => e.name == user.name)) {
+        response.isValid = false;
+        response.message = "duplicate username";
+    }
+
+    return response;
+}
+
+export const UserModelUpdateValidator = (user: User, allUsers: User[]) => {
+
+    let response: IModelValidatorResponse = {
+        isValid: true
+    }
+
+    if (IsStringValid(user.password)) {
+        response.isValid = false;
+        response.message = "invalid empty password"; 
+    }
+
+    const userDuplicateNameCount = allUsers.filter(e => e.name = user.name).length;
+    console.log(userDuplicateNameCount)
+
+    if (userDuplicateNameCount != 0) {
+        response.isValid = false;
+        response.message = "duplicate username";
+    }
+
+    return response;
 }
 
 export const PlaceModelDecorator = (place: Place) => {
