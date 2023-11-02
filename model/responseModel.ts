@@ -8,3 +8,9 @@ export interface ISetupIndexedDBModel {
     userStore: IDBObjectStore,
     mapStore: IDBObjectStore
 }
+
+export interface IModelValidatorResponse {
+    isValid: boolean,
+    message?: string
+}
+

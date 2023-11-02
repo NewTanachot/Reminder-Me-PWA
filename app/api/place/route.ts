@@ -1,41 +1,50 @@
-import { PlaceModelDecorator, PlaceModelValidator } from "@/extension/api_extension";
+import { PlaceModelDecorator, PlaceModelCreateValidator, PlaceModelUpdateValidator } from "@/extension/api_extension";
 import { ResponseModel } from "@/model/responseModel";
 import { Place } from "@prisma/client";
 import { NextResponse } from "next/server";
 import prisma from "@/prisma";
+import { IsStringValid } from "@/extension/string_extension";
+
+const GetPlace = async () => {
+    return await prisma.place.findMany({
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+}
+
+const GetPlaceByUserId = async (userId: string) => {
+    return await prisma.place.findMany({
+        where: {
+            userId: userId
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+}
 
 export async function GET(request: Request): Promise<NextResponse> {
 
     // get body of request
     const userIdParam = new URL(request.url).searchParams.get("userId");
-    let place: Place | Place[] | null;
+    let place: Place[];
 
     try 
     {
         // check param is exist or not 
-        if (userIdParam && userIdParam != "" && userIdParam != " ") 
+        if (IsStringValid(userIdParam)) 
         {
             // find place from database
-            place = await prisma.place.findMany({
-                where: {
-                    userId: userIdParam
-                },
-                orderBy: {
-                    createdAt: "desc"
-                }
-            });
+            place = await GetPlaceByUserId(userIdParam as string);
         }
         else
         {
             // find place from database
-            place = await prisma.place.findMany({
-                orderBy: {
-                    createdAt: "desc"
-                }
-            });
+            place = await GetPlace();
         }
 
-        return NextResponse.json(place == null ? <Place>{} : place, { status: 200 });
+        return NextResponse.json(place, { status: 200 });
     }
     catch (error) 
     {
@@ -50,14 +59,15 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     // get body of request
     const placeCreate: Place = await request.json();
+    const allUserPlace = await GetPlaceByUserId(placeCreate.userId);
 
     // validation request model
-    const isValid = PlaceModelValidator(placeCreate);
+    const validateResult = PlaceModelCreateValidator(placeCreate, allUserPlace);
 
-    if (!isValid) {
+    if (!validateResult.isValid) {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[POST Place]: Invalid request."
+            message: `[POST Place]: ${validateResult.message ?? "Invalid request"}.`
         }, { status: 400 });
     }
 
@@ -76,8 +86,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[POST Place]: Create place fail. Maybe duplicate name - " + error 
-        }, { status: 400 });
+            message: "[POST Place]: Create place fail. - " + error 
+        }, { status: 500 });
     }
 }
 
@@ -85,14 +95,15 @@ export async function PUT(request: Request): Promise<NextResponse> {
 
     // get body of request
     const placeUpdate: Place = await request.json();
+    const allUserPlace = await GetPlaceByUserId(placeUpdate.userId);
 
     // validation request model
-    const isValid = PlaceModelValidator(placeUpdate);
+    const validateResult = PlaceModelUpdateValidator(placeUpdate, allUserPlace);
 
-    if (!isValid) {
+    if (!validateResult.isValid) {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[PUT Place]: Invalid request."
+            message: `[PUT Place]: ${validateResult.message ?? "Invalid request"}.`
         }, { status: 400 });
     }
 
@@ -115,6 +126,6 @@ export async function PUT(request: Request): Promise<NextResponse> {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
             message: "[PUT Place]: Update place fail. - " + error
-        }, { status: 400 });
+        }, { status: 500 });
     }
 }

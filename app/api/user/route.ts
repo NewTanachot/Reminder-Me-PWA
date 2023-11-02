@@ -1,19 +1,23 @@
 import { NextResponse } from 'next/server';
 import { ResponseModel } from '@/model/responseModel';
 import { EncryptString, DecryptString } from '@/extension/string_extension';
-import { UserModelDecorator } from '@/extension/api_extension';
+import { UserModelCreateValidator, UserModelDecorator, UserModelUpdateValidator } from '@/extension/api_extension';
 import { User } from '@prisma/client';
 import prisma from "@/prisma";
 
 // get secret key from .env
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
 
+const GetAllUsers = async () => {
+    return await prisma.user.findMany();
+}
+
 export async function GET() : Promise<NextResponse> {
 
     try 
     {
         // get user from database
-        const user = await prisma.user.findMany();
+        const user = await GetAllUsers();
 
         // decrypt password string
         // user.map(e => {
@@ -35,9 +39,20 @@ export async function POST(request: Request) : Promise<NextResponse> {
 
     // get body of request
     const userCreateFromBody: User = await request.json();
+    const allUsers = await GetAllUsers();
 
     // decorated user (Clean data)
     const decoratedUser = UserModelDecorator(userCreateFromBody);
+
+    // validate user request
+    const validateResult = UserModelCreateValidator(decoratedUser, allUsers);
+
+    if (!validateResult.isValid) {
+        return NextResponse.json(<ResponseModel> { 
+            isSuccess: false, 
+            message: `[POST User]: ${validateResult.message ?? "Invalid input"}.`
+        }, { status: 400 });
+    }
 
     const [ encryptPassword, IV_Key ] = EncryptString(decoratedUser.password, secretKey);
     decoratedUser.password = encryptPassword
@@ -56,8 +71,8 @@ export async function POST(request: Request) : Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[POST User]: Create user fail. Maybe duplicate name - " + error
-        }, { status: 400 });
+            message: "[POST User]: Create user fail. - " + error
+        }, { status: 500 });
     }
 };
 
@@ -65,20 +80,19 @@ export async function PUT(request: Request) : Promise<NextResponse> {
 
     // get body of request
     const userUpdateFromBody: User = await request.json();
+    const allUsers = await GetAllUsers();
 
     // decorated user (Clean data)
     const decoratedUser = UserModelDecorator(userUpdateFromBody);
 
-    // check if userName exist
-    const countIfNameExist = await prisma.user.count({
-        where: {
-            name: decoratedUser.name
-        }
-    });
+    // validate user request
+    const validateResult = UserModelUpdateValidator(decoratedUser, allUsers);
 
-    if (countIfNameExist !== 0)
-    {
-        return NextResponse.json(<ResponseModel> { isSuccess: false, message: "[PUT User]: Duplicate userName." }, { status: 400 });
+    if (!validateResult.isValid) {
+        return NextResponse.json(<ResponseModel> { 
+            isSuccess: false, 
+            message: `[PUT User]: ${validateResult.message ?? "Invalid input"}.`
+        }, { status: 400 });
     }
 
     // encrypt password
@@ -102,7 +116,7 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     {
         return NextResponse.json(<ResponseModel> { 
             isSuccess: false, 
-            message: "[PUT User]: Update user fail. Maybe duplicate name - " + error
-        }, { status: 400 });
+            message: "[PUT User]: Update user fail. - " + error
+        }, { status: 500 });
     }
 };
