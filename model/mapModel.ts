@@ -1,5 +1,7 @@
 import { MapStyleTitleEnum } from "./enumModel";
 import { IBaseLocation } from "./subentityModel";
+import userIcon from '@/public/image/map-icon/user-icon.png';
+import userAltIcon from '@/public/image/map-icon/user-yellow-icon.png';
 
 export interface IContainerClass {
     notMapClass: string[],
@@ -15,26 +17,58 @@ export class MapStyleTitle {
     public static dark = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
     public static satellite = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
     public static bright = "https://api.maptiler.com/maps/bright/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo"
-
     
-    public static getMaptitle(mapName: MapStyleTitleEnum, isDarkTheme: boolean) {
+    public static LightMapAsset: IMapAsset = {
+        mapTitle: this.light,
+        mapUserIcon: userIcon.src
+    };
+
+    public static DarkMapAsset: IMapAsset = {
+        mapTitle: this.dark,
+        mapUserIcon: userAltIcon.src
+    };
+
+    public static getMaptitle(mapName: MapStyleTitleEnum, isDarkTheme: boolean): IMapAsset {
         switch (mapName) {
+
             case MapStyleTitleEnum.Original:
-                return this.original;
+                return {
+                    mapTitle: this.original,
+                    mapUserIcon: userIcon.src
+                };
+
             case MapStyleTitleEnum.Clean:
-                return this.clean;    
+                return {
+                    mapTitle: this.clean,
+                    mapUserIcon: userIcon.src
+                };
+
             case MapStyleTitleEnum.Light:
-                return this.light;    
+                return this.LightMapAsset;
+
             case MapStyleTitleEnum.Dark:
-                return this.dark;    
+                return this.DarkMapAsset;
+
             case MapStyleTitleEnum.Satellite:
-                return this.satellite;    
+                return {
+                    mapTitle: this.satellite,
+                    mapUserIcon: userAltIcon.src
+                };
+
             case MapStyleTitleEnum.Bright:
-                return this.bright;    
+                return {
+                    mapTitle: this.bright,
+                    mapUserIcon: userIcon.src
+                };
+
             case MapStyleTitleEnum.Sync:
-                return isDarkTheme ? this.dark : this.light;
+                return isDarkTheme ? this.DarkMapAsset : this.LightMapAsset;
+
             default:
-                return this.default;
+                return {
+                    mapTitle: this.default,
+                    mapUserIcon: userIcon.src
+                };
         }
     }
 }
@@ -44,4 +78,9 @@ export interface IMarker {
     markerMessage?: string,
     markerDate?: string,
     markerLocation: IBaseLocation
-} 
+}
+
+export interface IMapAsset {
+    mapTitle: string,
+    mapUserIcon: string
+}

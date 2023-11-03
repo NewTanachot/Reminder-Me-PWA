@@ -545,7 +545,7 @@ export default function Home() {
                                     return <Map
                                         placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
-                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                        mapAsset={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                     ></Map>
 
@@ -554,7 +554,7 @@ export default function Home() {
                                         user={user.current}
                                         changeCurrentPage={ChangeCurrentPage}
                                         places={places}
-                                        mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                        mapAsset={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                         baseUrlApi={baseUrlApi}
                                         containerClassObject={containerClassObject}
@@ -568,7 +568,7 @@ export default function Home() {
                                             places={places}
                                             cardData={currentUpdateCard.current}
                                             changeCurrentPage={ChangeCurrentPage}
-                                            mapTheme={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                            mapAsset={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                             isDarkTheme={isDarkTheme.current}
                                             baseUrlApi={baseUrlApi}
                                             containerClassObject={containerClassObject}

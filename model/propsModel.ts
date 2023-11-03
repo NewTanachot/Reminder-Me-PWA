@@ -1,5 +1,5 @@
 import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from "./enumModel"
-import { IContainerClass, IMarker } from "./mapModel";
+import { IContainerClass, IMapAsset, IMarker } from "./mapModel";
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
@@ -49,7 +49,7 @@ export interface IPlaceCardProps extends IBaseProps, IBaseApiUrl {
 
 export interface IAddListProps extends IBaseProps, IBaseApiUrl {
     user: CurrentUserRef,
-    mapTheme: string,
+    mapAsset: IMapAsset,
     places?: IDisplayPlace[],
     containerClassObject: IContainerClass,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
@@ -58,7 +58,7 @@ export interface IAddListProps extends IBaseProps, IBaseApiUrl {
 
 export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
     user: CurrentUserRef,
-    mapTheme: string,
+    mapAsset: IMapAsset,
     places?: IDisplayPlace[],
     containerClassObject: IContainerClass,
     cardData: IDisplayPlace,
@@ -121,7 +121,7 @@ export interface INotFoundProps extends IBaseProps {}
 export interface IMapProps extends IBaseProps {
     placeMarkers?: IMarker[],
     user: CurrentUserRef,
-    mapTheme: string
+    mapAsset: IMapAsset
 }
 
 export interface IMapSettingCardProps extends IBaseProps { 

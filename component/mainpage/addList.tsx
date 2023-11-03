@@ -15,7 +15,7 @@ export default function AddList({
     user, 
     places, 
     changeCurrentPage, 
-    mapTheme, 
+    mapAsset, 
     isDarkTheme, 
     baseUrlApi, 
     containerClassObject,
@@ -189,7 +189,7 @@ export default function AddList({
     const MapPage = <MapModal
         placeMarkers={GetPlaceMarkers(places)}
         user={user}
-        mapTheme={mapTheme}
+        mapAsset={mapAsset}
         newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
         backtoFormPage={BackToFormPage}
         addLocationDataToRef={AddLocationDataToRef}
