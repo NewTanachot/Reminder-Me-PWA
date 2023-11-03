@@ -6,22 +6,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-const userMarkerIcon = L.icon({
-    iconUrl: userIcon.src,
-    iconSize: [30, 30],
-    // shadowUrl: iconShadow.src
-});
-
-const placeMarkerIcon = L.icon({
-    iconUrl: placeIcon.src,
-    iconSize: [18, 29],
-    // shadowUrl: iconShadow.src
-});
-
-export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapProps) {
+export default function Map({ placeMarkers, user, mapAsset }: IMapProps) {
 
     const userMarker: IMarker = {
         markerName: user.userName,
@@ -30,6 +16,18 @@ export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapP
             longitude: user.userLocation.longitude
         }
     }
+
+    // set user icon
+    const userMarkerIcon = L.icon({
+        iconUrl: mapAsset.mapUserIcon,
+        iconSize: [30, 30],
+    });
+    
+    // set map icon
+    const placeMarkerIcon = L.icon({
+        iconUrl: placeIcon.src,
+        iconSize: [18, 29],
+    });
 
     return (
         <MapContainer 
@@ -41,7 +39,7 @@ export default function Map({ placeMarkers, user, mapTheme, isDarkTheme }: IMapP
         >
             <TileLayer
                 attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-                url={mapTheme}
+                url={mapAsset.mapTitle}
             />
             <Marker 
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}

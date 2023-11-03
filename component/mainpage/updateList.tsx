@@ -18,7 +18,7 @@ export default function UpdateList({
     changeCurrentPage, 
     containerClassObject,
     setIsMapPage,
-    mapTheme,
+    mapAsset,
     isDarkTheme, 
     baseUrlApi
 }: IUpdateListProps) {
@@ -197,7 +197,7 @@ export default function UpdateList({
     const MapPage = <MapModal
         placeMarkers={GetPlaceMarkers(places?.filter(e => e.id != cardData.id))}
         user={user}
-        mapTheme={mapTheme}
+        mapAsset={mapAsset}
         newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
         backtoFormPage={BackToFormPage}
         addLocationDataToRef={AddLocationDataToRef}

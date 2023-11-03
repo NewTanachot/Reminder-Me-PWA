@@ -7,14 +7,8 @@ import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
-import userIcon from '@/public/image/map-icon/user-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useRef, useState } from 'react';
-
-const userMarkerIcon = L.icon({
-    iconUrl: userIcon.src,
-    iconSize: [30, 30]
-});
 
 const placeMarkerIcon = L.icon({
     iconUrl: placeIcon.src,
@@ -31,7 +25,7 @@ export default function MapModal({
     user, 
     newMarkerInitLocation,
     backtoFormPage, 
-    mapTheme, 
+    mapAsset, 
     addLocationDataToRef,
     isDarkTheme
 }: IMapModalProps) {
@@ -102,6 +96,13 @@ export default function MapModal({
         cancleBtnClass = "btn-secondary";
     }
 
+    // set map user marker
+    const userMarkerIcon = L.icon({
+        iconUrl: mapAsset.mapUserIcon,
+        iconSize: [30, 30]
+    });
+    
+
     return (
         <>
             <MapContainer 
@@ -112,7 +113,7 @@ export default function MapModal({
                 attributionControl={false}
             >
                 <TileLayer
-                    url={mapTheme}
+                    url={mapAsset.mapTitle}
                 />
 
                 <Marker 

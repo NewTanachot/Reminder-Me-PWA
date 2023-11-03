@@ -86,11 +86,31 @@ export const OrderPlaceByDistance = (place: IDisplayPlace[], orderBy: CardOrderB
             break;
 
         case CardOrderByEnum.Distance:
-            result = place.sort((a,b) => a.locationDistance - b.locationDistance);
+
+            var placeWithLocation: IDisplayPlace[] = [];
+            var placeWithOutLocation: IDisplayPlace[] = [];
+
+            place.forEach(e => {
+                e.latitude && e.longitude ? placeWithLocation.push(e) : placeWithOutLocation.push(e);
+            });
+
+            var sortedPlace = placeWithLocation.sort((a,b) => a.locationDistance - b.locationDistance);
+            result = sortedPlace.concat(placeWithOutLocation);
+
             break;
 
         case CardOrderByEnum.DistanceDESC:
-            result = place.sort((a,b) => b.locationDistance - a.locationDistance);
+
+            var placeWithLocation: IDisplayPlace[] = [];
+            var placeWithOutLocation: IDisplayPlace[] = [];
+
+            place.forEach(e => {
+                e.latitude && e.longitude ? placeWithLocation.push(e) : placeWithOutLocation.push(e);
+            });
+
+            var sortedPlace = placeWithLocation.sort((a,b) => b.locationDistance - a.locationDistance);
+            result = sortedPlace.concat(placeWithOutLocation);
+
             break;
 
         default: 
