@@ -1,5 +1,6 @@
 import { CardOrderByEnum } from "@/model/enumModel";
 import { IUserInfoProps } from "@/model/propsModel";
+import Link from "next/link";
 
 export default function UserInfo({ username, location, isDarkTheme, currentCardOrder, changeCardOrderByHandler }: IUserInfoProps) {
 
@@ -43,9 +44,12 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
                     <option value={CardOrderByEnum.DistanceDESC}>Long - Short</option>
                     <option value={CardOrderByEnum.Distance}>Short - Long</option>
                 </select>
-                <button className={`btn btn-sm ${btnColorTheme} w-25`}>
+                <Link 
+                    className={`btn btn-sm ${btnColorTheme} w-25`}
+                    href="/testpage"
+                >
                     <i className="fa-solid fa-map-location-dot"></i>
-                </button>
+                </Link>
             </div>
         </div>
     )
