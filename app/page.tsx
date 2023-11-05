@@ -1,13 +1,14 @@
 'use client';
 
-import {IsStringValid} from '@/extension/string_extension';
-import {CurrentUserRef, ICurrentPage, IDisplayPlace} from '@/model/useStateModel';
-import {ISetupIndexedDBModel, ResponseModel} from '@/model/responseModel';
-import {Place} from '@prisma/client';
-import {useEffect, useRef, useState} from 'react';
-import {CalculatePlaceForDisplay, GetPlaceMarkers, OrderPlaceByDistance} from '@/extension/calculation_extension';
-import {CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum} from '@/model/enumModel';
-import {GetCustomGeoLocationOption} from '@/extension/api_extension';
+import packageJson from '@/package.json';
+import { IsStringValid } from '@/extension/string_extension';
+import { CurrentUserRef, ICurrentPage, IDisplayPlace } from '@/model/useStateModel';
+import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
+import { Place} from '@prisma/client';
+import { useEffect, useRef, useState } from 'react';
+import { CalculatePlaceForDisplay, GetPlaceMarkers, OrderPlaceByDistance } from '@/extension/calculation_extension';
+import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
+import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
 import Login from '@/component/authPageAsset/login';
@@ -19,8 +20,8 @@ import Setting from '@/component/mainpage/setting';
 import UpdateList from '@/component/mainpage/updateList';
 import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
-import {IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB} from '@/model/indexedDbModel';
-import {IChangeCurrentPageRequest} from "@/model/requestModel";
+import { IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
+import { IChangeCurrentPageRequest } from "@/model/requestModel";
 import { IContainerClass, MapStyleTitle } from '@/model/mapModel';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 
@@ -34,8 +35,8 @@ const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_K
 const indexedDB_MapStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_MAP ?? "";
 const indexedDB_MapKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_MAP_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
-const softwareVersion: string = process.env.NEXT_PUBLIC_SOFTWARE_VERSION ?? "";
 const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
+const softwareVersion: string = packageJson.version
 
 // Initialize global const variable
 const setDefaultDarkTheme: boolean = true;
