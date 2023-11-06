@@ -9,7 +9,7 @@ const googleFont = Athiti({
     display: "swap"
 });
 
-export default function PlaceMapPopup({ name, message, date }: IPlaceMapPopupProps) {
+export default function PlaceMapPopup({ name, message, date, zoomInHandler }: IPlaceMapPopupProps) {
 
     return <Popup>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
@@ -27,6 +27,7 @@ export default function PlaceMapPopup({ name, message, date }: IPlaceMapPopupPro
             <div className='card-footer text-secondary text-card-footer-size text-center p-0'>
                 <span 
                     className='text-decoration-underline'
+                    onClick={() => zoomInHandler(name)}
                 >
                     zoom in
                 </span>
