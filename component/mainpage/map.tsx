@@ -6,6 +6,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
+import UserMapPopup from '../mapAsset/userMapPopup';
+import PlaceMapPopup from '../mapAsset/placeMapPopup';
 
 export default function Map({ placeMarkers, user, mapAsset }: IMapProps) {
 
@@ -45,11 +47,9 @@ export default function Map({ placeMarkers, user, mapAsset }: IMapProps) {
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}
                 icon={userMarkerIcon}
             >
-                <Popup>
-                    <span className='text-cobalt-blue text-cursive'>
-                        {userMarker.markerName} is here! 
-                    </span>
-                </Popup>
+                <UserMapPopup
+                    userName={userMarker.markerName}
+                ></UserMapPopup>
             </Marker>
             {
                 placeMarkers 
@@ -59,25 +59,11 @@ export default function Map({ placeMarkers, user, mapAsset }: IMapProps) {
                             position={[marker.markerLocation.latitude, marker.markerLocation.longitude]}
                             icon={placeMarkerIcon}
                         >
-                            <Popup>
-                                <span className='text-cobalt-blue text-cursive'>
-                                    {marker.markerName} 
-                                    {
-                                        marker.markerDate
-                                            ? <span className='text-danger'>
-                                                <br /> {marker.markerDate}
-                                            </span>
-                                            : <></>
-                                    } 
-                                    {
-                                        marker.markerMessage
-                                            ? <span className='text-secondary'>
-                                                <br /> {marker.markerMessage}
-                                            </span>
-                                            : <></>
-                                    }
-                                </span>
-                            </Popup>
+                            <PlaceMapPopup
+                                name={marker.markerName}
+                                message={marker.markerMessage}
+                                date={marker.markerDate}
+                            ></PlaceMapPopup>
                         </Marker>
                     )
                     : <></>

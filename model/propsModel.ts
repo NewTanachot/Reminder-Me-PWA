@@ -134,3 +134,13 @@ export interface IMapModalProps extends IMapProps {
     addLocationDataToRef: (location: IBaseLocation | undefined) => void,
     backtoFormPage: () => void
 }
+
+export interface IUserMapPopupProps {
+    userName: string
+}
+
+export interface IPlaceMapPopupProps {
+    name: string,
+    message?: string,
+    date?: string,   
+}

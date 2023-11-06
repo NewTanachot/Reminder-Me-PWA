@@ -199,8 +199,16 @@ html, body {
     font-size: 12px;
 }
 
-.text-cursive {
+/* #endregion */
+
+/* #region ------- [ Font Class ] ------- */
+
+.font-cursive {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.font-nato-thai {
+    font-family: "Noto Sans Thai"
 }
 
 /* #endregion */
@@ -259,4 +267,3 @@ html, body {
 }
 
 /* #endregion */
-
