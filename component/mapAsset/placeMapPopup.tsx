@@ -24,8 +24,12 @@ export default function PlaceMapPopup({ name, message, date }: IPlaceMapPopupPro
                     date: <span className='text-cornflowerblue'>{IsStringValid(date) ? date : "-"}</span>
                 </div>
             </div>
-            <div className='card-footer text-card-footer-size text-end p-0'>
-                zoom in
+            <div className='card-footer text-secondary text-card-footer-size text-center p-0'>
+                <span 
+                    className='text-decoration-underline'
+                >
+                    zoom in
+                </span>
             </div>
         </div>
     </Popup>
