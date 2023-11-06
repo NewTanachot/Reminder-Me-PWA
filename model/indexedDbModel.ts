@@ -1,4 +1,4 @@
-import { MapStyleTitleEnum } from "./enumModel"
+import { MapTitleEnum } from "./enumModel"
 
 export interface IUserIndexedDB {
     userId: string,
@@ -10,5 +10,5 @@ export interface IThemeIndexedDB {
 }
 
 export interface IMapIndexedDB {
-    mapTheme: MapStyleTitleEnum
+    mapTheme: MapTitleEnum
 }

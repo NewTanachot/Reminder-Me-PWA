@@ -1,4 +1,4 @@
-import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from "./enumModel"
+import { CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from "./enumModel"
 import { IContainerClass, IMapAsset, IMarker } from "./mapModel";
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
@@ -73,8 +73,8 @@ export interface ISettingProps extends IBaseProps {
     userLogoutHandler: () => void,
     softwareVersion: string,
     developedBy: string,
-    currentMap: MapStyleTitleEnum,
-    changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
+    currentMap: MapTitleEnum,
+    changeCurrentMapHandler: (mapStyle: MapTitleEnum) => void
 }
 
 export interface ILoginProps extends IBaseProps, IBaseApiUrl {
@@ -125,12 +125,24 @@ export interface IMapProps extends IBaseProps {
 }
 
 export interface IMapSettingCardProps extends IBaseProps { 
-    currentMap: MapStyleTitleEnum,
-    changeCurrentMapHandler: (mapStyle: MapStyleTitleEnum) => void
+    currentMap: MapTitleEnum,
+    changeCurrentMapHandler: (mapStyle: MapTitleEnum) => void
 }
 
 export interface IMapModalProps extends IMapProps { 
     newMarkerInitLocation?: IBaseLocation,
     addLocationDataToRef: (location: IBaseLocation | undefined) => void,
     backtoFormPage: () => void
+}
+
+export interface IUserMapPopupProps {
+    userName: string,
+    zoomInHandler: (markername: string) => void
+}
+
+export interface IPlaceMapPopupProps {
+    name: string,
+    message?: string,
+    date?: string,   
+    zoomInHandler: (markername: string) => void
 }

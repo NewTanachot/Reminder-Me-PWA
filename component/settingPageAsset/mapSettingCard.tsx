@@ -1,13 +1,13 @@
-import { MapStyleTitleEnum } from "@/model/enumModel";
+import { MapTitleEnum } from "@/model/enumModel";
 import { IMapSettingCardProps } from "@/model/propsModel";
 
 export default function MapSettingCard({ currentMap, changeCurrentMapHandler, isDarkTheme }: IMapSettingCardProps) {
 
-    const currentMapString = MapStyleTitleEnum[currentMap];
+    const currentMapString = MapTitleEnum[currentMap];
 
     const ChangeCurrentMapHandler = (event : React.ChangeEvent<HTMLSelectElement>) => {
 
-        const castStringToEnum = +Object.values(MapStyleTitleEnum)[Object.keys(MapStyleTitleEnum).indexOf(event.target.value)];
+        const castStringToEnum = +Object.values(MapTitleEnum)[Object.keys(MapTitleEnum).indexOf(event.target.value)];
         changeCurrentMapHandler(castStringToEnum);
     }
 
@@ -52,7 +52,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                         onChange={ChangeCurrentMapHandler}
                     >
                     {
-                        Object.values(MapStyleTitleEnum).filter((mapTitle) => isNaN(Number(mapTitle))).map((mapTitle, index) =>
+                        Object.values(MapTitleEnum).filter((mapTitle) => isNaN(Number(mapTitle))).map((mapTitle, index) =>
                             <option 
                                 key={index}
                                 value={mapTitle}

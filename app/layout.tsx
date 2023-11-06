@@ -11,6 +11,7 @@ const googleFont = Athiti({
     // weight: '400',
     weight: '600',
     subsets: ['latin'],
+    display: "swap"
 });
 
 export const metadata: Metadata = {

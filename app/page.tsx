@@ -7,7 +7,7 @@ import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
 import { Place} from '@prisma/client';
 import { useEffect, useRef, useState } from 'react';
 import { CalculatePlaceForDisplay, GetPlaceMarkers, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { CardOrderByEnum, MapStyleTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
+import { CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
 import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
@@ -22,7 +22,7 @@ import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
 import { IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
 import { IChangeCurrentPageRequest } from "@/model/requestModel";
-import { IContainerClass, MapStyleTitle } from '@/model/mapModel';
+import { IContainerClass, MapMetaData } from '@/model/mapModel';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 
 // Initialize .ENV variable
@@ -40,7 +40,7 @@ const softwareVersion: string = packageJson.version
 
 // Initialize global const variable
 const setDefaultDarkTheme: boolean = true;
-const setDefaultMapTheme = MapStyleTitleEnum.Default;
+const setDefaultMapTheme = MapTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
 const containerClassObject: IContainerClass = {
     notMapClass: ["pt-4", "pb-5", "px-3"],
@@ -61,7 +61,7 @@ export default function Home() {
     const isMountRound = useRef<boolean>(true);
     const isForceFetch = useRef<boolean>(false);
     const isDarkTheme = useRef<boolean>(setDefaultDarkTheme);
-    const mapTheme = useRef<MapStyleTitleEnum>(setDefaultMapTheme);
+    const mapTheme = useRef<MapTitleEnum>(setDefaultMapTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
     const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString())
 
@@ -449,7 +449,7 @@ export default function Home() {
         ChangeCurrentPage({ page: PwaCurrentPageEnum.UpdateList });
     };
 
-    const ChangeCurrentMapHandler = async (mapStyle: MapStyleTitleEnum) => {
+    const ChangeCurrentMapHandler = async (mapStyle: MapTitleEnum) => {
 
         // change map style ref variable
         mapTheme.current = mapStyle;
@@ -546,7 +546,7 @@ export default function Home() {
                                     return <Map
                                         placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
-                                        mapAsset={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                        mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                     ></Map>
 
@@ -555,7 +555,7 @@ export default function Home() {
                                         user={user.current}
                                         changeCurrentPage={ChangeCurrentPage}
                                         places={places}
-                                        mapAsset={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                        mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                         baseUrlApi={baseUrlApi}
                                         containerClassObject={containerClassObject}
@@ -569,7 +569,7 @@ export default function Home() {
                                             places={places}
                                             cardData={currentUpdateCard.current}
                                             changeCurrentPage={ChangeCurrentPage}
-                                            mapAsset={MapStyleTitle.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                            mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                             isDarkTheme={isDarkTheme.current}
                                             baseUrlApi={baseUrlApi}
                                             containerClassObject={containerClassObject}
