@@ -2,13 +2,15 @@
 
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
-import { IMarker } from '@/model/mapModel';
+import { IMarker, MapMetaData } from '@/model/mapModel';
 import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useRef, useState } from 'react';
+import PlaceMapPopup from './placeMapPopup';
+import UserMapPopup from './userMapPopup';
 
 const placeMarkerIcon = L.icon({
     iconUrl: placeIcon.src,
@@ -34,8 +36,8 @@ export default function MapModal({
 
     //  set center location
     const centerLocation: IBaseLocation = newMarkerInitLocation ? newMarkerInitLocation : user.userLocation;
-     // Create a ref for the markers.
-    const markersRef = useRef<L.Marker<any>>();
+    const markersRef = useRef<L.Marker<any>>(); // Create a ref for the markers.
+    const mapRef = useRef<L.Map>(); // create map ref value
 
     // create new marker component
     const NewMarker = () => {
@@ -74,6 +76,29 @@ export default function MapModal({
         });
     }
 
+    const ZoomMarkerHandler = (markerName: string, isZoomIn?: boolean) => {
+
+        // find place by name
+        const marker = placeMarkers?.find(e => e.markerName == markerName);
+
+        if (marker) {
+            const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
+            const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+
+            // fly to center marker location
+            mapRef.current?.flyTo(centerLocation, zoom);
+        }
+    };
+
+    const ZoomUserMarkerHandler = (isZoomIn?: boolean) => {
+        
+        const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
+        const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+
+        // fly to center marker location
+        mapRef.current?.flyTo(centerLocation, zoom);
+    };
+
     // create user marker model
     const userMarker: IMarker = {
         markerName: user.userName,
@@ -111,6 +136,7 @@ export default function MapModal({
                 zoom={11} 
                 scrollWheelZoom={true}
                 attributionControl={false}
+                ref={map => mapRef.current = map ?? undefined}
             >
                 <TileLayer
                     url={mapAsset.mapTitle}
@@ -122,22 +148,11 @@ export default function MapModal({
                     // Add the marker to the ref - [ you can ref component in useRef like this ]
                     ref={(marker) => markersRef.current = marker ?? undefined}
                 >
-                    <Popup>
-                        <span className='text-cobalt-blue text-cursive'>
-                            {userMarker.markerName} is here! 
-                            <br />
-                            <span className='text-secondary'>
-                                click&nbsp;
-                                <span 
-                                    className='text-decoration-underline text-danger'
-                                    onClick={MarkNewLocationAtUser}
-                                >
-                                    here
-                                </span> 
-                                &nbsp;to mark at this location
-                            </span>
-                        </span>
-                    </Popup>
+                    <UserMapPopup
+                        userName={user.userName}
+                        markNewLocationAtUser={MarkNewLocationAtUser}
+                        zoomUserMarkerHandler={ZoomUserMarkerHandler}
+                    ></UserMapPopup>
                 </Marker>
 
                 <NewMarker></NewMarker>
@@ -150,25 +165,12 @@ export default function MapModal({
                                 position={[marker.markerLocation.latitude, marker.markerLocation.longitude]}
                                 icon={placeMarkerIcon}
                             >
-                                <Popup>
-                                    <span className='text-cobalt-blue text-cursive'>
-                                        {marker.markerName} 
-                                        {
-                                            marker.markerDate
-                                                ? <span className='text-danger'>
-                                                    <br /> {marker.markerDate}
-                                                </span>
-                                                : <></>
-                                        } 
-                                        {
-                                            marker.markerMessage
-                                                ? <span className='text-secondary'>
-                                                    <br /> {marker.markerMessage}
-                                                </span>
-                                                : <></>
-                                        }
-                                    </span>
-                                </Popup>
+                                <PlaceMapPopup
+                                    name={marker.markerName}
+                                    message={marker.markerMessage}
+                                    date={marker.markerDate}
+                                    zoomHandler={ZoomMarkerHandler}
+                                ></PlaceMapPopup>
                             </Marker>
                         )
                         : <></>

@@ -137,12 +137,23 @@ export interface IMapModalProps extends IMapProps {
 
 export interface IUserMapPopupProps {
     userName: string,
-    zoomInHandler: (markername: string) => void
+    markNewLocationAtUser?: () => void,
+    zoomUserMarkerHandler: (isZoomIn?: boolean) => void,
 }
 
 export interface IPlaceMapPopupProps {
     name: string,
     message?: string,
     date?: string,   
-    zoomInHandler: (markername: string) => void
+    zoomHandler: (markername: string, isZoomIn?: boolean) => void
+}
+
+export interface IMapPopupFooterProps {
+    name: string,
+    zoomHandler: (markername: string, isZoomIn?: boolean) => void,
+}
+
+export interface IUserPopupFooterProps {
+    markNewLocationAtUser?: () => void
+    zoomUserMarkerHandler: (isZoomIn?: boolean) => void,
 }
