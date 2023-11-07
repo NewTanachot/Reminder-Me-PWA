@@ -9,6 +9,7 @@ import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import UserMapPopup from '../mapAsset/userMapPopup';
 import PlaceMapPopup from '../mapAsset/placeMapPopup';
 import { useRef } from 'react';
+import { IBaseLocation } from '@/model/subentityModel';
 
 export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapProps) {
 
@@ -34,19 +35,28 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
         iconUrl: placeIcon.src,
         iconSize: [18, 29],
     });
-    
-    const ZoomInMarkerHandler = (markerName: string) => {
 
-        // find place bt name
+    const ZoomMarkerHandler = (markerName: string, isZoomIn?: boolean) => {
+
+        // find place by name
         const marker = placeMarkers?.find(e => e.markerName == markerName);
 
         if (marker) {
             const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
-            const zoom = MapMetaData.getMapZoom(true);
+            const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
         }
+    };
+
+    const ZoomUserMarkerHandler = (isZoomIn?: boolean) => {
+        
+        const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
+        const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+
+        // fly to center marker location
+        mapRef.current?.flyTo(centerLocation, zoom);
     };
 
     return (
@@ -68,7 +78,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
             >
                 <UserMapPopup
                     userName={userMarker.markerName}
-                    zoomInHandler={ZoomInMarkerHandler}
+                    zoomUserMarkerHandler={ZoomUserMarkerHandler}
                 ></UserMapPopup>
             </Marker>
             {
@@ -83,7 +93,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
                                 name={marker.markerName}
                                 message={marker.markerMessage}
                                 date={marker.markerDate}
-                                zoomInHandler={ZoomInMarkerHandler}
+                                zoomHandler={ZoomMarkerHandler}
                             ></PlaceMapPopup>
                         </Marker>
                     )
