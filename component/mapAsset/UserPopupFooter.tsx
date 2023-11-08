@@ -25,7 +25,7 @@ export default function UserPopupFooter({ zoomUserMarkerHandler, markNewLocation
             >
                 focus
             </span>
-            <></>
+            <MarkComponent></MarkComponent>
         </div>
     </div>
 }
