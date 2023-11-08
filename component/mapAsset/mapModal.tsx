@@ -6,7 +6,8 @@ import { IMarker, MapMetaData } from '@/model/mapModel';
 import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import newPlaceIcon from 'leaflet/dist/images/marker-icon.png';
+import placeWithDateIcon from '@/public/image/map-icon/marker-icon-orange.png';
+import newPlaceIcon from '@/public/image/map-icon/marker-icon-red.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useRef, useState } from 'react';
 import PlaceMapPopup from './placeMapPopup';
@@ -17,10 +18,16 @@ const placeMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
+const placeWithDateMarkerIcon = L.icon({
+    iconUrl: placeWithDateIcon.src,
+    iconSize: [18, 29],
+});
+
 const newPlaceMarkerIcon = L.icon({
     iconUrl: newPlaceIcon.src,
     iconSize: [18, 29],
 });
+
 
 export default function MapModal({ 
     placeMarkers, 
@@ -68,6 +75,8 @@ export default function MapModal({
 
         // close marker popup
         markersRef.current?.closePopup();
+
+        alert(user.userLocation.latitude + ', ' + user.userLocation.longitude);
 
         // set location value
         setNewMarkerPosition({
@@ -127,7 +136,6 @@ export default function MapModal({
         iconSize: [30, 30]
     });
     
-
     return (
         <>
             <MapContainer 
@@ -163,7 +171,7 @@ export default function MapModal({
                             <Marker 
                                 key={index}
                                 position={[marker.markerLocation.latitude, marker.markerLocation.longitude]}
-                                icon={placeMarkerIcon}
+                                icon={marker.markerDate ? placeWithDateMarkerIcon : placeMarkerIcon}
                             >
                                 <PlaceMapPopup
                                     name={marker.markerName}
