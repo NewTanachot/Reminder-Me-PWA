@@ -6,10 +6,21 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker, MapMetaData } from '@/model/mapModel';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
+import placeWithDateIcon from '@/public/image/map-icon/marker-icon-orange.png';
 import UserMapPopup from '../mapAsset/userMapPopup';
 import PlaceMapPopup from '../mapAsset/placeMapPopup';
 import { useRef } from 'react';
-import { IBaseLocation } from '@/model/subentityModel';
+
+// set mormal map icon
+const placeMarkerIcon = L.icon({
+    iconUrl: placeIcon.src,
+    iconSize: [18, 29],
+});
+
+const placeWithDateMarkerIcon = L.icon({
+    iconUrl: placeWithDateIcon.src,
+    iconSize: [18, 29],
+});
 
 export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapProps) {
 
@@ -28,12 +39,6 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
     const userMarkerIcon = L.icon({
         iconUrl: mapAsset.mapUserIcon,
         iconSize: [30, 30],
-    });
-    
-    // set map icon
-    const placeMarkerIcon = L.icon({
-        iconUrl: placeIcon.src,
-        iconSize: [18, 29],
     });
 
     const ZoomMarkerHandler = (markerName: string, isZoomIn?: boolean) => {
