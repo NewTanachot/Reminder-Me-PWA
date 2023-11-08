@@ -76,8 +76,6 @@ export default function MapModal({
         // close marker popup
         markersRef.current?.closePopup();
 
-        alert(user.userLocation.latitude + ', ' + user.userLocation.longitude);
-
         // set location value
         setNewMarkerPosition({
             latitude: user.userLocation.latitude,
@@ -141,7 +139,7 @@ export default function MapModal({
             <MapContainer 
                 className='map-asset shadow-sm rounded-3' 
                 center={[centerLocation.latitude, centerLocation.longitude]} 
-                zoom={11} 
+                zoom={MapMetaData.getMapZoom()} 
                 scrollWheelZoom={true}
                 attributionControl={false}
                 ref={map => mapRef.current = map ?? undefined}
