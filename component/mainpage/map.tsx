@@ -92,7 +92,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
                         <Marker 
                             key={index}
                             position={[marker.markerLocation.latitude, marker.markerLocation.longitude]}
-                            icon={placeMarkerIcon}
+                            icon={marker.markerDate ? placeWithDateMarkerIcon : placeMarkerIcon}
                         >
                             <PlaceMapPopup
                                 name={marker.markerName}
