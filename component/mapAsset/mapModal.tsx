@@ -5,29 +5,25 @@ import L from 'leaflet';
 import { IMarker, MapMetaData } from '@/model/mapModel';
 import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
-import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import placeWithDateIcon from '@/public/image/map-icon/marker-icon-orange.png';
-import newPlaceIcon from '@/public/image/map-icon/marker-icon-red.png';
 import { IBaseLocation } from '@/model/subentityModel';
 import { useRef, useState } from 'react';
 import PlaceMapPopup from './placeMapPopup';
 import UserMapPopup from './userMapPopup';
 
 const placeMarkerIcon = L.icon({
-    iconUrl: placeIcon.src,
+    iconUrl: MapMetaData.normalPlaceIcon,
     iconSize: [18, 29],
 });
 
 const placeWithDateMarkerIcon = L.icon({
-    iconUrl: placeWithDateIcon.src,
+    iconUrl: MapMetaData.dataPlaceIcon,
     iconSize: [18, 29],
 });
 
 const newPlaceMarkerIcon = L.icon({
-    iconUrl: newPlaceIcon.src,
+    iconUrl: MapMetaData.selectPlaceIcon,
     iconSize: [18, 29],
 });
-
 
 export default function MapModal({ 
     placeMarkers, 
@@ -90,7 +86,7 @@ export default function MapModal({
 
         if (marker) {
             const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
-            const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+            const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
@@ -100,7 +96,7 @@ export default function MapModal({
     const ZoomUserMarkerHandler = (isZoomIn?: boolean) => {
         
         const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
-        const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+        const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
 
         // fly to center marker location
         mapRef.current?.flyTo(centerLocation, zoom);
@@ -139,7 +135,7 @@ export default function MapModal({
             <MapContainer 
                 className='map-asset shadow-sm rounded-3' 
                 center={[centerLocation.latitude, centerLocation.longitude]} 
-                zoom={MapMetaData.getMapZoom()} 
+                zoom={MapMetaData.highView} 
                 scrollWheelZoom={true}
                 attributionControl={false}
                 ref={map => mapRef.current = map ?? undefined}

@@ -5,20 +5,18 @@ import L from 'leaflet';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
 import { IMarker, MapMetaData } from '@/model/mapModel';
-import placeIcon from 'leaflet/dist/images/marker-icon.png';
-import placeWithDateIcon from '@/public/image/map-icon/marker-icon-orange.png';
 import UserMapPopup from '../mapAsset/userMapPopup';
 import PlaceMapPopup from '../mapAsset/placeMapPopup';
 import { useRef } from 'react';
 
 // set mormal map icon
 const placeMarkerIcon = L.icon({
-    iconUrl: placeIcon.src,
+    iconUrl: MapMetaData.normalPlaceIcon,
     iconSize: [18, 29],
 });
 
 const placeWithDateMarkerIcon = L.icon({
-    iconUrl: placeWithDateIcon.src,
+    iconUrl: MapMetaData.dataPlaceIcon,
     iconSize: [18, 29],
 });
 
@@ -48,7 +46,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
 
         if (marker) {
             const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
-            const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+            const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
@@ -58,7 +56,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
     const ZoomUserMarkerHandler = (isZoomIn?: boolean) => {
         
         const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
-        const zoom = isZoomIn ? MapMetaData.getMapZoom(true) : MapMetaData.getMapZoom(false);
+        const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
 
         // fly to center marker location
         mapRef.current?.flyTo(centerLocation, zoom);
@@ -68,7 +66,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
         <MapContainer 
             className='map shadow-sm rounded-3' 
             center={[user.userLocation.latitude, user.userLocation.longitude]} 
-            zoom={MapMetaData.getMapZoom()} 
+            zoom={MapMetaData.highView} 
             scrollWheelZoom={true}
             attributionControl={false}
             ref={map => mapRef.current = map ?? undefined}
