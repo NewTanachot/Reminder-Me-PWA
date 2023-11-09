@@ -1,5 +1,5 @@
 import { CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from "./enumModel"
-import { IContainerClass, IMapAsset, IMarker } from "./mapModel";
+import { IContainerClass, IMapAsset, IMarker, MapViewEnum } from "./mapModel";
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
 import {IChangeCurrentPageRequest} from "@/model/requestModel";
@@ -135,25 +135,25 @@ export interface IMapModalProps extends IMapProps {
     backtoFormPage: () => void
 }
 
-export interface IUserMapPopupProps {
-    userName: string,
-    markNewLocationAtUser?: () => void,
-    zoomUserMarkerHandler: (isZoomIn?: boolean) => void,
+interface IBaseMapPopupProps {
+    setMapView: (mapView: MapViewEnum, markerName?: string) => void
 }
 
-export interface IPlaceMapPopupProps {
+export interface IUserMapPopupProps extends IBaseMapPopupProps {
+    userName: string,
+    markNewLocationAtUser?: () => void,
+}
+
+export interface IPlaceMapPopupProps extends IBaseMapPopupProps {
     name: string,
     message?: string,
     date?: string,   
-    zoomHandler: (markername: string, isZoomIn?: boolean) => void
 }
 
-export interface IMapPopupFooterProps {
+export interface IMapPopupFooterProps extends IBaseMapPopupProps {
     name: string,
-    zoomHandler: (markername: string, isZoomIn?: boolean) => void,
 }
 
-export interface IUserPopupFooterProps {
+export interface IUserPopupFooterProps extends IBaseMapPopupProps {
     markNewLocationAtUser?: () => void
-    zoomUserMarkerHandler: (isZoomIn?: boolean) => void,
 }

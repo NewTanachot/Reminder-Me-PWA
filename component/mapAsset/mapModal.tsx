@@ -2,7 +2,7 @@
 
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
-import { IMarker, MapMetaData } from '@/model/mapModel';
+import { IMarker, MapMetaData, MapViewEnum } from '@/model/mapModel';
 import { IMapModalProps } from '@/model/propsModel';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import { IBaseLocation } from '@/model/subentityModel';
@@ -39,8 +39,10 @@ export default function MapModal({
 
     //  set center location
     const centerLocation: IBaseLocation = newMarkerInitLocation ? newMarkerInitLocation : user.userLocation;
+    const initialMapView = newMarkerInitLocation ? MapMetaData.getMapView(MapViewEnum.Focus) : MapMetaData.getMapView(MapViewEnum.high);
     const markersRef = useRef<L.Marker<any>>(); // Create a ref for the markers.
     const mapRef = useRef<L.Map>(); // create map ref value
+    const isUserFocus = useRef<boolean>(!newMarkerInitLocation);
 
     // create new marker component
     const NewMarker = () => {
@@ -79,27 +81,31 @@ export default function MapModal({
         });
     }
 
-    const ZoomMarkerHandler = (markerName: string, isZoomIn?: boolean) => {
+    const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
-        // find place by name
-        const marker = placeMarkers?.find(e => e.markerName == markerName);
+        // set is focus on user marker or not
+        isUserFocus.current = !markerName;
 
-        if (marker) {
-            const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
-            const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
+        // if marker name is null. it will be set to user marker
+        if (markerName) {
+            // find place by name
+            const marker = placeMarkers?.find(e => e.markerName == markerName);
+
+            if (marker) {
+                const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
+                const zoom = MapMetaData.getMapView(mapView);
+
+                // fly to center marker location
+                mapRef.current?.flyTo(centerLocation, zoom);
+            }
+        }
+        else {
+            const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
+            const zoom = MapMetaData.getMapView(mapView);
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
         }
-    };
-
-    const ZoomUserMarkerHandler = (isZoomIn?: boolean) => {
-        
-        const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
-        const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
-
-        // fly to center marker location
-        mapRef.current?.flyTo(centerLocation, zoom);
     };
 
     // create user marker model
@@ -135,7 +141,7 @@ export default function MapModal({
             <MapContainer 
                 className='map-asset shadow-sm rounded-3' 
                 center={[centerLocation.latitude, centerLocation.longitude]} 
-                zoom={MapMetaData.highView} 
+                zoom={initialMapView} 
                 scrollWheelZoom={true}
                 attributionControl={false}
                 ref={map => mapRef.current = map ?? undefined}
@@ -153,7 +159,7 @@ export default function MapModal({
                     <UserMapPopup
                         userName={user.userName}
                         markNewLocationAtUser={MarkNewLocationAtUser}
-                        zoomUserMarkerHandler={ZoomUserMarkerHandler}
+                        setMapView={SetMapView}
                     ></UserMapPopup>
                 </Marker>
 
@@ -171,7 +177,7 @@ export default function MapModal({
                                     name={marker.markerName}
                                     message={marker.markerMessage}
                                     date={marker.markerDate}
-                                    zoomHandler={ZoomMarkerHandler}
+                                    setMapView={SetMapView}
                                 ></PlaceMapPopup>
                             </Marker>
                         )

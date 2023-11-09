@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet'
 import { IMapProps } from '@/model/propsModel';
-import { IMarker, MapMetaData } from '@/model/mapModel';
+import { IMarker, MapMetaData, MapViewEnum } from '@/model/mapModel';
 import UserMapPopup from '../mapAsset/userMapPopup';
 import PlaceMapPopup from '../mapAsset/placeMapPopup';
 import { useRef } from 'react';
@@ -24,6 +24,11 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
 
     // create map ref value
     const mapRef = useRef<L.Map>();
+    const isUserFocus = useRef<boolean>(true);
+
+    if (isUserFocus.current) {
+        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
+    }
 
     const userMarker: IMarker = {
         markerName: user.userName,
@@ -39,34 +44,38 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
         iconSize: [30, 30],
     });
 
-    const ZoomMarkerHandler = (markerName: string, isZoomIn?: boolean) => {
+    const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
-        // find place by name
-        const marker = placeMarkers?.find(e => e.markerName == markerName);
+        // set is focus on user marker or not
+        isUserFocus.current = !markerName;
 
-        if (marker) {
-            const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
-            const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
+        // if marker name is null. it will be set to user marker
+        if (markerName) {
+            // find place by name
+            const marker = placeMarkers?.find(e => e.markerName == markerName);
+
+            if (marker) {
+                const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
+                const zoom = MapMetaData.getMapView(mapView);
+
+                // fly to center marker location
+                mapRef.current?.flyTo(centerLocation, zoom);
+            }
+        }
+        else {
+            const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
+            const zoom = MapMetaData.getMapView(mapView);
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
         }
     };
 
-    const ZoomUserMarkerHandler = (isZoomIn?: boolean) => {
-        
-        const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
-        const zoom = isZoomIn ? MapMetaData.zoomView : MapMetaData.focusView;
-
-        // fly to center marker location
-        mapRef.current?.flyTo(centerLocation, zoom);
-    };
-
     return (
         <MapContainer 
             className='map shadow-sm rounded-3' 
             center={[user.userLocation.latitude, user.userLocation.longitude]} 
-            zoom={MapMetaData.highView} 
+            zoom={MapMetaData.getMapView(MapViewEnum.high)} 
             scrollWheelZoom={true}
             attributionControl={false}
             ref={map => mapRef.current = map ?? undefined}
@@ -81,7 +90,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
             >
                 <UserMapPopup
                     userName={userMarker.markerName}
-                    zoomUserMarkerHandler={ZoomUserMarkerHandler}
+                    setMapView={SetMapView}
                 ></UserMapPopup>
             </Marker>
             {
@@ -96,7 +105,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
                                 name={marker.markerName}
                                 message={marker.markerMessage}
                                 date={marker.markerDate}
-                                zoomHandler={ZoomMarkerHandler}
+                                setMapView={SetMapView}
                             ></PlaceMapPopup>
                         </Marker>
                     )

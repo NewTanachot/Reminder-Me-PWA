@@ -11,9 +11,16 @@ export interface IContainerClass {
     mapClass: string[]
 }
 
+export enum MapViewEnum {
+    high, Focus, Zoom
+}
+
 // https://cloud.maptiler.com/account/keys/?_ga=2.74998166.504639508.1698037213-71810968.1698037213&_gl=1*1nbzh2s*_gcl_au*NDUzMDM2MTY2LjE2OTgwMzcyMTM.*_ga*NzE4MTA5NjguMTY5ODAzNzIxMw..*_ga_K4SXYBF4HT*MTY5ODAzNzIxMi4xLjEuMTY5ODAzNzI3Mi42MC4wLjA.
 export class MapMetaData {
 
+    private static highView = 10;
+    private static focusView = 13;
+    private static zoomView = 18;
     private static default = "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo";
     private static original = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     private static clean = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
@@ -30,13 +37,20 @@ export class MapMetaData {
         mapUserIcon: userAltIcon.src
     };
 
-    public static zoomView = 10;
-    public static focusView = 13;
-    public static highView = 17;
-
     public static normalPlaceIcon = placeIcon.src;
     public static dataPlaceIcon = placeWithDateIcon.src;
     public static selectPlaceIcon = newPlaceIcon.src;
+
+    public static getMapView(type: MapViewEnum) {
+        switch(type) {
+            case MapViewEnum.Focus:
+                return this.focusView;
+            case MapViewEnum.high:
+                return this.highView;
+            case MapViewEnum.Zoom:
+                return this.zoomView;
+        }
+    }
 
     public static getMaptitle(mapName: MapTitleEnum, isDarkTheme: boolean): IMapAsset {
         switch (mapName) {

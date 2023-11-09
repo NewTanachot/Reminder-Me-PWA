@@ -10,7 +10,7 @@ const googleFont = Athiti({
     display: "swap"
 });
 
-export default function PlaceMapPopup({ name, message, date, zoomHandler }: IPlaceMapPopupProps) {
+export default function PlaceMapPopup({ name, message, date, setMapView }: IPlaceMapPopupProps) {
 
     return <Popup>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
@@ -24,11 +24,11 @@ export default function PlaceMapPopup({ name, message, date, zoomHandler }: IPla
                 <div>
                     date: <span className='text-lightblue'>{IsStringValid(date) ? date : "-"}</span>
                 </div>
+                <MapPopupFooter
+                    name={name}
+                    setMapView={setMapView}
+                ></MapPopupFooter>
             </div>
-            <MapPopupFooter
-                name={name}
-                zoomHandler={zoomHandler}
-            ></MapPopupFooter>
         </div>
     </Popup>
 }

@@ -9,16 +9,16 @@ const googleFont = Athiti({
     display: "swap"
 });
 
-export default function UserMapPopup({ userName, zoomUserMarkerHandler, markNewLocationAtUser }: IUserMapPopupProps) {
+export default function UserMapPopup({ userName, setMapView, markNewLocationAtUser }: IUserMapPopupProps) {
     return <Popup>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
             <div className='card-body text-center text-lightblue p-2 rounded-3'>
                 <span className='text-decoration-underline'>{userName}</span> is here! 
+                <UserPopupFooter
+                    setMapView={setMapView}
+                    markNewLocationAtUser={markNewLocationAtUser}
+                ></UserPopupFooter>
             </div>
-            <UserPopupFooter
-                zoomUserMarkerHandler={zoomUserMarkerHandler}
-                markNewLocationAtUser={markNewLocationAtUser}
-            ></UserPopupFooter>
         </div>
     </Popup>
 }
