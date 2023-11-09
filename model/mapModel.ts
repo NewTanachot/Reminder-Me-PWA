@@ -2,6 +2,9 @@ import { MapTitleEnum } from "./enumModel";
 import { IBaseLocation } from "./subentityModel";
 import userIcon from '@/public/image/map-icon/user-icon.png';
 import userAltIcon from '@/public/image/map-icon/user-yellow-icon.png';
+import placeIcon from 'leaflet/dist/images/marker-icon.png';
+import placeWithDateIcon from '@/public/image/map-icon/marker-icon-orange.png';
+import newPlaceIcon from '@/public/image/map-icon/marker-icon-red.png';
 
 export interface IContainerClass {
     notMapClass: string[],
@@ -11,27 +14,29 @@ export interface IContainerClass {
 // https://cloud.maptiler.com/account/keys/?_ga=2.74998166.504639508.1698037213-71810968.1698037213&_gl=1*1nbzh2s*_gcl_au*NDUzMDM2MTY2LjE2OTgwMzcyMTM.*_ga*NzE4MTA5NjguMTY5ODAzNzIxMw..*_ga_K4SXYBF4HT*MTY5ODAzNzIxMi4xLjEuMTY5ODAzNzI3Mi42MC4wLjA.
 export class MapMetaData {
 
-    private static normalZoom = 10;
-    private static focusZoom = 17;
     private static default = "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo";
     private static original = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     private static clean = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
     private static light = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
     private static dark = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
     private static satellite = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
-    private static bright = "https://api.maptiler.com/maps/bright/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo" 
-    private static LightMapAsset: IMapAsset = {
+    private static bright = "https://api.maptiler.com/maps/bright/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo";
+    private static lightMapAsset: IMapAsset = {
         mapTitle: this.light,
         mapUserIcon: userIcon.src
     };
-    private static DarkMapAsset: IMapAsset = {
+    private static darkMapAsset: IMapAsset = {
         mapTitle: this.dark,
         mapUserIcon: userAltIcon.src
     };
 
-    public static getMapZoom(isFocus?: boolean) {
-        return isFocus ? this.focusZoom : this.normalZoom;
-    }
+    public static zoomView = 10;
+    public static focusView = 13;
+    public static highView = 17;
+
+    public static normalPlaceIcon = placeIcon.src;
+    public static dataPlaceIcon = placeWithDateIcon.src;
+    public static selectPlaceIcon = newPlaceIcon.src;
 
     public static getMaptitle(mapName: MapTitleEnum, isDarkTheme: boolean): IMapAsset {
         switch (mapName) {
@@ -49,10 +54,10 @@ export class MapMetaData {
                 };
 
             case MapTitleEnum.Light:
-                return this.LightMapAsset;
+                return this.lightMapAsset;
 
             case MapTitleEnum.Dark:
-                return this.DarkMapAsset;
+                return this.darkMapAsset;
 
             case MapTitleEnum.Satellite:
                 return {
@@ -67,7 +72,7 @@ export class MapMetaData {
                 };
 
             case MapTitleEnum.Sync:
-                return isDarkTheme ? this.DarkMapAsset : this.LightMapAsset;
+                return isDarkTheme ? this.darkMapAsset : this.lightMapAsset;
 
             default:
                 return {
