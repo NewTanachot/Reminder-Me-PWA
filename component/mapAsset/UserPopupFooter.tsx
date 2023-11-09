@@ -1,31 +1,24 @@
+import { MapViewEnum } from "@/model/mapModel";
 import { IUserPopupFooterProps } from "@/model/propsModel";
 
-export default function UserPopupFooter({ zoomUserMarkerHandler, markNewLocationAtUser }: IUserPopupFooterProps) {
+export default function UserPopupFooter({ setMapView, markNewLocationAtUser }: IUserPopupFooterProps) {
 
-    return <div className='card-footer text-card-footer-size text-center py-0'>
-        <div className='d-flex justify-content-around'>
-            <span 
-                className='text-decoration-underline text-cornflowerblue me-2'
-                onClick={() => zoomUserMarkerHandler(true)}
-            >
-                zoom
-            </span>
-            <span 
-                className='text-decoration-underline text-viridian-green ms-2'
-                onClick={() => zoomUserMarkerHandler(false)}
-            >
-                focus
-            </span>
-            {
-                markNewLocationAtUser 
-                ? <span 
-                    className='text-decoration-underline text-danger ms-3'
+    return <div className={`d-flex ${markNewLocationAtUser ? 'justify-content-around' : 'justify-content-evenly'} mt-2`}>
+        <i 
+            className="fa-solid fa-magnifying-glass-location text-success h5"
+            onClick={() => setMapView(MapViewEnum.Zoom)}
+        ></i>
+        <i 
+            className="fa-solid fa-bullseye text-secondary h5"
+            onClick={() => setMapView(MapViewEnum.Focus)}
+        ></i>
+        {
+            markNewLocationAtUser
+                ? <i 
+                    className="fa-solid fa-location-dot text-danger h5"
                     onClick={markNewLocationAtUser}
-                >
-                    mark
-                </span> 
+                ></i>
                 : null
-            }
-        </div>
+        }
     </div>
 }
