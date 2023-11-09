@@ -25,7 +25,6 @@ const newPlaceMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-
 export default function MapModal({ 
     placeMarkers, 
     user, 
