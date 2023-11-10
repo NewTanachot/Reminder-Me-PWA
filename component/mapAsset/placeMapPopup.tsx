@@ -14,15 +14,15 @@ export default function PlaceMapPopup({ name, message, date, setMapView }: IPlac
 
     return <Popup>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
-            <div className='card-body text-secondary p-2 rounded-3'>
+            <div className='card-body text-dark p-2 rounded-3'>
                 <div>
-                    name: <span className='text-lightblue'>{name}</span>
+                    name: <span className='text-secondary'>{name}</span>
                 </div>
                 <div>
-                    message: <span className='text-lightblue'>{IsStringValid(message) ? message : "-"}</span>
+                    message: <span className='text-secondary'>{IsStringValid(message) ? message : "-"}</span>
                 </div>
                 <div>
-                    date: <span className='text-lightblue'>{IsStringValid(date) ? date : "-"}</span>
+                    date: <span className='text-secondary'>{IsStringValid(date) ? date : "-"}</span>
                 </div>
                 <MapPopupFooter
                     name={name}
