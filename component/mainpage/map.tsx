@@ -91,6 +91,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
                 <UserMapPopup
                     userName={userMarker.markerName}
                     setMapView={SetMapView}
+                    isDarkTheme={isDarkTheme}
                 ></UserMapPopup>
             </Marker>
             {
@@ -106,6 +107,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
                                 message={marker.markerMessage}
                                 date={marker.markerDate}
                                 setMapView={SetMapView}
+                                isDarkTheme={isDarkTheme}
                             ></PlaceMapPopup>
                         </Marker>
                     )
