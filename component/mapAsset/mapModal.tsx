@@ -179,6 +179,7 @@ export default function MapModal({
                                     message={marker.markerMessage}
                                     date={marker.markerDate}
                                     setMapView={SetMapView}
+                                    isDarkTheme={isDarkTheme}
                                 ></PlaceMapPopup>
                             </Marker>
                         )

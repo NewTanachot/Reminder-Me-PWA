@@ -144,16 +144,16 @@ export interface IUserMapPopupProps extends IBaseMapPopupProps, IBaseProps {
     markNewLocationAtUser?: () => void,
 }
 
-export interface IPlaceMapPopupProps extends IBaseMapPopupProps {
+export interface IPlaceMapPopupProps extends IBaseMapPopupProps, IBaseProps {
     name: string,
     message?: string,
     date?: string,   
 }
 
-export interface IMapPopupFooterProps extends IBaseMapPopupProps {
+export interface IMapPopupFooterProps extends IBaseMapPopupProps, IBaseProps {
     name: string,
 }
 
-export interface IUserPopupFooterProps extends IBaseMapPopupProps {
+export interface IUserPopupFooterProps extends IBaseMapPopupProps, IBaseProps {
     markNewLocationAtUser?: () => void
 }

@@ -109,6 +109,10 @@ html, body {
     color: #FFC862 !important;
 }
 
+.text-gold {
+    color: #E49B0F !important;
+}
+
 .text-peach {
     color: #FFFDD0 !important;
 }
@@ -151,7 +155,7 @@ html, body {
 
 /* #endregion */
 
-/* #region ------- [  Input Class ] ------- */
+/* #region ------- [ Input Class ] ------- */
 
 .custom-switch-light:checked {
     background-color: #40826D !important;
