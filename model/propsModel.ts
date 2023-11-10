@@ -139,7 +139,7 @@ interface IBaseMapPopupProps {
     setMapView: (mapView: MapViewEnum, markerName?: string) => void
 }
 
-export interface IUserMapPopupProps extends IBaseMapPopupProps {
+export interface IUserMapPopupProps extends IBaseMapPopupProps, IBaseProps {
     userName: string,
     markNewLocationAtUser?: () => void,
 }

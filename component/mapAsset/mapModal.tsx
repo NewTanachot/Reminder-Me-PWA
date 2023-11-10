@@ -160,6 +160,7 @@ export default function MapModal({
                         userName={user.userName}
                         markNewLocationAtUser={MarkNewLocationAtUser}
                         setMapView={SetMapView}
+                        isDarkTheme={isDarkTheme}
                     ></UserMapPopup>
                 </Marker>
 

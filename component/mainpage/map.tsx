@@ -91,6 +91,7 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
                 <UserMapPopup
                     userName={userMarker.markerName}
                     setMapView={SetMapView}
+                    isDarkTheme={isDarkTheme}
                 ></UserMapPopup>
             </Marker>
             {
