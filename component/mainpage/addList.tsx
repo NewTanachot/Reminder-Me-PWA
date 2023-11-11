@@ -204,7 +204,7 @@ export default function AddList({
             isDisplay={displayLoadingComponent}
         ></LoadingComponent>
         <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
-            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme} bg-gradient`}>
                 <h4 className="m-0 text-center">Create new location</h4>
             </div>
             <form className="card-body m-2" onSubmit={AddNewPlace}>
@@ -291,7 +291,7 @@ export default function AddList({
                     </button>
                     <button 
                         type="button"
-                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm bg-gradient`}
                         onClick={GoToMapModalPage}
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
@@ -313,7 +313,7 @@ export default function AddList({
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm bg-gradient`}
                     >
                         Add
                     </button>

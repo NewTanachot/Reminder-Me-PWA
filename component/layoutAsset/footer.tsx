@@ -53,7 +53,7 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
 
     return (
         // justify-content-around
-        <footer className={`fixed-bottom px-2 pt-0 shadow-top rounded-top-5 ${footerColorTheme} spacing-footer-bottom`}>
+        <footer className={`fixed-bottom px-2 pt-0 shadow-top rounded-top-5 ${footerColorTheme} bg-gradient spacing-footer-bottom`}>
             <div className='d-flex justify-content-evenly align-items-start'>
                 <div>
                     <button 

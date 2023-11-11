@@ -46,7 +46,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                         </h6>
                     </div>
                     <button
-                        className={`btn btn-sm ${switchThemeBtnColorTheme} btn-setting-icon-size`}
+                        className={`btn btn-sm ${switchThemeBtnColorTheme} btn-setting-icon-size bg-gradient`}
                         onClick={UpdateThemeHandler}
                     >
                         <i className="fa-solid fa-rotate"></i>

@@ -21,15 +21,15 @@ export default function Setting({
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainblack";
-        signOutBtnColorTheme = "btn-outline-light";
+        signOutBtnColorTheme = "btn-secondary";
     }
     else {
         cardColorTheme = "bg-peach-65";
-        signOutBtnColorTheme = "btn-outline-secondary";
+        signOutBtnColorTheme = "bg-viridian-green text-white";
     }
 
     return (
-        <div className={`card shadow-sm ${cardColorTheme}`}>
+        <div className={`card shadow-sm ${cardColorTheme} bg-gradient`}>
             <div className="card-body m-2">
 
                 {/* user info */}
@@ -70,7 +70,7 @@ export default function Setting({
 
                 <div className="mt-4 text-center">
                     <button
-                        className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
+                        className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm bg-gradient`}
                         onClick={userLogoutHandler}
                     >
                         Sign out
