@@ -107,8 +107,8 @@ export default function MapModal({
             const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
             const zoom = MapMetaData.getMapView(mapView);
 
-            // set user focus from map view condition
-            mapView == MapViewEnum.Focus ? userFocusObj.setUserFocus(true) : userFocusObj.setUserFocus(false);
+            // set user focus to true [ if user marker selected with FOCUS, ZOOM mapview ] 
+            userFocusObj.setUserFocus(true);
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
