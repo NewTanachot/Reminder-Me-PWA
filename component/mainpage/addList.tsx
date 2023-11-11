@@ -19,7 +19,8 @@ export default function AddList({
     isDarkTheme, 
     baseUrlApi, 
     containerClassObject,
-    setIsMapPage
+    setIsMapPage,
+    userFocusObj
 }: IAddListProps) {
 
     const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
@@ -193,6 +194,7 @@ export default function AddList({
         newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
         backtoFormPage={BackToFormPage}
         addLocationDataToRef={AddLocationDataToRef}
+        userFocusObj={userFocusObj}
         isDarkTheme={isDarkTheme}
     ></MapModal>
 

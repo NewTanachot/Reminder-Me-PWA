@@ -108,3 +108,8 @@ export interface IMapAsset {
     mapTitle: string,
     mapUserIcon: string
 }
+
+export interface IUserFocusMap {
+    isfocus: boolean
+    setUserFocus: (isFocus: boolean) => void
+}
