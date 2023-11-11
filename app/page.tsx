@@ -69,7 +69,8 @@ export default function Home() {
     const isDarkTheme = useRef<boolean>(setDefaultDarkTheme);
     const mapTheme = useRef<MapTitleEnum>(setDefaultMapTheme);
     const currentUpdateCard = useRef<IDisplayPlace>();
-    const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString())
+    const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString());
+    const isUserFocusInMapPage = useRef<boolean>(false);
 
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: setDefaultCurrentPage });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
@@ -497,6 +498,10 @@ export default function Home() {
         }
     }
 
+    const SetUserFocus = (isFocus: boolean) => {
+        isUserFocusInMapPage.current  = isFocus;
+    }
+
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
 
         // get all color theme by name
@@ -554,6 +559,10 @@ export default function Home() {
                                         user={user.current}
                                         mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
+                                        userFocusObj={{
+                                            isfocus: isUserFocusInMapPage.current,
+                                            setUserFocus: SetUserFocus
+                                        }}
                                     ></Map>
 
                                 case PwaCurrentPageEnum.AddList:
