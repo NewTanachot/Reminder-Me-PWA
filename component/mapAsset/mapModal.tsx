@@ -32,6 +32,7 @@ export default function MapModal({
     backtoFormPage, 
     mapAsset, 
     addLocationDataToRef,
+    userFocusObj,
     isDarkTheme
 }: IMapModalProps) {
 
@@ -42,7 +43,10 @@ export default function MapModal({
     const initialMapView = newMarkerInitLocation ? MapMetaData.getMapView(MapViewEnum.Focus) : MapMetaData.getMapView(MapViewEnum.high);
     const markersRef = useRef<L.Marker<any>>(); // Create a ref for the markers.
     const mapRef = useRef<L.Map>(); // create map ref value
-    const isUserFocus = useRef<boolean>(!newMarkerInitLocation);
+
+    if (userFocusObj.isfocus) {
+        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
+    }
 
     // create new marker component
     const NewMarker = () => {
@@ -83,11 +87,11 @@ export default function MapModal({
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
-        // set is focus on user marker or not
-        isUserFocus.current = !markerName;
-
         // if marker name is null. it will be set to user marker
         if (markerName) {
+            // set user focus to false 
+            userFocusObj.setUserFocus(false);
+
             // find place by name
             const marker = placeMarkers?.find(e => e.markerName == markerName);
 
@@ -102,6 +106,9 @@ export default function MapModal({
         else {
             const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
             const zoom = MapMetaData.getMapView(mapView);
+
+            // set user focus from map view condition
+            mapView == MapViewEnum.Focus ? userFocusObj.setUserFocus(true) : userFocusObj.setUserFocus(false);
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
