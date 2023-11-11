@@ -19,6 +19,7 @@ export default function UpdateList({
     containerClassObject,
     setIsMapPage,
     mapAsset,
+    userFocusObj,
     isDarkTheme, 
     baseUrlApi
 }: IUpdateListProps) {
@@ -201,6 +202,7 @@ export default function UpdateList({
         newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
         backtoFormPage={BackToFormPage}
         addLocationDataToRef={AddLocationDataToRef}
+        userFocusObj={userFocusObj}
         isDarkTheme={isDarkTheme}
     ></MapModal>
 

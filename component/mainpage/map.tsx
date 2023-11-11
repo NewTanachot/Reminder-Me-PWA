@@ -20,13 +20,12 @@ const placeWithDateMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapProps) {
+export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDarkTheme }: IMapProps) {
 
     // create map ref value
     const mapRef = useRef<L.Map>();
-    const isUserFocus = useRef<boolean>(true);
 
-    if (isUserFocus.current) {
+    if (userFocusObj.isfocus) {
         mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
     }
 
@@ -46,11 +45,11 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
-        // set is focus on user marker or not
-        isUserFocus.current = !markerName;
-
         // if marker name is null. it will be set to user marker
         if (markerName) {
+            // set user focus to false 
+            userFocusObj.setUserFocus(false);
+
             // find place by name
             const marker = placeMarkers?.find(e => e.markerName == markerName);
 
@@ -65,6 +64,9 @@ export default function Map({ placeMarkers, user, mapAsset, isDarkTheme }: IMapP
         else {
             const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
             const zoom = MapMetaData.getMapView(mapView);
+
+            // set user focus to true [ if user marker selected with FOCUS, ZOOM mapview ] 
+            userFocusObj.setUserFocus(true);
 
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
