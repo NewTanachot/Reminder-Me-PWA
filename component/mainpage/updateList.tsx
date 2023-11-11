@@ -212,7 +212,7 @@ export default function UpdateList({
             isDisplay={displayLoadingComponent}
         ></LoadingComponent>
         <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
-            <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+            <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme} bg-gradient`}>
                 <div onClick={backButtonHandler}>
                     <i className="bi bi-caret-left-fill"></i>
                 </div>
@@ -303,7 +303,7 @@ export default function UpdateList({
                     </button>
                     <button 
                         type="button"
-                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm bg-gradient`}
                         onClick={GoToMapModalPage}
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
@@ -327,7 +327,7 @@ export default function UpdateList({
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm bg-gradient`}
                     >
                         Save
                     </button>

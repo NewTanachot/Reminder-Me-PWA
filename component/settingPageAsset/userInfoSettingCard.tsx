@@ -46,7 +46,7 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
                             </h6>
                         </div>
                         <button
-                                className={`btn btn-sm ${switchUserBtnColorTheme} btn-setting-icon-size`}
+                                className={`btn btn-sm ${switchUserBtnColorTheme} btn-setting-icon-size bg-gradient`}
                                 onClick={switchUserHandler}
                             >
                                 <i className="fa-solid fa-people-arrows"></i>

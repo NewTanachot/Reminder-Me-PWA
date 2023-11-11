@@ -127,7 +127,7 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
             >
                 <i className={`fa-solid fa-circle-xmark text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
             </div>         
-            <div className={`card-header rounded-top-4 ${cardHeaderThemeColor}`}>
+            <div className={`card-header rounded-top-4 ${cardHeaderThemeColor} bg-gradient`}>
                 <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div 
                         onClick={() => updatePlaceCardHandler(data.id)}

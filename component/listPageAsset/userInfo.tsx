@@ -26,7 +26,7 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
     }
 
     return (
-        <div className={`card mb-3 rounded-4 text-white ${userInfoColorTheme} shadow-sm`}>
+        <div className={`card mb-3 rounded-4 text-white ${userInfoColorTheme} bg-gradient shadow-sm`}>
             <div className="card-body d-flex justify-content-center align-items-center text-white">
                 <p className="m-0">
                     <i className="fa-solid fa-street-view me-2"></i>

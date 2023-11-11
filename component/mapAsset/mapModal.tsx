@@ -85,6 +85,17 @@ export default function MapModal({
         });
     }
 
+    const ResetCenterToUserLocation = () => {
+        // set user focus to false [ because I set mapview to high ]
+        userFocusObj.setUserFocus(false);
+
+        const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
+        const zoom = MapMetaData.getMapView(MapViewEnum.high);
+
+        // fly to user location and set zoom to high mapview
+        mapRef.current?.flyTo(centerLocation, zoom);
+    };
+
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
         // if marker name is null. it will be set to user marker
@@ -144,7 +155,16 @@ export default function MapModal({
     });
     
     return (
-        <>
+        <div className='w-100 pos'>
+            <div className='map-reset-position-btn'>
+                <button 
+                    className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
+                    onClick={ResetCenterToUserLocation}
+                >
+                    <i className="fa-solid fa-map-location-dot"></i>
+                </button>
+            </div>
+
             <MapContainer 
                 className='map-asset shadow-sm rounded-3' 
                 center={[centerLocation.latitude, centerLocation.longitude]} 
@@ -156,6 +176,15 @@ export default function MapModal({
                 <TileLayer
                     url={mapAsset.mapTitle}
                 />
+
+                {/* <div className='map-reset-position-btn'>
+                    <button 
+                        className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
+                        onClick={ResetCenterToUserLocation}
+                    >
+                        <i className="fa-solid fa-map-location-dot"></i>
+                    </button>
+                </div> */}
 
                 <Marker 
                     position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}
@@ -195,18 +224,18 @@ export default function MapModal({
             </MapContainer>
             <div className='d-flex justify-content-around align-items-center mt-3'>
                 <button 
-                    className={`btn ${cancleBtnClass} text-white w-38`}
+                    className={`btn ${cancleBtnClass} text-white w-38 bg-gradient`}
                     onClick={backtoFormPage}
                 >
                     Cancel
                 </button>
                 <button 
-                    className={`btn ${confirmBtnClass} text-white w-38`}
+                    className={`btn ${confirmBtnClass} text-white w-38 bg-gradient`}
                     onClick={() => addLocationDataToRef(newMarkerPosition)}
                 >
                     Confirm
                 </button>
             </div>
-        </>
+        </div>
     )
 }

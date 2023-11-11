@@ -203,6 +203,10 @@ html, body {
     font-size: 12px;
 }
 
+.text-map-reset-icon {
+    font-size: 1.2rem;
+}
+
 /* #endregion */
 
 /* #region ------- [ Font Class ] ------- */
@@ -264,8 +268,10 @@ html, body {
 
 .map-reset-position-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 25px;
+    right: 20px;
+    /* top: 10px;
+    right: 10px; */
     z-index: 1000;
 }
 

@@ -73,7 +73,27 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
         }
     };
 
-    return (
+    const ResetCenterToUserLocation = () => {
+        // set user focus to false [ because I set mapview to high ]
+        userFocusObj.setUserFocus(false);
+
+        const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
+        const zoom = MapMetaData.getMapView(MapViewEnum.high);
+
+        // fly to user location and set zoom to high mapview
+        mapRef.current?.flyTo(centerLocation, zoom);
+    };
+
+    return <>
+            <div className='map-reset-position-btn'>
+                <button 
+                    className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
+                    onClick={ResetCenterToUserLocation}
+                >
+                    <i className="fa-solid fa-map-location-dot"></i>
+                </button>
+            </div>
+
         <MapContainer 
             className='map shadow-sm rounded-3' 
             center={[user.userLocation.latitude, user.userLocation.longitude]} 
@@ -87,12 +107,14 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
                 url={mapAsset.mapTitle}
             />
 
-            {/* reset btn */}
-            <div className='map-reset-position-btn'>
-                <button className=' btn btn-light'>
-                    <i className="fa-solid fa-street-view"></i>
+            {/* <div className='map-reset-position-btn'>
+                <button 
+                    className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
+                    onClick={ResetCenterToUserLocation}
+                >
+                    <i className="fa-solid fa-map-location-dot"></i>
                 </button>
-            </div>
+            </div> */}
 
             <Marker 
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}
@@ -124,5 +146,5 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
                     : <></>
             }
         </MapContainer>
-    )
+    </>
 }
