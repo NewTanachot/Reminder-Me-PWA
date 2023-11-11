@@ -86,6 +86,14 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
                 attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
                 url={mapAsset.mapTitle}
             />
+
+            {/* reset btn */}
+            <div className='map-reset-position-btn'>
+                <button className=' btn btn-light'>
+                    <i className="fa-solid fa-street-view"></i>
+                </button>
+            </div>
+
             <Marker 
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}
                 icon={userMarkerIcon}

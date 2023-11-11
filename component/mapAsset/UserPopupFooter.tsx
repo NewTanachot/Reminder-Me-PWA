@@ -11,14 +11,14 @@ export default function UserPopupFooter({ setMapView, markNewLocationAtUser, isD
             onClick={() => setMapView(MapViewEnum.Zoom)}
         >
             zoom
-            <i className="fa-solid fa-magnifying-glass-location ms-1"></i>
+            <i className="fa-solid fa-magnifying-glass-plus ms-1"></i>
         </button>
         <button 
             className={`btn btn-sm ${btnColorTheme} text-white py-0 px-1 ms-1`}
             onClick={() => setMapView(MapViewEnum.Focus)}
         >
             focus
-            <i className="fa-solid fa-bullseye ms-1"></i>
+            <i className="fa-solid fa-location-crosshairs ms-1"></i>
         </button>
         {
             markNewLocationAtUser
