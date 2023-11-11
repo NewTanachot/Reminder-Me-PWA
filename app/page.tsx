@@ -575,6 +575,10 @@ export default function Home() {
                                         baseUrlApi={baseUrlApi}
                                         containerClassObject={containerClassObject}
                                         setIsMapPage={SetIsMapPage}
+                                        userFocusObj={{
+                                            isfocus: isUserFocusInMapPage.current,
+                                            setUserFocus: SetUserFocus
+                                        }}
                                     ></AddList>
 
                                 case PwaCurrentPageEnum.UpdateList:
@@ -589,6 +593,10 @@ export default function Home() {
                                             baseUrlApi={baseUrlApi}
                                             containerClassObject={containerClassObject}
                                             setIsMapPage={SetIsMapPage}
+                                            userFocusObj={{
+                                                isfocus: isUserFocusInMapPage.current,
+                                                setUserFocus: SetUserFocus
+                                            }}
                                         ></UpdateList>
                                     }
                                     else {

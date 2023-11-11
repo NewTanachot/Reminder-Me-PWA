@@ -53,7 +53,8 @@ export interface IAddListProps extends IBaseProps, IBaseApiUrl {
     places?: IDisplayPlace[],
     containerClassObject: IContainerClass,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
-    setIsMapPage: (flag: boolean) => void
+    setIsMapPage: (flag: boolean) => void,
+    userFocusObj: IUserFocusMap 
 }
 
 export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
@@ -63,7 +64,8 @@ export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
     containerClassObject: IContainerClass,
     cardData: IDisplayPlace,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
-    setIsMapPage: (flag: boolean) => void
+    setIsMapPage: (flag: boolean) => void,
+    userFocusObj: IUserFocusMap 
 }
 
 export interface ISettingProps extends IBaseProps {
