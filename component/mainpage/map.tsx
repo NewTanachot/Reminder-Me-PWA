@@ -45,11 +45,11 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
+        // set user focus to false [ for prevent focus when flying ]
+        userFocusObj.setUserFocus(false);
+
         // if marker name is null. it will be set to user marker
         if (markerName) {
-            // set user focus to false 
-            userFocusObj.setUserFocus(false);
-
             // find place by name
             const marker = placeMarkers?.find(e => e.markerName == markerName);
 
@@ -65,11 +65,12 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
             const zoom = MapMetaData.getMapView(mapView);
 
-            // set user focus to true [ if user marker selected with FOCUS, ZOOM mapview ] 
-            userFocusObj.setUserFocus(true);
-
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
+
+            
+            // set user focus to true [ if user marker selected with FOCUS, ZOOM mapview ] 
+            userFocusObj.setUserFocus(true);
         }
     };
 
@@ -84,15 +85,24 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
         mapRef.current?.flyTo(centerLocation, zoom);
     };
 
+    let resetBtnColorTheme: string;
+
+    if (isDarkTheme) {
+        resetBtnColorTheme = "bg-mainblack";
+    }
+    else {
+        resetBtnColorTheme = "bg-viridian-green";
+    }
+
     return <>
-            <div className='map-reset-position-btn'>
-                <button 
-                    className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
-                    onClick={ResetCenterToUserLocation}
-                >
-                    <i className="fa-solid fa-map-location-dot"></i>
-                </button>
-            </div>
+        <div className='map-reset-position-btn'>
+            <button 
+                className={`btn bg-gradient shadow-sm border ${resetBtnColorTheme} text-white`}
+                onClick={ResetCenterToUserLocation}
+            >
+                <i className="fa-solid fa-map-location-dot"></i>
+            </button>
+        </div>
 
         <MapContainer 
             className='map shadow-sm rounded-3' 
