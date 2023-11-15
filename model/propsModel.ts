@@ -37,14 +37,16 @@ export interface IListPageProps extends IBaseProps, IBaseApiUrl {
     changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
     updatePlaceCardHandler: (cardId: string) => void,
     currentCardOrder: CardOrderByEnum,
-    changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void
+    changeCardOrderByHandler: (orderBy: CardOrderByEnum) => void,
+    linkCardToMapPageHandler: (placeId: string) => void
 }
 
 export interface IPlaceCardProps extends IBaseProps, IBaseApiUrl {
     data: IDisplayPlace,
     deletePlaceHandler: (placeId: string) => void,
     changePlaceStatusHandler: (placeId: string, setIsDisable: boolean) => void,
-    updatePlaceCardHandler: (cardId: string) => void
+    updatePlaceCardHandler: (cardId: string) => void,
+    linkCardToMapPageHandler: (placeId: string) => void
 }
 
 export interface IAddListProps extends IBaseProps, IBaseApiUrl {
@@ -123,8 +125,9 @@ export interface INotFoundProps extends IBaseProps {}
 export interface IMapProps extends IBaseProps {
     placeMarkers?: IMarker[],
     user: CurrentUserRef,
+    initialMarkerLocation?: IBaseLocation,
     mapAsset: IMapAsset,
-    userFocusObj: IUserFocusMap 
+    userFocusObj: IUserFocusMap
 }
 
 export interface IMapSettingCardProps extends IBaseProps { 
