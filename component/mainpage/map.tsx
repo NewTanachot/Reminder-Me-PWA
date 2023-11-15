@@ -26,7 +26,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
     const mapRef = useRef<L.Map>();
 
     if (userFocusObj.isfocus) {
-        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
+        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude], undefined, MapMetaData.getFlyToOption());
     }
 
     const userMarker: IMarker = {
@@ -44,8 +44,6 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
     });
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
-
-        const isFocusTemp = userFocusObj.isfocus;
         
         // set user focus to false [ for prevent focus when flying ]
         userFocusObj.setUserFocus(false);
@@ -60,7 +58,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
                 const zoom = MapMetaData.getMapView(mapView);
 
                 // fly to center marker location
-                mapRef.current?.flyTo(centerLocation, zoom);
+                mapRef.current?.flyTo(centerLocation, zoom, MapMetaData.getFlyToOption());
             }
         }
         else {
@@ -68,10 +66,10 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             const zoom = MapMetaData.getMapView(mapView);
 
             // fly to center marker location
-            mapRef.current?.flyTo(centerLocation, zoom);
+            mapRef.current?.flyTo(centerLocation, zoom, MapMetaData.getFlyToOption());
 
             // set user focus to true with delay [ if user marker selected with FOCUS, ZOOM mapview ] 
-            setTimeout(() => userFocusObj.setUserFocus(true), isFocusTemp ? 2000 : 5000);
+            setTimeout(() => userFocusObj.setUserFocus(true), MapMetaData.getUserFocusTimeOutDuration());
         }
     };
 
@@ -83,7 +81,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
         const zoom = MapMetaData.getMapView(MapViewEnum.high);
 
         // fly to user location and set zoom to high mapview
-        mapRef.current?.flyTo(centerLocation, zoom);
+        mapRef.current?.flyTo(centerLocation, zoom, MapMetaData.getFlyToOption());
     };
 
     let resetBtnColorTheme: string;
