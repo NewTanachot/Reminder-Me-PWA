@@ -56,9 +56,10 @@ export const PlaceModelUpdateValidator = (place: Place, alluserPlace: Place[]) =
         return response;
     }
 
-    const placeDuplicateName = alluserPlace.filter(e => e.name == place.name).length
+    const duplicateNameCount = alluserPlace.filter(e => e.name == place.name).length
+    console.log(duplicateNameCount)
 
-    if (placeDuplicateName != 0) {
+    if (duplicateNameCount > 1) {
 
         response.isValid = false;
         response.message = "duplicate place name";
@@ -99,9 +100,8 @@ export const UserModelUpdateValidator = (user: User, allUsers: User[]) => {
     }
 
     const userDuplicateNameCount = allUsers.filter(e => e.name = user.name).length;
-    console.log(userDuplicateNameCount)
 
-    if (userDuplicateNameCount != 0) {
+    if (userDuplicateNameCount > 1) {
         response.isValid = false;
         response.message = "duplicate username";
     }
