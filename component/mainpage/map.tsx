@@ -26,7 +26,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
     const mapRef = useRef<L.Map>();
 
     if (userFocusObj.isfocus) {
-        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude], undefined, MapMetaData.getFlyToOption());
+        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
     }
 
     const userMarker: IMarker = {
