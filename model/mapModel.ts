@@ -5,6 +5,7 @@ import userAltIcon from '@/public/image/map-icon/user-yellow-icon.png';
 import placeIcon from 'leaflet/dist/images/marker-icon.png';
 import placeWithDateIcon from '@/public/image/map-icon/marker-icon-orange.png';
 import newPlaceIcon from '@/public/image/map-icon/marker-icon-red.png';
+import L from 'leaflet';
 
 export interface IContainerClass {
     notMapClass: string[],
@@ -21,6 +22,7 @@ export class MapMetaData {
     private static highView = 10;
     private static focusView = 13;
     private static zoomView = 18;
+    private static zoomAnimationDuration = 2;
     private static default = "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo";
     private static original = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
     private static clean = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
@@ -40,6 +42,16 @@ export class MapMetaData {
     public static normalPlaceIcon = placeIcon.src;
     public static dataPlaceIcon = placeWithDateIcon.src;
     public static selectPlaceIcon = newPlaceIcon.src;
+
+    public static getFlyToOption(): L.ZoomPanOptions {
+        return {
+            duration: this.zoomAnimationDuration
+        };
+    }
+
+    public static getUserFocusTimeOutDuration() {
+        return this.zoomAnimationDuration * 1000;
+    }
 
     public static getMapView(type: MapViewEnum) {
         switch(type) {
