@@ -45,6 +45,8 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
+        const isFocusTemp = userFocusObj.isfocus;
+        
         // set user focus to false [ for prevent focus when flying ]
         userFocusObj.setUserFocus(false);
         
@@ -68,8 +70,8 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
 
-            // set user focus to true with 7 sec delay [ if user marker selected with FOCUS, ZOOM mapview ] 
-            setTimeout(() => userFocusObj.setUserFocus(true), 7000);
+            // set user focus to true with delay [ if user marker selected with FOCUS, ZOOM mapview ] 
+            setTimeout(() => userFocusObj.setUserFocus(true), isFocusTemp ? 2000 : 5000);
         }
     };
 
