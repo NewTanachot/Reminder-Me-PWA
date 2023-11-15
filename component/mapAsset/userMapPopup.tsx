@@ -13,7 +13,7 @@ export default function UserMapPopup({ userName, setMapView, markNewLocationAtUs
 
     const textColorTheme = isDarkTheme ? "text-cobalt-blue" : "text-viridian-green";
 
-    return <Popup>
+    return <Popup autoPan={false}>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
             <div className={`card-body text-center ${textColorTheme} p-2 rounded-3`}>
                 <span className='text-decoration-underline'>{userName}</span> is here! 
