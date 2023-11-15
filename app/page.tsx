@@ -519,6 +519,9 @@ export default function Home() {
 
         // set current page to map page
         ChangeCurrentPage({ page: PwaCurrentPageEnum.MapView });
+
+        // set timeout for delay reset initial marker data when it used (0.5 sec)
+        setTimeout(() => { initialMarkerLocationMapPage.current = undefined }, 500);
     }
 
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
