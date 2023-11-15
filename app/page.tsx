@@ -23,6 +23,8 @@ import SplashScreen from '@/component/modalAsset/splashScreen';
 import { IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
 import { IChangeCurrentPageRequest } from "@/model/requestModel";
 import { IContainerClass, MapMetaData } from '@/model/mapModel';
+import { IBaseLocation } from '@/model/subentityModel';
+import { map } from 'leaflet';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 
 // Initialize .ENV variable
@@ -71,6 +73,7 @@ export default function Home() {
     const currentUpdateCard = useRef<IDisplayPlace>();
     const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString());
     const isUserFocusInMapPage = useRef<boolean>(false);
+    const initialMarkerLocationMapPage = useRef<IBaseLocation>();
 
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: setDefaultCurrentPage });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
@@ -447,10 +450,10 @@ export default function Home() {
         setCardOrderBy(orderBy);
     };
 
-    const UpdatePlaceCardHandler = (cardId: string) => {
+    const UpdatePlaceCardHandler = (placeId: string) => {
         
         // set cardId to Ref variable
-        currentUpdateCard.current = places?.find(x => x.id == cardId);
+        currentUpdateCard.current = places?.find(x => x.id == placeId);
 
         // change current page to UpdateCard
         ChangeCurrentPage({ page: PwaCurrentPageEnum.UpdateList });
@@ -502,6 +505,22 @@ export default function Home() {
         isUserFocusInMapPage.current  = isFocus;
     }
 
+    const LinkCardToMapPageHandler = (placeId: string) => {
+
+        const place = places?.find(x => x.id == placeId);
+
+        // set initial user marker location
+        if (place && place.latitude && place.longitude) {
+            initialMarkerLocationMapPage.current = {
+                latitude: place.latitude,
+                longitude: place.longitude
+            }
+        }
+
+        // set current page to map page
+        ChangeCurrentPage({ page: PwaCurrentPageEnum.MapView });
+    }
+
     const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
 
         // get all color theme by name
@@ -550,6 +569,7 @@ export default function Home() {
                                         isDarkTheme={isDarkTheme.current}
                                         currentCardOrder={cardOrderBy}
                                         changeCardOrderByHandler={ChangeCardOrderByHandler}
+                                        linkCardToMapPageHandler={LinkCardToMapPageHandler}
                                         baseUrlApi={baseUrlApi}
                                     ></List>
 
@@ -557,6 +577,7 @@ export default function Home() {
                                     return <Map
                                         placeMarkers={GetPlaceMarkers(places)}
                                         user={user.current}
+                                        initialMarkerLocation={initialMarkerLocationMapPage.current}
                                         mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                         isDarkTheme={isDarkTheme.current}
                                         userFocusObj={{
@@ -609,6 +630,7 @@ export default function Home() {
                                             isDarkTheme={isDarkTheme.current}
                                             currentCardOrder={cardOrderBy}
                                             changeCardOrderByHandler={ChangeCardOrderByHandler}
+                                            linkCardToMapPageHandler={LinkCardToMapPageHandler}
                                             baseUrlApi={baseUrlApi}
                                         ></List>
                                     }
