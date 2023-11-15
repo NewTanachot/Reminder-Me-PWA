@@ -1,9 +1,9 @@
-import {DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
-import {PwaCurrentPageEnum} from "@/model/enumModel";
-import {IUpdateListProps} from "@/model/propsModel";
-import {ResponseModel} from "@/model/responseModel";
-import {IBaseLocation, UpdatePlace} from "@/model/subentityModel";
-import {FormEvent, useRef, useState} from "react";
+import { DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
+import { IUpdateListProps } from "@/model/propsModel";
+import { ResponseModel } from "@/model/responseModel";
+import { IBaseLocation, UpdatePlace } from "@/model/subentityModel";
+import { FormEvent, useRef, useState } from "react";
 import LoadingComponent from "../modalAsset/loading";
 import { IUpsertFormData } from "@/model/useStateModel";
 import dynamic from "next/dynamic";

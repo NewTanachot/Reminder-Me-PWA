@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
-import {IsStringValid, IsStringValidEmpty} from "@/extension/string_extension";
-import {PwaCurrentPageEnum} from "@/model/enumModel";
-import {IAddListProps} from "@/model/propsModel";
-import {ResponseModel} from "@/model/responseModel";
-import {IBaseLocation, PlaceExtensionModel} from "@/model/subentityModel";
-import {FormEvent, useRef, useState} from "react";
+import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
+import { IAddListProps } from "@/model/propsModel";
+import { ResponseModel } from "@/model/responseModel";
+import { IBaseLocation, PlaceExtensionModel } from "@/model/subentityModel";
+import { FormEvent, useRef, useState } from "react";
 import LoadingComponent from "../modalAsset/loading";
 import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";

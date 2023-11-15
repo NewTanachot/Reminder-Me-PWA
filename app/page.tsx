@@ -24,7 +24,6 @@ import { IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedD
 import { IChangeCurrentPageRequest } from "@/model/requestModel";
 import { IContainerClass, MapMetaData } from '@/model/mapModel';
 import { IBaseLocation } from '@/model/subentityModel';
-import { map } from 'leaflet';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 
 // Initialize .ENV variable
