@@ -45,7 +45,7 @@ export default function MapModal({
     const mapRef = useRef<L.Map>(); // create map ref value
 
     if (userFocusObj.isfocus) {
-        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
+        mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude], undefined, MapMetaData.getFlyToOption());
     }
 
     // create new marker component
