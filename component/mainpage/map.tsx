@@ -26,7 +26,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
     // create map ref value
     const mapRef = useRef<L.Map>();
     const centerLocation: IBaseLocation = initialMarkerLocation ? initialMarkerLocation : user.userLocation;
-    const initialZoomData = MapMetaData.getMapView(initialMarkerLocation ? MapViewEnum.Focus : MapViewEnum.high);
+    const initialZoomData = MapMetaData.getMapView(initialMarkerLocation ? MapViewEnum.Card : MapViewEnum.high);
 
     if (userFocusObj.isfocus) {
 
