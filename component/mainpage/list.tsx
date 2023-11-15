@@ -13,6 +13,7 @@ export default function List({
         isDarkTheme,
         currentCardOrder,
         changeCardOrderByHandler,
+        linkCardToMapPageHandler,
         baseUrlApi
     }: IListPageProps) {
 
@@ -58,6 +59,7 @@ export default function List({
                                         deletePlaceHandler={deletePlaceHandler}
                                         changePlaceStatusHandler={changePlaceStatusHandler}
                                         updatePlaceCardHandler={updatePlaceCardHandler}
+                                        linkCardToMapPageHandler={linkCardToMapPageHandler}
                                         isDarkTheme={isDarkTheme}
                                         baseUrlApi={baseUrlApi}
                                     ></PlaceCard>
