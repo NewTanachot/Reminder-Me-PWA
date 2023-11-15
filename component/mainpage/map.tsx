@@ -45,6 +45,9 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
+        // set user focus to false [ for prevent focus when flying ]
+        userFocusObj.setUserFocus(false);
+        
         // if marker name is null. it will be set to user marker
         if (markerName) {
             // find place by name
@@ -53,9 +56,6 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             if (marker) {
                 const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
                 const zoom = MapMetaData.getMapView(mapView);
-
-                // set user focus to false [ for prevent focus when flying ]
-                userFocusObj.setUserFocus(false);
 
                 // fly to center marker location
                 mapRef.current?.flyTo(centerLocation, zoom);
@@ -68,8 +68,8 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
 
-            // set user focus to true with 5 sec delay [ if user marker selected with FOCUS, ZOOM mapview ] 
-            setTimeout(() => userFocusObj.setUserFocus(true), 5000);
+            // set user focus to true with 7 sec delay [ if user marker selected with FOCUS, ZOOM mapview ] 
+            setTimeout(() => userFocusObj.setUserFocus(true), 7000);
         }
     };
 

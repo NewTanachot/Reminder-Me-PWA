@@ -98,6 +98,9 @@ export default function MapModal({
 
     const SetMapView = (mapView: MapViewEnum, markerName?: string) => {
 
+        // set user focus to false [ for prevent focus when flying ]
+        userFocusObj.setUserFocus(false);
+
         // if marker name is null. it will be set to user marker
         if (markerName) {
             // find place by name
@@ -106,9 +109,6 @@ export default function MapModal({
             if (marker) {
                 const centerLocation: L.LatLngExpression = [marker.markerLocation.latitude, marker.markerLocation.longitude];
                 const zoom = MapMetaData.getMapView(mapView);
-
-                // set user focus to false [ for prevent focus when flying ]
-                userFocusObj.setUserFocus(false);
 
                 // fly to center marker location
                 mapRef.current?.flyTo(centerLocation, zoom);
