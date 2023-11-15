@@ -50,7 +50,7 @@ export class MapMetaData {
     }
 
     public static getUserFocusTimeOutDuration() {
-        return (this.zoomAnimationDuration + 1) * 1000; // buffer 1 sec
+        return (this.zoomAnimationDuration + 0.2) * 1000; // buffer 0.2 sec
     }
 
     public static getMapView(type: MapViewEnum) {
