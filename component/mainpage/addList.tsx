@@ -218,7 +218,7 @@ export default function AddList({
                         className={`form-control w-100 shadow-sm ${formColorTheme}`} 
                         defaultValue={formDataRef.current?.name}
                         placeholder="..."
-                        maxLength={20} 
+                        maxLength={50} 
                         required
                     />
                 </div>

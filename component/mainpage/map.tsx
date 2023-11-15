@@ -8,6 +8,7 @@ import { IMarker, MapMetaData, MapViewEnum } from '@/model/mapModel';
 import UserMapPopup from '../mapAsset/userMapPopup';
 import PlaceMapPopup from '../mapAsset/placeMapPopup';
 import { useRef } from 'react';
+import { IBaseLocation } from '@/model/subentityModel';
 
 // set mormal map icon
 const placeMarkerIcon = L.icon({
@@ -20,10 +21,12 @@ const placeWithDateMarkerIcon = L.icon({
     iconSize: [18, 29],
 });
 
-export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDarkTheme }: IMapProps) {
+export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDarkTheme, initialMarkerLocation }: IMapProps) {
 
     // create map ref value
     const mapRef = useRef<L.Map>();
+    const centerLocation: IBaseLocation = initialMarkerLocation ? initialMarkerLocation : user.userLocation;
+    const initialZoomData = MapMetaData.getMapView(initialMarkerLocation ? MapViewEnum.Focus : MapViewEnum.high);
 
     if (userFocusObj.isfocus) {
 
@@ -113,8 +116,8 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
 
         <MapContainer 
             className='map shadow-sm rounded-3' 
-            center={[user.userLocation.latitude, user.userLocation.longitude]} 
-            zoom={MapMetaData.getMapView(MapViewEnum.high)} 
+            center={[centerLocation.latitude, centerLocation.longitude]} 
+            zoom={initialZoomData} 
             scrollWheelZoom={true}
             attributionControl={false}
             ref={map => mapRef.current = map ?? undefined}

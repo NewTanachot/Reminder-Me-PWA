@@ -5,7 +5,15 @@ import { IPlaceCardProps } from "@/model/propsModel";
 import { useEffect, useState } from "react";
 import { IUpdateCardStatusApiRequest } from "@/model/requestModel";
 
-export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusHandler, updatePlaceCardHandler, isDarkTheme, baseUrlApi }: IPlaceCardProps) {
+export default function PlaceCard({ 
+    data, 
+    deletePlaceHandler, 
+    changePlaceStatusHandler, 
+    updatePlaceCardHandler, 
+    linkCardToMapPageHandler,
+    isDarkTheme, 
+    baseUrlApi 
+}: IPlaceCardProps) {
 
     const cardId = `card_${data.id}`;
     const cardStatusSwitchId = `cardStatusSwitch_${data.id}`;
@@ -130,9 +138,16 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
             <div className={`card-header rounded-top-4 ${cardHeaderThemeColor} bg-gradient`}>
                 <div className="d-flex justify-content-between align-items-center text-size-20">
                     <div 
-                        onClick={() => updatePlaceCardHandler(data.id)}
+                        onClick={() => linkCardToMapPageHandler(data.id)}
                     >
-                        {data.name}
+                        {
+                            data.name.length < 23
+                                ? <>
+                                    {data.name}
+                                    <i className="fa-solid fa-up-right-from-square ms-2 text-footer-size"></i>
+                                </>
+                                : <>{data.name.slice(0, 23)}..</>
+                        }
                     </div>
                     <div className="text-nowrap">
                         {data.locationDistance.toFixed(2)} km
@@ -181,6 +196,10 @@ export default function PlaceCard({ data, deletePlaceHandler, changePlaceStatusH
                 className={`card-footer rounded-bottom-4 text-end py-0 h-25 text-secondary ${cardBodyThemeColor} text-card-footer-size`}
             >
                 {data.displayCreateAt}
+                <i 
+                    className="fa-solid fa-pen-to-square mx-2"
+                    onClick={() => updatePlaceCardHandler(data.id)}
+                ></i>
             </div>
         </div>
     )
