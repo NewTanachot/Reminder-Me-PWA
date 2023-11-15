@@ -65,11 +65,11 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             const centerLocation: L.LatLngExpression = [user.userLocation.latitude, user.userLocation.longitude];
             const zoom = MapMetaData.getMapView(mapView);
 
-            // set user focus to true [ if user marker selected with FOCUS, ZOOM mapview ] 
-            userFocusObj.setUserFocus(true);
-
             // fly to center marker location
             mapRef.current?.flyTo(centerLocation, zoom);
+
+            // set user focus to true with 5 sec delay [ if user marker selected with FOCUS, ZOOM mapview ] 
+            setTimeout(() => userFocusObj.setUserFocus(true), 5000);
         }
     };
 
