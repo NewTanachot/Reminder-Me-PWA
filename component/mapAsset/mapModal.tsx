@@ -45,6 +45,14 @@ export default function MapModal({
     const mapRef = useRef<L.Map>(); // create map ref value
 
     if (userFocusObj.isfocus) {
+
+        // check if map is higher than Focus mapview 
+        if (mapRef.current && mapRef.current.getZoom() < MapMetaData.getMapView(MapViewEnum.Focus)) {
+
+            // set user focus to false
+            userFocusObj.setUserFocus(false);
+        }
+
         mapRef.current?.flyTo([user.userLocation.latitude, user.userLocation.longitude]);
     }
 
