@@ -136,17 +136,18 @@ export default function PlaceCard({
                 <i className={`fa-solid fa-circle-xmark text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
             </div>         
             <div className={`card-header rounded-top-4 ${cardHeaderThemeColor} bg-gradient`}>
-                <div className="d-flex justify-content-between align-items-center text-size-20">
+                <div className="d-flex justify-content-between align-items-center text-size-18">
                     <div 
+                        className="text-nowrap"
                         onClick={() => linkCardToMapPageHandler(data.id)}
                     >
                         {
-                            data.name.length < 23
+                            data.name.length < 20
                                 ? <>
                                     {data.name}
-                                    <i className="fa-solid fa-up-right-from-square ms-2 text-footer-size"></i>
+                                    <i className="fa-solid fa-location-arrow ms-2 text-footer-size"></i>
                                 </>
-                                : <>{data.name.slice(0, 23)}..</>
+                                : <>{data.name.slice(0, 24)}..</>
                         }
                     </div>
                     <div className="text-nowrap">

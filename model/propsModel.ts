@@ -2,7 +2,7 @@ import { CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from "./enumModel"
 import { IContainerClass, IMapAsset, IMarker, IUserFocusMap, MapViewEnum } from "./mapModel";
 import { IBaseLocation } from "./subentityModel"
 import { CurrentUserRef, IDisplayPlace, ICurrentPage } from "./useStateModel"
-import {IChangeCurrentPageRequest} from "@/model/requestModel";
+import { IChangeCurrentPageRequest } from "@/model/requestModel";
 
 interface IBaseProps {
     isDarkTheme: boolean

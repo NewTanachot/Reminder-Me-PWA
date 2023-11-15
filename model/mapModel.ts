@@ -13,7 +13,7 @@ export interface IContainerClass {
 }
 
 export enum MapViewEnum {
-    high, Focus, Zoom
+    high, Focus, Zoom, Card
 }
 
 // https://cloud.maptiler.com/account/keys/?_ga=2.74998166.504639508.1698037213-71810968.1698037213&_gl=1*1nbzh2s*_gcl_au*NDUzMDM2MTY2LjE2OTgwMzcyMTM.*_ga*NzE4MTA5NjguMTY5ODAzNzIxMw..*_ga_K4SXYBF4HT*MTY5ODAzNzIxMi4xLjEuMTY5ODAzNzI3Mi42MC4wLjA.
@@ -22,6 +22,7 @@ export class MapMetaData {
     private static highView = 10;
     private static focusView = 13;
     private static zoomView = 18;
+    private static cardView = 16;
     private static zoomAnimationDuration = 2;
     private static default = "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=JYIhTNrwXNynUhyX5fIo";
     private static original = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -61,6 +62,8 @@ export class MapMetaData {
                 return this.highView;
             case MapViewEnum.Zoom:
                 return this.zoomView;
+            case MapViewEnum.Card:
+                return this.cardView;
         }
     }
 
