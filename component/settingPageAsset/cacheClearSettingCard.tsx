@@ -4,6 +4,7 @@
 
 //     let cardColorTheme: string;
 //     let textColorTheme: string;
+//     let cardIconColorTheme: string;
 //     let btnColorTheme: string;
 
 //     if (isDarkTheme) {

@@ -13,18 +13,21 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
 
     let cardColorTheme: string;
     let textColorTheme: string;
+    let cardIconColorTheme: string;
     let subTextColorTheme: string;
     let switchThemeBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-subBlack";
         textColorTheme = "text-whiteSmoke";
+        cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
         switchThemeBtnColorTheme = "bg-secondary border-secondary-subtle";
     }
     else {
         cardColorTheme = "bg-peach";
         textColorTheme = "text-viridian-green";
+        cardIconColorTheme = "text-dark-emphasis";
         subTextColorTheme = "text-secondary";
         switchThemeBtnColorTheme = "bg-viridian-green border-success-subtle";
     }
@@ -35,7 +38,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
                     <div className="flex-shrink-0 ms-2">
-                        <i className="fa-solid fa-earth-americas text-setting-icon-size"></i>
+                        <i className={`fa-solid fa-earth-americas text-setting-icon-size ${cardIconColorTheme}`}></i>
                     </div>
                     <div className="flex-grow-1 ms-3">
                         <p className="m-0 lh-sm text-size-14">
@@ -48,7 +51,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                     </div>
                     <select 
                         // className={`form-select form-select-sm w-38 ${switchThemeBtnColorTheme} text-white`}
-                        className={`rounded-1 bg-gradient shadow-sm text-size-15 px-1 w-38 ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 bg-gradient shadow-sm text-size-15 px-1 w-30 text-center ${switchThemeBtnColorTheme} text-white`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >
@@ -58,7 +61,8 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                                 key={index}
                                 value={mapTitle}
                             >
-                                {mapTitle.toString().toLowerCase()}             
+                                {mapTitle.toString().toLowerCase()} 
+                                <i className="fa-solid fa-sort-down ms-2 text-dark"></i>       
                             </option>
                         )
                     }

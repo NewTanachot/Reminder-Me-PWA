@@ -8,18 +8,21 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
 
     let cardColorTheme: string;
     let textColorTheme: string;
+    let cardIconColorTheme: string;
     let subTextColorTheme: string;
     let switchThemeBtnColorTheme: string;
 
     if (isDarkTheme) {
         cardColorTheme = "bg-subBlack";
         textColorTheme = "text-whiteSmoke";
+        cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
         switchThemeBtnColorTheme = "btn-secondary";
     }
     else {
         cardColorTheme = "bg-peach";
         textColorTheme = "text-viridian-green";
+        cardIconColorTheme = "text-dark-emphasis";
         subTextColorTheme = "text-secondary";
         switchThemeBtnColorTheme = "bg-viridian-green text-white";
     }
@@ -32,8 +35,8 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                     <div className="flex-shrink-0 ms-2">
                         {
                             isDarkTheme
-                                ? <i className="fa-solid fa-moon text-setting-icon-size"></i>
-                                : <i className="fa-solid fa-sun text-setting-icon-size"></i>
+                                ? <i className={`fa-solid fa-moon text-setting-icon-size ${cardIconColorTheme}`}></i>
+                                : <i className={`fa-solid fa-sun text-setting-icon-size ${cardIconColorTheme}`}></i>
                         }
                     </div>
                     <div className="flex-grow-1 ms-3">

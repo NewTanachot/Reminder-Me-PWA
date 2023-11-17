@@ -295,6 +295,10 @@ html, body {
 
 /* #region ------- [ Sizing Class ] ------- */
 
+.w-30 {
+    width: 30% !important;
+}
+
 .w-38 {
     width: 38% !important;
 }
