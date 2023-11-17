@@ -39,8 +39,8 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
                     defaultValue={currentCardOrder}
                     onChange={ChangeCardOrderByHandler}
                 >
-                    <option value={CardOrderByEnum.CreateDateDESC}>Old - New</option>
-                    <option value={CardOrderByEnum.CreateDate}>New - Old</option>
+                    <option value={CardOrderByEnum.CreateDateDESC}>New - Old</option>
+                    <option value={CardOrderByEnum.CreateDate}>Old - New</option>
                     <option value={CardOrderByEnum.DistanceDESC}>Long - Short</option>
                     <option value={CardOrderByEnum.Distance}>Short - Long</option>
                 </select>

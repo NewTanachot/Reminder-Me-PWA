@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import '@fortawesome/fontawesome-free/css/all.css';
 import appIcon from '@/public/image/web-icon/favicon.ico';
-import appleAppIcon from '@/public/image/apple-icon/appstore_v2.png';
+import appleAppIcon from '@/public/image/apple-icon/prod.png';
 import { Metadata } from 'next'
 import { Athiti } from 'next/font/google' // Athiti, Itim, Sriracha
 
