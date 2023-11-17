@@ -163,3 +163,7 @@ export interface IMapPopupFooterProps extends IBaseMapPopupProps, IBaseProps {
 export interface IUserPopupFooterProps extends IBaseMapPopupProps, IBaseProps {
     markNewLocationAtUser?: () => void
 }
+
+export interface ICacheClearSettingCardProps extends IBaseProps {
+    
+}

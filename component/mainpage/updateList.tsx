@@ -243,7 +243,7 @@ export default function UpdateList({
                         className={`form-control w-100 ${formColorTheme} shadow-sm`} 
                         defaultValue={formDataRef.current.message} 
                         placeholder="..." 
-                        maxLength={50} 
+                        maxLength={65} 
                         rows={2}
                     />
                 </div>

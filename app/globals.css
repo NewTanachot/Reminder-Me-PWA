@@ -171,6 +171,22 @@ html, body {
 
 /* #region ------- [ Text Class ] ------- */
 
+.text-size-14 {
+    font-size: 14px;
+}
+
+.text-size-15 {
+    font-size: 15px;
+}
+
+.text-size-16 {
+    font-size: 16px;
+}
+
+.text-size-17 {
+    font-size: 17px;
+}
+
 .text-size-18 {
     font-size: 18px;
 }
@@ -278,6 +294,10 @@ html, body {
 /* #endregion */
 
 /* #region ------- [ Sizing Class ] ------- */
+
+.w-30 {
+    width: 30% !important;
+}
 
 .w-38 {
     width: 38% !important;
