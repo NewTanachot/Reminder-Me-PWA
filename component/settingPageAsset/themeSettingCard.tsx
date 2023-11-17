@@ -37,7 +37,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                         }
                     </div>
                     <div className="flex-grow-1 ms-3">
-                        <h6 className="m-0 lh-1">
+                        <h6 className="m-0 lh-sm text-size-14">
                             Theme:
                             <br />
                             <span className={subTextColorTheme}>

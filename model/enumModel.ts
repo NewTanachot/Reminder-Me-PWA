@@ -11,7 +11,7 @@ export enum PwaCurrentPageEnum {
 }
 
 export enum CardOrderByEnum {
-    CreateDate, CreateDateDESC, Distance, DistanceDESC
+    CreateDate, CreateDateDESC, Distance, DistanceDESC, NoLocation
 }
 
 export enum MapTitleEnum {

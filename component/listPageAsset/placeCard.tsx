@@ -155,17 +155,17 @@ export default function PlaceCard({
                     </div>
                  </div>
             </div>
-            <div className={`card-body ${cardBodyThemeColor}`}>
+            <div className={`card-body ${cardBodyThemeColor} text-size-14 px-3 py-2`}>
                 <div className="d-flex justify-content-between align-items-center">
-                    <p className="text-dark m-0 lh-1">
+                    <div className="text-dark lh-sm">
                         Message: &nbsp;
                         <span className={cardSubDataThemeColor}>
                             {data.reminderMessage ? data.reminderMessage : "-"}
                         </span>
-                    </p>
+                    </div>
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-dark">
+                    <div className="text-dark lh-sm">
                         Location: &nbsp;
                         <span className={cardSubDataThemeColor}>
                             {displayLocation}
@@ -182,7 +182,7 @@ export default function PlaceCard({
                     </div>
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-dark">
+                    <div className="text-dark lh-sm">
                         Date: &nbsp;
                         {
                             data.reminderDate ? 

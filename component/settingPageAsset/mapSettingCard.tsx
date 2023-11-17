@@ -20,13 +20,13 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
         cardColorTheme = "bg-subBlack";
         textColorTheme = "text-whiteSmoke";
         subTextColorTheme = "text-milk-orange";
-        switchThemeBtnColorTheme = "bg-secondary";
+        switchThemeBtnColorTheme = "bg-secondary border-secondary-subtle";
     }
     else {
         cardColorTheme = "bg-peach";
         textColorTheme = "text-viridian-green";
         subTextColorTheme = "text-secondary";
-        switchThemeBtnColorTheme = "bg-viridian-green text-white";
+        switchThemeBtnColorTheme = "bg-viridian-green border-success-subtle";
     }
 
     return (
@@ -38,16 +38,17 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                         <i className="fa-solid fa-earth-americas text-setting-icon-size"></i>
                     </div>
                     <div className="flex-grow-1 ms-3">
-                        <h6 className="m-0 lh-1">
+                        <p className="m-0 lh-sm text-size-14">
                             Map Style:
                             <br />
                             <span className={subTextColorTheme}>
                                 {currentMapString.toLowerCase()}
                             </span>
-                        </h6>
+                        </p>
                     </div>
                     <select 
-                        className={`form-select form-select-sm w-38 ${switchThemeBtnColorTheme} text-white`}
+                        // className={`form-select form-select-sm w-38 ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 bg-gradient shadow-sm text-size-15 px-1 w-38 ${switchThemeBtnColorTheme} text-white`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >
