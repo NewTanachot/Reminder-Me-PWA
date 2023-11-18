@@ -24,8 +24,20 @@ const GetPlaceByUserId = async (userId: string) => {
     });
 }
 
-export async function GET(request: Request): Promise<NextResponse> {
+import Cors from 'cors';
+import initMiddleware from '@/extension/test';
 
+// Initialize the cors middleware
+const cors = initMiddleware(
+  Cors({
+    origin: 'http://localhost:3000', // replace with the actual origin of your Next.js web application
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+);
+
+export async function GET(request: Request, Response: Response): Promise<NextResponse> {
+
+    await cors(request, Response);
     const origin = request.headers.get('origin');
 
     // get body of request

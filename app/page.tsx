@@ -330,10 +330,10 @@ export default function Home() {
                     // fetch get api
                     console.log("fetch get place api");
                     const response = await fetch(`${baseUrlApi}/place/?userId=${user.current.userId}`, {
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Access-Control-Allow-Origin': '*'
-                        }
+                        // headers: {
+                        //     "Content-Type": "application/json",
+                        //     'Access-Control-Allow-Origin': '*'
+                        // }
                     });
     
                     if (!response.ok) {
