@@ -186,7 +186,7 @@ export default function PlaceCard({
                         Date: &nbsp;
                         {
                             data.reminderDate ? 
-                            <span className={cardSubDataThemeColor}>{data.reminderDate}</span>
+                            <span className="text-gold">{data.reminderDate}</span>
                             :
                             <span className={cardSubDataThemeColor}>-</span>
                         }

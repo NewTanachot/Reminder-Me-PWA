@@ -1,7 +1,7 @@
 import { PlaceModelDecorator, PlaceModelCreateValidator, PlaceModelUpdateValidator } from "@/extension/api_extension";
 import { ResponseModel } from "@/model/responseModel";
 import { Place } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma";
 import { IsStringValid } from "@/extension/string_extension";
 
@@ -26,6 +26,8 @@ const GetPlaceByUserId = async (userId: string) => {
 
 export async function GET(request: Request): Promise<NextResponse> {
 
+    const origin = request.headers.get('origin');
+
     // get body of request
     const userIdParam = new URL(request.url).searchParams.get("userId");
     let place: Place[];
@@ -44,7 +46,13 @@ export async function GET(request: Request): Promise<NextResponse> {
             place = await GetPlace();
         }
 
-        return NextResponse.json(place, { status: 200 });
+        // return NextResponse.json(place, { status: 200 });
+        return new NextResponse(JSON.stringify(place), {
+            status: 200,
+            headers: {
+                'Access-Control-Allow-Origin': origin ?? "*"
+            }
+        })
     }
     catch (error) 
     {
@@ -129,3 +137,17 @@ export async function PUT(request: Request): Promise<NextResponse> {
         }, { status: 500 });
     }
 }
+
+export const OPTIONS = async (request: NextRequest) => {
+    // Return Response
+    return NextResponse.json(
+      {},
+      {
+        status: 200,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"  
+        },
+      }
+    );
+  };
