@@ -126,6 +126,9 @@ export default function UpdateList({
         // change container class to map page
         SetPageContainerClass(containerClassObject, true);
 
+        // set uiser focus to flase
+        userFocusObj.setUserFocus(false);
+
         // set go to page map
         setDisplayMapModal(true);
         setIsMapPage(true);

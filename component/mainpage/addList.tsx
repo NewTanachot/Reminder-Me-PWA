@@ -128,6 +128,9 @@ export default function AddList({
             enableSwitch: isActiveInput.checked
         };
 
+        // set uiser focus to flase
+        userFocusObj.setUserFocus(false);
+
         // set go to page map
         setDisplayMapModal(true);
         setIsMapPage(true);

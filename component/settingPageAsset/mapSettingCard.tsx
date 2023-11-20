@@ -51,7 +51,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                     </div>
                     <select 
                         // className={`form-select form-select-sm w-38 ${switchThemeBtnColorTheme} text-white`}
-                        className={`rounded-1 bg-gradient shadow-sm text-size-15 px-1 w-30 text-center ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 bg-gradient shadow-sm text-size-15 w-30 text-center ${switchThemeBtnColorTheme} text-white`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >
