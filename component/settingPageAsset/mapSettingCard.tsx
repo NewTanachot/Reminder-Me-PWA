@@ -22,7 +22,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
         textColorTheme = "text-whiteSmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchThemeBtnColorTheme = "bg-secondary border-secondary-subtle";
+        switchThemeBtnColorTheme = "bg-secondary border-dark-subtle";
     }
     else {
         cardColorTheme = "bg-peach";
@@ -51,7 +51,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                     </div>
                     <select 
                         // className={`form-select form-select-sm w-38 ${switchThemeBtnColorTheme} text-white`}
-                        className={`rounded-1 bg-gradient shadow-sm text-size-15 w-30 text-center ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 bg-gradient shadow-sm text-size-15 text-center ${switchThemeBtnColorTheme} text-white`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >
@@ -62,7 +62,6 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                                 value={mapTitle}
                             >
                                 {mapTitle.toString().toLowerCase()} 
-                                <i className="fa-solid fa-sort-down ms-2 text-dark"></i>       
                             </option>
                         )
                     }

@@ -12,6 +12,16 @@ const GetAllUsers = async () => {
     return await prisma.user.findMany();
 }
 
+export const GetUserByUserData = async (userData: string) => {
+    return await prisma.user.findFirst({
+        where: {
+            OR: [
+                { id: userData }, { name: userData }
+            ]
+        }
+    });
+}
+
 export async function GET() : Promise<NextResponse> {
 
     try 
