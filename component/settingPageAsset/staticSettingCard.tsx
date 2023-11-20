@@ -1,6 +1,6 @@
 import { IStaticSettingCardProps } from "@/model/propsModel"
 
-export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDarkTheme}: IStaticSettingCardProps) {
+export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDarkTheme }: IStaticSettingCardProps) {
 
     let cardColorTheme: string;
     let textColorTheme: string;
@@ -25,17 +25,17 @@ export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDar
         <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme}`}>
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
-                    <div className="flex-shrink-0 ms-2">
+                    <div className="flex-shrink-0">
                         <i className={`${cardIcon} ${cardIconColorTheme} text-setting-icon-size`}></i>
                     </div>
                     <div className="flex-grow-1 ms-3">
-                        <h6 className="m-0 lh-sm text-size-14">
-                            {cardTitle}:
+                        <p className="m-0 lh-sm text-size-14">
+                            {cardTitle}
                             <br />
                             <span className={subTextColorTheme}>
-                                {cardInfo}
+                                • {cardInfo}
                             </span>
-                        </h6>
+                        </p>
                     </div>
                 </div>
             </div>

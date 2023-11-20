@@ -20,7 +20,7 @@ import Setting from '@/component/mainpage/setting';
 import UpdateList from '@/component/mainpage/updateList';
 import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
-import { IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
+import { ICacheIndexedDB, IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
 import { IChangeCurrentPageRequest } from "@/model/requestModel";
 import { IContainerClass, MapMetaData } from '@/model/mapModel';
 import { IBaseLocation } from '@/model/subentityModel';
@@ -35,6 +35,8 @@ const indexedDB_ThemeStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME
 const indexedDB_ThemeKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_THEME_KEY ?? "";
 const indexedDB_MapStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_MAP ?? "";
 const indexedDB_MapKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_MAP_KEY ?? "";
+const indexedDB_CacheStore: string = process.env.NEXT_PUBLIC_INDEXED_STORE_CACHE ?? "";
+const indexedDB_CacheKey: string = process.env.NEXT_PUBLIC_INDEXED_STORE_CACHE_KEY ?? "";
 const baseUrlApi: string = process.env.NEXT_PUBLIC_BASEURL_API ?? "";
 const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 const softwareVersion: string = packageJson.version
@@ -73,6 +75,7 @@ export default function Home() {
     const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString());
     const isUserFocusInMapPage = useRef<boolean>(false);
     const initialMarkerLocationMapPage = useRef<IBaseLocation>();
+    const lastCacheClearing = useRef<string>(Date.now().toString());
 
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: setDefaultCurrentPage });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
@@ -92,6 +95,7 @@ export default function Home() {
             let themeStore: IDBObjectStore;
             let userStore: IDBObjectStore;
             let mapStore: IDBObjectStore;
+            let cacheStore: IDBObjectStore;
 
             // check user Credentials -> open indexedDB
             const request = indexedDB.open(indexedDB_DBName, indexedDB_DBVersion);
@@ -109,11 +113,17 @@ export default function Home() {
             // open with indexedDB Initialize handler
             request.onupgradeneeded = () => {
 
-                // create currentUser / currentTheme store
+                // create currentUser
                 const dbContext = request.result;
+
+                // create store
                 dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
                 dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
                 dbContext.createObjectStore(indexedDB_MapStore, { keyPath: indexedDB_MapKey });
+                cacheStore = dbContext.createObjectStore(indexedDB_CacheStore, { keyPath: indexedDB_CacheKey });
+
+                // set up cache store
+                cacheStore.put({CacheKey: indexedDB_CacheKey, lastCacheClearing: lastCacheClearing.current });
 
                 // fix background color theme when initailize indexedDB
                 AdaptiveColorThemeHandler(isDarkTheme.current);
@@ -129,13 +139,13 @@ export default function Home() {
             request.onsuccess = () => {
 
                 // set up indexedDB
-                const dbContext = request.result;
+                const indexedDbContext = request.result;
     
                 // check theme store name is exist
-                if (dbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
+                if (indexedDbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
                     
                     // create transaction of indexedDB
-                    const transaction = dbContext.transaction(indexedDB_ThemeStore, "readwrite");
+                    const transaction = indexedDbContext.transaction(indexedDB_ThemeStore, "readwrite");
 
                     // create store of indexedDB transaction and set it globle useRef
                     themeStore = transaction.objectStore(indexedDB_ThemeStore);
@@ -158,9 +168,9 @@ export default function Home() {
                 }
 
                 // check map store name is exist
-                if (dbContext.objectStoreNames.contains(indexedDB_MapStore)) {
+                if (indexedDbContext.objectStoreNames.contains(indexedDB_MapStore)) {
 
-                    const transaction = dbContext.transaction(indexedDB_MapStore, "readwrite");
+                    const transaction = indexedDbContext.transaction(indexedDB_MapStore, "readwrite");
                     mapStore = transaction.objectStore(indexedDB_MapStore);
 
                     // #region ------------------------- Initialize default map value
@@ -180,11 +190,18 @@ export default function Home() {
                     //  #endregion
                 }
 
+                // check cache store name is exist
+                if (!cacheStore && indexedDbContext.objectStoreNames.contains(indexedDB_CacheStore)) {
+
+                    const transaction = indexedDbContext.transaction(indexedDB_CacheStore, "readonly");
+                    cacheStore = transaction.objectStore(indexedDB_CacheStore);                    
+                }
+
                 // check use store name is exist
-                if (dbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                if (indexedDbContext.objectStoreNames.contains(indexedDB_UserStore)) {
     
                     // create transaction of indexedDB
-                    const transaction = dbContext.transaction(indexedDB_UserStore, "readwrite");
+                    const transaction = indexedDbContext.transaction(indexedDB_UserStore, "readwrite");
                 
                     // create store of indexedDB transaction and set it globle useRef
                     userStore = transaction.objectStore(indexedDB_UserStore);
@@ -198,13 +215,28 @@ export default function Home() {
                 const response: ISetupIndexedDBModel = {
                     themeStore: themeStore,
                     userStore: userStore,
-                    mapStore: mapStore
+                    mapStore: mapStore,
+                    cacheStore: cacheStore
                 }
 
                 // resolve the store to promise 
                 resolve(response)
             }
         });
+    };
+
+    // Define a function to delete indexedDB
+    const DeleteIndexedDB = () => {
+        
+        const result = indexedDB.deleteDatabase(indexedDB_DBName);
+
+        // reload this page to trigger set indexedDB again [ even it blocked.. ]
+        result.onsuccess = () => window.location.reload();  
+        result.onblocked = () => window.location.reload();  
+
+        result.onerror = (event: any) => {
+            alert(`Error deleting indexedDB - ${event.target.error}`);
+        };
     };
 
     // check user credential, fetch get place api, get current location
@@ -242,6 +274,19 @@ export default function Home() {
 
                 // if indexedDB doesn't have map data it will set default
                 mapTheme.current = (mapStoreResponse.result as IMapIndexedDB)?.mapTheme ?? setDefaultMapTheme;
+            }
+
+            // #endregion
+
+            // #region ------------------------- cache data
+
+            // get cache data from indexedDB
+            const cacheStoreResponse = store.cacheStore.get(indexedDB_CacheKey);
+
+            // set lastCacheClearing data in useRef
+            cacheStoreResponse.onsuccess = () => {
+
+                lastCacheClearing.current = (cacheStoreResponse.result as ICacheIndexedDB)?.lastCacheClearing;
             }
 
             // #endregion
@@ -654,6 +699,8 @@ export default function Home() {
                                         developedBy={developedBy}
                                         currentMap={mapTheme.current}
                                         changeCurrentMapHandler={ChangeCurrentMapHandler}
+                                        lastCacheClearing={lastCacheClearing.current}
+                                        deleteIndexedDB={DeleteIndexedDB}
                                     ></Setting>
 
                                 case PwaCurrentPageEnum.Login:

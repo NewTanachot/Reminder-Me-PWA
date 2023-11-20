@@ -1,47 +1,66 @@
-// import { ICacheClearSettingCardProps } from "@/model/propsModel";
+import { StringDateToDisplayDate } from "@/extension/string_extension";
+import { ICacheClearSettingCardProps } from "@/model/propsModel";
 
-// export default function CacheClearSettingCard({ isDarkTheme }: ICacheClearSettingCardProps) {
+const confirmMessage = `Are you sure about cache clearing ? 
+    • you need to login to application again.
+`
 
-//     let cardColorTheme: string;
-//     let textColorTheme: string;
-//     let cardIconColorTheme: string;
-//     let btnColorTheme: string;
+export default function CacheClearSettingCard({ deleteIndexedDB, lastCacheClearing, isDarkTheme }: ICacheClearSettingCardProps) {
 
-//     if (isDarkTheme) {
-//         cardColorTheme = "bg-subBlack";
-//         textColorTheme = "text-whiteSmoke";
-//         cardIconColorTheme = "";
-//         btnColorTheme = "btn-secondary";
-//     }
-//     else {
-//         cardColorTheme = "bg-peach";
-//         textColorTheme = "text-viridian-green";
-//         cardIconColorTheme = "text-dark-emphasis";
-//         btnColorTheme = "bg-viridian-green text-white";
-//     }
+    const ClearCacheBtnHandler = () => {
+        // confirm clear cache
+        if (confirm(confirmMessage)) {
+            deleteIndexedDB();
+        }
+    };
 
-//     return (
-//         <>
-//             <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme}`}>
-//                 <div className="card-body m-2 p-0">
-//                     <div className="d-flex align-items-center">
-//                         <div className="flex-shrink-0 ms-2">
-//                             <i className={`fa-solid fa-user-tie text-setting-icon-size ${cardIconColorTheme}`}></i>
-//                         </div>
-//                         <div className="flex-grow-1 ms-3">
-//                             <h6 className="m-0 lh-sm text-size-14">
-//                                 Username:
-//                             </h6>
-//                         </div>
-//                         <button
-//                                 className={`btn btn-sm ${btnColorTheme} btn-setting-icon-size bg-gradient`}
-//                                 onClick={switchUserHandler}
-//                             >
-//                                 <i className="fa-solid fa-people-arrows"></i>
-//                         </button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </>
-//     )
-// }
+    let cardColorTheme: string;
+    let textColorTheme: string;
+    let cardIconColorTheme: string;
+    let subTextColorTheme: string;
+    let btnColorTheme: string;
+
+    if (isDarkTheme) {
+        cardColorTheme = "bg-subBlack";
+        textColorTheme = "text-whiteSmoke";
+        cardIconColorTheme = "";
+        subTextColorTheme = "text-milk-orange";
+        btnColorTheme = "btn-secondary";
+    }
+    else {
+        cardColorTheme = "bg-peach";
+        textColorTheme = "text-viridian-green";
+        cardIconColorTheme = "text-dark-emphasis";
+        subTextColorTheme = "text-secondary";
+        btnColorTheme = "bg-viridian-green text-white";
+    }
+
+    return (
+        <>
+            <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme}`}>
+                <div className="card-body m-2 p-0">
+                    <div className="d-flex align-items-center">
+                        <div className="flex-shrink-0">
+                            <i className={`fa-solid fa-server ms-1 text-setting-icon-size ${cardIconColorTheme}`}></i>
+                        </div>
+                        <div className="flex-grow-1 ms-3">
+                            <p className="m-0 lh-sm text-size-14">
+                                Clear Cache
+                                <br />
+                                <span className={subTextColorTheme}>
+                                    • {StringDateToDisplayDate(lastCacheClearing) as string}
+                                </span>
+                            </p>
+                        </div>
+                        <button
+                                className={`btn btn-sm ${btnColorTheme} btn-setting-icon-size bg-gradient`}
+                                onClick={ClearCacheBtnHandler}
+                            >
+                                <i className="fa-solid fa-eraser"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}

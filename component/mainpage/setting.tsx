@@ -3,6 +3,7 @@ import StaticSettingCard from "../settingPageAsset/staticSettingCard";
 import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 import UserInfoSettingCard from "@/component/settingPageAsset/userInfoSettingCard";
 import MapSettingCard from "../settingPageAsset/mapSettingCard";
+import CacheClearSettingCard from "../settingPageAsset/cacheClearSettingCard";
 
 export default function Setting({ 
     currentUserName, 
@@ -13,7 +14,9 @@ export default function Setting({
     isDarkTheme, 
     developedBy, 
     currentMap, 
-    changeCurrentMapHandler 
+    changeCurrentMapHandler,
+    lastCacheClearing,
+    deleteIndexedDB
 }: ISettingProps) {
 
     let cardColorTheme: string;
@@ -52,9 +55,16 @@ export default function Setting({
                     changeCurrentMapHandler={changeCurrentMapHandler}
                 ></MapSettingCard>
 
+                {/* Clear cache */}
+                <CacheClearSettingCard
+                    lastCacheClearing={lastCacheClearing}
+                    deleteIndexedDB={deleteIndexedDB}
+                    isDarkTheme={isDarkTheme}
+                ></CacheClearSettingCard>
+
                 {/* Develop by */}
                 <StaticSettingCard
-                    cardIcon="fa-solid fa-file-code"
+                    cardIcon="fa-brands fa-dev mx-1"
                     cardTitle="Developed By"
                     cardInfo={developedBy}
                     isDarkTheme={isDarkTheme}
@@ -62,7 +72,7 @@ export default function Setting({
 
                 {/* version */}
                 <StaticSettingCard
-                    cardIcon="fa-solid fa-code-branch"
+                    cardIcon="fa-solid fa-code-branch mx-1"
                     cardTitle="Software Version"
                     cardInfo={`v${softwareVersion}`}
                     isDarkTheme={isDarkTheme}
