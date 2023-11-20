@@ -40,7 +40,7 @@ const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 const softwareVersion: string = packageJson.version
 
 // Initialize global const variable
-const setDefaultDarkTheme: boolean = true;
+const setDefaultDarkTheme: boolean = false;
 const setDefaultMapTheme = MapTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
 const containerClassObject: IContainerClass = {
@@ -518,6 +518,9 @@ export default function Home() {
 
         // set current page to map page
         ChangeCurrentPage({ page: PwaCurrentPageEnum.MapView });
+
+        // set user focus to flase
+        SetUserFocus(false);
 
         // set timeout for delay reset initial marker data when it used (0.5 sec)
         setTimeout(() => { initialMarkerLocationMapPage.current = undefined }, 500);
