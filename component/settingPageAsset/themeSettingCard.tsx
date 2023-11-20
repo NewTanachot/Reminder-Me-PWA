@@ -32,21 +32,21 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
         <div className={`card shadow-sm mb-3 ${cardColorTheme} ${textColorTheme}`}>
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
-                    <div className="flex-shrink-0 ms-2">
+                    <div className="flex-shrink-0">
                         {
                             isDarkTheme
-                                ? <i className={`fa-solid fa-moon text-setting-icon-size ${cardIconColorTheme}`}></i>
-                                : <i className={`fa-solid fa-sun text-setting-icon-size ${cardIconColorTheme}`}></i>
+                                ? <i className={`fa-solid fa-moon text-setting-icon-size ms-2 me-1 ${cardIconColorTheme}`}></i>
+                                : <i className={`fa-solid fa-sun text-setting-icon-size ms-1 ${cardIconColorTheme}`}></i>
                         }
                     </div>
                     <div className="flex-grow-1 ms-3">
-                        <h6 className="m-0 lh-sm text-size-14">
-                            Theme:
+                        <p className="m-0 lh-sm text-size-14">
+                            Theme
                             <br />
                             <span className={subTextColorTheme}>
-                                {isDarkTheme ? "dark" : "light"}
+                                • {isDarkTheme ? "dark" : "light"}
                             </span>
-                        </h6>
+                        </p>
                     </div>
                     <button
                         className={`btn btn-sm ${switchThemeBtnColorTheme} btn-setting-icon-size bg-gradient`}

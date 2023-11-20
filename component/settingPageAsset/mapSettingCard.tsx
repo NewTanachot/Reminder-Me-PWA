@@ -37,21 +37,20 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
         <div className={`card shadow-sm mb-3 ${cardColorTheme} ${textColorTheme}`}>
             <div className="card-body m-2 p-0">
                 <div className="d-flex align-items-center">
-                    <div className="flex-shrink-0 ms-2">
+                    <div className="flex-shrink-0 ms-1">
                         <i className={`fa-solid fa-earth-americas text-setting-icon-size ${cardIconColorTheme}`}></i>
                     </div>
                     <div className="flex-grow-1 ms-3">
                         <p className="m-0 lh-sm text-size-14">
-                            Map Style:
+                            Map Style
                             <br />
                             <span className={subTextColorTheme}>
-                                {currentMapString.toLowerCase()}
+                                • {currentMapString.toLowerCase()}
                             </span>
                         </p>
                     </div>
                     <select 
-                        // className={`form-select form-select-sm w-38 ${switchThemeBtnColorTheme} text-white`}
-                        className={`rounded-1 bg-gradient shadow-sm text-size-15 text-center ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 bg-gradient shadow-sm text-size-15 ps-1 text-center ${switchThemeBtnColorTheme} text-white`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >

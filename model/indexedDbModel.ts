@@ -12,3 +12,7 @@ export interface IThemeIndexedDB {
 export interface IMapIndexedDB {
     mapTheme: MapTitleEnum
 }
+
+export interface ICacheIndexedDB {
+    lastCacheClearing: string
+}

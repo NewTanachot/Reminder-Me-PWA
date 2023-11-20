@@ -69,7 +69,7 @@ export default function PlaceCard({
     const DeletePlace = async (placeId: string, placeName: string) => {
 
         // confirm delete card
-        if (confirm(`Are you sure about deleting your "${placeName}" card?`)) {
+        if (confirm(`Are you sure about deleting your "${placeName}" card ?`)) {
 
             // set User state
             deletePlaceHandler(placeId);

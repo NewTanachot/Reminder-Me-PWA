@@ -6,7 +6,8 @@ export type ResponseModel = {
 export interface ISetupIndexedDBModel {
     themeStore: IDBObjectStore,
     userStore: IDBObjectStore,
-    mapStore: IDBObjectStore
+    mapStore: IDBObjectStore,
+    cacheStore: IDBObjectStore
 }
 
 export interface IModelValidatorResponse {

@@ -40,13 +40,13 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
                             <i className={`fa-solid fa-user-tie text-setting-icon-size ${cardIconColorTheme}`}></i>
                         </div>
                         <div className="flex-grow-1 ms-3">
-                            <h6 className="m-0 lh-sm text-size-14">
-                                Username:
+                            <p className="m-0 lh-sm text-size-14">
+                                Username
                                 <br />
                                 <span className={subTextColorTheme}>
-                                {userInfo}
-                            </span>
-                            </h6>
+                                    • {userInfo}
+                                </span>
+                            </p>
                         </div>
                         <button
                                 className={`btn btn-sm ${switchUserBtnColorTheme} btn-setting-icon-size bg-gradient`}

@@ -78,7 +78,9 @@ export interface ISettingProps extends IBaseProps {
     softwareVersion: string,
     developedBy: string,
     currentMap: MapTitleEnum,
-    changeCurrentMapHandler: (mapStyle: MapTitleEnum) => void
+    changeCurrentMapHandler: (mapStyle: MapTitleEnum) => void,
+    lastCacheClearing: string,
+    deleteIndexedDB: () => void
 }
 
 export interface ILoginProps extends IBaseProps, IBaseApiUrl {
@@ -94,7 +96,7 @@ export interface IRegisterProps extends IBaseProps, IBaseApiUrl {
 export interface IStaticSettingCardProps extends IBaseProps {
     cardIcon: string,
     cardTitle: string,
-    cardInfo: string
+    cardInfo: string,
 }
 
 export interface IUserInfoSettingCardProps extends IBaseProps {
@@ -165,5 +167,6 @@ export interface IUserPopupFooterProps extends IBaseMapPopupProps, IBaseProps {
 }
 
 export interface ICacheClearSettingCardProps extends IBaseProps {
-    
+    lastCacheClearing: string,
+    deleteIndexedDB: () => void
 }
