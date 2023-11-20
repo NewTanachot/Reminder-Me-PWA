@@ -3,6 +3,7 @@ import { ResponseModel } from "@/model/responseModel";
 import { User } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { UserModelDecorator } from "@/extension/api_extension";
+import { GetUserByUserData } from "../route";
 
 // get secret key from .env
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
@@ -15,18 +16,18 @@ export async function POST(request: Request) : Promise<NextResponse> {
     // decorated user (Clean data)
     const decoratedUser = UserModelDecorator(userLoginFromBody);
 
-    // fetch add user
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL_API}/user/${decoratedUser.name}`);
+    // get user 
+    const user = await GetUserByUserData(decoratedUser.name);
 
-    // user not found
-    if (!response.ok) {
-        const errorMessage: ResponseModel = await response.json();
-        return NextResponse.json(errorMessage, { status: 500 });
+    // check user not found
+    if (!user) {
+        return NextResponse.json(<ResponseModel> { isSuccess: false, message: "[Get User]: User not found." }, { status: 400 });
     }
 
-    const user: User = await response.json();
+    // decrypt user password
     const decryptPassword = DecryptString(user.password, secretKey, user.IV_key);
 
+    // check user password
     if (decoratedUser.password != decryptPassword) {
         return NextResponse.json(<ResponseModel> { isSuccess: false, message: "[Get Login]: Wrong password." }, { status: 400 });
     }

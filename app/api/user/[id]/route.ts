@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server'
 import { ResponseModel } from '@/model/responseModel';
 import { GetLastVariableFromPath } from '@/extension/api_extension';
 import prisma from "@/prisma";
-
-// get secret key from .env
-const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
+import { GetUserByUserData } from '../route';
 
 export async function GET(request: Request) : Promise<NextResponse> {
 
@@ -12,13 +10,7 @@ export async function GET(request: Request) : Promise<NextResponse> {
     const userData = GetLastVariableFromPath(request.url);
 
     // get user from database
-    const user = await prisma.user.findFirst({
-        where: {
-            OR: [
-                { id: userData }, { name: userData }
-            ]
-        }
-    });
+    const user = await GetUserByUserData(userData);
 
     // check if not exist
     if (!user) {

@@ -122,19 +122,19 @@ export default function PlaceCard({
         cardBorderThemeColor = "";
     }
 
-    //  #endregion
-
     return (
         <div 
             id={cardId}
             className={`card mb-3 shadow-sm rounded-4 position-relative ${cardBorderThemeColor} ${filterCardClass}`}
-        >    
+        >  
+            {/* delete btn */}
             <div 
                 className="position-absolute top-0 start-100 translate-middle"
                 onClick={() => DeletePlace(data.id, data.name)}
             >
                 <i className={`fa-solid fa-circle-xmark text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
-            </div>         
+            </div>  
+
             <div className={`card-header rounded-top-4 ${cardHeaderThemeColor} bg-gradient`}>
                 <div className="d-flex justify-content-between align-items-center text-size-18">
                     <div 
