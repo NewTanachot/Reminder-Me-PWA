@@ -44,12 +44,18 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
                     <option value={CardOrderByEnum.DistanceDESC}>Long - Short</option>
                     <option value={CardOrderByEnum.Distance}>Short - Long</option>
                 </select>
-                <Link 
+                <button 
+                    className={`btn btn-sm ${btnColorTheme} w-25`}
+                    onClick={() => window.location.reload()}
+                >
+                    <i className="fa-solid fa-rotate-right"></i>
+                </button>
+                {/* <Link 
                     className={`btn btn-sm ${btnColorTheme} w-25`}
                     href="/testpage"
                 >
-                    <i className="fa-solid fa-map-location-dot"></i>
-                </Link>
+                    <i className="fa-solid fa-rotate-right"></i>
+                </Link> */}
             </div>
         </div>
     )

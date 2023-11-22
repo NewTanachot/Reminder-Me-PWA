@@ -1,7 +1,7 @@
 'use client';
 
 import packageJson from '@/package.json';
-import { IsStringValid } from '@/extension/string_extension';
+import { DateTimeToDisplayString, IsStringValid } from '@/extension/string_extension';
 import { CurrentUserRef, ICurrentPage, IDisplayPlace } from '@/model/useStateModel';
 import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
 import { Place} from '@prisma/client';
@@ -75,7 +75,7 @@ export default function Home() {
     const isMapPage = useRef<boolean>(setDefaultCurrentPage.toString() == PwaCurrentPageEnum.MapView.toString());
     const isUserFocusInMapPage = useRef<boolean>(false);
     const initialMarkerLocationMapPage = useRef<IBaseLocation>();
-    const lastCacheClearing = useRef<string>(Date.now().toString());
+    const lastCacheClearing = useRef<string>(DateTimeToDisplayString(new Date()));
 
     const [currentPage, setCurrentPage] = useState<ICurrentPage>({ pageName: setDefaultCurrentPage });
     const [places, setPlaces] = useState<IDisplayPlace[]>();
@@ -83,6 +83,7 @@ export default function Home() {
     const [cardOrderBy, setCardOrderBy] = useState<CardOrderByEnum>(CardOrderByEnum.CreateDateDESC);
     const [forceRerenderState, setForceRerenderState] = useState<boolean>(false);
 
+    // force useState to re render function
     const ForceRerenderState = () => {
         setForceRerenderState(!forceRerenderState);
     }
@@ -116,13 +117,19 @@ export default function Home() {
                 // create currentUser
                 const dbContext = request.result;
 
-                // create store
+                // create user store
                 dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
-                dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
-                dbContext.createObjectStore(indexedDB_MapStore, { keyPath: indexedDB_MapKey });
-                cacheStore = dbContext.createObjectStore(indexedDB_CacheStore, { keyPath: indexedDB_CacheKey });
 
-                // set up cache store
+                // create and setup theme store
+                themeStore = dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
+                themeStore.put({CurrentTheme: indexedDB_ThemeKey, isDarkTheme: isDarkTheme.current});
+
+                // create and setup map store
+                mapStore = dbContext.createObjectStore(indexedDB_MapStore, { keyPath: indexedDB_MapKey });
+                mapStore.put({CurrentMap: indexedDB_MapKey, mapTheme: mapTheme.current});
+
+                // create and setup cache store
+                cacheStore = dbContext.createObjectStore(indexedDB_CacheStore, { keyPath: indexedDB_CacheKey });
                 cacheStore.put({CacheKey: indexedDB_CacheKey, lastCacheClearing: lastCacheClearing.current });
 
                 // fix background color theme when initailize indexedDB
@@ -144,50 +151,15 @@ export default function Home() {
                 // check theme store name is exist
                 if (indexedDbContext.objectStoreNames.contains(indexedDB_ThemeStore)) {
                     
-                    // create transaction of indexedDB
                     const transaction = indexedDbContext.transaction(indexedDB_ThemeStore, "readwrite");
-
-                    // create store of indexedDB transaction and set it globle useRef
                     themeStore = transaction.objectStore(indexedDB_ThemeStore);
-
-                    // #region ------------------------- Initialize default theme value
-
-                    // try to get themeStore
-                    const themeStoreResponse = themeStore.get(indexedDB_ThemeKey);
-
-                    // set default theme as light theme if themeStore doesn't have any data
-                    themeStoreResponse.onsuccess = () => {
-
-                        if (!themeStoreResponse.result) {
-
-                            themeStore.put({CurrentTheme: indexedDB_ThemeKey, isDarkTheme: isDarkTheme.current});
-                        }
-                    }
-
-                    //  #endregion
                 }
 
                 // check map store name is exist
-                if (indexedDbContext.objectStoreNames.contains(indexedDB_MapStore)) {
+                if (!mapStore && indexedDbContext.objectStoreNames.contains(indexedDB_MapStore)) {
 
                     const transaction = indexedDbContext.transaction(indexedDB_MapStore, "readwrite");
                     mapStore = transaction.objectStore(indexedDB_MapStore);
-
-                    // #region ------------------------- Initialize default map value
-
-                    // try to get amp Store
-                    const mapStoreResponse = mapStore.get(indexedDB_MapKey);
-
-                    // set default theme as light theme if map doesn't have any data
-                    mapStoreResponse.onsuccess = () => {
-
-                        if (!mapStoreResponse.result) {
-
-                            mapStore.put({CurrentMap: indexedDB_MapKey, mapTheme: mapTheme.current});
-                        }
-                    }
-
-                    //  #endregion
                 }
 
                 // check cache store name is exist
@@ -197,13 +169,10 @@ export default function Home() {
                     cacheStore = transaction.objectStore(indexedDB_CacheStore);                    
                 }
 
-                // check use store name is exist
-                if (indexedDbContext.objectStoreNames.contains(indexedDB_UserStore)) {
+                // check user store name is exist [user store always should be bottom list of store]
+                if (!userStore && indexedDbContext.objectStoreNames.contains(indexedDB_UserStore)) {
     
-                    // create transaction of indexedDB
                     const transaction = indexedDbContext.transaction(indexedDB_UserStore, "readwrite");
-                
-                    // create store of indexedDB transaction and set it globle useRef
                     userStore = transaction.objectStore(indexedDB_UserStore);
                 }
                 else {
