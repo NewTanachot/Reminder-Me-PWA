@@ -52,7 +52,11 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                         className={`btn btn-sm ${switchThemeBtnColorTheme} btn-setting-icon-size bg-gradient`}
                         onClick={UpdateThemeHandler}
                     >
-                        <i className="fa-solid fa-rotate"></i>
+                        {
+                            isDarkTheme
+                                ? <i className="fa-solid fa-cloud-sun"></i>
+                                : <i className="fa-solid fa-cloud-moon"></i>
+                        }
                     </button>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+import { ConvertEnumToListOfString } from "@/extension/string_extension";
 import { MapTitleEnum } from "@/model/enumModel";
 import { IMapSettingCardProps } from "@/model/propsModel";
 
@@ -50,12 +51,12 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                         </p>
                     </div>
                     <select 
-                        className={`rounded-1 bg-gradient shadow-sm text-size-15 ps-1 text-center ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 bg-gradient shadow-sm text-size-15 ps-2 text-center ${switchThemeBtnColorTheme} text-white`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >
                     {
-                        Object.values(MapTitleEnum).filter((mapTitle) => isNaN(Number(mapTitle))).map((mapTitle, index) =>
+                        ConvertEnumToListOfString(MapTitleEnum).map((mapTitle, index) =>
                             <option 
                                 key={index}
                                 value={mapTitle}

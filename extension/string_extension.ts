@@ -1,6 +1,7 @@
 import { DayOfWeekEnum, PwaCurrentPageEnum } from '@/model/enumModel';
 import { Decimal } from '@prisma/client/runtime';
 import crypto from 'crypto';
+import { EnumType } from 'typescript';
 
 export const EncryptString = (text: string, secretKey: string, iv_key?: string) => {
 
@@ -89,6 +90,7 @@ export const DisplayStringDateToUpdateForm = (stringDate?: string | null) => {
     return null;
 }
 
+// use in place card
 export const StringDateToDisplayDate = (date: string | Date | null, includeTime = false) => {
 
     if (date == null) {
@@ -121,6 +123,17 @@ export const StringDateToDisplayDate = (date: string | Date | null, includeTime 
 
     // return same string value - (for case that date is already correct string format)
     return date;  
+}
+
+// use in cache clearing setting page
+export const DateTimeToDisplayString = (dateTime: Date) => {
+
+    const dayOfweekName = DayOfWeekEnum[dateTime.getDay()];
+    return `${dayOfweekName} ${dateTime.toLocaleDateString('en-GB')}`;
+} 
+
+export const ConvertEnumToListOfString = (enumObject: { [s: number]: string }) => {
+    return Object.values(enumObject).filter((enumName) => isNaN(Number(enumName)));
 }
 
 const ConvertToDisplayStringOfNumber = (number: number) => {
