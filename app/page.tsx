@@ -228,7 +228,10 @@ export default function Home() {
                 // set dark theme if user use dark theme as default
                 AdaptiveColorThemeHandler(isDarkTheme.current);
 
-                ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
+                // set timeout for change currnt page from Splash Screen to ReminderList page (0.5 sec)
+                setTimeout(() => { 
+                    ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
+                }, 500);
             }
 
             // #endregion
@@ -309,7 +312,6 @@ export default function Home() {
             if (!isMountRound.current) {
 
                 if (currentPage.pageName == PwaCurrentPageEnum.ReminderList) {
-                    // console.log(currentLocation);
                     FetchPlaceData();
                 }            
             } 

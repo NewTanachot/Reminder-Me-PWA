@@ -73,6 +73,10 @@ html, body {
     background-color: #145DA0 !important; /*  035096 */
 }
 
+.bg-steelblue {
+    background-color: #4682B4 !important; /* 6082B6 , 4682B4 */
+}
+
 .bg-mainblack {
     background-color: #36454F !important;
 }
@@ -155,7 +159,7 @@ html, body {
 
 /* #endregion */
 
-/* #region ------- [ Input Class ] ------- */
+/* #region ------- [ Switch Button Class ] ------- */
 
 .custom-switch-light:checked {
     background-color: #40826D !important;
@@ -163,8 +167,9 @@ html, body {
 }
 
 .custom-switch-dark:checked {
-    background-color: #36454F !important;
-    border-color: #36454F !important;
+    /* 6082B6 , 4682B4 */
+    background-color: #4682B4 !important;
+    border-color: #4682B4 !important;
 }
 
 /* #endregion */
