@@ -164,28 +164,34 @@ export default function AddList({
     }
 
     let formColorTheme: string;
+    let formLabelColorTheme: string;
     let cardColorTheme: string;
     let cardHeaderColorTheme: string;
     let textHeaderColorTheme: string;
     let submitBtnColorTheme: string;
+    let clearBtnColorTheme: string;
     let switchBtnColorTheme: string;
     let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
-        formColorTheme = "bg-whitesmoke";
-        cardColorTheme = "bg-mainGray";
+        formColorTheme = "bg-mainGray";
+        formLabelColorTheme = "text-white";
+        cardColorTheme = "bg-mainblack";
         cardHeaderColorTheme = "bg-mainblack";
         textHeaderColorTheme = "text-whiteSmoke"
-        submitBtnColorTheme = "bg-mainblack";
+        submitBtnColorTheme = "bg-steelblue";
+        clearBtnColorTheme = "text-light border-light";
         switchBtnColorTheme = "custom-switch-dark";
         cardBorderThemeColor = "border-secondary";
     }
     else {
         formColorTheme = "bg-white";
+        formLabelColorTheme = "text-dark";
         cardColorTheme = "bg-peach-65";
         cardHeaderColorTheme = "bg-warning-subtle";
         textHeaderColorTheme = "text-viridian-green";
         submitBtnColorTheme = "bg-viridian-green";
+        clearBtnColorTheme = "text-secondary border-secondary";
         switchBtnColorTheme = "custom-switch-light";
         cardBorderThemeColor = "";
     }
@@ -206,14 +212,15 @@ export default function AddList({
             isDarkTheme={isDarkTheme}
             isDisplay={displayLoadingComponent}
         ></LoadingComponent>
-        <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme}`}>
-            <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme} bg-gradient`}>
+        <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme} bg-gradient`}>
+            {/* <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme} bg-gradient`}>
                 <h4 className="m-0 text-center">Create new location</h4>
-            </div>
+            </div> */}
             <form className="card-body m-2" onSubmit={AddNewPlace}>
                 <div className="mb-3">
-                    <p className="mb-1">
-                        Name:<span className="text-danger">*</span>
+                    <p className={`mb-1 ${formLabelColorTheme}`}>
+                        Place Name:
+                        <span className="text-danger">*</span>
                     </p>
                     <input 
                         type="text"
@@ -226,7 +233,7 @@ export default function AddList({
                     />
                 </div>
                 <div className="mt-3">
-                    <p className="mb-1">
+                    <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Message:
                     </p>
                     <textarea 
@@ -239,7 +246,7 @@ export default function AddList({
                     />
                 </div>
                 <div className="mt-3">
-                    <p className="mb-1">
+                    <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Date:
                     </p>
                     <div className="input-group">
@@ -259,7 +266,7 @@ export default function AddList({
                     </div>
                 </div>
                 <div className="mt-3">
-                    <p className="mb-1">
+                    <p className={`mb-1 ${formLabelColorTheme}`}>
                         Location:
                     </p>
                     <div className="input-group">
@@ -286,7 +293,7 @@ export default function AddList({
                 <div className="mt-3 d-flex justify-content-evenly">
                     <button
                         type="button"
-                        className='btn btn-sm my-2 text-secondary border-secondary shadow-sm'
+                        className={`btn btn-sm my-2 ${clearBtnColorTheme} shadow-sm`}
                         onClick={ClearLocationFormData}
                     >
                         <i className="fa-regular fa-trash-can me-2"></i>
@@ -294,7 +301,7 @@ export default function AddList({
                     </button>
                     <button 
                         type="button"
-                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm bg-gradient`}
+                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
                         onClick={GoToMapModalPage}
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
@@ -303,11 +310,13 @@ export default function AddList({
                 </div>
                 <div className="mt-3">
                     <div className="d-flex justify-content-between align-items-center">
-                        <p className="mb-1">Enable :</p>
+                        <p className={`mb-1 ${formLabelColorTheme}`}>
+                            Enable:
+                        </p>
                         <div className="form-check form-switch">
                             <input type="checkbox"
                                 name="isActiveInput" 
-                                className={`form-check-input ${switchBtnColorTheme}`}
+                                className={`form-check-input ${switchBtnColorTheme} shadow-sm`}
                                 defaultChecked={formDataRef.current?.enableSwitch ?? true}
                             />
                         </div>
@@ -316,7 +325,7 @@ export default function AddList({
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm bg-gradient`}
+                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
                     >
                         Add
                     </button>
