@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
-import { IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
+import { DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty } from "@/extension/string_extension";
 import { PwaCurrentPageEnum } from "@/model/enumModel";
-import { IAddListProps } from "@/model/propsModel";
+import { IUpsertListProps } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
 import { IBaseLocation, PlaceExtensionModel } from "@/model/subentityModel";
 import { FormEvent, useRef, useState } from "react";
@@ -11,9 +11,10 @@ import { IUpsertFormData } from "@/model/useStateModel";
 import { SetPageContainerClass } from "@/extension/style_extension";
 const MapModal = dynamic(() => import("@/component/mapAsset/mapModal"), { ssr: false });
 
-export default function AddList({ 
+export default function UpsertList({ 
     user, 
     places, 
+    cardData,
     changeCurrentPage, 
     mapAsset, 
     isDarkTheme, 
@@ -21,14 +22,23 @@ export default function AddList({
     containerClassObject,
     setIsMapPage,
     userFocusObj
-}: IAddListProps) {
+}: IUpsertListProps) {
+
+    const isUpdatePage = cardData ? true : false;
 
     const [displayLoadingComponent, setDisplayLoadingComponent] = useState<boolean>(false);
     const [displayMapModal, setDisplayMapModal] = useState<boolean>(false);
-    const formDataRef = useRef<IUpsertFormData>();
+    const formDataRef = useRef<IUpsertFormData>({
+        name: cardData?.name,
+        message: cardData?.reminderMessage ?? undefined,
+        reminderDate: DisplayStringDateToUpdateForm(cardData?.reminderDate) ?? undefined,
+        latitude: cardData?.latitude?.toString(),
+        longitude: cardData?.longitude?.toString(),
+        enableSwitch: !cardData?.isDisable
+    });
 
     // add place handler
-    const AddNewPlace = async (event: FormEvent<HTMLFormElement>) => {
+    const UpsertPlace = async (event: FormEvent<HTMLFormElement>) => {
 
         // check current user from global variable   
         if (IsStringValid(user.userId)) {
@@ -112,9 +122,9 @@ export default function AddList({
         const placeNameInput = document.getElementsByName("placeNameInput")[0] as HTMLInputElement;
         const reminderMessageInput = document.getElementsByName("reminderMessageInput")[0] as HTMLInputElement;
         const reminderDateInput = document.getElementsByName("reminderDateInput")[0] as HTMLInputElement;
-        const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
         const latitudeInput = document.getElementsByName("latitudeInput")[0] as HTMLInputElement;
         const longitudeInput = document.getElementsByName("longitudeInput")[0] as HTMLInputElement;
+        const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
         
         // change container class to map page
         SetPageContainerClass(containerClassObject, true);
@@ -128,7 +138,7 @@ export default function AddList({
             enableSwitch: isActiveInput.checked
         };
 
-        // set uiser focus to flase
+        // set user focus to flase
         userFocusObj.setUserFocus(false);
 
         // set go to page map
@@ -165,35 +175,32 @@ export default function AddList({
 
     let formColorTheme: string;
     let formLabelColorTheme: string;
+    let formLabelRequireColorTheme: string;
     let cardColorTheme: string;
-    let cardHeaderColorTheme: string;
-    let textHeaderColorTheme: string;
     let submitBtnColorTheme: string;
+    let backBtnColorTheme: string;
     let clearBtnColorTheme: string;
     let switchBtnColorTheme: string;
-    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
-        formColorTheme = "bg-mainGray";
+        formColorTheme = "bg-whitesmoke";
         formLabelColorTheme = "text-white";
-        cardColorTheme = "bg-mainblack";
-        cardHeaderColorTheme = "bg-mainblack";
-        textHeaderColorTheme = "text-whiteSmoke"
+        formLabelRequireColorTheme = "text-warning";
+        cardColorTheme = "bg-mainblack border-bottom-0";
         submitBtnColorTheme = "bg-steelblue";
+        backBtnColorTheme = "btn-outline-light";
         clearBtnColorTheme = "text-light border-light";
         switchBtnColorTheme = "custom-switch-dark";
-        cardBorderThemeColor = "border-secondary";
     }
     else {
         formColorTheme = "bg-white";
         formLabelColorTheme = "text-dark";
+        formLabelRequireColorTheme = "text-danger";
         cardColorTheme = "bg-peach-65";
-        cardHeaderColorTheme = "bg-warning-subtle";
-        textHeaderColorTheme = "text-viridian-green";
         submitBtnColorTheme = "bg-viridian-green";
+        backBtnColorTheme = "btn-outline-secondary";
         clearBtnColorTheme = "text-secondary border-secondary";
         switchBtnColorTheme = "custom-switch-light";
-        cardBorderThemeColor = "";
     }
 
     const MapPage = <MapModal
@@ -208,20 +215,36 @@ export default function AddList({
     ></MapModal>
 
     const AddListPage = <>
+
         <LoadingComponent 
             isDarkTheme={isDarkTheme}
             isDisplay={displayLoadingComponent}
         ></LoadingComponent>
-        <div className={`card shadow-sm ${cardBorderThemeColor} ${cardColorTheme} bg-gradient`}>
-            {/* <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme} bg-gradient`}>
-                <h4 className="m-0 text-center">Create new location</h4>
-            </div> */}
-            <form className="card-body m-2" onSubmit={AddNewPlace}>
-                <div className="mb-3">
+
+        <div className={`card shadow-sm ${cardColorTheme} bg-gradient`}>
+            <form 
+                className="card-body m-2" 
+                onSubmit={UpsertPlace}
+            >
+                {
+                    isUpdatePage
+                        ? <>
+                            <button 
+                                onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList })}
+                                className={`btn btn-sm p-0 mb-2 bg-opacity-100 text-warning`}
+                            >
+                                <i className="fa-solid fa-angles-left me-2"></i>
+                                Back
+                            </button>
+                        </>
+                        : null
+                }
+                <div className="mb-4">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Place Name:
-                        <span className="text-danger">*</span>
+                        <span className={formLabelRequireColorTheme}>*</span>
                     </p>
+                    <hr className="mt-0 text-light" />
                     <input 
                         type="text"
                         name="placeNameInput" 
@@ -232,10 +255,11 @@ export default function AddList({
                         required
                     />
                 </div>
-                <div className="mt-3">
+                <div className="mt-4">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Message:
                     </p>
+                    <hr className="mt-0 text-light" />
                     <textarea 
                         name="reminderMessageInput" 
                         className={`form-control w-100 shadow-sm ${formColorTheme}`} 
@@ -245,10 +269,11 @@ export default function AddList({
                         rows={2}
                     />
                 </div>
-                <div className="mt-3">
+                <div className="mt-4">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Date:
                     </p>
+                    <hr className="mt-0 text-light" />
                     <div className="input-group">
                         <input 
                             type="date"
@@ -265,10 +290,11 @@ export default function AddList({
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
+                <div className="mt-4">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Location:
                     </p>
+                    <hr className="mt-0 text-light" />
                     <div className="input-group">
                         <input 
                             name="latitudeInput" 
@@ -290,7 +316,7 @@ export default function AddList({
                         />
                     </div>
                 </div>
-                <div className="mt-3 d-flex justify-content-evenly">
+                <div className="mt-2 d-flex justify-content-between">
                     <button
                         type="button"
                         className={`btn btn-sm my-2 ${clearBtnColorTheme} shadow-sm`}
@@ -308,9 +334,9 @@ export default function AddList({
                         Mark location
                     </button>
                 </div>
-                <div className="mt-3">
+                <div className="mt-4">
                     <div className="d-flex justify-content-between align-items-center">
-                        <p className={`mb-1 ${formLabelColorTheme}`}>
+                        <p className={`m-0 ${formLabelColorTheme}`}>
                             Enable:
                         </p>
                         <div className="form-check form-switch">
@@ -321,13 +347,15 @@ export default function AddList({
                             />
                         </div>
                     </div>
+                    <hr className="mt-2 text-light" />
                 </div>
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm w-100 my-2 pe-2 text-white ${submitBtnColorTheme} shadow-sm`}
                     >
-                        Add
+                        <i className="fa-solid fa-floppy-disk me-2"></i>
+                        Save
                     </button>
                 </div>
             </form>

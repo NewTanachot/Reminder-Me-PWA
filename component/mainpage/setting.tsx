@@ -23,7 +23,7 @@ export default function Setting({
     let signOutBtnColorTheme: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-mainblack";
+        cardColorTheme = "bg-mainblack border-bottom-0";
         signOutBtnColorTheme = "btn-secondary";
     }
     else {
