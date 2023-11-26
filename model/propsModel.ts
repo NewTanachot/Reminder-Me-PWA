@@ -49,22 +49,12 @@ export interface IPlaceCardProps extends IBaseProps, IBaseApiUrl {
     linkCardToMapPageHandler: (placeId: string) => void
 }
 
-export interface IAddListProps extends IBaseProps, IBaseApiUrl {
+export interface IUpsertListProps extends IBaseProps, IBaseApiUrl {
     user: CurrentUserRef,
     mapAsset: IMapAsset,
     places?: IDisplayPlace[],
+    cardData?: IDisplayPlace,
     containerClassObject: IContainerClass,
-    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
-    setIsMapPage: (flag: boolean) => void,
-    userFocusObj: IUserFocusMap 
-}
-
-export interface IUpdateListProps extends IBaseProps, IBaseApiUrl {
-    user: CurrentUserRef,
-    mapAsset: IMapAsset,
-    places?: IDisplayPlace[],
-    containerClassObject: IContainerClass,
-    cardData: IDisplayPlace,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
     setIsMapPage: (flag: boolean) => void,
     userFocusObj: IUserFocusMap 
