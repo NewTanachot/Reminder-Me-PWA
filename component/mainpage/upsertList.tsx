@@ -188,7 +188,7 @@ export default function UpsertList({
         formLabelRequireColorTheme = "text-warning";
         cardColorTheme = "bg-mainblack border-bottom-0";
         submitBtnColorTheme = "bg-steelblue";
-        backBtnColorTheme = "btn-outline-light";
+        backBtnColorTheme = "text-warning";
         clearBtnColorTheme = "text-light border-light";
         switchBtnColorTheme = "custom-switch-dark";
     }
@@ -198,7 +198,7 @@ export default function UpsertList({
         formLabelRequireColorTheme = "text-danger";
         cardColorTheme = "bg-peach-65";
         submitBtnColorTheme = "bg-viridian-green";
-        backBtnColorTheme = "btn-outline-secondary";
+        backBtnColorTheme = "text-danger";
         clearBtnColorTheme = "text-secondary border-secondary";
         switchBtnColorTheme = "custom-switch-light";
     }
@@ -231,7 +231,7 @@ export default function UpsertList({
                         ? <>
                             <button 
                                 onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList })}
-                                className={`btn btn-sm p-0 mb-2 bg-opacity-100 text-warning`}
+                                className={`btn btn-sm p-0 mb-2 bg-opacity-100 ${backBtnColorTheme}`}
                             >
                                 <i className="fa-solid fa-angles-left me-2"></i>
                                 Back
@@ -239,7 +239,7 @@ export default function UpsertList({
                         </>
                         : null
                 }
-                <div className="mb-4">
+                <div className="mb-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Place Name:
                         <span className={formLabelRequireColorTheme}>*</span>
@@ -255,7 +255,7 @@ export default function UpsertList({
                         required
                     />
                 </div>
-                <div className="mt-4">
+                <div className="mb-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Message:
                     </p>
@@ -269,7 +269,7 @@ export default function UpsertList({
                         rows={2}
                     />
                 </div>
-                <div className="mt-4">
+                <div className="mt-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Date:
                     </p>
@@ -290,7 +290,7 @@ export default function UpsertList({
                         </div>
                     </div>
                 </div>
-                <div className="mt-4">
+                <div className="mt-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Location:
                     </p>
@@ -316,7 +316,7 @@ export default function UpsertList({
                         />
                     </div>
                 </div>
-                <div className="mt-2 d-flex justify-content-between">
+                <div className="mt-1 d-flex justify-content-evenly">
                     <button
                         type="button"
                         className={`btn btn-sm my-2 ${clearBtnColorTheme} shadow-sm`}
@@ -352,7 +352,7 @@ export default function UpsertList({
                 <div className="mt-4 text-center">
                     <button 
                         type="submit"
-                        className={`btn btn-sm w-100 my-2 pe-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm w-100 my-0 pe-2 text-white ${submitBtnColorTheme} shadow-sm`}
                     >
                         <i className="fa-solid fa-floppy-disk me-2"></i>
                         Save

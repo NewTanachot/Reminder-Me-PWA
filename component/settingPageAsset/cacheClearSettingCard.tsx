@@ -25,14 +25,14 @@ export default function CacheClearSettingCard({ deleteIndexedDB, lastCacheCleari
         textColorTheme = "text-whiteSmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        btnColorTheme = "btn-secondary";
+        btnColorTheme = "bg-steelblue border-0";
     }
     else {
         cardColorTheme = "bg-peach";
         textColorTheme = "text-viridian-green";
         cardIconColorTheme = "text-dark-emphasis";
         subTextColorTheme = "text-secondary";
-        btnColorTheme = "bg-viridian-green text-white";
+        btnColorTheme = "bg-viridian-green";
     }
 
     return (
@@ -53,7 +53,7 @@ export default function CacheClearSettingCard({ deleteIndexedDB, lastCacheCleari
                             </p>
                         </div>
                         <button
-                                className={`btn btn-sm ${btnColorTheme} btn-setting-icon-size bg-gradient`}
+                                className={`btn btn-sm ${btnColorTheme} text-white btn-setting-icon-size bg-gradient`}
                                 onClick={ClearCacheBtnHandler}
                             >
                                 <i className="fa-solid fa-eraser"></i>

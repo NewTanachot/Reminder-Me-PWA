@@ -142,12 +142,12 @@ export default function PlaceCard({
                         onClick={() => linkCardToMapPageHandler(data.id)}
                     >
                         {
-                            data.name.length < 20
+                            data.name.length < 23
                                 ? <>
                                     {data.name}
                                     <i className="fa-solid fa-location-arrow ms-2 text-footer-size"></i>
                                 </>
-                                : <>{data.name.slice(0, 24)}..</>
+                                : <>{data.name.slice(0, 23)}..</>
                         }
                     </div>
                     <div className="text-nowrap">
