@@ -14,10 +14,9 @@ import List from '@/component/mainpage/list';
 import Login from '@/component/authPageAsset/login';
 import Register from '@/component/authPageAsset/register';
 import Footer from '@/component/layoutAsset/footer';
-import AddList from '@/component/mainpage/addList';
+import UpsertList from '@/component/mainpage/upsertList';
 import EvBattery from '@/component/mainpage/evbattery';
 import Setting from '@/component/mainpage/setting';
-import UpdateList from '@/component/mainpage/updateList';
 import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
 import { ICacheIndexedDB, IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
@@ -228,10 +227,10 @@ export default function Home() {
                 // set dark theme if user use dark theme as default
                 AdaptiveColorThemeHandler(isDarkTheme.current);
 
-                // set timeout for change currnt page from Splash Screen to ReminderList page (0.5 sec)
+                // set timeout for change currnt page from Splash Screen to ReminderList page (0.8 sec)
                 setTimeout(() => { 
                     ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
-                }, 500);
+                }, 800);
             }
 
             // #endregion
@@ -608,7 +607,7 @@ export default function Home() {
                                     ></Map>
 
                                 case PwaCurrentPageEnum.AddList:
-                                    return <AddList 
+                                    return <UpsertList 
                                         user={user.current}
                                         changeCurrentPage={ChangeCurrentPage}
                                         places={places}
@@ -621,40 +620,24 @@ export default function Home() {
                                             isfocus: isUserFocusInMapPage.current,
                                             setUserFocus: SetUserFocus
                                         }}
-                                    ></AddList>
+                                    ></UpsertList>
 
                                 case PwaCurrentPageEnum.UpdateList:
-                                    if (currentUpdateCard.current) {
-                                        return <UpdateList 
-                                            user={user.current}
-                                            places={places}
-                                            cardData={currentUpdateCard.current}
-                                            changeCurrentPage={ChangeCurrentPage}
-                                            mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
-                                            isDarkTheme={isDarkTheme.current}
-                                            baseUrlApi={baseUrlApi}
-                                            containerClassObject={containerClassObject}
-                                            setIsMapPage={SetIsMapPage}
-                                            userFocusObj={{
-                                                isfocus: isUserFocusInMapPage.current,
-                                                setUserFocus: SetUserFocus
-                                            }}
-                                        ></UpdateList>
-                                    }
-                                    else {
-                                        return <List 
-                                            places={places}
-                                            currentUser={user.current}
-                                            deletePlaceHandler={DeletePlaceHandler}  
-                                            changePlaceStatusHandler={ChangePlaceStatusHandler}
-                                            updatePlaceCardHandler={UpdatePlaceCardHandler}
-                                            isDarkTheme={isDarkTheme.current}
-                                            currentCardOrder={cardOrderBy}
-                                            changeCardOrderByHandler={ChangeCardOrderByHandler}
-                                            linkCardToMapPageHandler={LinkCardToMapPageHandler}
-                                            baseUrlApi={baseUrlApi}
-                                        ></List>
-                                    }
+                                    return <UpsertList 
+                                        user={user.current}
+                                        changeCurrentPage={ChangeCurrentPage}
+                                        cardData={currentUpdateCard.current}
+                                        places={places}
+                                        mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                        isDarkTheme={isDarkTheme.current}
+                                        baseUrlApi={baseUrlApi}
+                                        containerClassObject={containerClassObject}
+                                        setIsMapPage={SetIsMapPage}
+                                        userFocusObj={{
+                                            isfocus: isUserFocusInMapPage.current,
+                                            setUserFocus: SetUserFocus
+                                        }}
+                                    ></UpsertList>
 
                                 case PwaCurrentPageEnum.EvBattery:
                                     return <EvBattery></EvBattery>
