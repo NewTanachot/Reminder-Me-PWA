@@ -227,10 +227,10 @@ export default function Home() {
                 // set dark theme if user use dark theme as default
                 AdaptiveColorThemeHandler(isDarkTheme.current);
 
-                // set timeout for change currnt page from Splash Screen to ReminderList page (0.7 sec)
+                // set timeout for change currnt page from Splash Screen to ReminderList page (0.8 sec)
                 setTimeout(() => { 
                     ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
-                }, 700);
+                }, 800);
             }
 
             // #endregion
