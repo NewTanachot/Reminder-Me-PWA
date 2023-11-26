@@ -21,14 +21,14 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
         textColorTheme = "text-whiteSmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchUserBtnColorTheme = "btn-secondary";
+        switchUserBtnColorTheme = "bg-steelblue border-0";
     }
     else {
         cardColorTheme = "bg-peach";
         textColorTheme = "text-viridian-green";
         cardIconColorTheme = "text-dark-emphasis";
         subTextColorTheme = "text-secondary";
-        switchUserBtnColorTheme = "bg-viridian-green text-white";
+        switchUserBtnColorTheme = "bg-viridian-green";
     }
 
     return (
@@ -49,10 +49,10 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
                             </p>
                         </div>
                         <button
-                                className={`btn btn-sm ${switchUserBtnColorTheme} btn-setting-icon-size bg-gradient`}
+                                className={`btn btn-sm ${switchUserBtnColorTheme} text-white btn-setting-icon-size bg-gradient`}
                                 onClick={switchUserHandler}
                             >
-                                <i className="fa-solid fa-right-from-bracket"></i>
+                                <i className="fa-solid fa-person-walking-arrow-right"></i>
                         </button>
                     </div>
                 </div>
