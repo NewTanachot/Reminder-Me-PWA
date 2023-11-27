@@ -231,11 +231,12 @@ export default function UpsertList({
                         ? <>
                             <button 
                                 onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList })}
-                                className={`btn btn-sm p-0 mb-2 bg-opacity-100 ${backBtnColorTheme}`}
+                                className={`btn btn-sm p-0 mb-1 bg-opacity-100 ${backBtnColorTheme}`} // mb-1
                             >
                                 <i className="fa-solid fa-angles-left me-2"></i>
                                 Back
                             </button>
+                            <hr className="mt-0 text-light" />
                         </>
                         : null
                 }
@@ -244,7 +245,7 @@ export default function UpsertList({
                         Place Name:
                         <span className={formLabelRequireColorTheme}>*</span>
                     </p>
-                    <hr className="mt-0 text-light" />
+                    {/* <hr className="mt-0 text-light" /> */}
                     <input 
                         type="text"
                         name="placeNameInput" 
@@ -254,12 +255,13 @@ export default function UpsertList({
                         maxLength={50} 
                         required
                     />
+                    <hr className="text-light" />
                 </div>
                 <div className="mb-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Message:
                     </p>
-                    <hr className="mt-0 text-light" />
+                    {/* <hr className="mt-0 text-light" /> */}
                     <textarea 
                         name="reminderMessageInput" 
                         className={`form-control w-100 shadow-sm ${formColorTheme}`} 
@@ -268,12 +270,13 @@ export default function UpsertList({
                         maxLength={65} 
                         rows={2}
                     />
+                    <hr className="text-light" />
                 </div>
                 <div className="mt-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Date:
                     </p>
-                    <hr className="mt-0 text-light" />
+                    {/* <hr className="mt-0 text-light" /> */}
                     <div className="input-group">
                         <input 
                             type="date"
@@ -289,12 +292,13 @@ export default function UpsertList({
                             ></i>
                         </div>
                     </div>
+                    <hr className="text-light" />
                 </div>
                 <div className="mt-3">
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Location:
                     </p>
-                    <hr className="mt-0 text-light" />
+                    {/* <hr className="mt-0 text-light" /> */}
                     <div className="input-group">
                         <input 
                             name="latitudeInput" 
@@ -334,6 +338,7 @@ export default function UpsertList({
                         Mark location
                     </button>
                 </div>
+                <hr className="text-light" />
                 <div className="mt-4">
                     <div className="d-flex justify-content-between align-items-center">
                         <p className={`m-0 ${formLabelColorTheme}`}>
