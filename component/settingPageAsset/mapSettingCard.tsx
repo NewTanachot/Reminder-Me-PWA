@@ -23,7 +23,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
         textColorTheme = "text-whiteSmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchThemeBtnColorTheme = "bg-steelblue border-dark-subtle";
+        switchThemeBtnColorTheme = "bg-glaucous border-primary-subtle";
     }
     else {
         cardColorTheme = "bg-peach";

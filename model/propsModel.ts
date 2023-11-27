@@ -20,6 +20,7 @@ export interface INavbarProps extends IBaseProps {
 
 export interface IFooterProps extends IBaseProps {
     currentPageName: PwaCurrentPageEnum,
+    isMapPage: boolean,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
@@ -159,4 +160,8 @@ export interface IUserPopupFooterProps extends IBaseMapPopupProps, IBaseProps {
 export interface ICacheClearSettingCardProps extends IBaseProps {
     lastCacheClearing: string,
     deleteIndexedDB: () => void
+}
+
+export interface IBackHeaderBtnProps extends IBaseProps {
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
 }

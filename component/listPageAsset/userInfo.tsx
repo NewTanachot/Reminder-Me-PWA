@@ -16,13 +16,13 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
     // check theme color
     if (isDarkTheme) {
         userInfoColorTheme = "bg-mainblue";
-        selectFormColorTheme = "bg-cornflowerblue text-white";
-        btnColorTheme = "bg-cornflowerblue text-white";
+        selectFormColorTheme = "bg-steelblue text-white";
+        btnColorTheme = "bg-steelblue text-white";
     }
     else {
-        userInfoColorTheme = "bg-cornflowerblue";
-        selectFormColorTheme = "bg-whitesmoke";
-        btnColorTheme = "btn-light bg-whitesmoke";
+        userInfoColorTheme = "bg-viridian-green";
+        selectFormColorTheme = "bg-peach";
+        btnColorTheme = "btn-light bg-peach";
     }
 
     return (

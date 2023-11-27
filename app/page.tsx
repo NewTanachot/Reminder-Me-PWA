@@ -507,12 +507,8 @@ export default function Home() {
     };
 
     const SetIsMapPage = (flag: boolean) => {
-
-        isMapPage.current = flag;
-
-        if (flag) {
-            ForceRerenderState();
-        }
+        isMapPage.current = flag;  
+        ForceRerenderState();
     }
 
     const SetUserFocus = (isFocus: boolean) => {
@@ -563,15 +559,11 @@ export default function Home() {
 
     // ------------------- [ Return JSX Element ] -------------------------
 
-    if (currentPage.pageName == PwaCurrentPageEnum.SplashScreen) {
-        return <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
-    }
-
     const containerClass = isMapPage.current 
         ? containerClassObject.mapClass.join(' ') 
         : containerClassObject.notMapClass.join(' ');
 
-    return (
+    const mainApp = (
         <main> 
             <div className="container">
                 <div id='containerId' className={containerClass}>
@@ -683,8 +675,9 @@ export default function Home() {
                 </div>
             </div>
             <br /><br />
-            <Footer 
+            <Footer
                 isDarkTheme={isDarkTheme.current}
+                isMapPage={isMapPage.current}
                 changeCurrentPage={ChangeCurrentPage} 
                 currentPageName={currentPage.pageName}
             ></Footer>
@@ -693,4 +686,8 @@ export default function Home() {
             <style>{customPopupStyles}</style>
         </main>
     )
+
+    return currentPage.pageName == PwaCurrentPageEnum.SplashScreen
+        ? <SplashScreen softwareVersion={softwareVersion}></SplashScreen>
+        : mainApp
 }

@@ -21,7 +21,7 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
         textColorTheme = "text-whiteSmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchUserBtnColorTheme = "bg-steelblue border-0";
+        switchUserBtnColorTheme = "bg-glaucous border-bottom-0";
     }
     else {
         cardColorTheme = "bg-peach";

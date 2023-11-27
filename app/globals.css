@@ -65,12 +65,12 @@ html, body {
     background-color: #FFC862 !important;
 }
 
-.bg-cornflowerblue {
-    background-color: #4682B4 !important;
-}
-
 .bg-mainblue {
     background-color: #145DA0 !important; /*  035096 */
+}
+
+.bg-glaucous {
+    background-color: #6082B6 !important;
 }
 
 .bg-steelblue {
@@ -121,7 +121,7 @@ html, body {
     color: #FFFDD0 !important;
 }
 
-.text-cornflowerblue {
+.text-glaucous {
     color: #6495ED !important;
 }
 
