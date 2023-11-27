@@ -42,6 +42,13 @@ export default function Setting({
                     isDarkTheme={isDarkTheme}
                 ></UserInfoSettingCard>
 
+                {/* Clear cache */}
+                <CacheClearSettingCard
+                    lastCacheClearing={lastCacheClearing}
+                    deleteIndexedDB={deleteIndexedDB}
+                    isDarkTheme={isDarkTheme}
+                ></CacheClearSettingCard>
+                
                 {/* theme */}
                 <ThemeSettingCard
                     changeCurrentThemeHandler={changeThemeHandler}
@@ -54,13 +61,6 @@ export default function Setting({
                     isDarkTheme={isDarkTheme}
                     changeCurrentMapHandler={changeCurrentMapHandler}
                 ></MapSettingCard>
-
-                {/* Clear cache */}
-                <CacheClearSettingCard
-                    lastCacheClearing={lastCacheClearing}
-                    deleteIndexedDB={deleteIndexedDB}
-                    isDarkTheme={isDarkTheme}
-                ></CacheClearSettingCard>
 
                 {/* Develop by */}
                 <StaticSettingCard

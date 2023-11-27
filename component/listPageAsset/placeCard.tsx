@@ -145,7 +145,11 @@ export default function PlaceCard({
                             data.name.length < 23
                                 ? <>
                                     {data.name}
-                                    <i className="fa-solid fa-location-arrow ms-2 text-footer-size"></i>
+                                    {
+                                        data.latitude && data.longitude
+                                            ? <i className="fa-solid fa-location-arrow ms-2 text-footer-size"></i>
+                                            : null
+                                    }
                                 </>
                                 : <>{data.name.slice(0, 23)}..</>
                         }

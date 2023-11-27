@@ -9,6 +9,7 @@ import LoadingComponent from "../modalAsset/loading";
 import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";
 import { SetPageContainerClass } from "@/extension/style_extension";
+import BackHeaderBtn from "../layoutAsset/backHeaderBtn";
 const MapModal = dynamic(() => import("@/component/mapAsset/mapModal"), { ssr: false });
 
 export default function UpsertList({ 
@@ -146,6 +147,17 @@ export default function UpsertList({
         setIsMapPage(true);
     }
 
+    // cancle btn handler 
+    const BackToFormPage = () => {
+        
+        // change container class to not map page
+        SetPageContainerClass(containerClassObject, false);
+
+        // back to form page
+        setDisplayMapModal(false);
+        setIsMapPage(false);
+    }
+
     // confirm btn handler
     const AddLocationDataToRef = (location: IBaseLocation | undefined) => {
 
@@ -162,23 +174,12 @@ export default function UpsertList({
         setDisplayMapModal(false);
     }
 
-    // cancle btn handler 
-    const BackToFormPage = () => {
-        
-        // change container class to not map page
-        SetPageContainerClass(containerClassObject, false);
-
-        // back to form page
-        setDisplayMapModal(false);
-        setIsMapPage(false);
-    }
-
     let formColorTheme: string;
     let formLabelColorTheme: string;
     let formLabelRequireColorTheme: string;
+    let underLineColorTheme: string;
     let cardColorTheme: string;
     let submitBtnColorTheme: string;
-    let backBtnColorTheme: string;
     let clearBtnColorTheme: string;
     let switchBtnColorTheme: string;
 
@@ -186,9 +187,9 @@ export default function UpsertList({
         formColorTheme = "bg-whitesmoke";
         formLabelColorTheme = "text-white";
         formLabelRequireColorTheme = "text-warning";
+        underLineColorTheme = "text-white";
         cardColorTheme = "bg-mainblack border-bottom-0";
         submitBtnColorTheme = "bg-steelblue";
-        backBtnColorTheme = "text-warning";
         clearBtnColorTheme = "text-light border-light";
         switchBtnColorTheme = "custom-switch-dark";
     }
@@ -196,9 +197,9 @@ export default function UpsertList({
         formColorTheme = "bg-white";
         formLabelColorTheme = "text-dark";
         formLabelRequireColorTheme = "text-danger";
+        underLineColorTheme = "text-dark";
         cardColorTheme = "bg-peach-65";
         submitBtnColorTheme = "bg-viridian-green";
-        backBtnColorTheme = "text-danger";
         clearBtnColorTheme = "text-secondary border-secondary";
         switchBtnColorTheme = "custom-switch-light";
     }
@@ -228,24 +229,17 @@ export default function UpsertList({
             >
                 {
                     isUpdatePage
-                        ? <>
-                            <button 
-                                onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.ReminderList })}
-                                className={`btn btn-sm p-0 mb-1 bg-opacity-100 ${backBtnColorTheme}`} // mb-1
-                            >
-                                <i className="fa-solid fa-angles-left me-2"></i>
-                                Back
-                            </button>
-                            <hr className="mt-0 text-light" />
-                        </>
+                        ? <BackHeaderBtn
+                            changeCurrentPage={changeCurrentPage}
+                            isDarkTheme={isDarkTheme}
+                        ></BackHeaderBtn>
                         : null
                 }
-                <div className="mb-3">
+                <div>
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Place Name:
-                        <span className={formLabelRequireColorTheme}>*</span>
+                        <span className={formLabelRequireColorTheme}> *</span>
                     </p>
-                    {/* <hr className="mt-0 text-light" /> */}
                     <input 
                         type="text"
                         name="placeNameInput" 
@@ -255,13 +249,12 @@ export default function UpsertList({
                         maxLength={50} 
                         required
                     />
-                    <hr className="text-light" />
+                    <hr className={underLineColorTheme} />
                 </div>
-                <div className="mb-3">
+                <div>
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Message:
                     </p>
-                    {/* <hr className="mt-0 text-light" /> */}
                     <textarea 
                         name="reminderMessageInput" 
                         className={`form-control w-100 shadow-sm ${formColorTheme}`} 
@@ -270,13 +263,12 @@ export default function UpsertList({
                         maxLength={65} 
                         rows={2}
                     />
-                    <hr className="text-light" />
+                    <hr className={underLineColorTheme} />
                 </div>
-                <div className="mt-3">
+                <div>
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Reminder Date:
                     </p>
-                    {/* <hr className="mt-0 text-light" /> */}
                     <div className="input-group">
                         <input 
                             type="date"
@@ -292,13 +284,12 @@ export default function UpsertList({
                             ></i>
                         </div>
                     </div>
-                    <hr className="text-light" />
+                    <hr className={underLineColorTheme} />
                 </div>
-                <div className="mt-3">
+                <div>
                     <p className={`mb-1 ${formLabelColorTheme}`}>
                         Location:
                     </p>
-                    {/* <hr className="mt-0 text-light" /> */}
                     <div className="input-group">
                         <input 
                             name="latitudeInput" 
@@ -320,10 +311,10 @@ export default function UpsertList({
                         />
                     </div>
                 </div>
-                <div className="mt-1 d-flex justify-content-evenly">
+                <div className="mt-3 d-flex justify-content-evenly">
                     <button
                         type="button"
-                        className={`btn btn-sm my-2 ${clearBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm ${clearBtnColorTheme} shadow-sm`}
                         onClick={ClearLocationFormData}
                     >
                         <i className="fa-regular fa-trash-can me-2"></i>
@@ -331,15 +322,15 @@ export default function UpsertList({
                     </button>
                     <button 
                         type="button"
-                        className={`btn btn-sm my-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm text-white ${submitBtnColorTheme} shadow-sm`}
                         onClick={GoToMapModalPage}
                     >
                         <i className="fa-solid fa-map-location-dot me-2"></i>
                         Mark location
                     </button>
                 </div>
-                <hr className="text-light" />
-                <div className="mt-4">
+                <hr className={underLineColorTheme} />
+                <div>
                     <div className="d-flex justify-content-between align-items-center">
                         <p className={`m-0 ${formLabelColorTheme}`}>
                             Enable:
@@ -352,9 +343,9 @@ export default function UpsertList({
                             />
                         </div>
                     </div>
-                    <hr className="mt-2 text-light" />
+                    <hr className={underLineColorTheme} />
                 </div>
-                <div className="mt-4 text-center">
+                <div className="text-center">
                     <button 
                         type="submit"
                         className={`btn btn-sm w-100 my-0 pe-2 text-white ${submitBtnColorTheme} shadow-sm`}

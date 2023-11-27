@@ -17,7 +17,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
         textColorTheme = "text-whiteSmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchThemeBtnColorTheme = "bg-steelblue border-0";
+        switchThemeBtnColorTheme = "bg-glaucous border-bottom-0";
     }
     else {
         cardColorTheme = "bg-peach";

@@ -1,11 +1,16 @@
 import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { IFooterProps } from "@/model/propsModel";
 
-export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme }: IFooterProps) {
+export default function Footer({ isMapPage, changeCurrentPage, currentPageName, isDarkTheme }: IFooterProps) {
+
+    const DisableFooterBtnCondition = () => {
+        return currentPageName == PwaCurrentPageEnum.Login 
+            || currentPageName == PwaCurrentPageEnum.Register
+            || (isMapPage && currentPageName != PwaCurrentPageEnum.MapView);
+    }
 
     // check if it need to disableAllFooter
-    const disableAllFooter = currentPageName == PwaCurrentPageEnum.Login || currentPageName == PwaCurrentPageEnum.Register;
-
+    const disableAllFooter = DisableFooterBtnCondition();
     const defaultTextColor = "text-whiteSmoke";
 
     let listIconClass = `${defaultTextColor} bi bi-folder`;
@@ -45,10 +50,6 @@ export default function Footer({ changeCurrentPage, currentPageName, isDarkTheme
     }
     else {
         footerColorTheme = "bg-viridian-green";
-    }
-
-    if (currentPageName != PwaCurrentPageEnum.MapView) {
-        
     }
 
     return (
