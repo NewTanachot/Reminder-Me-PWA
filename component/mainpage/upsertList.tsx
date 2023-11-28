@@ -172,6 +172,7 @@ export default function UpsertList({
 
         // back to form page
         setDisplayMapModal(false);
+        setIsMapPage(false);
     }
 
     let formColorTheme: string;
