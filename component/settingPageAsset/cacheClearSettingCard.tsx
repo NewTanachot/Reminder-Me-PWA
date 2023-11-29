@@ -21,8 +21,8 @@ export default function CacheClearSettingCard({ deleteIndexedDB, lastCacheCleari
     let btnColorTheme: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-subBlack";
-        textColorTheme = "text-whiteSmoke";
+        cardColorTheme = "bg-subblack";
+        textColorTheme = "text-whitesmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
         btnColorTheme = "bg-glaucous border-bottom-0";

@@ -8,8 +8,8 @@ export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDar
     let subTextColorTheme: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-subBlack";
-        textColorTheme = "text-whiteSmoke";
+        cardColorTheme = "bg-subblack";
+        textColorTheme = "text-whitesmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
     }

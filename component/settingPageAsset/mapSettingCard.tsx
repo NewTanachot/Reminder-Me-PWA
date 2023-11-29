@@ -19,8 +19,8 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
     let switchThemeBtnColorTheme: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-subBlack";
-        textColorTheme = "text-whiteSmoke";
+        cardColorTheme = "bg-subblack";
+        textColorTheme = "text-whitesmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
         switchThemeBtnColorTheme = "bg-glaucous border-primary-subtle";

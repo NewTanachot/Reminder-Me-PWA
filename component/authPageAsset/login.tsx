@@ -106,7 +106,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
         cardHeaderColorTheme = "bg-mainblack";
-        textHeaderColorTheme = "text-whiteSmoke";
+        textHeaderColorTheme = "text-whitesmoke";
         loginBtnColorTheme = "bg-mainblack";
         formColorTheme = "bg-whitesmoke";
         cardBorderThemeColor = "border-secondary";

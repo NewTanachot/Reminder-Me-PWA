@@ -11,7 +11,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
 
     // check if it need to disableAllFooter
     const disableAllFooter = DisableFooterBtnCondition();
-    const defaultTextColor = "text-whiteSmoke";
+    const defaultTextColor = "text-whitesmoke";
 
     let listIconClass = `${defaultTextColor} bi bi-folder`;
     let mapIconClass = `${defaultTextColor} bi bi-geo-alt`;
@@ -21,23 +21,23 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
     
     switch (currentPageName) {
         case PwaCurrentPageEnum.ReminderList:
-            listIconClass = listIconClass.replace(defaultTextColor, "text-whiteSmoke");
+            listIconClass = listIconClass.replace(defaultTextColor, "text-whitesmoke");
             listIconClass += "-fill ";
             break;
         case PwaCurrentPageEnum.MapView:
-            mapIconClass = mapIconClass.replace(defaultTextColor, "text-whiteSmoke");
+            mapIconClass = mapIconClass.replace(defaultTextColor, "text-whitesmoke");
             mapIconClass += "-fill";
             break;
         case PwaCurrentPageEnum.AddList:
-            addListIconClass = addListIconClass.replace(defaultTextColor, "text-whiteSmoke");
+            addListIconClass = addListIconClass.replace(defaultTextColor, "text-whitesmoke");
             addListIconClass += "-fill";
             break;
         case PwaCurrentPageEnum.EvBattery:
-            evBatteryIconClass = evBatteryIconClass.replace(defaultTextColor, "text-whiteSmoke");
+            evBatteryIconClass = evBatteryIconClass.replace(defaultTextColor, "text-whitesmoke");
             evBatteryIconClass += "-fill";
             break;
         case PwaCurrentPageEnum.Setting:
-            settingIconClass = settingIconClass.replace(defaultTextColor, "text-whiteSmoke");
+            settingIconClass = settingIconClass.replace(defaultTextColor, "text-whitesmoke");
             settingIconClass += "-fill";
             break;
     }
@@ -65,7 +65,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
                     >
                         <i className={`${listIconClass} text-footer-icon-size`}></i>
                     </button>
-                    <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Card</p>
+                    <p className="m-0 text-center text-whitesmoke lh-1 text-footer-size">Card</p>
                 </div>
                 <div>
                     <button 
@@ -76,7 +76,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
                     >
                         <i className={`${addListIconClass} text-footer-icon-size`}></i>
                     </button>
-                    <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Add</p>
+                    <p className="m-0 text-center text-whitesmoke lh-1 text-footer-size">Add</p>
                 </div>
                 <div>
                     <button
@@ -87,7 +87,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
                     >
                         <i className={`${mapIconClass} text-footer-icon-size`}></i>
                     </button>
-                    <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Map</p>
+                    <p className="m-0 text-center text-whitesmoke lh-1 text-footer-size">Map</p>
                 </div>
                 {/* <div>
                     <button
@@ -98,7 +98,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
                     >
                         <i className={`${evBatteryIconClass} text-footer-icon-size`}></i>
                     </button>
-                    <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Ev</p>
+                    <p className="m-0 text-center text-whitesmoke lh-1 text-footer-size">Ev</p>
                 </div> */}
                 <div>
                     <button
@@ -109,7 +109,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
                     >
                         <i className={`${settingIconClass} text-footer-icon-size`}></i>
                     </button>
-                    <p className="m-0 text-center text-whiteSmoke lh-1 text-footer-size">Setting</p>
+                    <p className="m-0 text-center text-whitesmoke lh-1 text-footer-size">Setting</p>
                 </div>
             </div>
         </footer>

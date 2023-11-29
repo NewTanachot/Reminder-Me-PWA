@@ -81,7 +81,7 @@ export default function Register({ changeCurrentPage, isDarkTheme, baseUrlApi }:
     if (isDarkTheme) {
         cardColorTheme = "bg-mainGray";
         cardHeaderColorTheme = "bg-mainblack";
-        textHeaderColorTheme = "text-whiteSmoke";
+        textHeaderColorTheme = "text-whitesmoke";
         createBtnColorTheme = "bg-mainblack";
         formColorTheme = "bg-whitesmoke";
         cardBorderThemeColor = "border-secondary";

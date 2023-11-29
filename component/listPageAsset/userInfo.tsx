@@ -21,8 +21,8 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
     }
     else {
         userInfoColorTheme = "bg-viridian-green";
-        selectFormColorTheme = "bg-peach";
-        btnColorTheme = "btn-light bg-peach";
+        selectFormColorTheme = "bg-whitesmoke";
+        btnColorTheme = "btn-light bg-whitesmoke";
     }
 
     return (
@@ -50,12 +50,6 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
                 >
                     <i className="fa-solid fa-rotate-right"></i>
                 </button>
-                {/* <Link 
-                    className={`btn btn-sm ${btnColorTheme} w-25`}
-                    href="/testpage"
-                >
-                    <i className="fa-solid fa-rotate-right"></i>
-                </Link> */}
             </div>
         </div>
     )
