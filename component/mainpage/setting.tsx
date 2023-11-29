@@ -24,7 +24,7 @@ export default function Setting({
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainblack border-bottom-0";
-        signOutBtnColorTheme = "bg-steelblue text-white";
+        signOutBtnColorTheme = "bg-glaucous text-white";
     }
     else {
         cardColorTheme = "bg-peach-65";
@@ -48,7 +48,7 @@ export default function Setting({
                     deleteIndexedDB={deleteIndexedDB}
                     isDarkTheme={isDarkTheme}
                 ></CacheClearSettingCard>
-                
+
                 {/* theme */}
                 <ThemeSettingCard
                     changeCurrentThemeHandler={changeThemeHandler}
