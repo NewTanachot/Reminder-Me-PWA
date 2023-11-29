@@ -17,8 +17,8 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
     let switchUserBtnColorTheme: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-subBlack";
-        textColorTheme = "text-whiteSmoke";
+        cardColorTheme = "bg-subblack";
+        textColorTheme = "text-whitesmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
         switchUserBtnColorTheme = "bg-glaucous border-bottom-0";

@@ -81,7 +81,7 @@ html, body {
     background-color: #36454F !important;
 }
 
-.bg-subBlack {
+.bg-subblack {
     background-color: #36393e !important;
 }
 
@@ -121,6 +121,18 @@ html, body {
     color: #FFFDD0 !important;
 }
 
+.text-lightgray {
+    color: #D3D3D3 !important;
+}
+
+.text-bluegray {
+    color: #7393B3 !important;
+}
+
+.text-pastelblue {
+    color: #A7C7E7 !important;
+}
+
 .text-glaucous {
     color: #6495ED !important;
 }
@@ -141,7 +153,7 @@ html, body {
     color: #F5F5DC !important;
 }
 
-.text-whiteSmoke {
+.text-whitesmoke {
     color: whitesmoke !important;
 }
 
@@ -155,6 +167,14 @@ html, body {
 
 .text-lightblue {
     color: #6082B6 !important; /* gray 71797E, blue 6082B6 */
+}
+
+.text-ashgray {
+    color: #B2BEB5 !important;
+}
+
+.text-slategray {
+    color: #708090 !important;
 }
 
 /* #endregion */

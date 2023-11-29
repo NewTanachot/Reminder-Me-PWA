@@ -98,34 +98,42 @@ export default function PlaceCard({
     // check theme
     let cardHeaderThemeColor: string;
     let cardBodyThemeColor: string;
+    let cardLabelThemeColor: string;
     let cardSubDataThemeColor: string;
+    let cardCreateDateThemeColor: string;
     let deleteCardBtnThemeColor: string;
     let switchBtnColorTheme: string;
     let cardBorderThemeColor: string;
+    let linkToMapIconThemeColor: string;
 
     if (isDarkTheme) {
 
-        cardHeaderThemeColor = "bg-mainblack text-whiteSmoke";
-        cardBodyThemeColor = "bg-whitesmoke";
-        cardSubDataThemeColor = "text-lightblue";
+        cardHeaderThemeColor = "text-pastelblue";
+        cardBodyThemeColor = "bg-mainblack";
+        cardLabelThemeColor = "text-whitesmoke";
+        cardSubDataThemeColor = "text-ashgray";
+        cardCreateDateThemeColor = "text-slategray";
         deleteCardBtnThemeColor = "text-warning";
         switchBtnColorTheme = "custom-switch-dark";
-        cardBorderThemeColor = "border-secondary";
+        cardBorderThemeColor = "border-secondary rounded-4"; // rounded-5
+        linkToMapIconThemeColor= "text-warning"
     }
     else {
-
-        cardHeaderThemeColor = "bg-warning-subtle text-viridian-green";
+        cardHeaderThemeColor = "text-viridian-green";
         cardBodyThemeColor = "bg-peach-65";
+        cardLabelThemeColor = "text-dark";
         cardSubDataThemeColor = "text-secondary";
+        cardCreateDateThemeColor = "";
         deleteCardBtnThemeColor = "text-danger";
         switchBtnColorTheme = "custom-switch-light";
-        cardBorderThemeColor = "";
+        cardBorderThemeColor = "text-ashgray rounded-3"; // rounded-4
+        linkToMapIconThemeColor= "text-danger"
     }
 
     return (
         <div 
             id={cardId}
-            className={`card mb-3 shadow-sm rounded-4 position-relative ${cardBorderThemeColor} ${filterCardClass}`}
+            className={`card position-relative mb-3 border-0 shadow ${cardBorderThemeColor} ${filterCardClass}`}
         >  
             {/* delete btn */}
             <div 
@@ -134,9 +142,8 @@ export default function PlaceCard({
             >
                 <i className={`fa-solid fa-circle-xmark text-delete-card-size ${deleteCardBtnThemeColor}`}></i>
             </div>  
-
-            <div className={`card-header rounded-top-4 ${cardHeaderThemeColor} bg-gradient`}>
-                <div className="d-flex justify-content-between align-items-center text-size-18">
+            <div className={`card-body ${cardBodyThemeColor} text-size-14 px-3 pt-2 pb-0 rounded-3`}> {/* rounded-4 */}
+                <div className={`d-flex justify-content-between align-items-center ${cardHeaderThemeColor} text-size-18 mb-2`}>
                     <div 
                         className="text-nowrap"
                         onClick={() => linkCardToMapPageHandler(data.id)}
@@ -147,7 +154,7 @@ export default function PlaceCard({
                                     {data.name}
                                     {
                                         data.latitude && data.longitude
-                                            ? <i className="fa-solid fa-location-arrow ms-2 text-footer-size"></i>
+                                            ? <i className={`fa-solid fa-location-arrow ms-2 ${linkToMapIconThemeColor} text-footer-size`}></i>
                                             : null
                                     }
                                 </>
@@ -158,10 +165,9 @@ export default function PlaceCard({
                         {data.locationDistance.toFixed(2)} km
                     </div>
                  </div>
-            </div>
-            <div className={`card-body ${cardBodyThemeColor} text-size-14 px-3 py-2`}>
+
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-dark lh-sm">
+                    <div className={`${cardLabelThemeColor} lh-sm`}>
                         Message: &nbsp;
                         <span className={cardSubDataThemeColor}>
                             {data.reminderMessage ? data.reminderMessage : "-"}
@@ -169,13 +175,13 @@ export default function PlaceCard({
                     </div>
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-dark lh-sm">
+                    <div className={`${cardLabelThemeColor} lh-sm`}>
                         Location: &nbsp;
                         <span className={cardSubDataThemeColor}>
                             {displayLocation}
                         </span>
                     </div>
-                    <div className="form-check form-switch">
+                    <div className="form-check form-switch m-0">
                         <input 
                             id={cardStatusSwitchId}
                             type="checkbox" 
@@ -186,25 +192,24 @@ export default function PlaceCard({
                     </div>
                  </div>
                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="text-dark lh-sm">
+                    <div className={`${cardLabelThemeColor} lh-sm`}>
                         Date: &nbsp;
                         {
                             data.reminderDate ? 
-                            <span className="text-gold">{data.reminderDate}</span>
+                            <span className={linkToMapIconThemeColor}>{data.reminderDate}</span>
                             :
                             <span className={cardSubDataThemeColor}>-</span>
                         }
                     </div>
                  </div>
-            </div>
-            <div 
-                className={`card-footer rounded-bottom-4 text-end py-0 h-25 text-secondary ${cardBodyThemeColor} text-card-footer-size`}
-            >
-                {data.displayCreateAt}
-                <i 
-                    className="fa-solid fa-pen-to-square mx-2"
-                    onClick={() => updatePlaceCardHandler(data.id)}
-                ></i>
+
+                 <div className={`text-end my-1 h-25 ${cardCreateDateThemeColor} text-card-footer-size`}>
+                    {data.displayCreateAt}
+                    <i 
+                        className="fa-solid fa-pen-to-square mx-2"
+                        onClick={() => updatePlaceCardHandler(data.id)}
+                    ></i>
+                 </div>
             </div>
         </div>
     )
