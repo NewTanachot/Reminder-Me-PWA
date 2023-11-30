@@ -108,7 +108,7 @@ export default function PlaceCard({
 
     if (isDarkTheme) {
 
-        cardHeaderThemeColor = "text-pastelblue";
+        cardHeaderThemeColor = "text-lightblue";
         cardBodyThemeColor = "bg-mainblack";
         cardLabelThemeColor = "text-whitesmoke";
         cardSubDataThemeColor = "text-ashgray";

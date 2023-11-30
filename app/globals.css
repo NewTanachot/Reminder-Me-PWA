@@ -129,6 +129,14 @@ html, body {
     color: #7393B3 !important;
 }
 
+.text-glaucous {
+    color: #6082B6 !important; /* gray 71797E, blue 6082B6 */
+}
+
+.text-lightblue {
+    color: #89CFF0 !important;
+}
+
 .text-pastelblue {
     color: #A7C7E7 !important;
 }
@@ -163,10 +171,6 @@ html, body {
 
 .text-mainBlack {
     color: #36454F !important;
-}
-
-.text-lightblue {
-    color: #6082B6 !important; /* gray 71797E, blue 6082B6 */
 }
 
 .text-ashgray {
