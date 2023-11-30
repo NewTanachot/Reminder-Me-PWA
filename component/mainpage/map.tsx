@@ -98,7 +98,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
     let resetBtnColorTheme: string;
 
     if (isDarkTheme) {
-        resetBtnColorTheme = "bg-mainblack";
+        resetBtnColorTheme = "bg-steelblue";
     }
     else {
         resetBtnColorTheme = "bg-viridian-green";
@@ -107,7 +107,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
     return <>
         <div className='map-reset-position-btn'>
             <button 
-                className={`btn bg-gradient shadow-sm border ${resetBtnColorTheme} text-white`}
+                className={`btn shadow ${resetBtnColorTheme} text-white`}
                 onClick={ResetCenterToUserLocation}
             >
                 <i className="fa-solid fa-map-location-dot"></i>
@@ -115,10 +115,11 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
         </div>
 
         <MapContainer 
-            className='map shadow-sm rounded-3' 
+            className='map border border-2 border-secondary shadow rounded-2' 
             center={[centerLocation.latitude, centerLocation.longitude]} 
             zoom={initialZoomData} 
             scrollWheelZoom={true}
+            zoomControl={false}
             attributionControl={false}
             ref={map => mapRef.current = map ?? undefined}
         >

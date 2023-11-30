@@ -24,7 +24,7 @@ export default function Setting({
 
     if (isDarkTheme) {
         cardColorTheme = "bg-mainblack border-bottom-0";
-        signOutBtnColorTheme = "bg-glaucous text-white";
+        signOutBtnColorTheme = "bg-steelblue text-white";
     }
     else {
         cardColorTheme = "bg-peach-65";
@@ -32,7 +32,7 @@ export default function Setting({
     }
 
     return (
-        <div className={`card shadow-sm ${cardColorTheme} bg-gradient`}>
+        <div className={`card border-0 shadow ${cardColorTheme} bg-gradient`}>
             <div className="card-body m-2">
 
                 {/* user info */}
