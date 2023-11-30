@@ -11,7 +11,7 @@ const googleFont = Athiti({
 
 export default function UserMapPopup({ userName, setMapView, markNewLocationAtUser, isDarkTheme }: IUserMapPopupProps) {
 
-    const textColorTheme = isDarkTheme ? "text-cobalt-blue" : "text-viridian-green";
+    const textColorTheme = isDarkTheme ? "text-cobaltblue" : "text-viridian-green";
 
     return <Popup autoPan={false}>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>

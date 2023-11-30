@@ -23,7 +23,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
         textColorTheme = "text-whitesmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchThemeBtnColorTheme = "bg-glaucous border-primary-subtle";
+        switchThemeBtnColorTheme = "bg-steelblue border-primary-subtle";
     }
     else {
         cardColorTheme = "bg-peach";
@@ -51,7 +51,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                         </p>
                     </div>
                     <select 
-                        className={`rounded-1 shadow-sm text-size-15 ps-2 text-center ${switchThemeBtnColorTheme} text-white`}
+                        className={`rounded-1 shadow-sm text-size-15 ps-2 text-center ${switchThemeBtnColorTheme} text-whitesmoke`}
                         defaultValue={currentMapString}
                         onChange={ChangeCurrentMapHandler}
                     >

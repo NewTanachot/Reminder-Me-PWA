@@ -99,7 +99,7 @@ export default function PlaceCard({
     let cardHeaderThemeColor: string;
     let cardBodyThemeColor: string;
     let cardLabelThemeColor: string;
-    let cardSubDataThemeColor: string;
+    let cardDataThemeColor: string;
     let cardCreateDateThemeColor: string;
     let deleteCardBtnThemeColor: string;
     let switchBtnColorTheme: string;
@@ -108,10 +108,10 @@ export default function PlaceCard({
 
     if (isDarkTheme) {
 
-        cardHeaderThemeColor = "text-pastelblue";
+        cardHeaderThemeColor = "text-babyblue";
         cardBodyThemeColor = "bg-mainblack";
-        cardLabelThemeColor = "text-whitesmoke";
-        cardSubDataThemeColor = "text-ashgray";
+        cardLabelThemeColor = "text-lightgray";
+        cardDataThemeColor = "text-ashgray";
         cardCreateDateThemeColor = "text-slategray";
         deleteCardBtnThemeColor = "text-warning";
         switchBtnColorTheme = "custom-switch-dark";
@@ -122,7 +122,7 @@ export default function PlaceCard({
         cardHeaderThemeColor = "text-viridian-green";
         cardBodyThemeColor = "bg-peach-65";
         cardLabelThemeColor = "text-dark";
-        cardSubDataThemeColor = "text-secondary";
+        cardDataThemeColor = "text-secondary";
         cardCreateDateThemeColor = "";
         deleteCardBtnThemeColor = "text-danger";
         switchBtnColorTheme = "custom-switch-light";
@@ -169,7 +169,7 @@ export default function PlaceCard({
                 <div className="d-flex justify-content-between align-items-center">
                     <div className={`${cardLabelThemeColor} lh-sm`}>
                         Message: &nbsp;
-                        <span className={cardSubDataThemeColor}>
+                        <span className={cardDataThemeColor}>
                             {data.reminderMessage ? data.reminderMessage : "-"}
                         </span>
                     </div>
@@ -177,7 +177,7 @@ export default function PlaceCard({
                  <div className="d-flex justify-content-between align-items-center">
                     <div className={`${cardLabelThemeColor} lh-sm`}>
                         Location: &nbsp;
-                        <span className={cardSubDataThemeColor}>
+                        <span className={cardDataThemeColor}>
                             {displayLocation}
                         </span>
                     </div>
@@ -198,17 +198,17 @@ export default function PlaceCard({
                             data.reminderDate ? 
                             <span className={linkToMapIconThemeColor}>{data.reminderDate}</span>
                             :
-                            <span className={cardSubDataThemeColor}>-</span>
+                            <span className={cardDataThemeColor}>-</span>
                         }
                     </div>
                  </div>
 
-                 <div className={`text-end my-1 h-25 ${cardCreateDateThemeColor} text-card-footer-size`}>
+                 <div 
+                    className={`text-end my-1 h-25 ${cardCreateDateThemeColor} text-card-footer-size`}
+                    onClick={() => updatePlaceCardHandler(data.id)}
+                >
                     {data.displayCreateAt}
-                    <i 
-                        className="fa-solid fa-pen-to-square mx-2"
-                        onClick={() => updatePlaceCardHandler(data.id)}
-                    ></i>
+                    <i className="fa-solid fa-pen-to-square mx-2"></i>
                  </div>
             </div>
         </div>

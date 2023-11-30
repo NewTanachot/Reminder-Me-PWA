@@ -190,7 +190,7 @@ export default function UpsertList({
         formLabelRequireColorTheme = "text-warning";
         underLineColorTheme = "text-white";
         cardColorTheme = "bg-mainblack border-bottom-0";
-        submitBtnColorTheme = "bg-glaucous";
+        submitBtnColorTheme = "bg-steelblue";
         clearBtnColorTheme = "text-light border-light";
         switchBtnColorTheme = "custom-switch-dark";
     }
@@ -223,7 +223,7 @@ export default function UpsertList({
             isDisplay={displayLoadingComponent}
         ></LoadingComponent>
 
-        <div className={`card shadow-sm ${cardColorTheme} bg-gradient`}>
+        <div className={`card border-0 shadow ${cardColorTheme} bg-gradient`}>
             <form 
                 className="card-body m-2" 
                 onSubmit={UpsertPlace}

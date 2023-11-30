@@ -145,15 +145,12 @@ export default function MapModal({
 
     // check theme color
     let confirmBtnClass: string;
-    let cancleBtnClass: string;
 
     if (isDarkTheme) {
-        confirmBtnClass = "bg-mainblue";
-        cancleBtnClass = "bg-mainblack";
+        confirmBtnClass = "bg-steelblue";
     }
     else {
         confirmBtnClass = "bg-viridian-green";
-        cancleBtnClass = "btn-secondary";
     }
 
     // set map user marker
@@ -166,7 +163,7 @@ export default function MapModal({
         <div className='w-100 pos'>
             <div className='map-reset-position-btn'>
                 <button 
-                    className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
+                    className={`btn shadow ${confirmBtnClass} text-white`}
                     onClick={ResetCenterToUserLocation}
                 >
                     <i className="fa-solid fa-map-location-dot"></i>
@@ -174,10 +171,11 @@ export default function MapModal({
             </div>
 
             <MapContainer 
-                className='map-asset shadow-sm rounded-3' 
+                className='map-asset border border-2 border-secondary shadow rounded-2' 
                 center={[centerLocation.latitude, centerLocation.longitude]} 
                 zoom={initialMapView} 
                 scrollWheelZoom={true}
+                zoomControl={false}
                 attributionControl={false}
                 ref={map => mapRef.current = map ?? undefined}
             >
@@ -232,13 +230,13 @@ export default function MapModal({
             </MapContainer>
             <div className='d-flex justify-content-around align-items-center mt-3'>
                 <button 
-                    className={`btn ${cancleBtnClass} text-white w-38 bg-gradient`}
+                    className='btn btn-secondary text-white w-38'
                     onClick={backtoFormPage}
                 >
-                    Cancel
+                    Back
                 </button>
                 <button 
-                    className={`btn ${confirmBtnClass} text-white w-38 bg-gradient`}
+                    className={`btn ${confirmBtnClass} text-white w-38`}
                     onClick={() => addLocationDataToRef(newMarkerPosition)}
                 >
                     Confirm

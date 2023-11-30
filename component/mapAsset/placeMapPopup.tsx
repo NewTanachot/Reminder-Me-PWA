@@ -13,7 +13,7 @@ const googleFont = Athiti({
 
 export default function PlaceMapPopup({ name, message, date, setMapView, isDarkTheme }: IPlaceMapPopupProps) {
 
-    const textColorTheme = isDarkTheme ? "text-lightblue" : "text-viridian-green";
+    const textColorTheme = isDarkTheme ? "text-glaucous" : "text-viridian-green";
 
     return <Popup autoPan={false}>
         <div className={`card shadow-sm border border-2 ${googleFont.className}`}>

@@ -17,7 +17,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
         textColorTheme = "text-whitesmoke";
         cardIconColorTheme = "";
         subTextColorTheme = "text-milk-orange";
-        switchThemeBtnColorTheme = "bg-glaucous border-bottom-0";
+        switchThemeBtnColorTheme = "bg-steelblue";
     }
     else {
         cardColorTheme = "bg-peach";
@@ -49,7 +49,7 @@ export default function ThemeSettingCard({ isDarkTheme, changeCurrentThemeHandle
                         </p>
                     </div>
                     <button
-                        className={`btn btn-sm ${switchThemeBtnColorTheme} text-white btn-setting-icon-size bg-gradient`}
+                        className={`btn btn-sm ${switchThemeBtnColorTheme} text-white btn-setting-icon-size`}
                         onClick={UpdateThemeHandler}
                     >
                         {
