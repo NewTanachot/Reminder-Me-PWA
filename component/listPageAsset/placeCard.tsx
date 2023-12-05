@@ -17,7 +17,7 @@ export default function PlaceCard({
 
     const cardId = `card_${data.id}`;
     const cardStatusSwitchId = `cardStatusSwitch_${data.id}`;
-    const filterTheme = isDarkTheme ? "filter-card-dark" : "filter-card-light";
+    const filterTheme = "filter-card";
     let displayLocation = "-";
     let filterCardClass = "";
 

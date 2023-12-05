@@ -81,6 +81,7 @@ export interface ILoginProps extends IBaseProps, IBaseApiUrl {
 }
 
 export interface IRegisterProps extends IBaseProps, IBaseApiUrl {
+    currentPage: ICurrentPage,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
 
@@ -162,6 +163,8 @@ export interface ICacheClearSettingCardProps extends IBaseProps {
     deleteIndexedDB: () => void
 }
 
-export interface IBackHeaderBtnProps extends IBaseProps {
-    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
+export interface ICardHeaderProps extends IBaseProps {
+    pageName?: PwaCurrentPageEnum,
+    backToPage: PwaCurrentPageEnum,
+    changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }

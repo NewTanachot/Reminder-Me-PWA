@@ -144,13 +144,19 @@ export default function MapModal({
     }
 
     // check theme color
-    let confirmBtnClass: string;
+    let confirmBtnColorTheme: string;
+    let resetBtnColorTheme: string;
+    let backBtnColorTheme: string;
 
     if (isDarkTheme) {
-        confirmBtnClass = "bg-steelblue";
+        confirmBtnColorTheme = "bg-steelblue";
+        resetBtnColorTheme = "bg-steelblue";
+        backBtnColorTheme = "text-lightgray";
     }
     else {
-        confirmBtnClass = "bg-viridian-green";
+        confirmBtnColorTheme = "bg-viridian-green";
+        resetBtnColorTheme = "bg-viridian-green";
+        backBtnColorTheme = "";
     }
 
     // set map user marker
@@ -163,7 +169,7 @@ export default function MapModal({
         <div className='w-100 pos'>
             <div className='map-reset-position-btn'>
                 <button 
-                    className={`btn shadow ${confirmBtnClass} text-white`}
+                    className={`btn shadow ${resetBtnColorTheme} text-white`}
                     onClick={ResetCenterToUserLocation}
                 >
                     <i className="fa-solid fa-map-location-dot"></i>
@@ -230,13 +236,13 @@ export default function MapModal({
             </MapContainer>
             <div className='d-flex justify-content-around align-items-center mt-3'>
                 <button 
-                    className='btn btn-secondary text-white w-38'
+                    className={`btn ${backBtnColorTheme} btn-outline-secondary shadow-sm w-38`}
                     onClick={backtoFormPage}
                 >
                     Back
                 </button>
                 <button 
-                    className={`btn ${confirmBtnClass} text-white w-38`}
+                    className={`btn ${confirmBtnColorTheme} text-white shadow-sm w-38`}
                     onClick={() => addLocationDataToRef(newMarkerPosition)}
                 >
                     Confirm
