@@ -9,7 +9,7 @@ import LoadingComponent from "../modalAsset/loading";
 import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
 import { IUpsertFormData } from "@/model/useStateModel";
 import { SetPageContainerClass } from "@/extension/style_extension";
-import BackHeaderBtn from "../layoutAsset/backHeaderBtn";
+import CardHeader from "../layoutAsset/cardHeader";
 const MapModal = dynamic(() => import("@/component/mapAsset/mapModal"), { ssr: false });
 
 export default function UpsertList({ 
@@ -191,7 +191,7 @@ export default function UpsertList({
         underLineColorTheme = "text-white";
         cardColorTheme = "bg-mainblack border-bottom-0";
         submitBtnColorTheme = "bg-steelblue";
-        clearBtnColorTheme = "text-light border-light";
+        clearBtnColorTheme = "text-lightgray";
         switchBtnColorTheme = "custom-switch-dark";
     }
     else {
@@ -201,7 +201,7 @@ export default function UpsertList({
         underLineColorTheme = "text-dark";
         cardColorTheme = "bg-peach-65";
         submitBtnColorTheme = "bg-viridian-green";
-        clearBtnColorTheme = "text-secondary border-secondary";
+        clearBtnColorTheme = "text-secondary";
         switchBtnColorTheme = "custom-switch-light";
     }
 
@@ -230,10 +230,11 @@ export default function UpsertList({
             >
                 {
                     isUpdatePage
-                        ? <BackHeaderBtn
+                        ? <CardHeader
+                            backToPage={PwaCurrentPageEnum.ReminderList}
                             changeCurrentPage={changeCurrentPage}
                             isDarkTheme={isDarkTheme}
-                        ></BackHeaderBtn>
+                        ></CardHeader>
                         : null
                 }
                 <div>
@@ -315,7 +316,7 @@ export default function UpsertList({
                 <div className="mt-3 d-flex justify-content-evenly">
                     <button
                         type="button"
-                        className={`btn btn-sm ${clearBtnColorTheme} shadow-sm`}
+                        className={`btn btn-sm ${clearBtnColorTheme} border-secondary shadow-sm`}
                         onClick={ClearLocationFormData}
                     >
                         <i className="fa-regular fa-trash-can me-2"></i>

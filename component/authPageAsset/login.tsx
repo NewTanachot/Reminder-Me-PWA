@@ -8,6 +8,7 @@ import { FormEvent, useState } from "react";
 import { IsStringValidEmpty } from "@/extension/string_extension";
 import { GetCustomGeoLocationOption } from "@/extension/api_extension";
 import LoadingComponent from "../modalAsset/loading";
+import CardHeader from "../layoutAsset/cardHeader";
 
 export default function Login({ userLoginHandler, changeCurrentPage, currentPage, isDarkTheme, baseUrlApi }: ILoginProps) {
 
@@ -91,33 +92,27 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         alert(`${error.code}: ${error.message}`)
     }
 
-    const backButtonHandler = () => {
-        changeCurrentPage({ page: PwaCurrentPageEnum.Setting });
-    }
 
     // Color theme handler
     let cardColorTheme: string;
-    let cardHeaderColorTheme: string;
-    let textHeaderColorTheme: string;
+    let cardtextColorTheme: string;
     let formColorTheme: string;
     let loginBtnColorTheme: string;
-    let cardBorderThemeColor: string;
+    let registerBtnColorTheme: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-mainGray";
-        cardHeaderColorTheme = "bg-mainblack";
-        textHeaderColorTheme = "text-whitesmoke";
-        loginBtnColorTheme = "bg-mainblack";
+        cardColorTheme = "bg-mainblack border-bottom-0";
+        cardtextColorTheme = "text-whitesmoke";
+        loginBtnColorTheme = "bg-steelblue";
         formColorTheme = "bg-whitesmoke";
-        cardBorderThemeColor = "border-secondary";
+        registerBtnColorTheme = "text-lightgray";
     }
     else {
         cardColorTheme = "bg-peach-65";
-        cardHeaderColorTheme = "bg-warning-subtle";
-        textHeaderColorTheme = "text-viridian-green";
+        cardtextColorTheme = "text-dark";
         loginBtnColorTheme = "bg-viridian-green";
-        formColorTheme = "";
-        cardBorderThemeColor = "";
+        formColorTheme = "bg-white";
+        registerBtnColorTheme = "";
     }
 
     return (
@@ -133,46 +128,45 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                 isDisplay={displayLoadingComponent}
             ></LoadingComponent>
             <form 
-                className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
+                className={`card border-0 shadow ${cardColorTheme} bg-gradient`} 
                 onSubmit={UserLogin}
             >
-                <div className={`card-header d-flex justify-content-between align-items-center ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
+                <div className={`card-body m-2 ${cardtextColorTheme}`}>
                     {
                         currentPage.backBtn
-                            ? <div onClick={backButtonHandler}>
-                                <i className="bi bi-caret-left-fill"></i>
-                            </div>
-                            : <div></div>
+                            ? <CardHeader
+                                pageName={currentPage.pageName}
+                                backToPage={PwaCurrentPageEnum.Setting}
+                                changeCurrentPage={changeCurrentPage}
+                                isDarkTheme={isDarkTheme}
+                            ></CardHeader>
+                            : null
                     }
-                    <h2 className="m-0 text-center">Login</h2>
-                    <div></div>
-                </div>
-                <div className="card-body m-2">
-                    <div className="mb-3">
+                    <div className="mb-4">
                         <p className="mb-1">
                             Username:
                         </p>
                         <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInput" type="text" min={1} max={20} required/>
 
                     </div>
-                    <div className="mt-3">
+                    <div className="mt-4">
                         <p className="mb-1">
                             Password:
                         </p>
                         <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInput" type="password" min={1} max={20} required/>
                     </div>
-                    <div className="mt-4 text-center">
-                        <button 
-                            type="submit"
-                            className={`btn btn-sm w-100 my-2 ${loginBtnColorTheme} text-white shadow-sm`}
-                        >
-                            Log In
-                        </button>
+                    <div className="d-flex justify-content-around mt-5">
                         <button
-                            className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
+                            className={`btn btn-sm btn-outline-secondary ${registerBtnColorTheme} w-38 shadow-sm`}
                             onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Register })}
                         >
                             Sign Up
+                        </button>
+                        <button 
+                            type="submit"
+                            className={`btn btn-sm w-38 ${loginBtnColorTheme} text-white shadow-sm`}
+                        >
+                            Log In
                         </button>
                     </div>
                 </div>

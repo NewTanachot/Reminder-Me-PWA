@@ -5,8 +5,9 @@ import {ResponseModel} from "@/model/responseModel";
 import {UserExtensionModel} from "@/model/subentityModel";
 import {FormEvent, useState} from "react";
 import LoadingComponent from "../modalAsset/loading";
+import CardHeader from "../layoutAsset/cardHeader";
 
-export default function Register({ changeCurrentPage, isDarkTheme, baseUrlApi }: IRegisterProps) {
+export default function Register({ currentPage, changeCurrentPage, isDarkTheme, baseUrlApi }: IRegisterProps) {
 
     const [ displayLoadingComponent, setDisplayLoadingComponent ] = useState<boolean>(false);
 
@@ -72,27 +73,21 @@ export default function Register({ changeCurrentPage, isDarkTheme, baseUrlApi }:
 
     // Color theme handler
     let cardColorTheme: string;
-    let cardHeaderColorTheme: string;
-    let textHeaderColorTheme: string;
+    let cardtextColorTheme: string;
     let createBtnColorTheme: string;
     let formColorTheme: string;
-    let cardBorderThemeColor: string;
 
     if (isDarkTheme) {
-        cardColorTheme = "bg-mainGray";
-        cardHeaderColorTheme = "bg-mainblack";
-        textHeaderColorTheme = "text-whitesmoke";
-        createBtnColorTheme = "bg-mainblack";
+        cardColorTheme = "bg-mainblack border-bottom-0";
+        cardtextColorTheme= "text-whitesmoke";
+        createBtnColorTheme = "bg-steelblue";
         formColorTheme = "bg-whitesmoke";
-        cardBorderThemeColor = "border-secondary";
     }
     else {
         cardColorTheme = "bg-peach-65";
-        cardHeaderColorTheme = "bg-warning-subtle";
-        textHeaderColorTheme = "text-viridian-green";
+        cardtextColorTheme= "text-whitesmoke";
         createBtnColorTheme = "bg-viridian-green";
-        formColorTheme = "";
-        cardBorderThemeColor = "";
+        formColorTheme = "bg-white";
     }
 
     return (
@@ -102,39 +97,35 @@ export default function Register({ changeCurrentPage, isDarkTheme, baseUrlApi }:
                 isDisplay={displayLoadingComponent}
             ></LoadingComponent>    
             <form 
-                className={`card shadow-sm ${cardColorTheme} ${cardBorderThemeColor}`} 
+                className={`card border-0 shadow ${cardColorTheme} bg-gradient`} 
                 onSubmit={UserRegister}
             >
-                <div className={`card-header ${cardHeaderColorTheme} ${textHeaderColorTheme}`}>
-                    <h2 className="m-0 text-center">Register</h2>
-                </div>
-                <div className="card-body m-2">
-                    <div className="mb-3">
+                <div className={`card-body m-2 ${cardtextColorTheme}`}>
+                    <CardHeader
+                        pageName={currentPage.pageName}
+                        backToPage={PwaCurrentPageEnum.Login}
+                        changeCurrentPage={changeCurrentPage}
+                        isDarkTheme={isDarkTheme}
+                    ></CardHeader>
+                    <div className="my-4">
                         <p className="mb-1">
                             Username:
                         </p>
                         <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="usernameInputRegister" type="text" min={1} max={20} required/>
+
                     </div>
-                    <div className="mt-3">
+                    <div className="mt-4">
                         <p className="mb-1">
                             Password:
                         </p>
                         <input className={`form-control w-100 ${formColorTheme} shadow-sm`} name="passwordInputRegister" type="password" min={1} max={20} required/>
                     </div>
-                    <div className="mt-4 text-center">
-                        <button 
-                            type="submit"
-                            className={`btn btn-sm w-100 my-2 ${createBtnColorTheme} text-white shadow-sm`}
-                        >
-                            Create User
-                        </button>
-                        <button
-                            className="btn btn-sm btn-outline-secondary w-100 my-4 mt-2 shadow-sm"
-                            onClick={() => changeCurrentPage({ page: PwaCurrentPageEnum.Login })}
-                        >
-                            Back
-                        </button>
-                    </div>
+                    <button 
+                        type="submit"
+                        className={`btn btn-sm w-100 ${createBtnColorTheme} mt-5 mb-1 text-white shadow-sm`}
+                    >
+                        Create User
+                    </button>
                 </div>
             </form>
         </div>

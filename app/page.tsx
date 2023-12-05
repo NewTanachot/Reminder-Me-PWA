@@ -660,6 +660,7 @@ export default function Home() {
 
                                 case PwaCurrentPageEnum.Register:
                                     return <Register
+                                        currentPage={currentPage}
                                         changeCurrentPage={ChangeCurrentPage}
                                         isDarkTheme={isDarkTheme.current}
                                         baseUrlApi={baseUrlApi}
