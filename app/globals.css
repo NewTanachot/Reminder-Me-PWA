@@ -35,6 +35,12 @@ html, body {
 
 .filter-card {
     filter: grayscale(100%) !important;
+    transition: all .3s linear;
+}
+
+.filter-card-remove {
+    filter: none !important;
+    transition: all .3s linear;
 }
 
 /* #endregion */

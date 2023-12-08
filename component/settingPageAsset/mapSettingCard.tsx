@@ -1,4 +1,4 @@
-import { ConvertEnumToListOfString } from "@/extension/string_extension";
+import { GetAllEnumString } from "@/extension/string_extension";
 import { MapTitleEnum } from "@/model/enumModel";
 import { IMapSettingCardProps } from "@/model/propsModel";
 
@@ -56,7 +56,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
                         onChange={ChangeCurrentMapHandler}
                     >
                     {
-                        ConvertEnumToListOfString(MapTitleEnum).map((mapTitle, index) =>
+                        GetAllEnumString(MapTitleEnum).map((mapTitle, index) =>
                             <option 
                                 key={index}
                                 value={mapTitle}

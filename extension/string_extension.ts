@@ -1,7 +1,6 @@
 import { DayOfWeekEnum, PwaCurrentPageEnum } from '@/model/enumModel';
 import { Decimal } from '@prisma/client/runtime';
 import crypto from 'crypto';
-import { EnumType } from 'typescript';
 
 export const EncryptString = (text: string, secretKey: string, iv_key?: string) => {
 
@@ -61,15 +60,15 @@ export const DisplayCurrentPageName = (currentPage: PwaCurrentPageEnum) => {
 
     switch (currentPage) {
         case PwaCurrentPageEnum.ReminderList:
-            return "Reminder List";
+            return "Reminder Card";
         case PwaCurrentPageEnum.MapView:
             return "Map View";
         case PwaCurrentPageEnum.EvBattery:
             return "Ev Battery";
         case PwaCurrentPageEnum.AddList:
-            return "Add New Place";
+            return "Add Card";
         case PwaCurrentPageEnum.UpdateList:
-            return "Update Place Card";
+            return "Update Card ";
         default:
             return PwaCurrentPageEnum[currentPage];
     }
@@ -132,9 +131,13 @@ export const DateTimeToDisplayString = (dateTime: Date) => {
     return `${dayOfweekName} ${dateTime.toLocaleDateString('en-GB')}`;
 } 
 
-export const ConvertEnumToListOfString = (enumObject: { [s: number]: string }) => {
+export const GetAllEnumString = (enumObject: { [s: number]: string }) => {
     return Object.values(enumObject).filter((enumName) => isNaN(Number(enumName)));
 }
+
+// export function GetEnumString<T>(enumIndex: number) {
+//     return 
+// }
 
 const ConvertToDisplayStringOfNumber = (number: number) => {
     return number < 10 ? `0${number}` : number.toString();

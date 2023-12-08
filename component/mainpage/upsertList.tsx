@@ -205,160 +205,171 @@ export default function UpsertList({
         switchBtnColorTheme = "custom-switch-light";
     }
 
-    const MapPage = <MapModal
-        placeMarkers={GetPlaceMarkers(places)}
-        user={user}
-        mapAsset={mapAsset}
-        newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
-        backtoFormPage={BackToFormPage}
-        addLocationDataToRef={AddLocationDataToRef}
-        userFocusObj={userFocusObj}
-        isDarkTheme={isDarkTheme}
-    ></MapModal>
-
-    const AddListPage = <>
-
-        <LoadingComponent 
+    const MapPage = (
+        <MapModal
+            placeMarkers={GetPlaceMarkers(places)}
+            user={user}
+            mapAsset={mapAsset}
+            newMarkerInitLocation={GetNewMarkerLocation(formDataRef.current)}
+            backtoFormPage={BackToFormPage}
+            addLocationDataToRef={AddLocationDataToRef}
+            userFocusObj={userFocusObj}
             isDarkTheme={isDarkTheme}
-            isDisplay={displayLoadingComponent}
-        ></LoadingComponent>
+        ></MapModal>
+    );
 
-        <div className={`card border-0 shadow ${cardColorTheme} bg-gradient`}>
-            <form 
-                className="card-body m-2" 
-                onSubmit={UpsertPlace}
-            >
-                {
-                    isUpdatePage
-                        ? <CardHeader
-                            backToPage={PwaCurrentPageEnum.ReminderList}
-                            changeCurrentPage={changeCurrentPage}
-                            isDarkTheme={isDarkTheme}
-                        ></CardHeader>
-                        : null
-                }
-                <div>
-                    <p className={`mb-1 ${formLabelColorTheme}`}>
-                        Place Name:
-                        <span className={formLabelRequireColorTheme}> *</span>
-                    </p>
-                    <input 
-                        type="text"
-                        name="placeNameInput" 
-                        className={`form-control w-100 shadow-sm ${formColorTheme}`} 
-                        defaultValue={formDataRef.current?.name}
-                        placeholder="..."
-                        maxLength={50} 
-                        required
-                    />
-                    <hr className={underLineColorTheme} />
-                </div>
-                <div>
-                    <p className={`mb-1 ${formLabelColorTheme}`}>
-                        Reminder Message:
-                    </p>
-                    <textarea 
-                        name="reminderMessageInput" 
-                        className={`form-control w-100 shadow-sm ${formColorTheme}`} 
-                        defaultValue={formDataRef.current?.message}
-                        placeholder="..."
-                        maxLength={65} 
-                        rows={2}
-                    />
-                    <hr className={underLineColorTheme} />
-                </div>
-                <div>
-                    <p className={`mb-1 ${formLabelColorTheme}`}>
-                        Reminder Date:
-                    </p>
-                    <div className="input-group">
-                        <input 
-                            type="date"
-                            name="reminderDateInput" 
-                            className={`form-control ${formColorTheme} shadow-sm`} 
-                            defaultValue={formDataRef.current?.reminderDate}
-                            placeholder="..."
-                        />          
-                        <div className={`input-group-text ${formColorTheme} shadow-sm`}>
-                            <i 
-                                className="fa-regular fa-trash-can text-mainblack"
-                                onClick={ClearDatePickerFormHandler}
-                            ></i>
-                        </div>
-                    </div>
-                    <hr className={underLineColorTheme} />
-                </div>
-                <div>
-                    <p className={`mb-1 ${formLabelColorTheme}`}>
-                        Location:
-                    </p>
-                    <div className="input-group">
-                        <input 
-                            name="latitudeInput" 
-                            className={`form-control ${formColorTheme} shadow-sm`} 
-                            type="number" 
-                            placeholder="..." 
-                            defaultValue={formDataRef.current?.latitude}
-                            step="any" 
-                            min={0}
-                        />
-                        <input 
-                            name="longitudeInput" 
-                            className={`form-control ${formColorTheme} shadow-sm`} 
-                            type="number" 
-                            placeholder="..." 
-                            defaultValue={formDataRef.current?.longitude}
-                            step="any" 
-                            min={0}
-                        />
-                    </div>
-                </div>
-                <div className="mt-3 d-flex justify-content-evenly">
-                    <button
-                        type="button"
-                        className={`btn btn-sm ${clearBtnColorTheme} border-secondary shadow-sm`}
-                        onClick={ClearLocationFormData}
-                    >
-                        <i className="fa-regular fa-trash-can me-2"></i>
-                        Clear location
-                    </button>
-                    <button 
-                        type="button"
-                        className={`btn btn-sm text-white ${submitBtnColorTheme} shadow-sm`}
-                        onClick={GoToMapModalPage}
-                    >
-                        <i className="fa-solid fa-map-location-dot me-2"></i>
-                        Mark location
-                    </button>
-                </div>
-                <hr className={underLineColorTheme} />
-                <div>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <p className={`m-0 ${formLabelColorTheme}`}>
-                            Enable:
+    const AddListPage = (
+        <>
+            <LoadingComponent 
+                isDarkTheme={isDarkTheme}
+                isDisplay={displayLoadingComponent}
+            ></LoadingComponent>
+
+            <div className={`card border-0 shadow ${cardColorTheme} bg-gradient`}>
+                <form 
+                    className="card-body m-2" 
+                    onSubmit={UpsertPlace}
+                >
+                    {
+                        isUpdatePage
+                            ? 
+                            <CardHeader
+                                pageNameEnum={PwaCurrentPageEnum.UpdateList}
+                                backToPage={PwaCurrentPageEnum.ReminderList}
+                                changeCurrentPage={changeCurrentPage}
+                                isDarkTheme={isDarkTheme}
+                            ></CardHeader>
+                            : 
+                            <CardHeader
+                                pageNameEnum={PwaCurrentPageEnum.AddList}
+                                changeCurrentPage={changeCurrentPage}
+                                isDarkTheme={isDarkTheme}
+                            ></CardHeader>
+                    }
+
+                    <div>
+                        <p className={`mb-1 ${formLabelColorTheme}`}>
+                            Place Name:
+                            <span className={formLabelRequireColorTheme}> *</span>
                         </p>
-                        <div className="form-check form-switch">
-                            <input type="checkbox"
-                                name="isActiveInput" 
-                                className={`form-check-input ${switchBtnColorTheme} shadow-sm`}
-                                defaultChecked={formDataRef.current?.enableSwitch ?? true}
+                        <input 
+                            type="text"
+                            name="placeNameInput" 
+                            className={`form-control w-100 shadow-sm ${formColorTheme}`} 
+                            defaultValue={formDataRef.current?.name}
+                            placeholder="..."
+                            maxLength={50} 
+                            required
+                        />
+                        <hr className={underLineColorTheme} />
+                    </div>
+                    <div>
+                        <p className={`mb-1 ${formLabelColorTheme}`}>
+                            Reminder Message:
+                        </p>
+                        <textarea 
+                            name="reminderMessageInput" 
+                            className={`form-control w-100 shadow-sm ${formColorTheme}`} 
+                            defaultValue={formDataRef.current?.message}
+                            placeholder="..."
+                            maxLength={65} 
+                            rows={2}
+                        />
+                        <hr className={underLineColorTheme} />
+                    </div>
+                    <div>
+                        <p className={`mb-1 ${formLabelColorTheme}`}>
+                            Reminder Date:
+                        </p>
+                        <div className="input-group">
+                            <input 
+                                type="date"
+                                name="reminderDateInput" 
+                                className={`form-control ${formColorTheme} shadow-sm`} 
+                                defaultValue={formDataRef.current?.reminderDate}
+                                placeholder="..."
+                            />          
+                            <div className={`input-group-text ${formColorTheme} shadow-sm`}>
+                                <i 
+                                    className="fa-regular fa-trash-can text-mainblack"
+                                    onClick={ClearDatePickerFormHandler}
+                                ></i>
+                            </div>
+                        </div>
+                        <hr className={underLineColorTheme} />
+                    </div>
+                    <div>
+                        <p className={`mb-1 ${formLabelColorTheme}`}>
+                            Location:
+                        </p>
+                        <div className="input-group">
+                            <input 
+                                name="latitudeInput" 
+                                className={`form-control ${formColorTheme} shadow-sm`} 
+                                type="number" 
+                                placeholder="..." 
+                                defaultValue={formDataRef.current?.latitude}
+                                step="any" 
+                                min={0}
+                            />
+                            <input 
+                                name="longitudeInput" 
+                                className={`form-control ${formColorTheme} shadow-sm`} 
+                                type="number" 
+                                placeholder="..." 
+                                defaultValue={formDataRef.current?.longitude}
+                                step="any" 
+                                min={0}
                             />
                         </div>
                     </div>
+                    <div className="mt-3 d-flex justify-content-evenly">
+                        <button
+                            type="button"
+                            className={`btn btn-sm ${clearBtnColorTheme} border-secondary shadow-sm`}
+                            onClick={ClearLocationFormData}
+                        >
+                            <i className="fa-regular fa-trash-can me-2"></i>
+                            Clear location
+                        </button>
+                        <button 
+                            type="button"
+                            className={`btn btn-sm text-white ${submitBtnColorTheme} shadow-sm`}
+                            onClick={GoToMapModalPage}
+                        >
+                            <i className="fa-solid fa-map-location-dot me-2"></i>
+                            Mark location
+                        </button>
+                    </div>
                     <hr className={underLineColorTheme} />
-                </div>
-                <div className="text-center">
-                    <button 
-                        type="submit"
-                        className={`btn btn-sm w-100 my-0 pe-2 text-white ${submitBtnColorTheme} shadow-sm`}
-                    >
-                        <i className="fa-solid fa-floppy-disk me-2"></i>
-                        Save
-                    </button>
-                </div>
-            </form>
-        </div>
-    </>
+                    <div>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <p className={`m-0 ${formLabelColorTheme}`}>
+                                Enable:
+                            </p>
+                            <div className="form-check form-switch">
+                                <input type="checkbox"
+                                    name="isActiveInput" 
+                                    className={`form-check-input ${switchBtnColorTheme} shadow-sm`}
+                                    defaultChecked={formDataRef.current?.enableSwitch ?? true}
+                                />
+                            </div>
+                        </div>
+                        <hr className={underLineColorTheme} />
+                    </div>
+                    <div className="text-center">
+                        <button 
+                            type="submit"
+                            className={`btn btn-sm w-100 my-0 pe-2 text-white ${submitBtnColorTheme} shadow-sm`}
+                        >
+                            <i className="fa-solid fa-floppy-disk me-2"></i>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </>
+    )
 
     return displayMapModal ? MapPage : AddListPage;
 }

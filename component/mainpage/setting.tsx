@@ -4,6 +4,8 @@ import ThemeSettingCard from "../settingPageAsset/themeSettingCard";
 import UserInfoSettingCard from "@/component/settingPageAsset/userInfoSettingCard";
 import MapSettingCard from "../settingPageAsset/mapSettingCard";
 import CacheClearSettingCard from "../settingPageAsset/cacheClearSettingCard";
+import CardHeader from "../layoutAsset/cardHeader";
+import { PwaCurrentPageEnum } from "@/model/enumModel";
 
 export default function Setting({ 
     currentUserName, 
@@ -34,6 +36,11 @@ export default function Setting({
     return (
         <div className={`card border-0 shadow ${cardColorTheme} bg-gradient`}>
             <div className="card-body m-2">
+                <CardHeader
+                    pageNameEnum={PwaCurrentPageEnum.Setting}
+                    changeCurrentPage={changeCurrentPage}
+                    isDarkTheme={isDarkTheme}
+                ></CardHeader>
 
                 {/* user info */}
                 <UserInfoSettingCard

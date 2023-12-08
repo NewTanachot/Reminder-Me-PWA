@@ -17,7 +17,8 @@ export default function PlaceCard({
 
     const cardId = `card_${data.id}`;
     const cardStatusSwitchId = `cardStatusSwitch_${data.id}`;
-    const filterTheme = "filter-card";
+    const filterCSSClass = "filter-card";
+    const removeFilterCSSClass = "filter-card-remove";
     let displayLocation = "-";
     let filterCardClass = "";
 
@@ -29,8 +30,16 @@ export default function PlaceCard({
     useEffect(() => {
 
         const card = document.getElementById(cardId) as HTMLElement;
-        data.isDisable ? card.classList.add(filterTheme) : card.classList.remove(filterTheme);
         
+        if (data.isDisable) {
+            card.classList.add(filterCSSClass);
+            card.classList.remove(removeFilterCSSClass);
+        }
+        else {
+            card.classList.add(removeFilterCSSClass);
+            card.classList.remove(filterCSSClass);
+        }
+
         const cardStatusSwitch = document.getElementById(cardStatusSwitchId) as HTMLInputElement;
         cardStatusSwitch.checked = !data.isDisable;
 
@@ -44,7 +53,7 @@ export default function PlaceCard({
         // set State for refresh page
         setIsFilter(setIsDisable)
 
-        // update places state (Cache data) in list page [Fix chabge page on footer bug]
+        // update places state (Cache data) in list page [Fix change page on footer bug]
         changePlaceStatusHandler(data.id, setIsDisable);
 
         // update place display status data with only
@@ -92,7 +101,7 @@ export default function PlaceCard({
 
     // check disable filter
     if (isFilter || data.isDisable) {
-        filterCardClass = filterTheme;
+        filterCardClass = filterCSSClass;
     }
 
     // check theme

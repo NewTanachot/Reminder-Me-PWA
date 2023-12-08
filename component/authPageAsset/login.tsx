@@ -135,12 +135,16 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
                     {
                         currentPage.backBtn
                             ? <CardHeader
-                                pageName={currentPage.pageName}
+                                pageNameEnum={currentPage.pageName}
                                 backToPage={PwaCurrentPageEnum.Setting}
                                 changeCurrentPage={changeCurrentPage}
                                 isDarkTheme={isDarkTheme}
                             ></CardHeader>
-                            : null
+                            : <CardHeader
+                                pageNameEnum={currentPage.pageName}
+                                changeCurrentPage={changeCurrentPage}
+                                isDarkTheme={isDarkTheme}
+                            ></CardHeader>
                     }
                     <div className="mb-4">
                         <p className="mb-1">
