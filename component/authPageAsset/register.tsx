@@ -102,7 +102,7 @@ export default function Register({ currentPage, changeCurrentPage, isDarkTheme, 
             >
                 <div className={`card-body m-2 ${cardtextColorTheme}`}>
                     <CardHeader
-                        pageName={currentPage.pageName}
+                        pageNameEnum={currentPage.pageName}
                         backToPage={PwaCurrentPageEnum.Login}
                         changeCurrentPage={changeCurrentPage}
                         isDarkTheme={isDarkTheme}

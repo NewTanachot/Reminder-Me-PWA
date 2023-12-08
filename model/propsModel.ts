@@ -164,7 +164,7 @@ export interface ICacheClearSettingCardProps extends IBaseProps {
 }
 
 export interface ICardHeaderProps extends IBaseProps {
-    pageName?: PwaCurrentPageEnum,
-    backToPage: PwaCurrentPageEnum,
+    pageNameEnum: PwaCurrentPageEnum,
+    backToPage?: PwaCurrentPageEnum,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void
 }
