@@ -31,7 +31,7 @@ export default function PlaceMapPopup({ name, message, date, setMapView, isDarkT
     }
 
     return <Popup autoPan={false}>
-        <div className={`card p-1 shadow-lg ${googleFont.className} ${cardColorTheme}`}>
+        <div className={`card p-1 rounded-4 shadow-lg ${googleFont.className} ${cardColorTheme}`}>
             <div className='card-body text-dark p-2 rounded-3'>
                 <div>
                     <span className={labelColorTheme}>

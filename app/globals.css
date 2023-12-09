@@ -44,7 +44,7 @@ html, body {
 }
 
 .transition-ease-out-40 {
-    transition: all .4s ease-out !important;
+    transition: all .5s ease-out !important;
 }
 
 .theme-transition-ease-out-25 {
