@@ -49,12 +49,6 @@ const containerClassObject: IContainerClass = {
     mapClass: ["pt-3", "pb-0"]
 }
 
-// Add the custom CSS rule to change the popup and tip background color [ #F5F5F599, whitesmoke ]
-const customPopupStyles = `
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
-    background-color: #F5F5F599;
-}`;
-
 export default function Home() {
 
     // react hook initialize
@@ -684,7 +678,7 @@ export default function Home() {
             ></Footer>
             
             {/* -=-=- [ Style Tag ] -=-=- */}
-            <style>{customPopupStyles}</style>
+            <style>{MapMetaData.getPopupStyle()}</style>
         </main>
     )
 

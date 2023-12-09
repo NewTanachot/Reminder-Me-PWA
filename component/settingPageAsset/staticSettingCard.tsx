@@ -14,7 +14,7 @@ export default function StaticSettingCard({ cardIcon, cardTitle, cardInfo, isDar
         subTextColorTheme = "text-milk-orange";
     }
     else {
-        cardColorTheme = "bg-peach";
+        cardColorTheme = "bg-cornsilk";
         textColorTheme = "text-viridian-green";
         cardIconColorTheme = "text-dark-emphasis";
         subTextColorTheme = "text-secondary";

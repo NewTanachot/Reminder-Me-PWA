@@ -26,7 +26,7 @@ export default function MapSettingCard({ currentMap, changeCurrentMapHandler, is
         switchThemeBtnColorTheme = "bg-steelblue border-primary-subtle";
     }
     else {
-        cardColorTheme = "bg-peach";
+        cardColorTheme = "bg-cornsilk";
         textColorTheme = "text-viridian-green";
         cardIconColorTheme = "text-dark-emphasis";
         subTextColorTheme = "text-secondary";

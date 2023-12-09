@@ -84,7 +84,7 @@ export default function Register({ currentPage, changeCurrentPage, isDarkTheme, 
         formColorTheme = "bg-whitesmoke";
     }
     else {
-        cardColorTheme = "bg-peach-65";
+        cardColorTheme = "bg-ivory";
         cardtextColorTheme= "text-whitesmoke";
         createBtnColorTheme = "bg-viridian-green";
         formColorTheme = "bg-white";

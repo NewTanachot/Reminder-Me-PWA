@@ -62,11 +62,18 @@ html, body {
 
 .bg-peach {
     background-color: #FFFDD0 !important;
-    /* transition: all .25s ease-out !important; */
 }
 
 .bg-peach-65 {
     background-color: #FFFDD065 !important;
+}
+
+.bg-cornsilk {
+    background-color: #FFF8DC !important;
+}
+
+.bg-ivory {
+    background-color: #FFFFF0 !important;
 }
 
 .bg-viridian-green {
@@ -75,6 +82,18 @@ html, body {
 
 .bg-milk-orange {
     background-color: #FFC862 !important;
+}
+
+.bg-lightgray {
+    background-color: #D3D3D3 !important;
+}
+
+.bg-ashgray {
+    background-color: #B2BEB5 !important;
+}
+
+.bg-slategray {
+    background-color: #708090 !important;
 }
 
 .bg-mainblue {
@@ -111,7 +130,6 @@ html, body {
 
 .bg-subblack {
     background-color: #36393e !important;
-    /* transition: all .25s ease-out !important; */
 }
 
 .bg-light-violet {
@@ -146,12 +164,28 @@ html, body {
     color: #E49B0F !important;
 }
 
+.text-wheat {
+    color: #F5DEB3 !important;
+}
+
+.text-cornsilk {
+    color: #FFF8DC !important;
+}
+
 .text-peach {
     color: #FFFDD0 !important;
 }
 
 .text-lightgray {
     color: #D3D3D3 !important;
+}
+
+.text-ashgray {
+    color: #B2BEB5 !important;
+}
+
+.text-slategray {
+    color: #708090 !important;
 }
 
 .text-bluegray {
@@ -204,14 +238,6 @@ html, body {
 
 .text-mainBlack {
     color: #36454F !important;
-}
-
-.text-ashgray {
-    color: #B2BEB5 !important;
-}
-
-.text-slategray {
-    color: #708090 !important;
 }
 
 /* #endregion */
