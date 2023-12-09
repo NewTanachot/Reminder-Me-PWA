@@ -27,7 +27,7 @@ export default function UserMapPopup({ userName, setMapView, markNewLocationAtUs
     }
 
     return <Popup autoPan={false}>
-        <div className={`card p-1 shadow-lg ${googleFont.className} ${cardColorTheme}`}>
+        <div className={`card p-1 rounded-4 shadow-lg ${googleFont.className} ${cardColorTheme}`}>
             <div className={`card-body text-center ${textColorTheme} p-2 rounded-3`}>
                 <span className={`text-decoration-underline ${nameColorTheme}`}>
                     {userName.toUpperCase()}
