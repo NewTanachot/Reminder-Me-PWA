@@ -4,15 +4,15 @@ import { ICardHeaderProps } from "@/model/propsModel";
 
 export default function CardHeader({ pageNameEnum, backToPage, changeCurrentPage, isDarkTheme }: ICardHeaderProps) {
 
-    let backBtnColorTheme: string;
+    let textColorTheme: string;
     let underLineColorTheme: string;
 
     if (isDarkTheme) {
-        backBtnColorTheme = "text-warning";
+        textColorTheme = "text-lightgray";
         underLineColorTheme = "text-white";
     }
     else {
-        backBtnColorTheme = "text-danger";
+        textColorTheme = "text-secondary";
         underLineColorTheme = "text-dark";
     }
 
@@ -23,7 +23,7 @@ export default function CardHeader({ pageNameEnum, backToPage, changeCurrentPage
                 backToPage || backToPage == 0
                 ? <button 
                     onClick={() => changeCurrentPage({ page: backToPage })}
-                    className={`btn btn-sm p-0 mb-1 ${backBtnColorTheme}`}
+                    className={`btn btn-sm p-0 mb-1 ${textColorTheme} theme-transition-ease-out-25`}
                 >
                     <i className="fa-solid fa-angles-left me-2"></i>
                     Back
@@ -31,12 +31,12 @@ export default function CardHeader({ pageNameEnum, backToPage, changeCurrentPage
                 : <div></div>
             }
             <button 
-                className={`btn btn-sm border-0 p-0 mb-1 ${backBtnColorTheme}`}
+                className={`btn btn-sm border-0 p-0 mb-1 ${textColorTheme} theme-transition-ease-out-25`}
                 type="button"
             >
                 {DisplayCurrentPageName(pageNameEnum)}
             </button>
         </div>
-        <hr className={`mt-0 ${underLineColorTheme}`} />
+        <hr className={`mt-0 ${underLineColorTheme} theme-transition-ease-out-25`} />
     </>
 }

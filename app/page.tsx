@@ -470,7 +470,7 @@ export default function Home() {
         currentUpdateCard.current = places?.find(x => x.id == placeId);
 
         // change current page to UpdateCard
-        ChangeCurrentPage({ page: PwaCurrentPageEnum.UpdateList });
+        ChangeCurrentPage({ page: PwaCurrentPageEnum.UpdateCard });
     };
 
     const ChangeCurrentMapHandler = async (mapStyle: MapTitleEnum) => {
@@ -598,7 +598,7 @@ export default function Home() {
                                         }}
                                     ></Map>
 
-                                case PwaCurrentPageEnum.AddList:
+                                case PwaCurrentPageEnum.CreateCard:
                                     return <UpsertList 
                                         user={user.current}
                                         changeCurrentPage={ChangeCurrentPage}
@@ -614,7 +614,7 @@ export default function Home() {
                                         }}
                                     ></UpsertList>
 
-                                case PwaCurrentPageEnum.UpdateList:
+                                case PwaCurrentPageEnum.UpdateCard:
                                     return <UpsertList 
                                         user={user.current}
                                         changeCurrentPage={ChangeCurrentPage}

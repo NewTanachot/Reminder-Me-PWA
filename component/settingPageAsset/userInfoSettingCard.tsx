@@ -33,23 +33,23 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
 
     return (
         <>
-            <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme}`}>
+            <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme} theme-transition-ease-out-25`}>
                 <div className="card-body m-2 p-0">
                     <div className="d-flex align-items-center">
                         <div className="flex-shrink-0 ms-2">
-                            <i className={`fa-solid fa-user-tie text-setting-icon-size ${cardIconColorTheme}`}></i>
+                            <i className={`fa-solid fa-user-tie text-setting-icon-size ${cardIconColorTheme} theme-transition-ease-out-25`}></i>
                         </div>
                         <div className="flex-grow-1 ms-3">
                             <p className="m-0 lh-sm text-size-14">
                                 Username
                                 <br />
-                                <span className={subTextColorTheme}>
+                                <span className={`${subTextColorTheme} theme-transition-ease-out-25`}>
                                     • {userInfo}
                                 </span>
                             </p>
                         </div>
                         <button
-                                className={`btn btn-sm ${switchUserBtnColorTheme} text-white btn-setting-icon-size`}
+                                className={`btn btn-sm ${switchUserBtnColorTheme} text-white btn-setting-icon-size theme-transition-ease-out-25`}
                                 onClick={switchUserHandler}
                             >
                                 <i className="fa-solid fa-person-walking-arrow-right"></i>
