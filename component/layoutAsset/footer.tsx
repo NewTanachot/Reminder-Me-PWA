@@ -12,7 +12,7 @@ export default function Footer({ isMapPage, changeCurrentPage, currentPageName, 
     // check if it need to disableAllFooter
     const disableAllFooter = DisableFooterBtnCondition();
     const defaultTextColor = "text-whitesmoke";
-    const selectedTextColor = isDarkTheme ? "text-milk-orange" : "text-peach";
+    const selectedTextColor = isDarkTheme ? "text-milk-orange" : "text-wheat";
 
     let listIconClass = `${defaultTextColor} bi bi-folder`;
     let mapIconClass = `${defaultTextColor} bi bi-geo-alt`;

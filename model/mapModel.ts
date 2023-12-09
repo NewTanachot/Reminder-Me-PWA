@@ -40,6 +40,59 @@ export class MapMetaData {
         mapUserIcon: userAltIcon.src
     };
 
+    // Add the custom CSS rule to change the popup and tip background color [ #F5F5F599, whitesmoke ]
+    private static customPopupStyles = `
+        .leaflet-popup-content,
+        .leaflet-popup-content-wrapper {
+            background-color: transparent;
+            margin: 0;
+            margin-bottom: 5px;
+            padding: 0;
+        }
+        
+        .leaflet-popup-tip,
+        .leaflet-popup-close-button {
+            display: none;
+        }
+        `;
+
+    private static customLightPopupStyles = `
+        .leaflet-popup-content,
+        .leaflet-popup-content-wrapper {
+            background-color: #F5F5F599;
+            margin: 0;
+            margin-bottom: 5px;
+            padding: 15px;
+        }
+
+        .leaflet-popup-tip {
+            display: none;
+        }
+        `;
+
+    private static customDarkPopupStyles = `
+        .leaflet-popup-content,
+        .leaflet-popup-content-wrapper {
+            background-color: #36454F99;
+            margin: 0;
+            margin-bottom: 5px;
+            padding: 0;
+        }
+        
+        .leaflet-popup-tip {
+            display: none;
+        }
+        `;
+        
+    public static getPopupStyle(isDarkTheme?: boolean) {
+        
+        if (isDarkTheme == undefined) {
+            return this.customPopupStyles;
+        }
+
+        return isDarkTheme ? this.customDarkPopupStyles : this.customLightPopupStyles;
+    }
+
     public static normalPlaceIcon = placeIcon.src;
     public static dataPlaceIcon = placeWithDateIcon.src;
     public static selectPlaceIcon = newPlaceIcon.src;

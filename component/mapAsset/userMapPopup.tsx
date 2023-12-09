@@ -11,12 +11,27 @@ const googleFont = Athiti({
 
 export default function UserMapPopup({ userName, setMapView, markNewLocationAtUser, isDarkTheme }: IUserMapPopupProps) {
 
-    const textColorTheme = isDarkTheme ? "text-cobaltblue" : "text-viridian-green";
+    let cardColorTheme: string;
+    let textColorTheme: string;
+    let nameColorTheme: string;
+
+    if (isDarkTheme) {
+        cardColorTheme = "bg-mainblack";
+        textColorTheme = "text-lightblue";
+        nameColorTheme = "text-milk-orange";
+    }
+    else {
+        cardColorTheme = "bg-ivory";
+        textColorTheme = "text-viridian-green";
+        nameColorTheme = "text-danger";
+    }
 
     return <Popup autoPan={false}>
-        <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
+        <div className={`card p-1 shadow-lg ${googleFont.className} ${cardColorTheme}`}>
             <div className={`card-body text-center ${textColorTheme} p-2 rounded-3`}>
-                <span className='text-decoration-underline'>{userName}</span> is here! 
+                <span className={`text-decoration-underline ${nameColorTheme}`}>
+                    {userName.toUpperCase()}
+                </span> is here! 
                 <UserPopupFooter
                     setMapView={setMapView}
                     markNewLocationAtUser={markNewLocationAtUser}

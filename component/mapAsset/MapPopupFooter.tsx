@@ -3,7 +3,7 @@ import { IMapPopupFooterProps } from "@/model/propsModel";
 
 export default function MapPopupFooter({ name, setMapView, isDarkTheme }: IMapPopupFooterProps) {
 
-    const btnColorTheme = isDarkTheme ? "bg-mainblue" : "bg-viridian-green";
+    let btnColorTheme = isDarkTheme ? "bg-steelblue" : "bg-viridian-green";
 
     return <div className='d-flex justify-content-evenly mt-2'>
         <button 
@@ -21,15 +21,4 @@ export default function MapPopupFooter({ name, setMapView, isDarkTheme }: IMapPo
             <i className="fa-solid fa-location-crosshairs ms-1"></i>
         </button>
     </div>
-
-    // return <div className="d-flex justify-content-evenly mt-2">
-    //     <i 
-    //         className="fa-solid fa-magnifying-glass-location text-success h5"
-    //         onClick={() => setMapView(MapViewEnum.Zoom, name)}
-    //     ></i>
-    //     <i 
-    //         className="fa-solid fa-bullseye text-secondary h5"
-    //         onClick={() => setMapView(MapViewEnum.Focus, name)}
-    //     ></i>
-    // </div>
 }

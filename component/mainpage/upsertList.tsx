@@ -199,7 +199,7 @@ export default function UpsertList({
         formLabelColorTheme = "text-dark";
         formLabelRequireColorTheme = "text-danger";
         underLineColorTheme = "text-dark";
-        cardColorTheme = "bg-peach-65";
+        cardColorTheme = "bg-ivory";
         submitBtnColorTheme = "bg-viridian-green";
         clearBtnColorTheme = "text-secondary";
         switchBtnColorTheme = "custom-switch-light";

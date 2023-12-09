@@ -129,7 +129,7 @@ export default function PlaceCard({
     }
     else {
         cardHeaderThemeColor = "text-viridian-green";
-        cardBodyThemeColor = "bg-peach-65";
+        cardBodyThemeColor = "bg-cornsilk";
         cardLabelThemeColor = "text-dark";
         cardDataThemeColor = "text-secondary";
         cardCreateDateThemeColor = "";
@@ -155,14 +155,14 @@ export default function PlaceCard({
                 <div className={`d-flex justify-content-between align-items-center ${cardHeaderThemeColor} text-size-18 mb-2`}>
                     <div 
                         className="text-nowrap"
-                        onClick={() => linkCardToMapPageHandler(data.id)}
+                        onClick={() => data.isDisable ? null : linkCardToMapPageHandler(data.id)}
                     >
                         {
                             data.name.length < 23
                                 ? <>
                                     {data.name}
                                     {
-                                        data.latitude && data.longitude
+                                        data.latitude && data.longitude && !data.isDisable
                                             ? <i className={`fa-solid fa-location-arrow ms-2 ${linkToMapIconThemeColor} text-footer-size`}></i>
                                             : null
                                     }

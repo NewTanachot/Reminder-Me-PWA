@@ -108,7 +108,7 @@ export default function Login({ userLoginHandler, changeCurrentPage, currentPage
         registerBtnColorTheme = "text-lightgray";
     }
     else {
-        cardColorTheme = "bg-peach-65";
+        cardColorTheme = "bg-ivory";
         cardtextColorTheme = "text-dark";
         loginBtnColorTheme = "bg-viridian-green";
         formColorTheme = "bg-white";

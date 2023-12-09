@@ -21,8 +21,8 @@ export default function UserInfo({ username, location, isDarkTheme, currentCardO
     }
     else {
         userInfoColorTheme = "bg-viridian-green";
-        selectFormColorTheme = "bg-whitesmoke";
-        btnColorTheme = "btn-light bg-whitesmoke";
+        selectFormColorTheme = "bg-ivory";
+        btnColorTheme = "btn-light bg-ivory";
     }
 
     return (

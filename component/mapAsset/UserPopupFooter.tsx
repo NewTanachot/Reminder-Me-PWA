@@ -3,7 +3,7 @@ import { IUserPopupFooterProps } from "@/model/propsModel";
 
 export default function UserPopupFooter({ setMapView, markNewLocationAtUser, isDarkTheme }: IUserPopupFooterProps) {
 
-    const btnColorTheme = isDarkTheme ? "bg-mainblue" : "bg-viridian-green";
+    const btnColorTheme = isDarkTheme ? "bg-steelblue" : "bg-viridian-green";
 
     return <div className='d-flex justify-content-evenly mt-2'>
         <button 

@@ -29,7 +29,7 @@ export default function Setting({
         signOutBtnColorTheme = "bg-steelblue text-white";
     }
     else {
-        cardColorTheme = "bg-peach-65";
+        cardColorTheme = "bg-ivory";
         signOutBtnColorTheme = "bg-viridian-green text-white";
     }
 

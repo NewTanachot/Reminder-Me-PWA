@@ -3,7 +3,6 @@ import { IsStringValid } from '@/extension/string_extension';
 import { IPlaceMapPopupProps } from '@/model/propsModel';
 import { Popup } from 'react-leaflet';
 import MapPopupFooter from './MapPopupFooter';
-import { isDataView } from 'util/types';
 
 const googleFont = Athiti({
     weight: '600',
@@ -13,21 +12,50 @@ const googleFont = Athiti({
 
 export default function PlaceMapPopup({ name, message, date, setMapView, isDarkTheme }: IPlaceMapPopupProps) {
 
-    const textColorTheme = isDarkTheme ? "text-glaucous" : "text-viridian-green";
+    let cardColorTheme: string;
+    let textColorTheme: string;
+    let labelColorTheme: string;
+    let dateColorTheme: string;
+
+    if (isDarkTheme) {
+        cardColorTheme= "bg-mainblack";
+        textColorTheme = "text-lightblue";
+        labelColorTheme = "text-lightgray";
+        dateColorTheme = "text-milk-orange";
+    }
+    else {
+        cardColorTheme= "bg-ivory";
+        textColorTheme = "text-viridian-green";
+        labelColorTheme = "text-dark";
+        dateColorTheme = "text-gold";
+    }
 
     return <Popup autoPan={false}>
-        <div className={`card shadow-sm border border-2 ${googleFont.className}`}>
+        <div className={`card p-1 shadow-lg ${googleFont.className} ${cardColorTheme}`}>
             <div className='card-body text-dark p-2 rounded-3'>
                 <div>
-                    name: <span className={textColorTheme}>{name}</span>
+                    <span className={labelColorTheme}>
+                        name: &nbsp;
+                    </span>
+                    <span className={textColorTheme}>
+                        {name}
+                    </span>
                 </div>
                 <div>
-                    message: <span className={textColorTheme}>{IsStringValid(message) ? message : "-"}</span>
+                    <span className={labelColorTheme}>
+                        message: &nbsp;
+                    </span>
+                    <span className={textColorTheme}>
+                        {IsStringValid(message) ? message : "-"}
+                    </span>
                 </div>
                 <div>
-                    date: {
+                    <span className={labelColorTheme}>
+                        date: &nbsp;
+                    </span>
+                    {
                         IsStringValid(date) 
-                            ? <span className='text-gold'>{date}</span> 
+                            ? <span className={dateColorTheme}>{date}</span> 
                             : <span className={textColorTheme}>-</span>
                     }
                 </div>
