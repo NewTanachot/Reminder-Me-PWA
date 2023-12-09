@@ -35,8 +35,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
 
     return (
-        <html lang="en">
-            <body className={googleFont.className}>
+        <html 
+            lang="en"
+            className='theme-transition-ease-out-25'
+        >
+            <body className={`${googleFont.className} theme-transition-ease-out-25`}>
                 {children}
             </body>
         </html>

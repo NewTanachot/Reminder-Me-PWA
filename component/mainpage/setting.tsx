@@ -34,7 +34,7 @@ export default function Setting({
     }
 
     return (
-        <div className={`card border-0 shadow ${cardColorTheme} bg-gradient`}>
+        <div className={`card border-0 shadow ${cardColorTheme} bg-gradient theme-transition-ease-out-25`}>
             <div className="card-body m-2">
                 <CardHeader
                     pageNameEnum={PwaCurrentPageEnum.Setting}
@@ -87,7 +87,7 @@ export default function Setting({
 
                 <div className="mt-4 text-center">
                     <button
-                        className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm`}
+                        className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm theme-transition-ease-out-25`}
                         onClick={userLogoutHandler}
                     >
                         Sign out

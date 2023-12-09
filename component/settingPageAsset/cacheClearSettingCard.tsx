@@ -37,23 +37,23 @@ export default function CacheClearSettingCard({ deleteIndexedDB, lastCacheCleari
 
     return (
         <>
-            <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme}`}>
+            <div className={`card shadow-sm mb-3 ${textColorTheme} ${cardColorTheme} theme-transition-ease-out-25`}>
                 <div className="card-body m-2 p-0">
                     <div className="d-flex align-items-center">
                         <div className="flex-shrink-0">
-                            <i className={`fa-solid fa-server ms-1 text-setting-icon-size ${cardIconColorTheme}`}></i>
+                            <i className={`fa-solid fa-server ms-1 text-setting-icon-size ${cardIconColorTheme} theme-transition-ease-out-25`}></i>
                         </div>
                         <div className="flex-grow-1 ms-3">
                             <p className="m-0 lh-sm text-size-14">
                                 Clear Cache
                                 <br />
-                                <span className={subTextColorTheme}>
+                                <span className={`${subTextColorTheme} theme-transition-ease-out-25`}>
                                     • {StringDateToDisplayDate(lastCacheClearing) as string}
                                 </span>
                             </p>
                         </div>
                         <button
-                                className={`btn btn-sm ${btnColorTheme} text-whitesmoke btn-setting-icon-size`}
+                                className={`btn btn-sm ${btnColorTheme} text-whitesmoke btn-setting-icon-size theme-transition-ease-out-25`}
                                 onClick={ClearCacheBtnHandler}
                             >
                                 <i className="fa-solid fa-eraser"></i>

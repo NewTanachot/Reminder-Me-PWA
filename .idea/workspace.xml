@@ -19,10 +19,10 @@
       <change beforePath="$PROJECT_DIR$/component/layoutAsset/footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/layoutAsset/footer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/layoutAsset/navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/layoutAsset/navbar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/listPageAsset/userInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/listPageAsset/userInfo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/component/mainpage/addList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/addList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/mainpage/CreateCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/CreateCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/mainpage/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/list.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/mainpage/setting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/setting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/component/mainpage/updateList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/updateList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/mainpage/UpdateCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/mainpage/UpdateCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/modalAsset/loading.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/modalAsset/loading.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/settingPageAsset/staticSettingCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/settingPageAsset/staticSettingCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/component/settingPageAsset/themeSettingCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/component/settingPageAsset/themeSettingCard.tsx" afterDir="false" />

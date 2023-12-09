@@ -218,7 +218,7 @@ export default function UpsertList({
         ></MapModal>
     );
 
-    const AddListPage = (
+    const CreateCardPage = (
         <>
             <LoadingComponent 
                 isDarkTheme={isDarkTheme}
@@ -234,14 +234,14 @@ export default function UpsertList({
                         isUpdatePage
                             ? 
                             <CardHeader
-                                pageNameEnum={PwaCurrentPageEnum.UpdateList}
+                                pageNameEnum={PwaCurrentPageEnum.UpdateCard}
                                 backToPage={PwaCurrentPageEnum.ReminderList}
                                 changeCurrentPage={changeCurrentPage}
                                 isDarkTheme={isDarkTheme}
                             ></CardHeader>
                             : 
                             <CardHeader
-                                pageNameEnum={PwaCurrentPageEnum.AddList}
+                                pageNameEnum={PwaCurrentPageEnum.CreateCard}
                                 changeCurrentPage={changeCurrentPage}
                                 isDarkTheme={isDarkTheme}
                             ></CardHeader>
@@ -371,5 +371,5 @@ export default function UpsertList({
         </>
     )
 
-    return displayMapModal ? MapPage : AddListPage;
+    return displayMapModal ? MapPage : CreateCardPage;
 }

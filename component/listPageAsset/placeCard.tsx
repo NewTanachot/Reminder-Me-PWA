@@ -122,10 +122,10 @@ export default function PlaceCard({
         cardLabelThemeColor = "text-lightgray";
         cardDataThemeColor = "text-ashgray";
         cardCreateDateThemeColor = "text-slategray";
-        deleteCardBtnThemeColor = "text-warning";
+        deleteCardBtnThemeColor = "text-milk-orange";
         switchBtnColorTheme = "custom-switch-dark";
         cardBorderThemeColor = "border-secondary rounded-4"; // rounded-5
-        linkToMapIconThemeColor= "text-warning"
+        linkToMapIconThemeColor= "text-milk-orange"
     }
     else {
         cardHeaderThemeColor = "text-viridian-green";

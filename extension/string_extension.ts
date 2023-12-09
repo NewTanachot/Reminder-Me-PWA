@@ -65,9 +65,9 @@ export const DisplayCurrentPageName = (currentPage: PwaCurrentPageEnum) => {
             return "Map View";
         case PwaCurrentPageEnum.EvBattery:
             return "Ev Battery";
-        case PwaCurrentPageEnum.AddList:
+        case PwaCurrentPageEnum.CreateCard:
             return "Add Card";
-        case PwaCurrentPageEnum.UpdateList:
+        case PwaCurrentPageEnum.UpdateCard:
             return "Update Card ";
         default:
             return PwaCurrentPageEnum[currentPage];
