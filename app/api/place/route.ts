@@ -1,7 +1,7 @@
 import { PlaceModelDecorator, PlaceModelCreateValidator, PlaceModelUpdateValidator } from "@/extension/api_extension";
 import { ResponseModel } from "@/model/responseModel";
 import { Place } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma";
 import { IsStringValid } from "@/extension/string_extension";
 
@@ -24,7 +24,7 @@ const GetPlaceByUserId = async (userId: string) => {
     });
 }
 
-export async function GET(request: Request): Promise<NextResponse> {
+export async function GET(request: NextRequest): Promise<NextResponse> {
 
     // get body of request
     const userIdParam = new URL(request.url).searchParams.get("userId");

@@ -1,18 +1,14 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { ResponseModel } from '@/model/responseModel';
-import { GetLastVariableFromPath } from '@/extension/api_extension';
-import { IUpdateCardStatusApiRequest } from '@/model/requestModel';
+import { IPlaceApiParam, IUpdateCardStatusApiRequest } from '@/model/requestModel';
 import prisma from "@/prisma";
 
-export async function GET(request: Request) : Promise<NextResponse> {
-
-    // get place By Id
-    const placeId = GetLastVariableFromPath(request.url);
-
+export async function GET(request: NextRequest, { params }: IPlaceApiParam) : Promise<NextResponse> {
+    
     // get user from database
     const place = await prisma.place.findFirst({
         where: {
-            id: placeId
+            id: params.id
         }
     });
 
@@ -24,10 +20,7 @@ export async function GET(request: Request) : Promise<NextResponse> {
     return NextResponse.json(place, { status: 200 });
 };
 
-export async function PUT(request: Request) : Promise<NextResponse> {
-
-    // get place By Id
-    const placeId = GetLastVariableFromPath(request.url);
+export async function PUT(request: NextRequest, { params }: IPlaceApiParam) : Promise<NextResponse> {
 
     // get body of request
     const placeStatus: IUpdateCardStatusApiRequest = await request.json();
@@ -36,7 +29,7 @@ export async function PUT(request: Request) : Promise<NextResponse> {
         // delete place from database
         const updatePlace = await prisma.place.update({
             where: {
-                id: placeId
+                id: params.id
             },
             data: {
                 isDisable: placeStatus.isDisable
@@ -53,16 +46,13 @@ export async function PUT(request: Request) : Promise<NextResponse> {
     }
 }
 
-export async function DELETE(request: Request) : Promise<NextResponse> {
-
-    // get place By Id
-    const placeId = GetLastVariableFromPath(request.url);
+export async function DELETE(request: Request, { params }: IPlaceApiParam) : Promise<NextResponse> {
 
     try {
         // delete place from database
         const deletePlace = await prisma.place.delete({
             where: {
-                id: placeId
+                id: params.id
             }
         });
 
