@@ -1,5 +1,11 @@
 import {PwaCurrentPageEnum} from "@/model/enumModel";
 
+export interface IPlaceApiParam {
+    params: {
+        id: string
+    }
+}
+
 export interface IUpdateCardStatusApiRequest {
     isDisable: boolean
 }

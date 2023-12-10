@@ -46,7 +46,7 @@ const setDefaultMapTheme = MapTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
 const containerClassObject: IContainerClass = {
     notMapClass: ["pt-4", "pb-5", "px-3"],
-    mapClass: ["pt-3", "pb-0"]
+    mapClass: ["pt-3", "pb-0", "px-0"]
 }
 
 export default function Home() {
