@@ -158,16 +158,16 @@ export default function PlaceCard({
                         onClick={() => data.isDisable ? null : linkCardToMapPageHandler(data.id)}
                     >
                         {
-                            data.name.length < 23
+                            data.name.trim().length < 29
                                 ? <>
-                                    {data.name}
+                                    {data.name.trim()}
                                     {
                                         data.latitude && data.longitude && !data.isDisable
                                             ? <i className={`fa-solid fa-location-arrow ms-2 ${linkToMapIconThemeColor} text-footer-size`}></i>
                                             : null
                                     }
                                 </>
-                                : <>{data.name.slice(0, 23)}..</>
+                                : <>{data.name.trim().slice(0, 29)}..</>
                         }
                     </div>
                     <div className="text-nowrap">
@@ -179,7 +179,7 @@ export default function PlaceCard({
                     <div className={`${cardLabelThemeColor} lh-sm`}>
                         Message: &nbsp;
                         <span className={cardDataThemeColor}>
-                            {data.reminderMessage ? data.reminderMessage : "-"}
+                            {data.reminderMessage ? data.reminderMessage.trim() : "-"}
                         </span>
                     </div>
                  </div>

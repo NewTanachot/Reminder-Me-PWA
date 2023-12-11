@@ -65,7 +65,6 @@ export interface ISettingProps extends IBaseProps {
     currentUserName: string,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
     changeThemeHandler: (currentTheme: boolean) => void,
-    userLogoutHandler: () => void,
     softwareVersion: string,
     developedBy: string,
     currentMap: MapTitleEnum,

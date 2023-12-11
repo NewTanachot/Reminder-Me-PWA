@@ -52,7 +52,7 @@ export default function UserInfoSettingCard({ userInfo, changeCurrentPage, isDar
                                 className={`btn btn-sm ${switchUserBtnColorTheme} text-white btn-setting-icon-size theme-transition-ease-out-25`}
                                 onClick={switchUserHandler}
                             >
-                                <i className="fa-solid fa-person-walking-arrow-right"></i>
+                                <i className="fa-solid fa-wrench"></i>
                         </button>
                     </div>
                 </div>

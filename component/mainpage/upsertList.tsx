@@ -3,7 +3,7 @@ import { DisplayStringDateToUpdateForm, IsStringValid, IsStringValidEmpty } from
 import { PwaCurrentPageEnum } from "@/model/enumModel";
 import { IUpsertListProps } from "@/model/propsModel";
 import { ResponseModel } from "@/model/responseModel";
-import { IBaseLocation, PlaceExtensionModel } from "@/model/subentityModel";
+import { IBaseLocation, UpsertPlace } from "@/model/subentityModel";
 import { FormEvent, useRef, useState } from "react";
 import LoadingComponent from "../modalAsset/loading";
 import { GetNewMarkerLocation, GetPlaceMarkers } from "@/extension/calculation_extension";
@@ -59,9 +59,10 @@ export default function UpsertList({
             const isActiveInput = formInput.get("isActiveInput")?.toString();
 
             const latitude = IsStringValidEmpty(latitudeInput);
-            const longitude = IsStringValidEmpty(longitudeInput);
+            const longitude = IsStringValidEmpty(longitudeInput);  
 
-            const newPlace: PlaceExtensionModel = {
+            const placeBody: UpsertPlace = {
+                id: cardData?.id,
                 name: IsStringValidEmpty(placeNameInput),
                 latitude: latitude != "" ? +latitude : undefined, // cast string to number
                 longitude: longitude != "" ? +longitude : undefined, // cast string to number
@@ -73,8 +74,8 @@ export default function UpsertList({
 
             // fetch create place api
             const response = await fetch(`${baseUrlApi}/place`, {
-                method: "POST",
-                body: JSON.stringify(newPlace)
+                method: isUpdatePage ? "PUT" : "POST",
+                body: JSON.stringify(placeBody)
             });
 
             if (!response.ok) {
