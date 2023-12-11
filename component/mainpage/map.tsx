@@ -115,7 +115,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
         </div>
 
         <MapContainer 
-            className='map border border-2 border-secondary shadow rounded-2' 
+            className='map' 
             center={[centerLocation.latitude, centerLocation.longitude]} 
             zoom={initialZoomData} 
             scrollWheelZoom={true}
@@ -126,16 +126,8 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
             <TileLayer
                 attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
                 url={mapAsset.mapTitle}
+                noWrap={true}
             />
-
-            {/* <div className='map-reset-position-btn'>
-                <button 
-                    className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
-                    onClick={ResetCenterToUserLocation}
-                >
-                    <i className="fa-solid fa-map-location-dot"></i>
-                </button>
-            </div> */}
 
             <Marker 
                 position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}

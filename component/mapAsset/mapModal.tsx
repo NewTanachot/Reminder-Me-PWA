@@ -177,7 +177,7 @@ export default function MapModal({
             </div>
 
             <MapContainer 
-                className='map-asset border border-2 border-secondary shadow rounded-2' 
+                className='map-asset' 
                 center={[centerLocation.latitude, centerLocation.longitude]} 
                 zoom={initialMapView} 
                 scrollWheelZoom={true}
@@ -186,17 +186,10 @@ export default function MapModal({
                 ref={map => mapRef.current = map ?? undefined}
             >
                 <TileLayer
+                    attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
                     url={mapAsset.mapTitle}
+                    noWrap={true}
                 />
-
-                {/* <div className='map-reset-position-btn'>
-                    <button 
-                        className='btn btn-light bg-gradient shadow-sm border border-2 border-secondary bg-mainblack text-white'
-                        onClick={ResetCenterToUserLocation}
-                    >
-                        <i className="fa-solid fa-map-location-dot"></i>
-                    </button>
-                </div> */}
 
                 <Marker 
                     position={[userMarker.markerLocation.latitude, userMarker.markerLocation.longitude]}

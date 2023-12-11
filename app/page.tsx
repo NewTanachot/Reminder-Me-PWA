@@ -44,10 +44,6 @@ const softwareVersion: string = packageJson.version
 const setDefaultDarkTheme: boolean = false;
 const setDefaultMapTheme = MapTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
-const containerClassObject: IContainerClass = {
-    notMapClass: ["pt-4", "pb-5", "px-3"],
-    mapClass: ["pt-3", "pb-0", "px-0"]
-}
 
 export default function Home() {
 
@@ -207,10 +203,13 @@ export default function Home() {
         // open indexedDB 
         SetupIndexedDB().then((store: ISetupIndexedDBModel) => {
 
-            // #region ------------------------- Theme data
-
-            // get current theme data from indexedDB
+            // get current Store from indexedDB
+            const userStoreResponse = store.userStore.get(indexedDB_UserKey);
             const themeStoreResponse = store.themeStore.get(indexedDB_ThemeKey);
+            const mapStoreResponse = store.mapStore.get(indexedDB_MapKey);
+            const cacheStoreResponse = store.cacheStore.get(indexedDB_CacheKey);
+
+            // #region ------------------------- Theme data
 
             // set isDarkTheme in useRef and change page Theme
             themeStoreResponse.onsuccess = () => {
@@ -231,9 +230,6 @@ export default function Home() {
 
             // #region ------------------------- Map data
 
-            // get current map data from indexedDB
-            const mapStoreResponse = store.mapStore.get(indexedDB_MapKey);
-
             // set default map in useRef
             mapStoreResponse.onsuccess = () => {
 
@@ -245,9 +241,6 @@ export default function Home() {
 
             // #region ------------------------- cache data
 
-            // get cache data from indexedDB
-            const cacheStoreResponse = store.cacheStore.get(indexedDB_CacheKey);
-
             // set lastCacheClearing data in useRef
             cacheStoreResponse.onsuccess = () => {
 
@@ -257,9 +250,6 @@ export default function Home() {
             // #endregion
 
             // #region ------------------------- user data
-
-            // get current user from indexedDB
-            const userStoreResponse = store.userStore.get(indexedDB_UserKey);
 
             // get fail handler
             userStoreResponse.onerror = () => {
@@ -276,7 +266,7 @@ export default function Home() {
                 const userNameResponse = (userStoreResponse.result as IUserIndexedDB)?.userName;
 
                 if (IsStringValid(userIdResponse) && IsStringValid(userNameResponse)) {
-                    
+
                     user.current.userId = userIdResponse;
                     user.current.userName = userNameResponse;
 
@@ -304,7 +294,7 @@ export default function Home() {
             // check if mount round
             if (!isMountRound.current) {
 
-                if (currentPage.pageName == PwaCurrentPageEnum.ReminderList) {
+                if (currentPage.pageName == PwaCurrentPageEnum.ReminderList && user.current.userId) {
                     FetchPlaceData();
                 }            
             } 
@@ -436,6 +426,9 @@ export default function Home() {
         // open indexedDB and clear all record in userStore
         const store = await SetupIndexedDB();
         store.userStore.clear();
+
+        // reload site for stop geting location
+        // window.location.reload();
     }
 
     const DeletePlaceHandler = (placeId: string) => {
@@ -553,121 +546,124 @@ export default function Home() {
 
     // ------------------- [ Return JSX Element ] -------------------------
 
+    const containerClassObject: IContainerClass = {
+        notMapClass: ["mb-5", "mt-4", "mx-3-half"],
+        mapClass: []
+    }
+
     const containerClass = isMapPage.current 
         ? containerClassObject.mapClass.join(' ') 
         : containerClassObject.notMapClass.join(' ');
 
     const mainApp = (
         <main> 
-            <div className="container">
-                <div id='containerId' className={containerClass}>
-                    {
-                        (() => {
-                            switch (currentPage.pageName) {
+            <div id='containerId' className={containerClass}>
+                {
+                    (() => {
+                        switch (currentPage.pageName) {
 
-                                case PwaCurrentPageEnum.ReminderList:
-                                    return <List 
-                                        places={places}
-                                        currentUser={user.current}
-                                        deletePlaceHandler={DeletePlaceHandler}  
-                                        changePlaceStatusHandler={ChangePlaceStatusHandler}
-                                        updatePlaceCardHandler={UpdatePlaceCardHandler}
-                                        isDarkTheme={isDarkTheme.current}
-                                        currentCardOrder={cardOrderBy}
-                                        changeCardOrderByHandler={ChangeCardOrderByHandler}
-                                        linkCardToMapPageHandler={LinkCardToMapPageHandler}
-                                        baseUrlApi={baseUrlApi}
-                                    ></List>
+                            case PwaCurrentPageEnum.ReminderList:
+                                return <List 
+                                    places={places}
+                                    currentUser={user.current}
+                                    deletePlaceHandler={DeletePlaceHandler}  
+                                    changePlaceStatusHandler={ChangePlaceStatusHandler}
+                                    updatePlaceCardHandler={UpdatePlaceCardHandler}
+                                    isDarkTheme={isDarkTheme.current}
+                                    currentCardOrder={cardOrderBy}
+                                    changeCardOrderByHandler={ChangeCardOrderByHandler}
+                                    linkCardToMapPageHandler={LinkCardToMapPageHandler}
+                                    baseUrlApi={baseUrlApi}
+                                ></List>
 
-                                case PwaCurrentPageEnum.MapView:
-                                    return <Map
-                                        placeMarkers={GetPlaceMarkers(places)}
-                                        user={user.current}
-                                        initialMarkerLocation={initialMarkerLocationMapPage.current}
-                                        mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
-                                        isDarkTheme={isDarkTheme.current}
-                                        userFocusObj={{
-                                            isfocus: isUserFocusInMapPage.current,
-                                            setUserFocus: SetUserFocus
-                                        }}
-                                    ></Map>
+                            case PwaCurrentPageEnum.MapView:
+                                return <Map
+                                    placeMarkers={GetPlaceMarkers(places)}
+                                    user={user.current}
+                                    initialMarkerLocation={initialMarkerLocationMapPage.current}
+                                    mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                    isDarkTheme={isDarkTheme.current}
+                                    userFocusObj={{
+                                        isfocus: isUserFocusInMapPage.current,
+                                        setUserFocus: SetUserFocus
+                                    }}
+                                ></Map>
 
-                                case PwaCurrentPageEnum.CreateCard:
-                                    return <UpsertList 
-                                        user={user.current}
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        places={places}
-                                        mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
-                                        isDarkTheme={isDarkTheme.current}
-                                        baseUrlApi={baseUrlApi}
-                                        containerClassObject={containerClassObject}
-                                        setIsMapPage={SetIsMapPage}
-                                        userFocusObj={{
-                                            isfocus: isUserFocusInMapPage.current,
-                                            setUserFocus: SetUserFocus
-                                        }}
-                                    ></UpsertList>
+                            case PwaCurrentPageEnum.CreateCard:
+                                return <UpsertList 
+                                    user={user.current}
+                                    changeCurrentPage={ChangeCurrentPage}
+                                    places={places}
+                                    mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                    isDarkTheme={isDarkTheme.current}
+                                    baseUrlApi={baseUrlApi}
+                                    containerClassObject={containerClassObject}
+                                    setIsMapPage={SetIsMapPage}
+                                    userFocusObj={{
+                                        isfocus: isUserFocusInMapPage.current,
+                                        setUserFocus: SetUserFocus
+                                    }}
+                                ></UpsertList>
 
-                                case PwaCurrentPageEnum.UpdateCard:
-                                    return <UpsertList 
-                                        user={user.current}
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        cardData={currentUpdateCard.current}
-                                        places={places}
-                                        mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
-                                        isDarkTheme={isDarkTheme.current}
-                                        baseUrlApi={baseUrlApi}
-                                        containerClassObject={containerClassObject}
-                                        setIsMapPage={SetIsMapPage}
-                                        userFocusObj={{
-                                            isfocus: isUserFocusInMapPage.current,
-                                            setUserFocus: SetUserFocus
-                                        }}
-                                    ></UpsertList>
+                            case PwaCurrentPageEnum.UpdateCard:
+                                return <UpsertList 
+                                    user={user.current}
+                                    changeCurrentPage={ChangeCurrentPage}
+                                    cardData={currentUpdateCard.current}
+                                    places={places}
+                                    mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
+                                    isDarkTheme={isDarkTheme.current}
+                                    baseUrlApi={baseUrlApi}
+                                    containerClassObject={containerClassObject}
+                                    setIsMapPage={SetIsMapPage}
+                                    userFocusObj={{
+                                        isfocus: isUserFocusInMapPage.current,
+                                        setUserFocus: SetUserFocus
+                                    }}
+                                ></UpsertList>
 
-                                case PwaCurrentPageEnum.EvBattery:
-                                    return <EvBattery></EvBattery>
+                            case PwaCurrentPageEnum.EvBattery:
+                                return <EvBattery></EvBattery>
 
-                                case PwaCurrentPageEnum.Setting:
-                                    return <Setting
-                                        currentUserName={user.current.userName}
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        changeThemeHandler={ChangeCurrentThemeHandler}
-                                        isDarkTheme={isDarkTheme.current}
-                                        userLogoutHandler={UserLogoutHandler}
-                                        softwareVersion={softwareVersion}
-                                        developedBy={developedBy}
-                                        currentMap={mapTheme.current}
-                                        changeCurrentMapHandler={ChangeCurrentMapHandler}
-                                        lastCacheClearing={lastCacheClearing.current}
-                                        deleteIndexedDB={DeleteIndexedDB}
-                                    ></Setting>
+                            case PwaCurrentPageEnum.Setting:
+                                return <Setting
+                                    currentUserName={user.current.userName}
+                                    changeCurrentPage={ChangeCurrentPage}
+                                    changeThemeHandler={ChangeCurrentThemeHandler}
+                                    isDarkTheme={isDarkTheme.current}
+                                    userLogoutHandler={UserLogoutHandler}
+                                    softwareVersion={softwareVersion}
+                                    developedBy={developedBy}
+                                    currentMap={mapTheme.current}
+                                    changeCurrentMapHandler={ChangeCurrentMapHandler}
+                                    lastCacheClearing={lastCacheClearing.current}
+                                    deleteIndexedDB={DeleteIndexedDB}
+                                ></Setting>
 
-                                case PwaCurrentPageEnum.Login:
-                                    return <Login 
-                                        currentPage={currentPage}
-                                        userLoginHandler={UserLoginHandler} 
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        isDarkTheme={isDarkTheme.current}
-                                        baseUrlApi={baseUrlApi}
-                                    ></Login>
+                            case PwaCurrentPageEnum.Login:
+                                return <Login 
+                                    currentPage={currentPage}
+                                    userLoginHandler={UserLoginHandler} 
+                                    changeCurrentPage={ChangeCurrentPage}
+                                    isDarkTheme={isDarkTheme.current}
+                                    baseUrlApi={baseUrlApi}
+                                ></Login>
 
-                                case PwaCurrentPageEnum.Register:
-                                    return <Register
-                                        currentPage={currentPage}
-                                        changeCurrentPage={ChangeCurrentPage}
-                                        isDarkTheme={isDarkTheme.current}
-                                        baseUrlApi={baseUrlApi}
-                                    ></Register>
+                            case PwaCurrentPageEnum.Register:
+                                return <Register
+                                    currentPage={currentPage}
+                                    changeCurrentPage={ChangeCurrentPage}
+                                    isDarkTheme={isDarkTheme.current}
+                                    baseUrlApi={baseUrlApi}
+                                ></Register>
 
-                                case PwaCurrentPageEnum.Loading:
-                                    return <Loading
-                                        isDarkTheme={isDarkTheme.current}
-                                    ></Loading>   
-                            }
-                        })()
-                    }
-                </div>
+                            case PwaCurrentPageEnum.Loading:
+                                return <Loading
+                                    isDarkTheme={isDarkTheme.current}
+                                ></Loading>   
+                        }
+                    })()
+                }
             </div>
             <br /><br />
             <Footer
