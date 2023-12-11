@@ -6,6 +6,12 @@ export interface IPlaceApiParam {
     }
 }
 
+export interface IUserApiParam {
+    params: {
+        id: string
+    }
+}
+
 export interface IUpdateCardStatusApiRequest {
     isDisable: boolean
 }

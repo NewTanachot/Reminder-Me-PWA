@@ -1,16 +1,13 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { ResponseModel } from '@/model/responseModel';
-import { GetLastVariableFromPath } from '@/extension/api_extension';
 import prisma from "@/prisma";
 import { GetUserByUserData } from '../route';
+import { IUserApiParam } from '@/model/requestModel';
 
-export async function GET(request: Request) : Promise<NextResponse> {
-
-    // get User By Id
-    const userData = GetLastVariableFromPath(request.url);
+export async function GET(request: NextRequest, { params }: IUserApiParam) : Promise<NextResponse> {
 
     // get user from database
-    const user = await GetUserByUserData(userData);
+    const user = await GetUserByUserData(params.id);
 
     // check if not exist
     if (!user) {
@@ -20,15 +17,12 @@ export async function GET(request: Request) : Promise<NextResponse> {
     return NextResponse.json(user, { status: 200 });
 };
 
-export async function DELETE(request: Request) : Promise<NextResponse> {
-
-    // get User By Id
-    const userId = GetLastVariableFromPath(request.url);
+export async function DELETE(request: NextRequest, { params }: IUserApiParam) : Promise<NextResponse> {
 
     // delete user
     const deletedUser = await prisma.user.delete({
         where: {
-            id: userId
+            id: params.id
         }
     })
 

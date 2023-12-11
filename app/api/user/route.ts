@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { ResponseModel } from '@/model/responseModel';
-import { EncryptString, DecryptString } from '@/extension/string_extension';
+import { EncryptString } from '@/extension/string_extension';
 import { UserModelCreateValidator, UserModelDecorator, UserModelUpdateValidator } from '@/extension/api_extension';
 import { User } from '@prisma/client';
 import prisma from "@/prisma";
@@ -16,7 +16,8 @@ export const GetUserByUserData = async (userData: string) => {
     return await prisma.user.findFirst({
         where: {
             OR: [
-                { id: userData }, { name: userData }
+                { id: userData }, 
+                { name: userData }
             ]
         }
     });
@@ -29,11 +30,6 @@ export async function GET() : Promise<NextResponse> {
         // get user from database
         const user = await GetAllUsers();
 
-        // decrypt password string
-        // user.map(e => {
-        //     e.password = DecryptString(e.password, secretKey, e.IV_key)
-        // });
-
         return NextResponse.json(user, { status: 200 });
     }
     catch (error) 
@@ -45,7 +41,7 @@ export async function GET() : Promise<NextResponse> {
     }
 };
 
-export async function POST(request: Request) : Promise<NextResponse> {
+export async function POST(request: NextRequest) : Promise<NextResponse> {
 
     // get body of request
     const userCreateFromBody: User = await request.json();
@@ -86,7 +82,7 @@ export async function POST(request: Request) : Promise<NextResponse> {
     }
 };
 
-export async function PUT(request: Request) : Promise<NextResponse> {
+export async function PUT(request: NextRequest) : Promise<NextResponse> {
 
     // get body of request
     const userUpdateFromBody: User = await request.json();
