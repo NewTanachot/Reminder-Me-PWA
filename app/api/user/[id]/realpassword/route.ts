@@ -1,22 +1,20 @@
-import { GetSecondLastVariableFromPath } from '@/extension/api_extension';
 import { DecryptString } from '@/extension/string_extension';
 import { ResponseModel } from '@/model/responseModel';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from "@/prisma";
+import { IUserApiParam } from '@/model/requestModel';
 
 // get secret key from .env
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
 
-export async function GET(request: Request) : Promise<NextResponse> {
+export async function GET(request: NextRequest, { params }: IUserApiParam) : Promise<NextResponse> {
 
-    // get User By Id
-    const userData = GetSecondLastVariableFromPath(request.url);
-
-    // get user from database
+    // get user from database [ params.id is UserID or UserName ]
     const user = await prisma.user.findFirst({
         where: {
             OR: [
-                { id: userData }, { name: userData }
+                { id: params.id }, 
+                { name: params.id }
             ]
         }
     });

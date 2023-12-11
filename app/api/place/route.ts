@@ -27,7 +27,7 @@ const GetPlaceByUserId = async (userId: string) => {
 export async function GET(request: NextRequest): Promise<NextResponse> {
 
     // get body of request
-    const userIdParam = new URL(request.url).searchParams.get("userId");
+    const userIdParam = request.nextUrl.searchParams.get("userId");
     let place: Place[];
 
     try 
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 }
 
-export async function POST(request: Request): Promise<NextResponse> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
 
     // get body of request
     const placeCreate: Place = await request.json();
@@ -91,7 +91,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     }
 }
 
-export async function PUT(request: Request): Promise<NextResponse> {
+export async function PUT(request: NextRequest): Promise<NextResponse> {
 
     // get body of request
     const placeUpdate: Place = await request.json();
