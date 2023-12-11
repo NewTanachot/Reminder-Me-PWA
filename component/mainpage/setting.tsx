@@ -11,7 +11,6 @@ export default function Setting({
     currentUserName, 
     changeCurrentPage, 
     changeThemeHandler, 
-    userLogoutHandler, 
     softwareVersion, 
     isDarkTheme, 
     developedBy, 
@@ -88,9 +87,12 @@ export default function Setting({
                 <div className="mt-4 text-center">
                     <button
                         className={`btn btn-sm ${signOutBtnColorTheme} w-100 my-4 mt-2 shadow-sm theme-transition-ease-out-25`}
-                        onClick={userLogoutHandler}
+                        onClick={() => changeCurrentPage({
+                            page: PwaCurrentPageEnum.Login,
+                            backBtn: true
+                        })}
                     >
-                        Sign out
+                        Switch User
                         <i className="fa-solid fa-arrow-right-from-bracket ms-2"></i>
                     </button>
                 </div>

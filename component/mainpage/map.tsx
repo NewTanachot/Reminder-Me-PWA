@@ -110,7 +110,7 @@ export default function Map({ placeMarkers, user, mapAsset, userFocusObj, isDark
                 className={`btn shadow ${resetBtnColorTheme} text-white`}
                 onClick={ResetCenterToUserLocation}
             >
-                <i className="fa-solid fa-map-location-dot"></i>
+                <i className="fa-solid fa-street-view"></i>
             </button>
         </div>
 

@@ -378,8 +378,8 @@ html, body {
 
 .map-reset-position-btn {
     position: absolute;
-    top: 25px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     /* top: 10px;
     right: 10px; */
     z-index: 1000;
@@ -406,3 +406,15 @@ html, body {
 }
 
 /* #endregion */
+
+.overlay{
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 10000px;
+    height: 10000px;
+    opacity: 0.5;
+    background: #ccc;
+   }

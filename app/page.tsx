@@ -294,7 +294,7 @@ export default function Home() {
             // check if mount round
             if (!isMountRound.current) {
 
-                if (currentPage.pageName == PwaCurrentPageEnum.ReminderList && user.current.userId) {
+                if (currentPage.pageName == PwaCurrentPageEnum.ReminderList) {
                     FetchPlaceData();
                 }            
             } 
@@ -417,19 +417,6 @@ export default function Home() {
         // store currentUser to indexedDB
         store.userStore.put({ CurrentUser: indexedDB_UserKey, ...storeUser });
     };
-
-    const UserLogoutHandler = async () => {
-
-        // change page to login page
-        ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
-
-        // open indexedDB and clear all record in userStore
-        const store = await SetupIndexedDB();
-        store.userStore.clear();
-
-        // reload site for stop geting location
-        // window.location.reload();
-    }
 
     const DeletePlaceHandler = (placeId: string) => {
         setPlaces(places?.filter(e => e.id != placeId));
@@ -631,7 +618,6 @@ export default function Home() {
                                     changeCurrentPage={ChangeCurrentPage}
                                     changeThemeHandler={ChangeCurrentThemeHandler}
                                     isDarkTheme={isDarkTheme.current}
-                                    userLogoutHandler={UserLogoutHandler}
                                     softwareVersion={softwareVersion}
                                     developedBy={developedBy}
                                     currentMap={mapTheme.current}
