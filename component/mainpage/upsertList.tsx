@@ -20,7 +20,6 @@ export default function UpsertList({
     mapAsset, 
     isDarkTheme, 
     baseUrlApi, 
-    containerClassObject,
     setIsMapPage,
     userFocusObj
 }: IUpsertListProps) {
@@ -129,7 +128,7 @@ export default function UpsertList({
         const isActiveInput = document.getElementsByName("isActiveInput")[0] as HTMLInputElement;
         
         // change container class to map page
-        SetPageContainerClass(containerClassObject, true);
+        SetPageContainerClass(true);
 
         formDataRef.current = {
             name: placeNameInput.value,
@@ -152,7 +151,7 @@ export default function UpsertList({
     const BackToFormPage = () => {
         
         // change container class to not map page
-        SetPageContainerClass(containerClassObject, false);
+        SetPageContainerClass(false);
 
         // back to form page
         setDisplayMapModal(false);
@@ -169,7 +168,7 @@ export default function UpsertList({
         }
 
         // change container class to not map page
-        SetPageContainerClass(containerClassObject, false);
+        SetPageContainerClass(false);
 
         // back to form page
         setDisplayMapModal(false);

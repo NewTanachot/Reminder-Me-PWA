@@ -55,7 +55,6 @@ export interface IUpsertListProps extends IBaseProps, IBaseApiUrl {
     mapAsset: IMapAsset,
     places?: IDisplayPlace[],
     cardData?: IDisplayPlace,
-    containerClassObject: IContainerClass,
     changeCurrentPage: (requestDto: IChangeCurrentPageRequest) => void,
     setIsMapPage: (flag: boolean) => void,
     userFocusObj: IUserFocusMap 
