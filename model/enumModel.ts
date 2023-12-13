@@ -18,5 +18,7 @@ export enum MapTitleEnum {
     Default, Original, Clean, Bright, Light, Dark, Sync, Satellite
 }
 
-
+export enum AppBgColorEnum {
+    MainLight, MainDark, MapLight, MapDark
+}
 

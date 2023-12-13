@@ -129,7 +129,7 @@ export default function PlaceCard({
     }
     else {
         cardHeaderThemeColor = "text-viridian-green";
-        cardBodyThemeColor = "bg-cornsilk";
+        cardBodyThemeColor = "bg-ivory";
         cardLabelThemeColor = "text-dark";
         cardDataThemeColor = "text-secondary";
         cardCreateDateThemeColor = "";

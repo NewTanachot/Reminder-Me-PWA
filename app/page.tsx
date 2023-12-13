@@ -7,7 +7,7 @@ import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
 import { Place} from '@prisma/client';
 import { useEffect, useRef, useState } from 'react';
 import { CalculatePlaceForDisplay, GetPlaceMarkers, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
+import { AppBgColorEnum, CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
 import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
@@ -21,8 +21,9 @@ import Loading from '@/component/mainpage/loading';
 import SplashScreen from '@/component/modalAsset/splashScreen';
 import { ICacheIndexedDB, IMapIndexedDB, IThemeIndexedDB, IUserIndexedDB } from '@/model/indexedDbModel';
 import { IChangeCurrentPageRequest } from "@/model/requestModel";
-import { IContainerClass, MapMetaData } from '@/model/mapModel';
+import { MapMetaData } from '@/model/mapModel';
 import { IBaseLocation } from '@/model/subentityModel';
+import { GetStringContainerClassObject, SetAppBackgroundColorHandler } from '@/extension/style_extension';
 const Map = dynamic(() => import("@/component/mainpage/map"), { ssr: false });
 
 // Initialize .ENV variable
@@ -121,9 +122,6 @@ export default function Home() {
                 cacheStore = dbContext.createObjectStore(indexedDB_CacheStore, { keyPath: indexedDB_CacheKey });
                 cacheStore.put({CacheKey: indexedDB_CacheKey, lastCacheClearing: lastCacheClearing.current });
 
-                // fix background color theme when initailize indexedDB
-                AdaptiveColorThemeHandler(isDarkTheme.current);
-
                 // change to login page
                 ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
 
@@ -203,22 +201,16 @@ export default function Home() {
         // open indexedDB 
         SetupIndexedDB().then((store: ISetupIndexedDBModel) => {
 
-            // get current Store from indexedDB
-            const userStoreResponse = store.userStore.get(indexedDB_UserKey);
-            const themeStoreResponse = store.themeStore.get(indexedDB_ThemeKey);
-            const mapStoreResponse = store.mapStore.get(indexedDB_MapKey);
-            const cacheStoreResponse = store.cacheStore.get(indexedDB_CacheKey);
-
             // #region ------------------------- Theme data
+
+            // get theme store from indexedDB
+            const themeStoreResponse = store.themeStore.get(indexedDB_ThemeKey);
 
             // set isDarkTheme in useRef and change page Theme
             themeStoreResponse.onsuccess = () => {
     
                 // if indexedDB doesn't have Theme data it will set default to false
                 isDarkTheme.current = (themeStoreResponse.result as IThemeIndexedDB)?.isDarkTheme ?? setDefaultDarkTheme;
-
-                // set dark theme if user use dark theme as default
-                AdaptiveColorThemeHandler(isDarkTheme.current);
 
                 // set timeout for change currnt page from Splash Screen to ReminderList page (0.8 sec)
                 setTimeout(() => { 
@@ -229,6 +221,9 @@ export default function Home() {
             // #endregion
 
             // #region ------------------------- Map data
+
+            // get map store from indexedDB
+            const mapStoreResponse = store.mapStore.get(indexedDB_MapKey);
 
             // set default map in useRef
             mapStoreResponse.onsuccess = () => {
@@ -241,6 +236,9 @@ export default function Home() {
 
             // #region ------------------------- cache data
 
+            // get cache store from indexedDB
+            const cacheStoreResponse = store.cacheStore.get(indexedDB_CacheKey);
+
             // set lastCacheClearing data in useRef
             cacheStoreResponse.onsuccess = () => {
 
@@ -250,6 +248,9 @@ export default function Home() {
             // #endregion
 
             // #region ------------------------- user data
+
+            // get current user Store from indexedDB
+            const userStoreResponse = store.userStore.get(indexedDB_UserKey);
 
             // get fail handler
             userStoreResponse.onerror = () => {
@@ -468,7 +469,7 @@ export default function Home() {
         isDarkTheme.current = isDarkThemeHandler;
 
         // set css theme by theme ref variable
-        AdaptiveColorThemeHandler(isDarkTheme.current);
+        SetAppBackgroundColorHandler(isDarkTheme.current, isMapPage.current, true);
 
         // open indexedDB
         const store = await SetupIndexedDB();
@@ -511,36 +512,11 @@ export default function Home() {
         setTimeout(() => { initialMarkerLocationMapPage.current = undefined }, 500);
     }
 
-    const AdaptiveColorThemeHandler = (isDarkTheme: boolean) => {
-
-        // get all color theme by name
-        const htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
-        const bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
-
-        if (isDarkTheme) {
-
-            // BackGround 
-            htmlElement.style.backgroundColor = "#36393e";
-            bodyElement.style.backgroundColor = "#36393e";
-        }
-        else {
-
-            // BackGround 
-            htmlElement.style.backgroundColor = "#f5f5f5";
-            bodyElement.style.backgroundColor = "#f5f5f5";
-        }
-    };
-
     // ------------------- [ Return JSX Element ] -------------------------
 
-    const containerClassObject: IContainerClass = {
-        notMapClass: ["mb-5", "mt-4", "mx-3-half"],
-        mapClass: []
-    }
-
-    const containerClass = isMapPage.current 
-        ? containerClassObject.mapClass.join(' ') 
-        : containerClassObject.notMapClass.join(' ');
+    // get container css class and set app bg-Color
+    const containerClass = GetStringContainerClassObject(isMapPage.current);
+    SetAppBackgroundColorHandler(isDarkTheme.current, isMapPage.current);
 
     const mainApp = (
         <main> 
@@ -584,7 +560,6 @@ export default function Home() {
                                     mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                     isDarkTheme={isDarkTheme.current}
                                     baseUrlApi={baseUrlApi}
-                                    containerClassObject={containerClassObject}
                                     setIsMapPage={SetIsMapPage}
                                     userFocusObj={{
                                         isfocus: isUserFocusInMapPage.current,
@@ -601,7 +576,6 @@ export default function Home() {
                                     mapAsset={MapMetaData.getMaptitle(mapTheme.current, isDarkTheme.current)}
                                     isDarkTheme={isDarkTheme.current}
                                     baseUrlApi={baseUrlApi}
-                                    containerClassObject={containerClassObject}
                                     setIsMapPage={SetIsMapPage}
                                     userFocusObj={{
                                         isfocus: isUserFocusInMapPage.current,
