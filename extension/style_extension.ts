@@ -1,5 +1,5 @@
-import { AppBgColorEnum } from "@/model/enumModel";
-import { IContainerClass } from "@/model/mapModel";
+import { AppBgColorEnum, MapTitleEnum } from "@/model/enumModel";
+import { IContainerClass, MapMetaData } from "@/model/mapModel";
 
 const containerClassObject: IContainerClass = {
     notMapClass: ["mb-5", "mt-4", "mx-3-half"],
@@ -39,7 +39,7 @@ export const SetPageContainerClass = (isMap: boolean) => {
     }
 }
 
-export const SetAppBackgroundColorHandler = (isDarkTheme: boolean, isMapPage: boolean, isTransition?: boolean) => {
+export const SetAppBackgroundColorHandler = (isDarkTheme: boolean, isMapPage: boolean, mapStyle: MapTitleEnum, isTransition?: boolean) => {
 
     if (typeof document !== 'undefined') {
         
@@ -57,10 +57,17 @@ export const SetAppBackgroundColorHandler = (isDarkTheme: boolean, isMapPage: bo
         }
 
         if (isMapPage) {
-            colorHexCode = GetAppBackgroundColor(isDarkTheme ? AppBgColorEnum.MapDark : AppBgColorEnum.MapLight);
+
+            console.log(MapMetaData.isDarkMapTheme(mapStyle, isDarkTheme) )
+
+            colorHexCode = GetAppBackgroundColor(MapMetaData.isDarkMapTheme(mapStyle, isDarkTheme) 
+                ? AppBgColorEnum.MapDark 
+                : AppBgColorEnum.MapLight);
         }
         else {
-            colorHexCode = GetAppBackgroundColor(isDarkTheme ? AppBgColorEnum.MainDark : AppBgColorEnum.MainLight);
+            colorHexCode = GetAppBackgroundColor(isDarkTheme 
+                ? AppBgColorEnum.MainDark 
+                : AppBgColorEnum.MainLight);
         }
     
         htmlElement.style.backgroundColor = colorHexCode;
@@ -75,8 +82,8 @@ const GetAppBackgroundColor = (bgStatus: AppBgColorEnum) => {
         case AppBgColorEnum.MainDark:
             return "#36393e";
         case AppBgColorEnum.MapLight:
-            return "black";
+            return "#FFF8DC"; // bg-cornsilk
         case AppBgColorEnum.MapDark:
-            return "white";  
+            return "#28282B"; // bg-darkBlack
     }
 }

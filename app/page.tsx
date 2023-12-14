@@ -7,7 +7,7 @@ import { ISetupIndexedDBModel, ResponseModel } from '@/model/responseModel';
 import { Place} from '@prisma/client';
 import { useEffect, useRef, useState } from 'react';
 import { CalculatePlaceForDisplay, GetPlaceMarkers, OrderPlaceByDistance } from '@/extension/calculation_extension';
-import { AppBgColorEnum, CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
+import { CardOrderByEnum, MapTitleEnum, PwaCurrentPageEnum } from '@/model/enumModel';
 import { GetCustomGeoLocationOption } from '@/extension/api_extension';
 import dynamic from "next/dynamic"
 import List from '@/component/mainpage/list';
@@ -385,20 +385,23 @@ export default function Home() {
     // change Current page method
     const ChangeCurrentPage = (requestDto: IChangeCurrentPageRequest) => {
 
-        // set force fetch in FetchData function
-        if (requestDto.forceFetch != undefined) {
-            isForceFetch.current = requestDto.forceFetch;
+        if (currentPage.pageName != requestDto.page) {
+            
+            // set force fetch in FetchData function
+            if (requestDto.forceFetch != undefined) {
+                isForceFetch.current = requestDto.forceFetch;
+            }
+
+            // set isMapPage if current page is map page
+            SetIsMapPage(requestDto.page == PwaCurrentPageEnum.MapView);
+
+            // change current page
+            setCurrentPage({
+                pageName: requestDto.page,
+                successAlertBox: requestDto.successBox,
+                backBtn: requestDto.backBtn
+            });   
         }
-
-        // set isMapPage if current page is map page
-        SetIsMapPage(requestDto.page == PwaCurrentPageEnum.MapView);
-
-        // change current page
-        setCurrentPage({
-            pageName: requestDto.page,
-            successAlertBox: requestDto.successBox,
-            backBtn: requestDto.backBtn
-        });
     };
 
     const UserLoginHandler = async (setUser: CurrentUserRef) => {
@@ -469,7 +472,7 @@ export default function Home() {
         isDarkTheme.current = isDarkThemeHandler;
 
         // set css theme by theme ref variable
-        SetAppBackgroundColorHandler(isDarkTheme.current, isMapPage.current, true);
+        SetAppBackgroundColorHandler(isDarkTheme.current, isMapPage.current, mapTheme.current, true);
 
         // open indexedDB
         const store = await SetupIndexedDB();
@@ -516,7 +519,7 @@ export default function Home() {
 
     // get container css class and set app bg-Color
     const containerClass = GetStringContainerClassObject(isMapPage.current);
-    SetAppBackgroundColorHandler(isDarkTheme.current, isMapPage.current);
+    SetAppBackgroundColorHandler(isDarkTheme.current, isMapPage.current, mapTheme.current);
 
     const mainApp = (
         <main> 
