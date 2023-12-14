@@ -120,6 +120,13 @@ export class MapMetaData {
         }
     }
 
+    public static isDarkMapTheme(mapName: MapTitleEnum, isDarkTheme: boolean) {
+        return mapName == MapTitleEnum.Dark 
+            || mapName == MapTitleEnum.Satellite 
+            || (mapName == MapTitleEnum.Sync && isDarkTheme == true) 
+                ? true : false;
+    }
+
     public static getMaptitle(mapName: MapTitleEnum, isDarkTheme: boolean): IMapAsset {
         switch (mapName) {
 
