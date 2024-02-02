@@ -42,9 +42,18 @@ const developedBy: string = process.env.NEXT_PUBLIC_DEVELOPED_BY ?? "";
 const softwareVersion: string = packageJson.version
 
 // Initialize global const variable
-const setDefaultDarkTheme: boolean = false;
+const setDefaultDarkTheme: boolean = true;
 const setDefaultMapTheme = MapTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
+
+// --------------------------------------
+const setMyUserToDefaultUser: boolean = true; 
+
+const defaultUserStore: IUserIndexedDB = {
+    userId: "cljg1wriz00025hlz6u7kzzgi",
+    userName: "new"
+}
+// --------------------------------------
 
 export default function Home() {
 
@@ -108,7 +117,7 @@ export default function Home() {
                 const dbContext = request.result;
 
                 // create user store
-                dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
+                userStore = dbContext.createObjectStore(indexedDB_UserStore, { keyPath: indexedDB_UserKey });
 
                 // create and setup theme store
                 themeStore = dbContext.createObjectStore(indexedDB_ThemeStore, { keyPath: indexedDB_ThemeKey });
@@ -122,8 +131,13 @@ export default function Home() {
                 cacheStore = dbContext.createObjectStore(indexedDB_CacheStore, { keyPath: indexedDB_CacheKey });
                 cacheStore.put({CacheKey: indexedDB_CacheKey, lastCacheClearing: lastCacheClearing.current });
 
-                // change to login page
-                ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
+                if (setMyUserToDefaultUser) {            
+                    userStore.put({ CurrentUser: indexedDB_UserKey, ...defaultUserStore });
+                }
+                else {
+                    // change to login page
+                    ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
+                }
 
                 // reject the promise
                 reject();
@@ -163,8 +177,9 @@ export default function Home() {
                     userStore = transaction.objectStore(indexedDB_UserStore);
                 }
                 else {
-                    // change to login page
-                    ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
+                    setMyUserToDefaultUser 
+                        ? window.location.reload() 
+                        : ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
                 }
 
                 // create response for two of store
@@ -276,9 +291,13 @@ export default function Home() {
                     const watchId = navigator.geolocation.watchPosition(IfGetLocationSuccess, IfGetLocationError, GetCustomGeoLocationOption());
                 }
                 else {
-
-                    // change to login page
-                    ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
+                    if (setMyUserToDefaultUser) {
+                        store.userStore.put({ CurrentUser: indexedDB_UserKey, ...defaultUserStore });
+                        window.location.reload()                        
+                    }
+                    else {
+                        ChangeCurrentPage({ page: PwaCurrentPageEnum.Login });
+                    }
                 }
             }
 
