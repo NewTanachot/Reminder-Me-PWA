@@ -12,11 +12,15 @@
     background-color: #36393e;
 } */
 
+* {
+    max-width: 400px;
+}
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: whitesmoke;
+    background-color: #4682B4;
 }
 
 /* #region ------- [ Shadow Class ] ------- */

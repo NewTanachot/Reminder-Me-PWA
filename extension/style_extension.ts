@@ -43,7 +43,6 @@ export const SetAppBackgroundColorHandler = (isDarkTheme: boolean, isMapPage: bo
 
     if (typeof document !== 'undefined') {
         
-        let colorHexCode: string;
         const htmlElement: HTMLElement = document.getElementsByTagName("html")[0];
         const bodyElement: HTMLElement = document.getElementsByTagName("body")[0];
 
@@ -55,21 +54,11 @@ export const SetAppBackgroundColorHandler = (isDarkTheme: boolean, isMapPage: bo
             htmlElement.classList.remove("theme-transition-ease-out-25");
             bodyElement.classList.remove("theme-transition-ease-out-25");
         }
-
-        if (isMapPage) {
-
-            console.log(MapMetaData.isDarkMapTheme(mapStyle, isDarkTheme) )
-
-            colorHexCode = GetAppBackgroundColor(MapMetaData.isDarkMapTheme(mapStyle, isDarkTheme) 
-                ? AppBgColorEnum.MapDark 
-                : AppBgColorEnum.MapLight);
-        }
-        else {
-            colorHexCode = GetAppBackgroundColor(isDarkTheme 
-                ? AppBgColorEnum.MainDark 
-                : AppBgColorEnum.MainLight);
-        }
     
+        const colorHexCode = GetAppBackgroundColor(isDarkTheme 
+            ? AppBgColorEnum.MainDark 
+            : AppBgColorEnum.MainLight);
+
         htmlElement.style.backgroundColor = colorHexCode;
         bodyElement.style.backgroundColor = colorHexCode;
     }
@@ -81,9 +70,5 @@ const GetAppBackgroundColor = (bgStatus: AppBgColorEnum) => {
             return "#f5f5f5";
         case AppBgColorEnum.MainDark:
             return "#36393e";
-        case AppBgColorEnum.MapLight:
-            return "#FFF8DC"; // bg-cornsilk
-        case AppBgColorEnum.MapDark:
-            return "#28282B"; // bg-darkBlack
     }
 }

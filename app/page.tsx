@@ -45,15 +45,18 @@ const softwareVersion: string = packageJson.version
 const setDefaultDarkTheme: boolean = true;
 const setDefaultMapTheme = MapTitleEnum.Default;
 const setDefaultCurrentPage = PwaCurrentPageEnum.SplashScreen;
-
-// --------------------------------------
 const setMyUserToDefaultUser: boolean = true; 
-
 const defaultUserStore: IUserIndexedDB = {
     userId: "cljg1wriz00025hlz6u7kzzgi",
     userName: "new"
 }
-// --------------------------------------
+const resolutionAlert = `This site was developed for mobile first. So I set the width in mobile resolution.
+
+    1 Open this site in mobile.
+    2 Add to home screen to use this site as native application.
+    -------- OR --------
+    F12 and set to mobile resolution.
+`
 
 export default function Home() {
 
@@ -227,10 +230,10 @@ export default function Home() {
                 // if indexedDB doesn't have Theme data it will set default to false
                 isDarkTheme.current = (themeStoreResponse.result as IThemeIndexedDB)?.isDarkTheme ?? setDefaultDarkTheme;
 
-                // set timeout for change currnt page from Splash Screen to ReminderList page (0.8 sec)
+                // set timeout for change currnt page from Splash Screen to ReminderList page (0.5 sec)
                 setTimeout(() => { 
                     ChangeCurrentPage({ page: PwaCurrentPageEnum.ReminderList });
-                }, 800);
+                }, 500);
             }
 
             // #endregion
@@ -302,6 +305,11 @@ export default function Home() {
             }
 
             // #endregion
+
+            // alert user info about window size (mobile first)
+            if (window.innerWidth > 400) {
+                alert(resolutionAlert);
+            }
         });
     }, []);
 

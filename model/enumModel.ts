@@ -19,6 +19,6 @@ export enum MapTitleEnum {
 }
 
 export enum AppBgColorEnum {
-    MainLight, MainDark, MapLight, MapDark
+    MainLight, MainDark
 }
 
