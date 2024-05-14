@@ -1,8 +1,6 @@
 # Reminder Me Project 📍
 Reminder me is place or location note taking app (pwa app) to remind user where to go.
 
-develop for mobile first with PWA Technology, using [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 # Sound Interesting ? 
 
 Play demo in this link - https://reminder-me-chi.vercel.app/, You can register your account 😃 Thank you for playing.
@@ -30,6 +28,8 @@ Play demo in this link - https://reminder-me-chi.vercel.app/, You can register y
 </div>
 
 # Getting Started 
+
+Develop for mobile first with PWA Technology, using [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
