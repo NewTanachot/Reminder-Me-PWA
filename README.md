@@ -1,14 +1,35 @@
-## Reminder Me Project 
-
-Reminder me is place or location note taking app (pwa app) to remind user where to go
+# Reminder Me Project 📍
+Reminder me is place or location note taking app (pwa app) to remind user where to go.
 
 develop for mobile first with PWA Technology, using [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Sound Interesting ? 
+# Sound Interesting ? 
 
 Play demo in this link - https://reminder-me-chi.vercel.app/, You can register your account 😃 Thank you for playing.
 
-## Getting Started
+## Light Theme 🌝
+<div align="left">
+  <img src="./public/image/app-demo-img/list.PNG" width="20%" height="20%"/>
+  .
+  <img src="./public/image/app-demo-img/create.PNG" width="20%" height="20%"/>
+  .
+  <img src="./public/image/app-demo-img/map.PNG" width="20%" height="20%"/>
+  .
+  <img src="./public/image/app-demo-img/setting.PNG" width="20%" height="20%"/>
+</div>
+
+## Dark Theme 🌚
+<div align="left">
+  <img src="./public/image/app-demo-img/list-dark.PNG" width="20%" height="20%"/>
+  .
+  <img src="./public/image/app-demo-img/create-dark.PNG" width="20%" height="20%"/>
+  .
+  <img src="./public/image/app-demo-img/map-dark.PNG" width="20%" height="20%"/>
+  .
+  <img src="./public/image/app-demo-img/setting-dark.PNG" width="20%" height="20%"/>
+</div>
+
+# Getting Started 
 
 First, run the development server:
 
