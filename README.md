@@ -3,7 +3,7 @@ Reminder me is place or location note taking app (pwa app) to remind user where 
 
 # Sound Interesting ? 
 
-Play demo in this link - https://reminder-me-chi.vercel.app/, You can register your account 😃 Thank you for playing.
+Play demo in this link - https://reminder-me-chi.vercel.app/, You can register your account 😃 Thank you for trying it out.
 
 ## Light Theme 🌝
 <div align="left">
